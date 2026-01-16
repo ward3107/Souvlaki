@@ -327,11 +327,13 @@ const App: React.FC = () => {
   const [lang, setLang] = useState<Language>(Language.HE);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isMenuInView, setIsMenuInView] = useState(false);
   const [reviewsList, setReviewsList] = useState<Review[]>(REVIEWS);
   const menuRef = useRef<HTMLElement>(null);
+  const langDropdownRef = useRef<HTMLDivElement>(null);
 
   // Translation helper
   const t = (key: TranslationKey): string => TRANSLATIONS[lang][key] || key;
@@ -375,7 +377,7 @@ const App: React.FC = () => {
     }
 
     window.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (menuRef.current) {
@@ -383,6 +385,23 @@ const App: React.FC = () => {
       }
     };
   }, []);
+
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (langDropdownRef.current && !langDropdownRef.current.contains(event.target as Node)) {
+        setIsLangDropdownOpen(false);
+      }
+    };
+
+    if (isLangDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isLangDropdownOpen]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -409,20 +428,43 @@ const App: React.FC = () => {
     setReviewsList([newReview, ...reviewsList]);
   };
 
-  // Gallery Images - Expanded to simulate Google My Business photos
+  // Gallery Images - Real restaurant photos from local folder
   const galleryImages = [
-    'https://picsum.photos/800/600?random=10', 
-    'https://picsum.photos/800/600?random=11', 
-    'https://picsum.photos/800/600?random=12', 
-    'https://picsum.photos/800/600?random=13', 
-    'https://picsum.photos/800/600?random=14', 
-    'https://picsum.photos/800/600?random=15', 
-    'https://picsum.photos/800/600?random=16', 
-    'https://picsum.photos/800/600?random=17',
-    'https://picsum.photos/800/600?random=18',
-    'https://picsum.photos/800/600?random=19',
-    'https://picsum.photos/800/600?random=20',
-    'https://picsum.photos/800/600?random=21',
+    '/gallery/IMG-20251205-WA0032-400.webp',
+    '/gallery/IMG-20251205-WA0033-400.webp',
+    '/gallery/IMG-20251205-WA0034-400.webp',
+    '/gallery/IMG-20251205-WA0035-400.webp',
+    '/gallery/IMG-20251205-WA0036-400.webp',
+    '/gallery/IMG-20251205-WA0037-400.webp',
+    '/gallery/IMG-20251205-WA0038-400.webp',
+    '/gallery/IMG-20251205-WA0039-400.webp',
+    '/gallery/IMG-20251205-WA0040-400.webp',
+    '/gallery/IMG-20251205-WA0041-400.webp',
+    '/gallery/IMG-20251205-WA0042-400.webp',
+    '/gallery/IMG-20251205-WA0048-400.webp',
+    '/gallery/IMG-20251205-WA0050-400.webp',
+    '/gallery/IMG-20251205-WA0051-400.webp',
+    '/gallery/IMG-20251205-WA0052-400.webp',
+    '/gallery/IMG-20251205-WA0053-400.webp',
+    '/gallery/IMG-20251205-WA0054-400.webp',
+    '/gallery/IMG-20251205-WA0055-400.webp',
+    '/gallery/IMG-20251205-WA0056-400.webp',
+    '/gallery/IMG-20251205-WA0057-400.webp',
+    '/gallery/IMG-20251205-WA0058-400.webp',
+    '/gallery/IMG-20251205-WA0059-400.webp',
+    '/gallery/IMG-20251205-WA0061-400.webp',
+    '/gallery/IMG-20251205-WA0062-400.webp',
+    '/gallery/IMG-20251205-WA0063-400.webp',
+    '/gallery/IMG-20251205-WA0064-400.webp',
+    '/gallery/IMG-20251205-WA0066-400.webp',
+    '/gallery/IMG-20251205-WA0070-400.webp',
+    '/gallery/IMG-20251205-WA0072-400.webp',
+    '/gallery/IMG-20251205-WA0073-400.webp',
+    '/gallery/IMG-20251205-WA0075-400.webp',
+    '/gallery/IMG-20251205-WA0076-400.webp',
+    '/gallery/IMG-20251205-WA0077-400.webp',
+    '/gallery/IMG-20251205-WA0079-400.webp',
+    '/gallery/IMG-20251205-WA0083-400.webp',
   ];
 
   const scrollToSection = (id: string) => {
@@ -474,21 +516,29 @@ const App: React.FC = () => {
           {/* Controls */}
           <div className="flex items-center gap-3">
             {/* Lang Switcher */}
-            <div className="relative group">
-              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300">
+            <div className="relative" ref={langDropdownRef}>
+              <button
+                onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
+                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300"
+              >
                 <Globe className="w-5 h-5" />
               </button>
-              <div className="absolute top-full end-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-100 dark:border-slate-700 py-2 hidden group-hover:block">
-                {Object.values(Language).map((l) => (
-                  <button
-                    key={l}
-                    onClick={() => setLang(l)}
-                    className={`block w-full text-start px-4 py-2 text-sm hover:bg-blue-50 dark:hover:bg-slate-700 ${lang === l ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}
-                  >
-                    {l.toUpperCase()}
-                  </button>
-                ))}
-              </div>
+              {isLangDropdownOpen && (
+                <div className="absolute top-full end-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-100 dark:border-slate-700 py-2 z-50">
+                  {Object.values(Language).map((l) => (
+                    <button
+                      key={l}
+                      onClick={() => {
+                        setLang(l);
+                        setIsLangDropdownOpen(false);
+                      }}
+                      className={`block w-full text-start px-4 py-2 text-sm hover:bg-blue-50 dark:hover:bg-slate-700 ${lang === l ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}
+                    >
+                      {l.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Theme Toggle */}
@@ -530,9 +580,9 @@ const App: React.FC = () => {
       {/* --- HERO --- */}
       <section id="home" className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Parallax Background */}
-        <div 
+        <div
           className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
-          style={{ backgroundImage: 'url(https://picsum.photos/1920/1080?random=hero)' }}
+          style={{ backgroundImage: 'url(/hero/hero-bg.webp)' }}
         >
           <div className="absolute inset-0 bg-gray-900/60"></div>
         </div>
@@ -621,17 +671,17 @@ const App: React.FC = () => {
             <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
             {galleryImages.map((img, idx) => (
-              <div 
-                key={idx} 
-                className="relative aspect-square overflow-hidden rounded-xl cursor-pointer group shadow-lg"
+              <div
+                key={idx}
+                className="relative rounded-xl cursor-pointer group shadow-lg overflow-hidden"
                 onClick={() => setLightboxImage(img)}
               >
-                <img 
-                  src={img} 
-                  alt={`Gallery ${idx}`} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                <img
+                  src={img}
+                  alt={`Gallery ${idx}`}
+                  className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105 bg-white dark:bg-slate-800"
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="bg-white/90 p-3 rounded-full text-gray-900 shadow-lg">
@@ -672,7 +722,7 @@ const App: React.FC = () => {
             </div>
             <div className="flex-1 relative">
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                 <img src="https://picsum.photos/600/800?random=about" alt="Restaurant Interior" className="w-full h-auto" />
+                 <img src="/about/app-logo.webp" alt="Restaurant Interior" className="w-full h-auto" />
               </div>
               <div className="absolute top-10 -end-6 w-full h-full bg-blue-100 dark:bg-blue-900/20 rounded-2xl -z-0"></div>
             </div>

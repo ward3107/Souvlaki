@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tailwindcss:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(ls:*)",
+      "Bash(where:*)",
+      "Bash(node:*)",
+      "Bash(npx heic-convert:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

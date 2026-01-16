@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #0ea5e9; /* Sky-500 */
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0284c7; /* Sky-600 */
+}
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+/* Accessibility Styles */
+html.high-contrast {
+  filter: contrast(150%);
+}
+
+body.highlight-links a {
+  text-decoration: underline !important;
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  outline: 2px solid #000000 !important;
+  font-weight: bold !important;
+}
+
+body.highlight-links button {
+  outline: 2px solid #000000 !important;
+}
+
+/* 1. Readable Font */
+body.readable-font {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* 2. Stop Animations */
+body.stop-animations *, body.stop-animations *:before, body.stop-animations *:after {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* 3. Big Cursor */
+body.big-cursor, body.big-cursor a, body.big-cursor button {
+  cursor: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 24 24" fill="black" stroke="white" stroke-width="2" xmlns="http://www.w3.org/2000/svg"><path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"/></svg>') 0 0, auto !important;
+}
+
+/* 4. Grayscale */
+html.grayscale-mode {
+  filter: grayscale(100%);
+}
+
+/* 5. Invert Colors (Smart Invert) */
+html.invert-mode {
+  filter: invert(100%);
+}
+html.invert-mode img,
+html.invert-mode video,
+html.invert-mode .invert-protect {
+  filter: invert(100%);
+}
+
+/* 6. Reading Guide */
+#reading-guide {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: rgba(255, 255, 0, 0.8);
+  box-shadow: 0 0 0 100vh rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 999999;
+  transform: translateY(-50%);
+  display: none;
+}
+body.reading-guide-active #reading-guide {
+  display: block;
+}
