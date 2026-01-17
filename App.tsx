@@ -426,8 +426,10 @@ const App: React.FC = () => {
               <button
                 onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
                 className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300"
+                aria-label="Select language"
+                aria-expanded={isLangDropdownOpen}
               >
-                <Globe className="w-5 h-5" />
+                <Globe className="w-5 h-5" aria-hidden="true" />
               </button>
               {isLangDropdownOpen && (
                 <div className="absolute top-full end-0 mt-2 w-32 bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-gray-100 dark:border-slate-700 py-2 z-50">
@@ -452,16 +454,19 @@ const App: React.FC = () => {
             <button
               onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-yellow-500 dark:text-yellow-300"
+              aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
-              {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              {theme === 'light' ? <Moon className="w-5 h-5" aria-hidden="true" /> : <Sun className="w-5 h-5" aria-hidden="true" />}
             </button>
 
             {/* Mobile Menu Btn */}
             <button
               className="md:hidden p-2 text-gray-600 dark:text-gray-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isMenuOpen}
             >
-              {isMenuOpen ? <X /> : <MenuIcon />}
+              {isMenuOpen ? <X aria-hidden="true" /> : <MenuIcon aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -740,7 +745,7 @@ const App: React.FC = () => {
                     <span className="text-xl">👨‍👩‍👧‍👦</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white">משפחת כהן</h4>
+                    <div className="font-bold text-gray-900 dark:text-white" role="heading" aria-level="4">משפחת כהן</div>
                     <div className="flex text-yellow-400 text-sm">
                       <Star className="w-4 h-4 fill-current" />
                       <Star className="w-4 h-4 fill-current" />
@@ -761,8 +766,8 @@ const App: React.FC = () => {
                     ? 'Το φαγητό είναι εξαιρετικό! Το καλύτερο σουβλάκι στην περιοχή. Εξαιρετική εξυπηρέτηση και λογικές τιμές. Το συνιστούμε!'
                     : 'Amazing food! Best souvlaki in the area. Excellent service and fair prices. Highly recommend!'}
                 </p>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
-                  <Facebook className="w-3 h-3 text-blue-600" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-500">
+                  <Facebook className="w-3 h-3 text-blue-600" aria-hidden="true" />
                   <span>Facebook Review</span>
                 </div>
               </div>
@@ -774,7 +779,7 @@ const App: React.FC = () => {
                     <span className="text-xl">👩</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white">Sarah Johnson</h4>
+                    <div className="font-bold text-gray-900 dark:text-white" role="heading" aria-level="4">Sarah Johnson</div>
                     <div className="flex text-yellow-400 text-sm">
                       <Star className="w-4 h-4 fill-current" />
                       <Star className="w-4 h-4 fill-current" />
@@ -795,8 +800,8 @@ const App: React.FC = () => {
                     ? 'Φανταστική εμπειρία! Φρέσκος πίτες και τεράστιες μερίδες. Το προσωπικό είναι πολύ φιλικό. Σίγουρα θα επιστρέψουμε!'
                     : 'Amazing experience! Fresh pita and huge portions. The staff is so friendly. Will definitely come back!'}
                 </p>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
-                  <Facebook className="w-3 h-3 text-blue-600" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-500">
+                  <Facebook className="w-3 h-3 text-blue-600" aria-hidden="true" />
                   <span>Facebook Review</span>
                 </div>
               </div>
@@ -808,7 +813,7 @@ const App: React.FC = () => {
                     <span className="text-xl">👨‍💼</span>
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white">אלכסנדר פטרוב</h4>
+                    <div className="font-bold text-gray-900 dark:text-white" role="heading" aria-level="4">אלכסנדר פטרוב</div>
                     <div className="flex text-yellow-400 text-sm">
                       <Star className="w-4 h-4 fill-current" />
                       <Star className="w-4 h-4 fill-current" />
@@ -829,8 +834,8 @@ const App: React.FC = () => {
                     ? 'Αυθεντικές ελληνικές γεύσεις! Ο γύρος λευκό κρέας είναι απλά τέλειος. Αξίζει κάθε σεντ!'
                     : 'Authentic Greek flavors! The white meat gyros is simply perfect. Worth every shekel!'}
                 </p>
-                <div className="flex items-center gap-2 text-xs text-gray-400">
-                  <Facebook className="w-3 h-3 text-blue-600" />
+                <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-500">
+                  <Facebook className="w-3 h-3 text-blue-600" aria-hidden="true" />
                   <span>Facebook Review</span>
                 </div>
               </div>
@@ -857,11 +862,11 @@ const App: React.FC = () => {
               <div className="pt-4 flex gap-4">
                  <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
                     <span className="block text-3xl font-bold text-blue-600 mb-1">100%</span>
-                    <span className="text-xs text-gray-500 uppercase tracking-wide">Authentic</span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">Authentic</span>
                  </div>
                  <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
                     <span className="block text-3xl font-bold text-blue-600 mb-1">Fresh</span>
-                    <span className="text-xs text-gray-500 uppercase tracking-wide">Daily Ingredients</span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">Daily Ingredients</span>
                  </div>
               </div>
             </div>
@@ -1362,14 +1367,14 @@ const App: React.FC = () => {
               
             {/* Social Media Section */}
             <div className="flex gap-4">
-                <a href="https://www.facebook.com/greeksouvlaki" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group">
-                <Facebook className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <a href="https://www.facebook.com/greeksouvlaki" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group" aria-label="Visit our Facebook page">
+                <Facebook className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 </a>
-                <a href="https://www.instagram.com/greek.souvlakii" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group">
-                <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <a href="https://www.instagram.com/greek.souvlakii" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group" aria-label="Visit our Instagram page">
+                <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 </a>
-                <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group" title="Find us on TripAdvisor">
-                <Award className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group" aria-label="Find us on TripAdvisor">
+                <Award className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 </a>
             </div>
           </div>
@@ -1383,7 +1388,7 @@ const App: React.FC = () => {
                   setLegalDocument('/legal/terms-of-use.md');
                   setTimeout(() => console.log('legalDocument state set'), 100);
                 }}
-                className="text-gray-400 hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+                className="text-gray-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_terms')}
               </button>
@@ -1393,7 +1398,7 @@ const App: React.FC = () => {
                   console.log('Privacy clicked - opening modal');
                   setLegalDocument('/legal/privacy-policy.md');
                 }}
-                className="text-gray-400 hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+                className="text-gray-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_privacy')}
               </button>
@@ -1403,7 +1408,7 @@ const App: React.FC = () => {
                   console.log('Accessibility clicked - opening modal');
                   setLegalDocument('/legal/accessibility-statement.md');
                 }}
-                className="text-gray-400 hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+                className="text-gray-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_accessibility')}
               </button>

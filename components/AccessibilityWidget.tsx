@@ -167,7 +167,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
           aria-label="Restore Accessibility Widget"
           title="Restore Accessibility Widget"
         >
-          <Accessibility className="w-5 h-5" />
+          <Accessibility className="w-5 h-5" aria-hidden="true" />
         </button>
       )}
 
@@ -179,9 +179,10 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
             <button
               onClick={toggleOpen}
               className="w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
-              aria-label="Accessibility Menu"
+              aria-label="Open Accessibility Menu"
+              aria-expanded={isOpen}
             >
-              <Accessibility className="w-7 h-7" />
+              <Accessibility className="w-7 h-7" aria-hidden="true" />
             </button>
             {/* X button to close the badge */}
             <button
@@ -190,7 +191,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
               aria-label="Remove Accessibility Badge"
               title="Remove this badge"
             >
-              <X className="w-3 h-3" />
+              <X className="w-3 h-3" aria-hidden="true" />
             </button>
           </div>
 
@@ -198,15 +199,16 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
             <div className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}>
               <div className="flex justify-between items-center border-b pb-2 dark:border-slate-600 sticky top-0 bg-white dark:bg-slate-800 z-10">
                 <h3 className="font-bold text-lg dark:text-white flex items-center gap-2">
-                  <Accessibility className="w-5 h-5" />
+                  <Accessibility className="w-5 h-5" aria-hidden="true" />
                   Accessibility
                 </h3>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={reset}
                     className="text-sm text-red-500 hover:text-red-700 flex items-center gap-1 bg-red-50 px-2 py-1 rounded"
+                    aria-label="Reset all accessibility settings"
                   >
-                    <RotateCcw className="w-3 h-3" />
+                    <RotateCcw className="w-3 h-3" aria-hidden="true" />
                     Reset
                   </button>
                   <button
@@ -215,7 +217,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
                     aria-label="Close Widget"
                     title="Close and hide widget"
                   >
-                    <X className="w-4 h-4" />
+                    <X className="w-4 h-4" aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -223,8 +225,8 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
           <div className="space-y-2">
             <p className="text-sm font-medium dark:text-gray-300">Text Size: {fontSize}%</p>
             <div className="flex gap-2">
-              <button onClick={() => adjustFontSize(-10)} className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg">A-</button>
-              <button onClick={() => adjustFontSize(10)} className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg">A+</button>
+              <button onClick={() => adjustFontSize(-10)} className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg" aria-label="Decrease text size">A-</button>
+              <button onClick={() => adjustFontSize(10)} className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg" aria-label="Increase text size">A+</button>
             </div>
           </div>
 
