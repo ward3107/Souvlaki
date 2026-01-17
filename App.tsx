@@ -3,6 +3,7 @@ import { Language, TranslationKey, MenuItem, Review } from './types';
 import { TRANSLATIONS, MENU_ITEMS, FAQS, REVIEWS } from './constants';
 import AccessibilityWidget from './components/AccessibilityWidget';
 import CookieBanner from './components/CookieBanner';
+import LegalDocument from './components/LegalDocument';
 
 // Icons
 import { Menu, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check } from 'lucide-react';
@@ -188,7 +189,7 @@ const ReviewCard: React.FC<{ review: Review; lang: Language; index: number }> = 
             <span className="text-xs text-gray-400">{review.date}</span>
           </div>
           <div className="ml-auto">
-             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="w-5 h-5 opacity-70" />
+             <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full opacity-70" />
           </div>
         </div>
       </div>
@@ -212,38 +213,71 @@ const ReviewForm: React.FC<{ t: (key: TranslationKey) => string, onSubmit: (revi
     timeRating: 0,
     comment: ''
   });
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // Quick review tags
+  const quickTags = [
+    { id: 'food', label: 'האוכל היה מעולה 👏', emoji: '👏' },
+    { id: 'service', label: 'שירות מהיר ומצוין ⚡', emoji: '⚡' },
+    { id: 'atmosphere', label: 'אווירה נהדרת 🌟', emoji: '🌟' },
+    { id: 'price', label: 'מחירים הוגנים 💰', emoji: '💰' },
+    { id: 'must-try', label: 'חובה לנסות! 🔥', emoji: '🔥' },
+    { id: 'chips', label: 'אחלה צ\'יפסטי 😋', emoji: '😋' },
+    { id: 'fresh', label: 'רכיבים טריים 🥬', emoji: '🥬' },
+    { id: 'portions', label: 'מנות גדולו�ות 🍽️', emoji: '🍽️' },
+    { id: 'staff', label: 'צוות ידידותי 🤝', emoji: '🤝' },
+    { id: 'authentic', label: 'טעם אותנטי 🇬🇷', emoji: '🇬🇷' },
+  ];
+
+  const handleTagToggle = (tagLabel: string) => {
+    setSelectedTags(prev => {
+      if (prev.includes(tagLabel)) {
+        return prev.filter(t => t !== tagLabel);
+      } else {
+        return [...prev, tagLabel];
+      }
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.rating || !formData.name || !formData.comment) return;
+    if (!formData.rating || !formData.name) return;
+
+    // Combine tags with custom comment
+    const finalComment = [...selectedTags, formData.comment].filter(Boolean).join(' | ');
 
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
-      onSubmit(formData);
+      onSubmit({ ...formData, comment: finalComment });
       setSubmitted(true);
       setIsSubmitting(false);
       setFormData({ name: '', rating: 0, timeRating: 0, comment: '' });
+      setSelectedTags([]);
       setTimeout(() => setSubmitted(false), 3000);
     }, 1000);
   };
 
   const StarRating = ({ value, onChange, label, icon: Icon = Star }: { value: number, onChange: (v: number) => void, label: string, icon?: React.ElementType }) => (
     <div className="flex flex-col gap-2">
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
-      <div className="flex gap-1">
+      <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</span>
+      <div className="flex gap-2">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
             type="button"
             onClick={() => onChange(star)}
-            className="focus:outline-none transition-transform hover:scale-110 p-1"
+            className="focus:outline-none transition-all duration-200 hover:scale-125 hover:rotate-12 p-1"
           >
             <Icon
-              className={`w-6 h-6 ${star <= value ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
+              className={`w-8 h-8 transition-all duration-200 ${
+                star <= value
+                  ? 'fill-yellow-400 text-yellow-400 drop-shadow-lg'
+                  : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'
+              }`}
             />
           </button>
         ))}
@@ -252,11 +286,21 @@ const ReviewForm: React.FC<{ t: (key: TranslationKey) => string, onSubmit: (revi
   );
 
   return (
-    <div className="max-w-2xl mx-auto mt-16 bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-slate-700">
-      <div className="text-center mb-8">
-        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('form_title')}</h3>
-        <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full"></div>
-      </div>
+    <div className="max-w-2xl mx-auto mt-16 relative">
+      {/* Animated gradient border effect */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl opacity-75 blur-sm animate-pulse"></div>
+
+      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border-2 border-blue-200 dark:border-blue-900">
+        {/* Prominent header with icon */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mb-4 shadow-lg animate-bounce">
+            <Star className="w-8 h-8 text-white fill-white" />
+          </div>
+          <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+            {t('form_title')}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm">⭐ עזור לנו להשתפר - השאר את חוות דעתך! ⭐</p>
+        </div>
 
       {submitted ? (
         <div className="flex flex-col items-center justify-center py-10 animate-in fade-in zoom-in duration-300">
@@ -294,15 +338,60 @@ const ReviewForm: React.FC<{ t: (key: TranslationKey) => string, onSubmit: (revi
             />
           </div>
 
+          {/* Quick Tags Section */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              🏷️ לחץ כדי לבחור (אופציונלי):
+            </label>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {quickTags.map((tag) => (
+                <button
+                  key={tag.id}
+                  type="button"
+                  onClick={() => handleTagToggle(tag.label)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 transform hover:scale-105 ${
+                    selectedTags.includes(tag.label)
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                      : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600 border-2 border-transparent'
+                  }`}
+                >
+                  {tag.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Show selected tags */}
+            {selectedTags.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 w-full mb-1">הנבחרים:</span>
+                {selectedTags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-white dark:bg-slate-800 rounded-full text-xs border border-blue-300 dark:border-blue-700"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => handleTagToggle(tag)}
+                      className="ml-1 text-blue-600 hover:text-red-500 font-bold"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {t('form_comment')}
+              {t('form_comment')} <span className="text-gray-400 font-normal">(אופציונלי - הוסף פרטים נוספים)</span>
             </label>
             <textarea
-              required
-              rows={4}
+              rows={3}
               value={formData.comment}
               onChange={(e) => setFormData({...formData, comment: e.target.value})}
+              placeholder="ספר לנו עוד... (לא חובה)"
               className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
             />
           </div>
@@ -310,15 +399,23 @@ const ReviewForm: React.FC<{ t: (key: TranslationKey) => string, onSubmit: (revi
           <button
             type="submit"
             disabled={isSubmitting || !formData.rating}
-            className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] 
-              ${isSubmitting || !formData.rating 
-                ? 'bg-gray-200 dark:bg-slate-700 text-gray-400 cursor-not-allowed' 
-                : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/30'}`}
+            className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2
+              ${isSubmitting || !formData.rating
+                ? 'bg-gray-200 dark:bg-slate-700 text-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-xl shadow-blue-600/30'}`}
           >
-            {isSubmitting ? '...' : t('form_submit')}
+            {isSubmitting ? (
+              '...'
+            ) : (
+              <>
+                <Star className="w-5 h-5 fill-white animate-pulse" />
+                {t('form_submit')}
+              </>
+            )}
           </button>
         </form>
       )}
+      </div>
     </div>
   );
 };
@@ -328,10 +425,13 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
-  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isMenuInView, setIsMenuInView] = useState(false);
   const [reviewsList, setReviewsList] = useState<Review[]>(REVIEWS);
+  const [legalDocument, setLegalDocument] = useState<string | null>(null);
   const menuRef = useRef<HTMLElement>(null);
   const langDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -428,6 +528,74 @@ const App: React.FC = () => {
     setReviewsList([newReview, ...reviewsList]);
   };
 
+  // Lightbox navigation functions
+  const goToNextImage = () => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((lightboxIndex + 1) % galleryImages.length);
+  };
+
+  const goToPrevImage = () => {
+    if (lightboxIndex === null) return;
+    setLightboxIndex((lightboxIndex - 1 + galleryImages.length) % galleryImages.length);
+  };
+
+  const closeLightbox = () => {
+    setLightboxIndex(null);
+  };
+
+  // Keyboard shortcuts for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+
+      switch (e.key) {
+        case 'ArrowLeft':
+          if (isRtl) goToNextImage();
+          else goToPrevImage();
+          break;
+        case 'ArrowRight':
+          if (isRtl) goToPrevImage();
+          else goToNextImage();
+          break;
+        case 'Escape':
+          closeLightbox();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, isRtl]);
+
+  // Minimum swipe distance for gesture detection
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      if (isRtl) goToPrevImage();
+      else goToNextImage();
+    }
+    if (isRightSwipe) {
+      if (isRtl) goToNextImage();
+      else goToPrevImage();
+    }
+  };
+
   // Gallery Images - Real restaurant photos from local folder
   const galleryImages = [
     '/gallery/IMG-20251205-WA0032-400.webp',
@@ -492,9 +660,11 @@ const App: React.FC = () => {
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
-            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
-              GS
-            </div>
+            <img
+              src="/favicon.png"
+              alt="Greek Souvlaki Logo"
+              className="w-14 h-14 rounded-full object-cover"
+            />
             <h1 className="text-xl font-bold text-blue-900 dark:text-blue-100 hidden sm:block">
               Greek Souvlaki
             </h1>
@@ -582,7 +752,7 @@ const App: React.FC = () => {
         {/* Parallax Background */}
         <div
           className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
-          style={{ backgroundImage: 'url(/hero/hero-bg.webp)' }}
+          style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
         >
           <div className="absolute inset-0 bg-gray-900/60"></div>
         </div>
@@ -591,10 +761,27 @@ const App: React.FC = () => {
           
           {/* Google Rating in Hero */}
           <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">
-             <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="w-5 h-5" />
+             <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
              <div className="flex gap-0.5 text-yellow-400">
-                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-current" />)}
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-8 h-8 fill-current"
+                    style={{
+                      animation: 'flip-horizontal 3s ease-in-out infinite',
+                      animationDelay: `${i * 0.1}s`
+                    }}
+                  />
+                ))}
              </div>
+
+             {/* Add 3D flip animation */}
+             <style>{`
+               @keyframes flip-horizontal {
+                 0%, 100% { transform: rotateY(0deg); }
+                 50% { transform: rotateY(180deg); }
+               }
+             `}</style>
              <span className="text-white font-bold text-sm ml-1.5">4.9/5</span>
           </div>
 
@@ -657,7 +844,7 @@ const App: React.FC = () => {
       </section>
 
       {/* --- PARALLAX SEPARATOR --- */}
-      <ParallaxDivider image="https://picsum.photos/1920/1080?random=parallax" />
+      <ParallaxDivider image="/favicon.png" />
 
       {/* --- GALLERY --- */}
       <section id="gallery" className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300">
@@ -665,7 +852,7 @@ const App: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('gallery_title')}</h2>
             <div className="flex items-center justify-center gap-2 text-gray-500 dark:text-gray-400 mb-4">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" className="w-4 h-4 grayscale opacity-70" />
+              <img src="/favicon.png" alt="Logo" className="w-10 h-10 rounded-full grayscale opacity-70" />
               <span className="text-sm">Photos from Google Business Profile</span>
             </div>
             <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
@@ -676,7 +863,7 @@ const App: React.FC = () => {
               <div
                 key={idx}
                 className="relative rounded-xl cursor-pointer group shadow-lg overflow-hidden"
-                onClick={() => setLightboxImage(img)}
+                onClick={() => setLightboxIndex(idx)}
               >
                 <img
                   src={img}
@@ -722,7 +909,7 @@ const App: React.FC = () => {
             </div>
             <div className="flex-1 relative">
               <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                 <img src="/about/app-logo.webp" alt="Restaurant Interior" className="w-full h-auto" />
+                 <img src="/about/restaurant-interior.webp" alt="Restaurant Interior" className="w-full h-auto object-cover" />
               </div>
               <div className="absolute top-10 -end-6 w-full h-full bg-blue-100 dark:bg-blue-900/20 rounded-2xl -z-0"></div>
             </div>
@@ -733,44 +920,95 @@ const App: React.FC = () => {
       {/* --- REVIEWS --- */}
       <section id="reviews" className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('reviews_title')}</h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{t('reviews_subtitle')}</p>
-            <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-4"></div>
-          </div>
+          {/* Only show review form when no real reviews yet */}
+          {reviewsList.length === 0 ? (
+            <>
+              {/* Header with invitation to leave first review */}
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-xl">
+                  <Star className="w-10 h-10 text-white fill-white" />
+                </div>
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                  {lang === Language.HE ? 'היה הראשון להשאיר ביקורת!' : 'Be the First to Review!'}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
+                  {lang === Language.HE
+                    ? 'אין עדיין ביקורות. השאר את חוות הדעת שלך ועזור לנו להשתפר!'
+                    : 'No reviews yet. Share your experience and help us improve!'}
+                </p>
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {reviewsList.map((review, index) => (
-              <ReviewCard key={review.id} review={review} lang={lang} index={index} />
-            ))}
-          </div>
+              {/* New Review Form - Centered */}
+              <ReviewForm t={t} onSubmit={handleReviewSubmit} />
+            </>
+          ) : (
+            <>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('reviews_title')}</h2>
+                <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{t('reviews_subtitle')}</p>
+                <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-4"></div>
+              </div>
 
-          {/* New Review Form */}
-          <ReviewForm t={t} onSubmit={handleReviewSubmit} />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
+                {reviewsList.map((review, index) => (
+                  <ReviewCard key={review.id} review={review} lang={lang} index={index} />
+                ))}
+              </div>
+
+              {/* New Review Form */}
+              <ReviewForm t={t} onSubmit={handleReviewSubmit} />
+            </>
+          )}
         </div>
       </section>
 
       {/* --- FAQ --- */}
-      <section id="faq" className="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
+      <section id="faq" className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50 transition-colors duration-300">
         <div className="container mx-auto px-4 max-w-3xl">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('faq_title')}</h2>
-            <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
+          {/* Highlighted header */}
+          <div className="text-center mb-12 relative">
+            {/* Animated background decoration */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+            <div className="relative">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-6 shadow-xl shadow-blue-600/30">
+                <MessageCircle className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
+                {t('faq_title')}
+              </h2>
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-12 h-1 bg-gradient-to-r from-transparent to-blue-600 rounded-full"></div>
+                <div className="w-8 h-1 bg-blue-600 rounded-full animate-pulse"></div>
+                <div className="w-12 h-1 bg-gradient-to-l from-transparent to-blue-600 rounded-full"></div>
+              </div>
+            </div>
           </div>
 
           <div className="space-y-4">
-            {FAQS.map((faq) => (
-              <details key={faq.id} className="group bg-gray-50 dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
-                <summary className="flex justify-between items-center p-6 cursor-pointer list-none">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white pr-4 rtl:pr-0 rtl:pl-4">
-                    {faq.question[lang]}
-                  </h3>
-                  <span className="transition group-open:rotate-180">
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+            {FAQS.map((faq, index) => (
+              <details
+                key={faq.id}
+                className="group relative bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-700"
+              >
+                {/* Gradient accent on left */}
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-500 to-purple-500 rounded-l-2xl"></div>
+
+                <summary className="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                  <div className="flex items-center gap-4 flex-1">
+                    {/* Question number badge */}
+                    <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">
+                      {index + 1}
+                    </span>
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white pr-4 rtl:pr-0 rtl:pl-4">
+                      {faq.question[lang]}
+                    </h3>
+                  </div>
+                  <span className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center transition group-open:rotate-180 group-open:bg-blue-200 dark:group-open:bg-blue-800">
+                    <ChevronDown className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                   </span>
                 </summary>
-                <div className="px-6 pb-6 text-gray-600 dark:text-gray-300">
-                  <p>{faq.answer[lang]}</p>
+                <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-slate-700 bg-gradient-to-b from-transparent to-blue-50/50 dark:to-blue-900/10">
+                  <p className="pt-4">{faq.answer[lang]}</p>
                 </div>
               </details>
             ))}
@@ -792,61 +1030,111 @@ const App: React.FC = () => {
                 <div className="space-y-8">
                     {/* Contact Details */}
                     <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Get in Touch</h3>
-                        <ul className="space-y-6">
-                            <li className="flex items-start gap-4">
-                                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 shrink-0">
-                                    <MapPin className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-gray-900 dark:text-white">Visit Us</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">Kafr Yasif, Route 70, Israel</p>
-                                    <a href="https://waze.com/ul?q=Greek+Souvlaki+Kafr+Yasif" target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline mt-1 inline-flex items-center gap-1">
-                                      <Navigation className="w-3 h-3" /> Navigate with Waze
-                                    </a>
-                                </div>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 shrink-0">
-                                    <Phone className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-gray-900 dark:text-white">Call Us</h4>
-                                    <a href="tel:048122980" className="text-gray-600 dark:text-gray-400 hover:text-blue-600 block">04-812-2980</a>
-                                </div>
-                            </li>
-                            <li className="flex items-start gap-4">
-                                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600 shrink-0">
-                                    <MessageCircle className="w-5 h-5" />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold text-gray-900 dark:text-white">WhatsApp</h4>
-                                    <div className="space-y-1">
-                                        <a href="https://wa.me/972542001235" className="text-gray-600 dark:text-gray-400 hover:text-green-600 block text-sm">Jennje: 054-200-1235</a>
-                                        <a href="https://wa.me/972528921454" className="text-gray-600 dark:text-gray-400 hover:text-green-600 block text-sm">Andreia: 052-892-1454</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">📞 צור קשר</h3>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">לחץ על הכפתורים ליצירת קשר מהירה</p>
+
+                        <div className="grid grid-cols-1 gap-3">
+                            {/* Call Button */}
+                            <a
+                              href="tel:048122980"
+                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl border-2 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20"
+                            >
+                              <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                                <Phone className="w-6 h-6" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-bold text-gray-900 dark:text-white text-lg">04-812-2980</div>
+                                <div className="text-blue-600 dark:text-blue-400 text-sm font-medium">לחץ להתקשר →</div>
+                              </div>
+                            </a>
+
+                            {/* WhatsApp Jennje */}
+                            <a
+                              href="https://wa.me/972542001235"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
+                            >
+                              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                                <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+                                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-bold text-gray-900 dark:text-white text-lg">Jennje</div>
+                                <div className="text-green-600 dark:text-green-400 text-sm font-medium">054-200-1235 • לחצו כאן 💬</div>
+                              </div>
+                            </a>
+
+                            {/* WhatsApp Andreia */}
+                            <a
+                              href="https://wa.me/972528921454"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
+                            >
+                              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                                <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+                                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                </svg>
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-bold text-gray-900 dark:text-white text-lg">Andreia</div>
+                                <div className="text-green-600 dark:text-green-400 text-sm font-medium">052-892-1454 • לחצו כאן 💬</div>
+                              </div>
+                            </a>
+
+                            {/* Waze Navigation */}
+                            <a
+                              href="https://waze.com/ul?q=Greek+Souvlaki+Kafr+Yasif"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/20"
+                            >
+                              <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                                <Navigation className="w-6 h-6" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="font-bold text-gray-900 dark:text-white text-lg">ניווט Waze</div>
+                                <div className="text-purple-600 dark:text-purple-400 text-sm font-medium">כפר יאסיף, כביש 70 🧭</div>
+                              </div>
+                            </a>
+                        </div>
                     </div>
 
                     {/* Hours */}
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Opening Hours</h3>
-                        <ul className="space-y-3 opacity-80">
-                            <li className="flex justify-between border-b border-gray-200 dark:border-slate-700 pb-2">
-                                <span className="font-medium text-gray-700 dark:text-gray-300">Wednesday - Saturday</span>
-                                <span className="text-gray-600 dark:text-gray-400">13:00 - 01:00</span>
-                            </li>
-                            <li className="flex justify-between pt-2">
-                                <span className="font-medium text-gray-700 dark:text-gray-300">Sunday - Tuesday</span>
-                                <span className="text-red-500 font-medium">Closed</span>
-                            </li>
-                        </ul>
-                         <div className="mt-6 text-center">
-                            <span className="inline-block px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 font-bold tracking-wider uppercase text-xs rounded-full">
-                                {t('open_status_open')}
-                            </span>
+                    <div className="relative group">
+                        {/* Animated gradient border */}
+                        <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse"></div>
+
+                        <div className="relative bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border-2 border-green-200 dark:border-green-900">
+                            {/* Icon header */}
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
+                                    <Clock className="w-6 h-6 text-white" />
+                                </div>
+                                <h3 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
+                                    Opening Hours
+                                </h3>
+                            </div>
+
+                            <ul className="space-y-4">
+                                <li className="flex justify-between items-center border-b border-gray-200 dark:border-slate-700 pb-3">
+                                    <span className="font-bold text-gray-800 dark:text-gray-200 text-lg">Wednesday - Saturday</span>
+                                    <span className="text-green-600 dark:text-green-400 font-bold text-lg bg-green-50 dark:bg-green-900/30 px-4 py-1.5 rounded-full">13:00 - 01:00</span>
+                                </li>
+                                <li className="flex justify-between items-center pt-3">
+                                    <span className="font-bold text-gray-800 dark:text-gray-200 text-lg">Sunday - Tuesday</span>
+                                    <span className="text-red-500 font-bold text-lg bg-red-50 dark:bg-red-900/30 px-4 py-1.5 rounded-full">Closed</span>
+                                </li>
+                            </ul>
+
+                            <div className="mt-8 text-center">
+                                <span className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold tracking-wider uppercase text-sm rounded-full shadow-lg shadow-green-500/30 animate-pulse">
+                                    <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
+                                    {t('open_status_open')}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -892,7 +1180,11 @@ const App: React.FC = () => {
             {/* Brand */}
             <div className="text-center md:text-start">
               <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">GS</div>
+                <img
+                src="/favicon.png"
+                alt="Greek Souvlaki Logo"
+                className="w-14 h-14 rounded-full object-cover"
+              />
                 <h2 className="text-2xl font-bold text-white">Greek Souvlaki</h2>
               </div>
               <p className="opacity-70 text-sm">Authentic Greek flavors in the heart of Kafr Yasif.</p>
@@ -909,12 +1201,44 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-50">
+          <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-70 hover:opacity-100 transition-opacity">
             <p>{t('footer_copyright')}</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">{t('footer_terms')}</a>
-              <a href="#" className="hover:text-white transition-colors">{t('footer_privacy')}</a>
-              <a href="#" className="hover:text-white transition-colors">{t('footer_accessibility')}</a>
+            <div className="flex gap-6 flex-wrap justify-center md:justify-end">
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Terms clicked');
+                  setLegalDocument('/legal/terms-of-use.md');
+                }}
+                className="text-gray-400 hover:text-white hover:underline transition-all cursor-pointer bg-transparent border-none p-0 font-medium"
+              >
+                {t('footer_terms')}
+              </button>
+              <span className="text-gray-600">•</span>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Privacy clicked');
+                  setLegalDocument('/legal/privacy-policy.md');
+                }}
+                className="text-gray-400 hover:text-white hover:underline transition-all cursor-pointer bg-transparent border-none p-0 font-medium"
+              >
+                {t('footer_privacy')}
+              </button>
+              <span className="text-gray-600">•</span>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Accessibility clicked');
+                  setLegalDocument('/legal/accessibility-statement.md');
+                }}
+                className="text-gray-400 hover:text-white hover:underline transition-all cursor-pointer bg-transparent border-none p-0 font-medium"
+              >
+                {t('footer_accessibility')}
+              </button>
             </div>
           </div>
         </div>
@@ -925,20 +1249,63 @@ const App: React.FC = () => {
       <CookieBanner language={lang} />
       
       {/* Lightbox */}
-      {lightboxImage && (
-        <div 
+      {lightboxIndex !== null && (
+        <div
           className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 backdrop-blur-md"
-          onClick={() => setLightboxImage(null)}
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
         >
-          <button className="absolute top-4 right-4 text-white p-2 hover:bg-white/20 rounded-full">
+          {/* Close Button */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 text-white p-2 hover:bg-white/20 rounded-full z-10 transition-colors"
+            aria-label="Close"
+          >
             <X className="w-8 h-8" />
           </button>
-          <img 
-            src={lightboxImage} 
-            alt="Full size" 
-            className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
-            onClick={(e) => e.stopPropagation()} // Prevent close on image click
+
+          {/* Image Counter */}
+          <div className="absolute top-4 left-4 text-white bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium">
+            {lightboxIndex + 1} / {galleryImages.length}
+          </div>
+
+          {/* Previous Button */}
+          <button
+            onClick={goToPrevImage}
+            className="absolute left-4 rtl:left-auto rtl:right-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
+            aria-label="Previous image"
+          >
+            <ChevronDown className={`w-10 h-10 ${isRtl ? 'rotate-90' : '-rotate-90'}`} />
+          </button>
+
+          {/* Navigation Areas - Click on left/right sides */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-1/3 rtl:left-auto rtl:right-0 z-0 cursor-pointer"
+            onClick={goToPrevImage}
+            aria-label="Previous image"
           />
+          <div
+            className="absolute right-0 top-0 bottom-0 w-1/3 rtl:right-auto rtl:left-0 z-0 cursor-pointer"
+            onClick={goToNextImage}
+            aria-label="Next image"
+          />
+
+          {/* Main Image */}
+          <img
+            src={galleryImages[lightboxIndex]}
+            alt={`Gallery ${lightboxIndex + 1}`}
+            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl z-1 transition-opacity duration-300"
+          />
+
+          {/* Next Button */}
+          <button
+            onClick={goToNextImage}
+            className="absolute right-4 rtl:right-auto rtl:left-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
+            aria-label="Next image"
+          >
+            <ChevronDown className={`w-10 h-10 ${isRtl ? '-rotate-90' : 'rotate-90'}`} />
+          </button>
         </div>
       )}
       
@@ -954,7 +1321,7 @@ const App: React.FC = () => {
       )}
 
       {/* WhatsApp Floating Button */}
-      <a 
+      <a
         href="https://wa.me/972542001235"
         target="_blank"
         rel="noopener noreferrer"
@@ -965,6 +1332,15 @@ const App: React.FC = () => {
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
         </svg>
       </a>
+
+      {/* Legal Document Modal */}
+      {legalDocument && (
+        <LegalDocument
+          language={lang}
+          documentPath={legalDocument}
+          onClose={() => setLegalDocument(null)}
+        />
+      )}
     </div>
   );
 };

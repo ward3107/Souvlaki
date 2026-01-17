@@ -1,0 +1,313 @@
+# Accessibility Statement
+# הצהרת נגישות
+# بيان إمكانية الوصول
+
+**Effective Date:** January 17, 2025
+**תאריך עדכון:** 17 בינואר 2025
+**تاريخ التحديث:** 17 يناير 2025
+
+---
+
+## English
+
+### 1. Our Commitment
+
+At Greek Souvlaki, we are committed to ensuring digital accessibility for all users, including people with disabilities. We strive to continually improve the user experience for everyone and apply the relevant accessibility standards.
+
+---
+
+### 2. Accessibility Standards
+
+We aim to comply with:
+- **WCAG 2.1 Level AA** (Web Content Accessibility Guidelines)
+- **Israeli Standard 5568** (Accessibility in websites, 2013)
+- **Israeli Equal Rights for Persons with Disabilities Law** (5768-1998) and amendments
+
+---
+
+### 3. Accessibility Features
+
+Our website includes the following accessibility features:
+
+| Feature | Description |
+|---------|-------------|
+| **Multi-language Support** | Hebrew, Arabic, English, Russian, Greek with RTL support |
+| **Keyboard Navigation** | All interactive elements are accessible via keyboard |
+| **Text Scaling** | Text can be resized up to 200% without breaking layout |
+| **Color Contrast** | Text meets WCAG AA contrast requirements (4.5:1 for normal text) |
+| **Alt Text** | Images include descriptive alt text |
+| **Focus Indicators** | Clear visual indicators for focused elements |
+| **Semantic HTML** | Proper heading structure and landmarks |
+| **Accessibility Widget** | Built-in tools for font size, contrast, and highlighting |
+
+---
+
+### 4. Known Limitations
+
+Despite our best efforts, some limitations may exist:
+
+- **Google Maps**: The embedded map is controlled by Google and may have limited accessibility
+- **Gallery Images**: Some user-submitted photos may lack alt text
+- **Third-Party Links**: External sites (WhatsApp, Waze, social media) have their own accessibility policies
+
+We are working to address these limitations.
+
+---
+
+### 5. Accessibility Testing
+
+We test our website using:
+- Automated accessibility tools
+- Manual keyboard navigation testing
+- Screen reader compatibility checks
+- User feedback from people with disabilities
+
+---
+
+### 6. Reporting Accessibility Issues
+
+If you encounter any accessibility barriers, please let us know:
+
+**Contact:**
+- Email: **[INSERT EMAIL]**
+- Phone: 04-812-2980
+- Address: Kafr Yasif, Route 70, Israel
+
+**What to include in your report:**
+- The specific page or feature where you encountered the barrier
+- The nature of the accessibility issue
+- Your preferred assistive technology (if applicable)
+
+---
+
+### 7. Response Timeline
+
+We are committed to addressing accessibility-related requests:
+
+- **Acknowledgment**: Within 3 business days
+- **Resolution**: Within **60 days** (as required by Israeli law)
+- **Follow-up**: We will notify you when the issue is resolved
+
+If your request requires more time, we will inform you of the expected timeline.
+
+---
+
+### 8. Ongoing Efforts
+
+We regularly review and update our website to improve accessibility:
+- Monthly accessibility audits
+- Training for content creators
+- Incorporating accessibility into new features
+- Monitoring for accessibility issues
+
+---
+
+### 9. Third-Party Content
+
+Some content on our site comes from third parties (Google Maps, social media). While we encourage accessibility, we cannot control the accessibility of external platforms.
+
+For issues specifically with Google Maps, please contact [Google Accessibility](https://www.google.com/accessibility/).
+
+---
+
+## עברית (Hebrew)
+
+### 1. המחויבות שלנו
+
+במסעדת Greek Souvlaki, אנו מחויבים להבטיח נגישות דיגיטלית עבור כל המשתמשים, כולל אנשים עם מוגבלויות. אנו שואפים לשפר כל הזמן את חווית המשתמש עבור כולם וליישם את תקני הנגישות הרלוונטיים.
+
+---
+
+### 2. תקני נגישות
+
+אנו שואפים לעמוד ב:
+- **WCAG 2.1 רמה AA** (הנחיות נגישות לתוכן דיגיטלי)
+- **תקן ישראלי 5568** (נגישות באתרים, 2013)
+- **חוק שוויון זכויות לאנשים עם מוגבלויות** (תשנ"ח-1998) ותיקוניו
+
+---
+
+### 3. תכונות נגישות
+
+האתר שלנו כולל את תכונות הנגישות הבאות:
+
+| תכונה | תיאור |
+|--------|------|
+| **תמיכה רב-לשונית** | עברית, ערבית, אנגלית, רוסית, יוונית עם תמיכה ב-RTL |
+| **ניווט מקלדת** | כל האלמנטים האינטראקטיביים נגישים דרך המקלדת |
+| **שינוי גודל טקסט** | ניתן להגדיל טקסט עד 200% מבלי לשבור את הפריסה |
+| **ניגוד צבעים** | הטקסט עומד בדרישות ניגוד WCAG AA (4.5:1 לטקסט רגיל) |
+| **טקסט Alt** | תמונות כוללות טקסט Alt תיאורי |
+| **מחווני פוקוס** | מחוונים ויזואליים ברורים לאלמנטים ממוקדים |
+| **HTML סמנטי** | מבנה כותרות וציוני דרך נכון |
+| **ווידג'ט נגישות** | כלים מובנים לגודל גופן, ניגוד והדגשה |
+
+---
+
+### 4. מגבלות ידועות
+
+למרות המאמצים הטובים ביותר שלנו, עשויות להתקיים כמה מגבלות:
+
+- **Google Maps**: המפה המוטמעה נשלטת על ידי Google ועשויה להיות בעלת נגישות מוגבלת
+- **תמונות גלרייה**: חלק מהתמונות שהוגשו על ידי משתמשים עשויות לחסר טקסט Alt
+- **קישורי צד שלישי**: לאתרים חיצוניים (WhatsApp, Waze, רשתות חברתיות) יש מדיניות נגישות משלהם
+
+אנו עובדים על טיפול במגבלות אלו.
+
+---
+
+### 5. בדיקות נגישות
+
+אנו בודקים את האתר שלנו באמצעות:
+- כלי נגישות אוטומטיים
+- בדיקות ניווט מקלדת ידניות
+- בדיקות תאימות קוראי מסך
+- משוב משתמשים מאנשים עם מוגבלויות
+
+---
+
+### 6. דיווח על בעיות נגישות
+
+אם נתקלת במחסומי נגישות, אנא דווח לנו:
+
+**צור קשר:**
+- אימייל: **[הכנס כתובת אימייל]**
+- טלפון: 04-812-2980
+- כתובת: כפר יאסיף, כביש 70, ישראל
+
+**מה לכלול בדיווח שלך:**
+- העמוד או התכונה הספציפית שבה נתקלת במחסום
+- אופי הבעיה הנגישותית
+- טכנולוגיית הסיוע המועדפת שלך (אם רלוונטי)
+
+---
+
+### 7. טווח זמן למענה
+
+אנו מחויבים לטפל בבקשות הקשורות לנגישות:
+
+- **אישור**: תוך 3 ימי עסקים
+- **פתרון**: תוך **60 יום** (לפי דרישת החוק הישראלי)
+- **מעקב**: נודיע לך כאשר הבעיה נפתרה
+
+אם הבקשה שלך דורשת זמן נוסף, נעדכן אותך לגבי לוח הזמנים הצפוי.
+
+---
+
+### 8. מאמצים מתמשכים
+
+אנו סוקרים ומעדכנים את האתר שלנו באופן קבוע כדי לשפר את הנגישות:
+- ביקורות נגישות חודשיות
+- הדרכה ליוצרי תוכן
+- שילוב נגישות בתכונות חדשות
+- ניטור בעיות נגישות
+
+---
+
+### 9. תוכן צד שלישי
+
+חלק מהתוכן באתר שלנו מגיע מצדדים שלישיים (Google Maps, רשתות חברתיות). בעוד שאנו מעודדים נגישות, אנו לא יכולים לשלוט בנגישות של פלטפורמות חיצוניות.
+
+לבעיות ספציפיות עם Google Maps, צור קשר עם [Google נגישות](https://www.google.com/accessibility/).
+
+---
+
+## العربية (Arabic)
+
+### 1. التزامنا
+
+في مطعم Greek Souvlaki، نلتزم بضمان إمكانية الوصول الرقمية لجميع المستخدمين، بما في ذلك الأشخاص ذوي الإعاقة. نسعى جاهدين لتحسين تجربة المستخدم للجميع باستمرار وتطبيق معايير إمكانية الوصول ذات الصلة.
+
+---
+
+### 2. معايير إمكانية الوصول
+
+نحن نسعى للامتثال لـ:
+- **WCAG 2.1 المستوى AA** (إرشادات إمكانية الوصول لمحتوى الويب)
+- **المعيار الإسرائيلي 5568** (إمكانية الوصول في المواقع، 2013)
+- **قانون المساواة في حقوق الأشخاص ذوي الإعاقة الإسرائيلي** (1998) وتعديلاته
+
+---
+
+### 3. ميزات إمكانية الوصول
+
+يحتوي موقعنا على ميزات إمكانية الوصول التالية:
+
+| الميزة | الوصف |
+|---------|-------|
+| **دعم متعدد اللغات** | العبرية والعربية والإنجليزية والروسية واليونانية مع دعم RTL |
+| **التنقل بلوحة المفاتيح** | جميع العناصر التفاعلية يمكن الوصول إليها عبر لوحة المفاتيح |
+| **تحجيم النص** | يمكن تكبير النص حتى 200٪ دون كسر التخطيط |
+| **تباين الألوان** | النص يلبي متطلبات تباين WCAG AA (4.5:1 للنص العادي) |
+| **النص البديل** | الصور تتضمن نصًا بديلًا وصفيًا |
+| **مؤشرات التركيز** | مؤشرات بصرية واضحة للعناصر المركزة |
+| **HTML الدلالي** | هيكل العناوين والمعالم الصحيح |
+| **أداة إمكانية الوصول** | أدوات مدمجة لحجم الخط والتباين والإبراز |
+
+---
+
+### 4. القيود المعروفة
+
+على الرغم من أفضل جهودنا، قد توجد بعض القيود:
+
+- **Google Maps**: تتحكم Google في الخريطة المضمنة وقد يكون لها إمكانية وصول محدودة
+- **صور المعرض** قد تفتقر بعض الصور المقدمة من المستخدمين إلى نص بديل
+- **روابط الطرف الثالث**: المواقع الخارجية (WhatsApp وWaze ووسائل التواصل الاجتماعي) لديها سياسات إمكانية وصول خاصة بها
+
+نعمل على معالجة هذه القيود.
+
+---
+
+### 5. اختبار إمكانية الوصول
+
+نختبر موقعنا باستخدام:
+- أدوات إمكانية الوصول التلقائية
+- اختبار التنقل بلوحة المفاتيح اليدوي
+- فحص توافق قارئ الشاشة
+- التعليقات من الأشخاص ذوي الإعاقة
+
+---
+
+### 6. الإبلاغ عن مشاكل إمكانية الوصول
+
+إذا واجهت أي حواجز لإمكانية الوصول، يرجى إعلاما:
+
+**التواصل:**
+- البريد الإلكتروني: **[أدخل البريد الإلكتروني]**
+- الهاتف: 04-812-2980
+- العنوان: كفر ياسيف، طريق 70، إسرائيل
+
+**ما الذي يجب تضمينه في تقريرك:**
+- الصفحة أو الميزة المحددة التي واجهت فيها الحاجز
+- طبيعة مشكلة إمكانية الوصول
+- تقنية المساعدة المفضلة لديك (إذا كانت منطبقة)
+
+---
+
+### 7. الجدول الزمني للاستجابة
+
+نحن ملتزمون بمعالجة الطلبات المتعلقة بإمكانية الوصول:
+
+- **الإقرار**: خلال 3 أيام عمل
+- **الحل**: خلال **60 يومًا** (كما هو مطلوب بموجب القانون الإسرائيلي)
+- **المتابعة**: سن通知ك عند حل المشكلة
+
+إذا كان طلبك يحتاج إلى مزيد من الوقت، سنبلغك بالجدول الزمني المتوقع.
+
+---
+
+### 8. الجهود المستمرة
+
+نحن نراجع ونحدث موقعنا بانتظام لتحسين إمكانية الوصول:
+- عمليات تدقيق إمكانية الوصول الشهرية
+- التدريب لمنشئي المحتوى
+- دمج إمكانية الوصول في الميزات الجديدة
+- مراقبة مشكلات إمكانية الوصول
+
+---
+
+### 9. محتوى الطرف الثالث
+
+بعض المحتوى في موقعنا يأتي من أطراف ثالثة (Google Maps ووسائل التواصل الاجتماعي). بينما نشجع إمكانية الوصول، لا يمكننا التحكم في إمكانية الوصول للمنصات الخارجية.
+
+بالنسبة للمشكلات المحددة مع Google Maps، اتصل بـ [Google إمكانية الوصول](https://www.google.com/accessibility/).
