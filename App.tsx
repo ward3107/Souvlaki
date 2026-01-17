@@ -678,7 +678,6 @@ const App: React.FC = () => {
   const navLinks: { id: string; labelKey: TranslationKey }[] = [
     { id: 'home', labelKey: 'nav_home' },
     { id: 'menu', labelKey: 'nav_menu' },
-    { id: 'gallery', labelKey: 'nav_gallery' },
     { id: 'about', labelKey: 'nav_about' },
     { id: 'reviews', labelKey: 'nav_reviews' },
     { id: 'faq', labelKey: 'nav_faq' },
@@ -841,41 +840,6 @@ const App: React.FC = () => {
 
       {/* --- PARALLAX SEPARATOR --- */}
       <ParallaxDivider image="/favicon.png" />
-
-      {/* --- GALLERY --- */}
-      <section id="gallery" className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('gallery_title')}</h2>
-            <div className="flex items-center justify-center gap-2 text-gray-500 dark:text-gray-400 mb-4">
-              <img src="/favicon.png" alt="Logo" className="w-10 h-10 rounded-full grayscale opacity-70" />
-              <span className="text-sm">Photos from Google Business Profile</span>
-            </div>
-            <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
-            {galleryImages.map((img, idx) => (
-              <div
-                key={idx}
-                className="relative rounded-xl cursor-pointer group shadow-lg overflow-hidden"
-                onClick={() => setLightboxIndex(idx)}
-              >
-                <img
-                  src={img}
-                  alt={`Gallery ${idx}`}
-                  className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105 bg-white dark:bg-slate-800"
-                />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                  <div className="bg-white/90 p-3 rounded-full text-gray-900 shadow-lg">
-                    <ChevronDown className="w-6 h-6 rotate-45" /> {/* Zoom Icon Sim */}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* --- TAG US ON INSTAGRAM CTA --- */}
       <section className="py-16 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 relative overflow-hidden">
