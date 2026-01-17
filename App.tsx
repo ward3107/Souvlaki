@@ -1202,6 +1202,146 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* --- COMING SOON --- */}
+      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-900 dark:via-purple-900 dark:to-pink-900 transition-colors duration-300">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+              <span className="text-white font-semibold text-sm uppercase tracking-wide">
+                {lang === Language.HE ? 'בקרוב' :
+                 lang === Language.AR ? 'قريباً' :
+                 lang === Language.RU ? 'Скоро' :
+                 lang === Language.EL ? 'Σύντομα' :
+                 'Coming Soon'}
+              </span>
+            </div>
+
+            {/* Title */}
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              {lang === Language.HE
+                ? 'חדשות ודברים מגיעים'
+                : lang === Language.AR
+                ? 'شيء جديد قادم'
+                : lang === Language.RU
+                ? 'Новое и интересное'
+                : lang === Language.EL
+                ? 'Καινούρια και συναρπαστικά'
+                : 'New & Exciting Things Coming'}
+            </h2>
+
+            {/* Description */}
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              {lang === Language.HE
+                ? 'אנחנו עובדים כל הזמן על חוויות חדשות כדי לשפר את השירות שלכם. הישארו מעודכדים!'
+                : lang === Language.AR
+                ? 'نعمل باستمرار على تجارب جديدة لتحسين تجربتك. ابق على اطلاع!'
+                : lang === Language.RU
+                ? 'Мы постоянно работаем над новыми возможностями для улучшения вашего опыта. Оставайтесь на связи!'
+                : lang === Language.EL
+                ? 'Εργαζόμαστε συνεχώς σε νέες εμπειρίες για να βελτιώσουμε την εμπειρία σας. Μείτε ενήμεροι!'
+                : 'We\'re constantly working on new experiences to make your visit even better. Stay tuned!'}
+            </p>
+
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {/* Virtual Tour */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Camera className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {lang === Language.HE ? 'סיור וירטואלי' :
+                   lang === Language.AR ? 'جولة افتراضية' :
+                   lang === Language.RU ? 'Виртуальный тур' :
+                   lang === Language.EL ? 'Εικονικός περίπλους' :
+                   'Virtual Tour'}
+                </h3>
+                <p className="text-white/80 text-sm">
+                  {lang === Language.HE ? '360° תמונות של המסעדה' :
+                   lang === Language.AR ? 'صور 360° للمطعم' :
+                   lang === Language.RU ? '360° фото ресторана' :
+                   lang === Language.EL ? '360° φωτο του εστιατορίου' :
+                   '360° restaurant photos'}
+                </p>
+              </div>
+
+              {/* Video Walkthrough */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Heart className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {lang === Language.HE ? 'סרטון וידאו' :
+                   lang === Language.AR ? 'جولة فيديو' :
+                   lang === Language.RU ? 'Видеоэкскурсия' :
+                   lang === Language.EL ? 'Βίντεο ξεναγή' :
+                   'Video Walkthrough'}
+                </h3>
+                <p className="text-white/80 text-sm">
+                  {lang === Language.HE ? 'סרטון מלא של החוויה' :
+                   lang === Language.AR ? 'فيديو كامل للتجربة' :
+                   lang === Language.RU ? 'Полное видео опыта' :
+                   lang === Language.EL ? 'Πλήρες βίντεο της εμπειρίας' :
+                   'Full experience video'}
+                </p>
+              </div>
+
+              {/* Online Ordering */}
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                  <Navigation className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  {lang === Language.HE ? 'הזמנה אונליין' :
+                   lang === Language.AR ? 'طلب أونلاين' :
+                   lang === Language.RU ? 'Онлайн заказ' :
+                   lang === Language.EL ? 'Παραγγελία Online' :
+                   'Online Ordering'}
+                </h3>
+                <p className="text-white/80 text-sm">
+                  {lang === Language.HE ? 'הזמנה ישירות מהבית' :
+                   lang === Language.AR ? 'اطلب مباشرة من المنزل' :
+                   lang === Language.RU ? 'Заказывайте прямо из дома' :
+                   lang === Language.EL ? 'Παραγγείλετε απευθείας από το σπίτι' :
+                   'Order directly from home'}
+                </p>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <a
+                href="https://www.facebook.com/greeksouvlaki"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+              >
+                <Facebook className="w-5 h-5" />
+                <span>{lang === Language.HE ? 'עקבו אחרינו' :
+                         lang === Language.AR ? 'تابعنا' :
+                         lang === Language.RU ? 'Подписывайтесь' :
+                         lang === Language.EL ? 'Ακολουθήστε μας' :
+                         'Follow Us'}</span>
+              </a>
+              <a
+                href="https://wa.me/972542001235"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white rounded-full font-bold hover:bg-white hover:text-purple-600 transition-all duration-300"
+              >
+                <span>{lang === Language.HE ? 'התעדכן לעדכונים' :
+                         lang === Language.AR ? 'احصل على التحديثات' :
+                         lang === Language.RU ? 'Получайте обновления' :
+                         lang === Language.EL ? 'Λάβετε ενημερώσεις' :
+                         'Get Updates'}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* --- FOOTER --- */}
       <footer className="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
         <div className="container mx-auto px-4">
