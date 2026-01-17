@@ -282,11 +282,32 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
       {/* Floating Share Button */}
       <button
         onClick={() => setShowShareModal(!showShareModal)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110"
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 animate-heartbeat"
         aria-label="Share"
+        style={{
+          animation: 'heartbeat 1.5s ease-in-out infinite'
+        }}
       >
         {showShareModal ? <X className="w-6 h-6" /> : <Share2 className="w-6 h-6" />}
       </button>
+
+      {/* Heartbeat Animation Keyframes */}
+      <style>{`
+        @keyframes heartbeat {
+          0%, 100% {
+            transform: scale(1);
+          }
+          10%, 30% {
+            transform: scale(1.1);
+          }
+          20%, 40% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+      `}</style>
 
       {/* Share Modal */}
       {showShareModal && (
