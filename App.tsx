@@ -8,7 +8,7 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check, Award } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -955,6 +955,58 @@ const App: React.FC = () => {
               <ReviewForm t={t} onSubmit={handleReviewSubmit} />
             </>
           )}
+
+          {/* TripAdvisor Review Card */}
+          <div className="mt-16">
+            <a
+              href="https://www.tripadvisor.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
+                    <Award className="w-10 h-10 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-1">
+                      {lang === Language.HE ? 'דרג/י אותנו ב-TripAdvisor' :
+                       lang === Language.AR ? 'قيمنا على TripAdvisor' :
+                       lang === Language.RU ? 'Оцените нас на TripAdvisor' :
+                       lang === Language.EL ? 'Βαθμολογήστε μας στο TripAdvisor' :
+                       'Rate Us on TripAdvisor'}
+                    </h3>
+                    <p className="text-green-50 text-sm">
+                      {lang === Language.HE
+                        ? 'השאר את חוות הדעת שלך ועזור לאחרים לגלות אותנו!'
+                        : lang === Language.AR
+                        ? 'شارك تجربتك وساعد الآخرين في اكتشافنا!'
+                        : lang === Language.RU
+                        ? 'Поделитесь своим опытом и помогите другим найти нас!'
+                        : lang === Language.EL
+                        ? 'Μοιραστείτε την εμπειρία σας και βοηθήστε άλλους να μας βρουν!'
+                        : 'Share your experience and help others discover us!'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 bg-white/20 rounded-full px-6 py-3">
+                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                  <span className="text-white font-bold ml-2">
+                    {lang === Language.HE ? 'כתוב ביקורת' :
+                     lang === Language.AR ? 'اكتب مراجعة' :
+                     lang === Language.RU ? 'Написать отзыв' :
+                     lang === Language.EL ? 'Γράψτε κριτική' :
+                     'Write a Review'}
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -1165,6 +1217,9 @@ const App: React.FC = () => {
                 </a>
                 <a href="https://www.instagram.com/greek.souvlakii" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group">
                 <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                </a>
+                <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group" title="Find us on TripAdvisor">
+                <Award className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 </a>
             </div>
           </div>
