@@ -914,45 +914,6 @@ const App: React.FC = () => {
 
             {/* Facebook Reviews Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Call to Action Card */}
-              <div className="md:col-span-3 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 shadow-lg border border-blue-200 dark:border-blue-800 text-center">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-                    <Facebook className="w-8 h-8 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {lang === Language.HE ? 'השאירו ביקורת אמיתית' :
-                     lang === Language.AR ? 'اترك تقييماً حقيقياً' :
-                     lang === Language.RU ? 'Оставьте настоящий отзыв' :
-                     lang === Language.EL ? 'Αφήστε μια πραγματική κριτική' :
-                     'Leave a Real Review'}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 max-w-md">
-                    {lang === Language.HE
-                      ? 'הזמנו אתכם לשתף את החוויה שלכם עם המסעדה בפייסבוק. הביקורות שלכם עוזרות לנו להשתפר!'
-                      : lang === Language.AR
-                      ? 'ن ندعوكم لمشاركة تجربتكم مع المطعم على فيسبوك. تقييماتكم تساعدنا على التحسن!'
-                      : lang === Language.RU
-                      ? 'Приглашаем вас поделиться своим опытом работы с нашим рестораном на Facebook. Ваши отзывы помогают нам стать лучше!'
-                      : lang === Language.EL
-                      ? 'Σας προσκαλούμε να μοιραστείτε την εμπειρία σας με το εστιατόριό μας στο Facebook. Οι κριτικές σας μας βοηθούν να βελτιωθούμε!'
-                      : 'We invite you to share your experience with our restaurant on Facebook. Your reviews help us improve!'}
-                  </p>
-                  <a
-                    href="https://www.facebook.com/greeksouvlaki/reviews"
-                    target="_self"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
-                  >
-                    <Star className="w-5 h-5" />
-                    <span>{lang === Language.HE ? 'כתוב ביקורת בפייסבוק' :
-                             lang === Language.AR ? 'اكتب تقييماً على فيسبوك' :
-                             lang === Language.RU ? 'Написать отзыв на Facebook' :
-                             lang === Language.EL ? 'Γράψτε κριτική στο Facebook' :
-                             'Write a Review on Facebook'}</span>
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
