@@ -1,6 +1,7 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { VitePWA } from 'vite-plugin-pwa';
 import type { Plugin } from 'vite';
 
 // Plugin to inject preload hints for main JS and CSS bundles
@@ -43,7 +44,79 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
-      plugins: [react(), asyncCss(), injectPreloads()],
+      plugins: [
+        react(),
+        asyncCss(),
+        injectPreloads(),
+        VitePWA({
+          registerType: 'prompt',
+          includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icons/*.png'],
+          manifest: {
+            id: '/greek-souvlaki',
+            name: 'Greek Souvlaki',
+            short_name: 'Souvlaki',
+            description: 'Authentic Greek street food',
+            theme_color: '#1e3a8a',
+            background_color: '#ffffff',
+            display: 'standalone',
+            scope: '/',
+            start_url: '/',
+            icons: [
+              {
+                src: '/icons/icon-192.png',
+                sizes: '192x192',
+                type: 'image/png',
+                purpose: 'any maskable'
+              },
+              {
+                src: '/icons/icon-512.png',
+                sizes: '512x512',
+                type: 'image/png',
+                purpose: 'any maskable'
+              }
+            ]
+          },
+          workbox: {
+            globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,json,woff2}'],
+            navigateFallback: '/index.html',
+            maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50 MB
+            runtimeCaching: [
+              {
+                urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'google-fonts-cache',
+                  expiration: {
+                    maxEntries: 10,
+                    maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  }
+                }
+              },
+              {
+                urlPattern: /\.(?:png|jpg|jpeg|svg|gif|webp|ico)$/i,
+                handler: 'CacheFirst',
+                options: {
+                  cacheName: 'images-cache',
+                  expiration: {
+                    maxEntries: 200,
+                    maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
+                  },
+                  cacheableResponse: {
+                    statuses: [0, 200]
+                  }
+                }
+              }
+            ]
+          },
+          devOptions: {
+            enabled: false,
+            type: 'module'
+          }
+        })
+      ],
       resolve: {
         alias: {
           '@': path.resolve(__dirname, '.'),

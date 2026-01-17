@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+import './src/pwa';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

@@ -23,6 +23,8 @@
     "sharp-heic": "^0.0.1-security",
     "tailwindcss": "^3.4.19",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vite-plugin-pwa": "^1.2.0",
+    "workbox-window": "^7.4.0"
   }
 }
