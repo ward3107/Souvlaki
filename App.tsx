@@ -561,7 +561,7 @@ const App: React.FC = () => {
           <div className="absolute inset-0 bg-gray-900/60"></div>
         </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto" style={{ contain: 'layout style' }}>
           
           {/* Google Rating in Hero */}
           <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">
@@ -589,10 +589,10 @@ const App: React.FC = () => {
              <span className="text-white font-bold text-sm ml-1.5">4.9/5</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl" style={{ minHeight: '4.5rem' }}>
             {t('hero_title')}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-100 mb-10 font-light max-w-2xl mx-auto drop-shadow-lg">
+          <p className="text-xl md:text-2xl text-gray-100 mb-10 font-light max-w-2xl mx-auto drop-shadow-lg" style={{ minHeight: '3rem' }}>
             {t('hero_subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
