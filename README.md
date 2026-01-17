@@ -364,13 +364,9 @@ Contributions are welcome! Please follow these guidelines:
 
 ### Planned 📋
 - [ ] PWA support (offline mode)
-- [ ] Online ordering system
-- [ ] Table reservation system
 - [ ] Customer reviews integration
 - [ ] Admin dashboard
 - [ ] Analytics dashboard
-- [ ] Email notifications
-- [ ] SMS notifications
 
 ---
 
