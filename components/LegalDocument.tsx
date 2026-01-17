@@ -88,8 +88,8 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
   // Filter content based on language
   const getLanguageContent = (fullContent: string): { content: string; actualLanguage: Language; isFallback: boolean } => {
     // Split by section headers - capturing group includes matches in array
-    // Result: [prefix, "English", EN_content, "עברית (Hebrew)", HE_content, "العربية (Arabic)", AR_content]
-    const sections = fullContent.split(/## (English|עברית \(Hebrew\)|العربية \(Arabic\))/);
+    // Result: [prefix, "English", EN_content, "עברית (Hebrew)", HE_content, "العربية (Arabic)", AR_content, "Русский (Russian)", RU_content, "Ελληνικά (Greek)", EL_content]
+    const sections = fullContent.split(/## (English|עברית \(Hebrew\)|العربية \(Arabic\)|Русский \(Russian\)|Ελληνικά \(Greek\))/);
 
     // Find the right section based on language
     let content = '';
@@ -97,28 +97,39 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
     let isFallback = false;
 
     if (language === Language.HE) {
-      // Hebrew content is at index 4 (after prefix, "English", EN_content, "עברית (Hebrew)")
+      // Hebrew content is at index 4
       content = sections[4] || '';
       if (!content.trim()) {
-        content = sections[2] || ''; // Fallback to English (index 2)
+        content = sections[2] || '';
         actualLanguage = Language.EN;
         isFallback = true;
       }
     } else if (language === Language.AR) {
-      // Arabic content is at index 6 (after prefix, "English", EN_content, "עברית", HE_content, "العربية (Arabic)")
+      // Arabic content is at index 6
       content = sections[6] || '';
       if (!content.trim()) {
-        content = sections[2] || ''; // Fallback to English (index 2)
+        content = sections[2] || '';
         actualLanguage = Language.EN;
         isFallback = true;
       }
-    } else if (language === Language.RU || language === Language.EL) {
-      // Russian and Greek not available, fallback to English (index 2)
-      content = sections[2] || '';
-      actualLanguage = Language.EN;
-      isFallback = true;
+    } else if (language === Language.RU) {
+      // Russian content is at index 8
+      content = sections[8] || '';
+      if (!content.trim()) {
+        content = sections[2] || '';
+        actualLanguage = Language.EN;
+        isFallback = true;
+      }
+    } else if (language === Language.EL) {
+      // Greek content is at index 10
+      content = sections[10] || '';
+      if (!content.trim()) {
+        content = sections[2] || '';
+        actualLanguage = Language.EN;
+        isFallback = true;
+      }
     } else {
-      // English content is at index 2 (after prefix and "English" match)
+      // English content is at index 2
       content = sections[2] || '';
     }
 
@@ -342,7 +353,13 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
                 ),
               }}
             >
-              {`## ${actualLanguage === Language.HE ? 'עברית' : actualLanguage === Language.AR ? 'العربية' : 'English'}\n\n${languageContent}`}
+              {`## ${
+                actualLanguage === Language.HE ? 'עברית' :
+                actualLanguage === Language.AR ? 'العربية' :
+                actualLanguage === Language.RU ? 'Русский' :
+                actualLanguage === Language.EL ? 'Ελληνικά' :
+                'English'
+              }\n\n${languageContent}`}
             </ReactMarkdown>
           </div>
 
