@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Russian Sitemap - Карта сайта на русском -->
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#lang=ru</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Menu - Меню -->
+  <url>
+    <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#menu?lang=ru</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Gallery - Галерея -->
+  <url>
+    <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#gallery?lang=ru</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact - Контакты -->
+  <url>
+    <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#contact?lang=ru</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- FAQ - Вопросы и ответы -->
+  <url>
+    <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#faq?lang=ru</loc>
+    <lastmod>2025-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>

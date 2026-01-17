@@ -1,0 +1,12 @@
+# Greek Souvlaki Kfar Yasif - robots.txt
+# https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/sitemap.xml
+
+# Crawl-delay - be nice to our server (1 second between requests)
+Crawl-delay: 1

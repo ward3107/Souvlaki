@@ -4,9 +4,11 @@ import { TRANSLATIONS, MENU_ITEMS, FAQS, REVIEWS } from './constants';
 import AccessibilityWidget from './components/AccessibilityWidget';
 import CookieBanner from './components/CookieBanner';
 import LegalDocument from './components/LegalDocument';
+import Menu from './components/Menu';
+import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -755,7 +757,7 @@ const App: React.FC = () => {
               className="md:hidden p-2 text-gray-600 dark:text-gray-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X /> : <Menu />}
+              {isMenuOpen ? <X /> : <MenuIcon />}
             </button>
           </div>
         </div>
@@ -835,44 +837,7 @@ const App: React.FC = () => {
       </section>
 
       {/* --- MENU --- */}
-      <section id="menu" ref={menuRef} className="py-20 bg-white dark:bg-slate-900 relative overflow-hidden transition-colors duration-300">
-        {/* Animated Souvlaki Plate */}
-        <div 
-          className={`absolute top-0 md:top-20 z-10 pointer-events-none transition-all duration-1000 ease-out
-            ${isRtl ? 'left-0' : 'right-0'}
-            ${isMenuInView 
-              ? 'opacity-100 translate-x-0 rotate-0' 
-              : isRtl 
-                ? 'opacity-0 -translate-x-full -rotate-45' 
-                : 'opacity-0 translate-x-full rotate-45'}
-          `}
-        >
-          <img 
-            src="https://pngimg.com/d/kebab_PNG53.png" 
-            alt="Authentic Souvlaki Plate" 
-            className="w-48 md:w-80 lg:w-96 drop-shadow-2xl opacity-90 hover:opacity-100 transition-opacity" 
-          />
-        </div>
-
-        <div className="container mx-auto px-4 relative z-20">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('menu_title')}</h2>
-            <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-            {MENU_ITEMS.map((item, index) => (
-              <MenuItemCard 
-                key={item.id} 
-                item={item} 
-                lang={lang} 
-                index={index} 
-                t={t} 
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      <Menu language={lang} />
 
       {/* --- PARALLAX SEPARATOR --- */}
       <ParallaxDivider image="/favicon.png" />
@@ -1117,7 +1082,7 @@ const App: React.FC = () => {
 
                             {/* Waze Navigation */}
                             <a
-                              href="https://waze.com/ul?q=Greek+Souvlaki+Kafr+Yasif"
+                              href="https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="group flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/20"
@@ -1138,35 +1103,7 @@ const App: React.FC = () => {
                         {/* Animated gradient border */}
                         <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse"></div>
 
-                        <div className="relative bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border-2 border-green-200 dark:border-green-900">
-                            {/* Icon header */}
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                                    <Clock className="w-6 h-6 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
-                                    Opening Hours
-                                </h3>
-                            </div>
-
-                            <ul className="space-y-4">
-                                <li className="flex justify-between items-center border-b border-gray-200 dark:border-slate-700 pb-3">
-                                    <span className="font-bold text-gray-800 dark:text-gray-200 text-lg">Wednesday - Saturday</span>
-                                    <span className="text-green-600 dark:text-green-400 font-bold text-lg bg-green-50 dark:bg-green-900/30 px-4 py-1.5 rounded-full">13:00 - 01:00</span>
-                                </li>
-                                <li className="flex justify-between items-center pt-3">
-                                    <span className="font-bold text-gray-800 dark:text-gray-200 text-lg">Sunday - Tuesday</span>
-                                    <span className="text-red-500 font-bold text-lg bg-red-50 dark:bg-red-900/30 px-4 py-1.5 rounded-full">Closed</span>
-                                </li>
-                            </ul>
-
-                            <div className="mt-8 text-center">
-                                <span className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold tracking-wider uppercase text-sm rounded-full shadow-lg shadow-green-500/30 animate-pulse">
-                                    <span className="w-2 h-2 bg-white rounded-full animate-ping"></span>
-                                    {t('open_status_open')}
-                                </span>
-                            </div>
-                        </div>
+                        <OpeningHours language={lang} />
                     </div>
                 </div>
 
@@ -1223,10 +1160,10 @@ const App: React.FC = () => {
               
             {/* Social Media Section */}
             <div className="flex gap-4">
-                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group">
+                <a href="https://www.facebook.com/greeksouvlaki" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group">
                 <Facebook className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 </a>
-                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group">
+                <a href="https://www.instagram.com/greek.souvlakii" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group">
                 <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" />
                 </a>
             </div>
@@ -1268,7 +1205,7 @@ const App: React.FC = () => {
             </div>
 
             {/* Website Builder Badge */}
-            <div className="flex justify-center md:justify-end items-center md:ml-8">
+            <div className="flex justify-center md:justify-end items-center md:ml-24">
               <a
                 href="https://wwebsie-4.vercel.app/"
                 target="_blank"
@@ -1280,7 +1217,7 @@ const App: React.FC = () => {
                 <img
                   src="/ws-logo-100w.avif"
                   alt="wwwebsie logo"
-                  className="h-7 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
+                  className="h-10 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                 />
               </a>
             </div>
@@ -1352,7 +1289,7 @@ const App: React.FC = () => {
           </button>
         </div>
       )}
-      
+
       {/* Back to Top Button */}
       {showScrollTop && (
         <button

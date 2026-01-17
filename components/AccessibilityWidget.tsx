@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Accessibility, 
-  Type, 
-  Pause, 
-  MousePointer2, 
-  Palette, 
-  Eye, 
-  ScanLine, 
+import {
+  Accessibility,
+  Type,
+  Pause,
+  MousePointer2,
+  Palette,
+  Eye,
+  ScanLine,
   Contrast,
   Link,
-  RotateCcw
+  RotateCcw,
+  X
 } from 'lucide-react';
+
+const STORAGE_KEY = 'accessibility_widget_hidden';
 
 interface AccessibilityWidgetProps {
   language: string;
@@ -18,6 +21,7 @@ interface AccessibilityWidgetProps {
 
 const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [fontSize, setFontSize] = useState(100);
   
   // Feature States
@@ -33,6 +37,27 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
   });
 
   const toggleOpen = () => setIsOpen(!isOpen);
+
+  // Check localStorage on mount for widget hidden state
+  useEffect(() => {
+    const hiddenState = localStorage.getItem(STORAGE_KEY);
+    if (hiddenState === 'true') {
+      setIsHidden(true);
+    }
+  }, []);
+
+  // Close widget and persist to localStorage
+  const closeWidget = () => {
+    setIsOpen(false);
+    setIsHidden(true);
+    localStorage.setItem(STORAGE_KEY, 'true');
+  };
+
+  // Re-open widget (restore from localStorage)
+  const reopenWidget = () => {
+    setIsHidden(false);
+    localStorage.removeItem(STORAGE_KEY);
+  };
 
   // Apply Classes to Body/HTML
   useEffect(() => {
@@ -133,30 +158,55 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
   );
 
   return (
-    <div className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50`}>
-      <button
-        onClick={toggleOpen}
-        className="w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
-        aria-label="Accessibility Menu"
-      >
-        <Accessibility className="w-7 h-7" />
-      </button>
+    <>
+      {/* Hidden state - show small restore button */}
+      {isHidden && (
+        <button
+          onClick={reopenWidget}
+          className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50 w-10 h-10 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300`}
+          aria-label="Restore Accessibility Widget"
+          title="Restore Accessibility Widget"
+        >
+          <Accessibility className="w-5 h-5" />
+        </button>
+      )}
 
-      {isOpen && (
-        <div className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}>
-          <div className="flex justify-between items-center border-b pb-2 dark:border-slate-600 sticky top-0 bg-white dark:bg-slate-800 z-10">
-            <h3 className="font-bold text-lg dark:text-white flex items-center gap-2">
-              <Accessibility className="w-5 h-5" />
-              Accessibility
-            </h3>
-            <button 
-              onClick={reset} 
-              className="text-sm text-red-500 hover:text-red-700 flex items-center gap-1 bg-red-50 px-2 py-1 rounded"
-            >
-              <RotateCcw className="w-3 h-3" />
-              Reset
-            </button>
-          </div>
+      {/* Normal state - show full widget */}
+      {!isHidden && (
+        <div className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50`}>
+          <button
+            onClick={toggleOpen}
+            className="w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
+            aria-label="Accessibility Menu"
+          >
+            <Accessibility className="w-7 h-7" />
+          </button>
+
+          {isOpen && (
+            <div className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}>
+              <div className="flex justify-between items-center border-b pb-2 dark:border-slate-600 sticky top-0 bg-white dark:bg-slate-800 z-10">
+                <h3 className="font-bold text-lg dark:text-white flex items-center gap-2">
+                  <Accessibility className="w-5 h-5" />
+                  Accessibility
+                </h3>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={reset}
+                    className="text-sm text-red-500 hover:text-red-700 flex items-center gap-1 bg-red-50 px-2 py-1 rounded"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    Reset
+                  </button>
+                  <button
+                    onClick={closeWidget}
+                    className="w-7 h-7 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 transition-colors"
+                    aria-label="Close Widget"
+                    title="Close and hide widget"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
 
           <div className="space-y-2">
             <p className="text-sm font-medium dark:text-gray-300">Text Size: {fontSize}%</p>
@@ -218,7 +268,9 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
           </div>
         </div>
       )}
-    </div>
+      </div>
+    )}
+    </>
   );
 };
 
