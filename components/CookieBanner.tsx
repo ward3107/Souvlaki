@@ -96,8 +96,9 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
             <button
               onClick={() => setIsVisible(false)}
               className="flex-shrink-0 w-8 h-8 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 flex items-center justify-center text-gray-500 dark:text-gray-400 transition-colors"
+              aria-label={t('סגור', 'Close', 'إغلاق')}
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
 
@@ -159,6 +160,8 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                     className={`relative w-12 h-7 rounded-full transition-colors ${
                       preferences.functional ? 'bg-purple-500' : 'bg-gray-300 dark:bg-slate-600'
                     }`}
+                    aria-label={t('הפעל עוגיות פונקציונליות', 'Toggle functional cookies', 'تبديل ملفات تعريف الارتباط الوظيفية')}
+                    aria-pressed={preferences.functional}
                   >
                     <div
                       className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
@@ -197,6 +200,8 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                     className={`relative w-12 h-7 rounded-full transition-colors ${
                       preferences.analytics ? 'bg-pink-500' : 'bg-gray-300 dark:bg-slate-600'
                     }`}
+                    aria-label={t('הפעל עוגיות ניתוח', 'Toggle analytics cookies', 'تبديل ملفات تعريف الارتباط التحليلية')}
+                    aria-pressed={preferences.analytics}
                   >
                     <div
                       className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${

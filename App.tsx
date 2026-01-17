@@ -549,7 +549,9 @@ const App: React.FC = () => {
         )}
       </header>
 
-      {/* --- HERO --- */}
+      {/* --- MAIN CONTENT --- */}
+      <main id="main-content" role="main">
+        {/* --- HERO --- */}
       <section id="home" className="relative h-[90vh] flex items-center justify-center overflow-hidden">
         {/* Parallax Background */}
         <div
@@ -1339,6 +1341,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </section>
+      </main>
 
       {/* --- FOOTER --- */}
       <footer className="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
@@ -1439,14 +1442,17 @@ const App: React.FC = () => {
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${t('גלריית תמונות', 'Image Gallery', 'معرض الصور')} - ${lightboxIndex + 1} / ${galleryImages.length}`}
         >
           {/* Close Button */}
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 text-white p-2 hover:bg-white/20 rounded-full z-10 transition-colors"
-            aria-label="Close"
+            aria-label={t('סגור גלריה', 'Close gallery', 'إغلاق المعرض')}
           >
-            <X className="w-8 h-8" />
+            <X className="w-8 h-8" aria-hidden="true" />
           </button>
 
           {/* Image Counter */}
@@ -1458,21 +1464,27 @@ const App: React.FC = () => {
           <button
             onClick={goToPrevImage}
             className="absolute left-4 rtl:left-auto rtl:right-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
-            aria-label="Previous image"
+            aria-label={t('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
           >
-            <ChevronDown className={`w-10 h-10 ${isRtl ? 'rotate-90' : '-rotate-90'}`} />
+            <ChevronDown className={`w-10 h-10 ${isRtl ? 'rotate-90' : '-rotate-90'}`} aria-hidden="true" />
           </button>
 
           {/* Navigation Areas - Click on left/right sides */}
           <div
             className="absolute left-0 top-0 bottom-0 w-1/3 rtl:left-auto rtl:right-0 z-0 cursor-pointer"
             onClick={goToPrevImage}
-            aria-label="Previous image"
+            role="button"
+            tabIndex={0}
+            aria-label={t('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
+            onKeyDown={(e) => e.key === 'Enter' && goToPrevImage()}
           />
           <div
             className="absolute right-0 top-0 bottom-0 w-1/3 rtl:right-auto rtl:left-0 z-0 cursor-pointer"
             onClick={goToNextImage}
-            aria-label="Next image"
+            role="button"
+            tabIndex={0}
+            aria-label={t('תמונה הבאה', 'Next image', 'الصورة التالية')}
+            onKeyDown={(e) => e.key === 'Enter' && goToNextImage()}
           />
 
           {/* Main Image */}
@@ -1486,9 +1498,9 @@ const App: React.FC = () => {
           <button
             onClick={goToNextImage}
             className="absolute right-4 rtl:right-auto rtl:left-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
-            aria-label="Next image"
+            aria-label={t('תמונה הבאה', 'Next image', 'الصورة التالية')}
           >
-            <ChevronDown className={`w-10 h-10 ${isRtl ? '-rotate-90' : 'rotate-90'}`} />
+            <ChevronDown className={`w-10 h-10 ${isRtl ? '-rotate-90' : 'rotate-90'}`} aria-hidden="true" />
           </button>
         </div>
       )}
