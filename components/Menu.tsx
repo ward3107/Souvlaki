@@ -571,9 +571,10 @@ const SCROLL_HINTS = {
 
 interface MenuProps {
   language: Language;
+  id?: string;
 }
 
-export default function Menu({ language }: MenuProps) {
+export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [activeCategory, setActiveCategory] = useState(MENU_CATEGORIES[0].id);
 
   const currentCategory = MENU_CATEGORIES.find(cat => cat.id === activeCategory) || MENU_CATEGORIES[0];
@@ -582,7 +583,7 @@ export default function Menu({ language }: MenuProps) {
   const getLocalizedText = (textObj: { [key: string]: string }) => textObj[language] || textObj.en;
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-amber-50 to-orange-50 dark:from-gray-900 dark:to-gray-800" dir={isRtl ? 'rtl' : 'ltr'}>
+    <section id={id} className="py-16 px-4 bg-gradient-to-b from-amber-50 to-orange-50 dark:from-gray-900 dark:to-gray-800" dir={isRtl ? 'rtl' : 'ltr'}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
