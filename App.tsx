@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Language, TranslationKey, MenuItem } from './types';
-import { TRANSLATIONS, MENU_ITEMS, FAQS } from './constants';
+import { TRANSLATIONS, MENU_ITEMS, FAQS, SEO_METADATA } from './constants';
 import AccessibilityWidget from './components/AccessibilityWidget';
 import CookieBanner from './components/CookieBanner';
 import LegalDocument from './components/LegalDocument';
@@ -185,6 +185,66 @@ const App: React.FC = () => {
     document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
     document.documentElement.lang = lang;
   }, [lang, isRtl]);
+
+  // Update SEO metadata when language changes
+  useEffect(() => {
+    const seo = SEO_METADATA[lang];
+
+    // Update document title
+    document.title = seo.title;
+
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', seo.description);
+    }
+
+    // Update meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', seo.keywords);
+
+    // Update Open Graph title
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', seo.ogTitle);
+    }
+
+    // Update Open Graph description
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) {
+      ogDescription.setAttribute('content', seo.ogDescription);
+    }
+
+    // Update Open Graph locale
+    const ogLocale = document.querySelector('meta[property="og:locale"]');
+    if (ogLocale) {
+      ogLocale.setAttribute('content', seo.ogLocale);
+    }
+
+    // Update Twitter title
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) {
+      twitterTitle.setAttribute('content', seo.ogTitle);
+    }
+
+    // Update Twitter description
+    const twitterDescription = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDescription) {
+      twitterDescription.setAttribute('content', seo.ogDescription);
+    }
+
+    // Update canonical URL with language parameter
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      const baseUrl = 'https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/';
+      canonical.setAttribute('href', lang === Language.EN ? baseUrl : `${baseUrl}?lang=${lang}`);
+    }
+  }, [lang]);
 
   useEffect(() => {
     if (theme === 'dark') {

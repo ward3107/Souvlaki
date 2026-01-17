@@ -377,6 +377,57 @@ export const MENU_ITEMS: MenuItem[] = [
   },
 ];
 
+// SEO Metadata for multi-language optimization
+export const SEO_METADATA: Record<Language, {
+  title: string;
+  description: string;
+  keywords: string;
+  ogTitle: string;
+  ogDescription: string;
+  ogLocale: string;
+}> = {
+  [Language.HE]: {
+    title: 'סובלקי יווני כפר יאסיף | Greek Souvlaki Kfar Yasif - מסעדה יוונית אותנטית',
+    description: 'סובלקי יווני אותנטי בכפר יאסיף. פיתה טרה, גירוס, שישודים ועוד. הזמן עכשיו! פתוח רביעי-שבת 13:00-01:00. התקשרו 04-812-2980. מסעדה יוונית מקומית',
+    keywords: 'סובלקי, גירוס, מסעדה יוונית, אוכל יווני, פיתה יוונית, שווארמה יוונית, כפר יאסיף, מסעדה בגליל, אוכל בצפון, סובלקי בפיתה, גירוס בפיטה',
+    ogTitle: 'סובלקי יווני כפר יאסיף | מסעדה יוונית אותנטית',
+    ogDescription: 'הכי טוב סובלקי יווני בכפר יאסיף! פיתה טרה, גירוס עסיסי, שישודים על האש. פתוח רביעי-שבת 13:00-01:00. הזמן עכשיו!',
+    ogLocale: 'he_IL',
+  },
+  [Language.AR]: {
+    title: 'سوفلاكي يوناني كفر ياسيف | Greek Souvlaki Kafr Yasif - مطعم يوناني أصيل',
+    description: 'سوفلاكي يوناني أصيل في كفر ياسيف. خبز بيتا طازج، جيروس، أسياخ والمزيد. اطلب الآن! مفتوح الأربعاء-السبت 13:00-01:00. اتصل 04-812-2980. مطعم يوناني محلي',
+    keywords: 'سوفلاكي, جيروس, مطعم يوناني, طعام يوناني, خبز بيتا يوناني, شاورما يونانية, كفر ياسيف, مطعم في الجليل, طعام في الشمال, سوفلاكي في بيتا, جيروس في بيتا',
+    ogTitle: 'سوفلاكي يوناني كفر ياسيف | مطعم يوناني أصيل',
+    ogDescription: 'أفضل سوفلاكي يوناني في كفر ياسيف! خبز بيتا طازج، جيروس طري، أسياخ مشوية. مفتوح الأربعاء-السبت 13:00-01:00. اطلب الآن!',
+    ogLocale: 'ar_IL',
+  },
+  [Language.RU]: {
+    title: 'Греческий сувлаки Кафр Ясиф | Greek Souvlaki Kfar Yasif - Греческий ресторан',
+    description: 'Аутентичный греческий сувлаки в Кафр Ясиф. Свежая пита, гирос, шашлыки и многое другое. Закажите сейчас! Открыто ср-сб 13:00-01:00. Тел 04-812-2980. Греческий ресторан',
+    keywords: 'сувлаки, гирос, греческий ресторан, греческая кухня, греческая пита, греческая шаурма, Кафр Ясиф, ресторан в Галилее, еда на севере, сувлаки в пите, гирос в пите',
+    ogTitle: 'Греческий сувлаки Кафр Ясиф | Аутентичный греческий ресторан',
+    ogDescription: 'Лучший греческий сувлаки в Кафр Ясиф! Свежая пита, сочный гирос, шашлыки на углях. Открыто ср-сб 13:00-01:00. Закажите сейчас!',
+    ogLocale: 'ru_IL',
+  },
+  [Language.EL]: {
+    title: 'Ελληνικό σουβλάκι Κουφ Γιασίφ | Greek Souvlaki Kfar Yasif - Ελληνικό εστιατόριο',
+    description: 'Αυθεντικό ελληνικό σουβλάκι στο Κουφ Γιασίφ. Φρέσκος πίτες, γύρος, σουβλάκια και πολλά περισσότερα. Παραγγείλετε τώρα! Ανοιχτά Τετ-Σαβ 13:00-01:00. Τηλ 04-812-2980. Ελληνικό εστιατόριο',
+    keywords: 'σουβλάκι, γύρος, ελληνικό εστιατόριο, ελληνική κουζίνα, ελληνική πίτα, ελληνική σούβλα, Κουφ Γιασίφ, εστιατόριο στη Γαλιλαία, φαγητό στον βορρά, σουβλάκι στην πίτα, γύρος στην πίτα',
+    ogTitle: 'Ελληνικό σουβλάκι Κουφ Γιασίφ | Αυθεντικό ελληνικό εστιατόριο',
+    ogDescription: 'Το καλύτερο ελληνικό σουβλάκι στο Κουφ Γιασίφ! Φρέσκος πίτες, ζουμερός γύρος, σουβλάκια στην φωτιά. Ανοιχτά Τετ-Σαβ 13:00-01:00. Παραγγείλετε τώρα!',
+    ogLocale: 'el_IL',
+  },
+  [Language.EN]: {
+    title: 'Greek Souvlaki Kafr Yasif | סובלקי יווני כפר יאסיף - Authentic Greek Restaurant',
+    description: 'Authentic Greek souvlaki in Kafr Yasif. Fresh pita, gyros, skewers & more. Order now! Open Wed-Sat 13:00-01:00. Call 04-812-2980. Local Greek restaurant',
+    keywords: 'souvlaki, gyros, greek restaurant, greek food, greek pita, greek shawarma, kafr yasif, galilee restaurant, northern israel food, souvlaki in pita, gyros in pita',
+    ogTitle: 'Greek Souvlaki Kafr Yasif | Authentic Greek Restaurant',
+    ogDescription: 'Best Greek souvlaki in Kafr Yasif! Fresh pita, juicy gyros, grilled skewers. Open Wed-Sat 13:00-01:00. Order now!',
+    ogLocale: 'en_IL',
+  },
+};
+
 export const REVIEWS: Review[] = [
   // No fake reviews - waiting for real customer reviews!
 ];
