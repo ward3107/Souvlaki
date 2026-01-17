@@ -51,6 +51,7 @@ export default defineConfig(({ mode }) => {
         VitePWA({
           registerType: 'prompt',
           includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icons/*.png'],
+          strategies: 'generateSW',
           manifest: {
             id: '/greek-souvlaki',
             name: 'Greek Souvlaki',
