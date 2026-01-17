@@ -214,7 +214,7 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
 
 const ParallaxDivider: React.FC<{ image: string }> = ({ image }) => (
   <div
-    className="h-64 md:h-96 w-full md:bg-fixed bg-center bg-cover relative"
+    className="h-64 md:h-96 w-full bg-fixed bg-center bg-cover relative"
     style={{ backgroundImage: `url(${image})` }}
   >
     <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
@@ -655,9 +655,9 @@ const App: React.FC = () => {
       <main id="main-content" role="main">
         {/* --- HERO --- */}
       <section id="home" className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Parallax Background - fixed only on desktop */}
+        {/* Parallax Background - fixed on all devices */}
         <div
-          className="absolute inset-0 z-0 md:bg-fixed bg-center bg-cover"
+          className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
           style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
         >
           <div className="absolute inset-0 bg-gray-900/60"></div>
