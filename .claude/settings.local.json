@@ -17,7 +17,10 @@
       "mcp__ide__getDiagnostics",
       "Bash(npm run build:*)",
       "Bash(dir \"C:\\\\Users\\\\Waseem\\\\Documents\\\\Souvlaki\\\\Souvlaki-1\\\\public\\\\sitemap*.xml\")",
-      "Bash(if exist nul del nul)"
+      "Bash(if exist nul del nul)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(npm ls:*)"
     ]
   }
 }

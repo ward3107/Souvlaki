@@ -53,12 +53,6 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
     localStorage.setItem(STORAGE_KEY, 'true');
   };
 
-  // Re-open widget (restore from localStorage)
-  const reopenWidget = () => {
-    setIsHidden(false);
-    localStorage.removeItem(STORAGE_KEY);
-  };
-
   // Apply Classes to Body/HTML
   useEffect(() => {
     const html = document.documentElement;
@@ -159,18 +153,6 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
 
   return (
     <>
-      {/* Hidden state - show small restore button */}
-      {isHidden && (
-        <button
-          onClick={reopenWidget}
-          className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50 w-10 h-10 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300`}
-          aria-label="Restore Accessibility Widget"
-          title="Restore Accessibility Widget"
-        >
-          <Accessibility className="w-5 h-5" aria-hidden="true" />
-        </button>
-      )}
-
       {/* Normal state - show full widget */}
       {!isHidden && (
         <div className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50`}>
