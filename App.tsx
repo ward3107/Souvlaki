@@ -1239,13 +1239,13 @@ const App: React.FC = () => {
                     <iframe
                         width="100%"
                         height="100%"
-                        src="https://www.openstreetmap.org/export/embed.html?bbox=35.1436,32.9356,35.1836,32.9756&amp;layer=mapnik&amp;marker=32.9556,35.1636"
+                        src="https://maps.google.com/maps?q=Greek%20Souvlaki%20Kafr%20Yasif&t=&z=15&ie=UTF8&iwloc=&output=embed"
                         frameBorder="0"
                         scrolling="no"
                         marginHeight={0}
                         marginWidth={0}
                         className="w-full h-full absolute inset-0 grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
-                        title="Map Location"
+                        title="Google Maps Location"
                     ></iframe>
                     <div className="absolute bottom-4 left-4 right-4 p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex justify-between items-center shadow-lg transform translate-y-2 group-hover:translate-y-0 duration-300">
                         <div>
@@ -1253,7 +1253,7 @@ const App: React.FC = () => {
                             <div className="flex text-yellow-500 text-xs">★★★★★ (4.9)</div>
                         </div>
                         <a
-                            href="https://www.openstreetmap.org/?mlat=32.9556&amp;mlon=35.1636#map=15/32.9556/35.1636"
+                            href="https://www.google.com/maps/search/?api=1&query=Greek+Souvlaki+Kafr+Yasif"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors"
