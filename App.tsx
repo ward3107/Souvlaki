@@ -1273,35 +1273,6 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="https://www.facebook.com/greeksouvlaki/reviews"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
-              >
-                <Facebook className="w-5 h-5" />
-                <span>{lang === Language.HE ? 'כל הדירוגים' :
-                         lang === Language.AR ? 'جميع التقييمات' :
-                         lang === Language.RU ? 'Все отзывы' :
-                         lang === Language.EL ? 'Όλες οι κριτικές' :
-                         'See All Reviews'}</span>
-              </a>
-              <a
-                href="https://www.facebook.com/greeksouvlaki"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-              >
-                <Facebook className="w-5 h-5" />
-                <span>{lang === Language.HE ? 'עקבו אחרינו' :
-                         lang === Language.AR ? 'تابعنا' :
-                         lang === Language.RU ? 'Подписывайтесь' :
-                         lang === Language.EL ? 'Ακολουθήστε μας' :
-                         'Follow Us'}</span>
-              </a>
-            </div>
           </div>
         </div>
       </section>
