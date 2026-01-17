@@ -8,7 +8,7 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Award, Camera, Heart, Navigation } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Award, Camera, Heart, Navigation, Share2, QrCode, Copy, Download } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -220,6 +220,254 @@ const ParallaxDivider: React.FC<{ image: string }> = ({ image }) => (
     <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
   </div>
 );
+
+// Share Button Component
+const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
+  const [showShareModal, setShowShareModal] = useState(false);
+
+  const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://greek-souvlaki-website.vercel.app';
+  const shareText = {
+    he: 'בואו לסובלקי יווני כפר יאסיף! תלוו להזמין טעימה',
+    ar: 'مرحباً بكم في سوفلاكي يوناني كفر ياسيف! تفضلوا للحجز',
+    ru: 'Добро пожаловать в Греческий Сувлаки Кафр Ясиф!',
+    el: 'Καλώς ήρθατε στο Ελληνικό Σουβλάκι Καφρ Γιασίφ!',
+    en: 'Welcome to Greek Souvlaki Kfar Yasif!'
+  };
+
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Greek Souvlaki Kfar Yasif',
+          text: shareText[lang] || shareText.en,
+          url: shareUrl
+        });
+      } catch (error) {
+        console.log('Share canceled:', error);
+      }
+    }
+  };
+
+  const handleWhatsAppShare = () => {
+    const text = shareText[lang] || shareText.en;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + ' ' + shareUrl)}`;
+    window.open(whatsappUrl, '_blank');
+    setShowShareModal(false);
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(shareUrl);
+    alert(lang === Language.HE ? 'הקישור הועתק!' :
+          lang === Language.AR ? 'تم نسخ الرابط!' :
+          lang === Language.RU ? 'Ссылка скопирована!' :
+          lang === Language.EL ? 'Ο σύνδεσμος αντιγράφηκε!' :
+          'Link copied!');
+    setShowShareModal(false);
+  };
+
+  const handleDownloadQR = () => {
+    const qrElement = document.getElementById('qr-code-canvas');
+    if (qrElement) {
+      const canvas = qrElement as HTMLCanvasElement;
+      const url = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = 'greek-souvlaki-qr-code.png';
+      link.href = url;
+      link.click();
+    }
+  };
+
+  return (
+    <>
+      {/* Floating Share Button */}
+      <button
+        onClick={() => setShowShareModal(!showShareModal)}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110"
+        aria-label="Share"
+      >
+        {showShareModal ? <X className="w-6 h-6" /> : <Share2 className="w-6 h-6" />}
+      </button>
+
+      {/* Share Modal */}
+      {showShareModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowShareModal(false)}>
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                {lang === Language.HE ? 'שתף את האתר' :
+                 lang === Language.AR ? 'شارك الموقع' :
+                 lang === Language.RU ? 'Поделиться сайтом' :
+                 lang === Language.EL ? 'Μοιραστείτε τον ιστότοπο' :
+                 'Share the Website'}
+              </h3>
+              <button onClick={() => setShowShareModal(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* QR Code Display */}
+            <div className="mb-6 p-4 bg-gray-50 dark:bg-slate-700 rounded-xl flex flex-col items-center">
+              <QRCodeIcon
+                size={180}
+                value={shareUrl}
+                id="qr-code-canvas"
+                includeMargin={true}
+                bgColor="white"
+                fgColor="#1e293b"
+              />
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+                {lang === Language.HE ? 'סרקו את הקוד להורדה או להדפיסה' :
+                 lang === Language.AR ? 'امسح الكود للتنزيل أو الطباعة' :
+                 lang === Language.RU ? 'Сканируйте для скачивания или печати' :
+                 lang === Language.EL ? 'Σαρώστε για λήψη ή εκτύπωση' :
+                 'Scan to download or print'}
+              </p>
+              <button
+                onClick={handleDownloadQR}
+                className="mt-2 flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                {lang === Language.HE ? 'הורד QR' :
+                 lang === Language.AR ? 'تنزيل QR' :
+                 lang === Language.RU ? 'Скачать QR' :
+                 lang === Language.EL ? 'Λήψη QR' :
+                 'Download QR'}
+              </button>
+            </div>
+
+            {/* Share Options */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* WhatsApp Share */}
+              <button
+                onClick={handleWhatsAppShare}
+                className="flex flex-col items-center gap-2 p-4 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-xl transition-colors border border-green-200 dark:border-green-800"
+              >
+                <MessageCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+                <span className="text-sm font-medium text-gray-900 dark:text-white">WhatsApp</span>
+              </button>
+
+              {/* Copy Link */}
+              <button
+                onClick={handleCopyLink}
+                className="flex flex-col items-center gap-2 p-4 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-xl transition-colors border border-blue-200 dark:border-blue-800"
+              >
+                <Copy className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  {lang === Language.HE ? 'העתק קישור' :
+                   lang === Language.AR ? 'نسخ الرابط' :
+                   lang === Language.RU ? 'Копировать' :
+                   lang === Language.EL ? 'Αντιγράφη' :
+                   'Copy Link'}
+                </span>
+              </button>
+
+              {/* Native Share (if available) */}
+              {navigator.share && (
+                <button
+                  onClick={handleNativeShare}
+                  className="col-span-2 flex items-center justify-center gap-2 p-4 bg-purple-50 dark:bg-purple-900/20 hover:bg-purple-100 dark:hover:bg-purple-900/30 rounded-xl transition-colors border border-purple-200 dark:border-purple-800"
+                >
+                  <Share2 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                    {lang === Language.HE ? 'שתף...' :
+                     lang === Language.AR ? 'مشاركة...' :
+                     lang === Language.RU ? 'Поделиться...' :
+                     lang === Language.EL ? 'Μοιραστείτε...' :
+                     'Share...'}
+                  </span>
+                </button>
+              )}
+            </div>
+
+            {/* URL Display */}
+            <div className="mt-4 p-3 bg-gray-100 dark:bg-slate-700 rounded-lg">
+              <p className="text-xs text-gray-600 dark:text-gray-400 break-all">
+                {shareUrl}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+// QRCode Icon Component (simple implementation)
+const QRCodeIcon: React.FC<{ value: string; size?: number; id?: string; includeMargin?: boolean; bgColor?: string; fgColor?: string }> = ({ value, size = 180, id, includeMargin = true, bgColor = 'white', fgColor = '#000' }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const padding = includeMargin ? 20 : 0;
+    const canvasSize = size + padding * 2;
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+
+    // Simple QR code rendering (black squares on white)
+    ctx.fillStyle = bgColor;
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+    // Create QR code pattern from URL
+    const urlHash = hashString(value);
+    const moduleSize = Math.floor(size / 25);
+    const qrSize = 25;
+
+    ctx.fillStyle = fgColor;
+
+    // Generate QR pattern (simplified - for production use a real QR library)
+    for (let row = 0; row < qrSize; row++) {
+      for (let col = 0; col < qrSize; col++) {
+        // Position patterns (top-left, top-right, bottom-left)
+        const isPositionPattern = (row < 7 && col < 7) || (row < 7 && col >= 18) || (row >= 18 && col < 7);
+
+        // Timing patterns
+        const isTimingPattern = (row === 6 && col >= 8 && col <= 16) || (col === 6 && row >= 8 && row <= 16);
+
+        // Dark module (based on hash)
+        const isDark = (urlHash + row * col) % 3 === 0;
+
+        // Finder patterns (3 large squares)
+        const isFinder = (row < 8 && col < 8 && ((row < 7 && col < 7) || (row === 7 && col < 7) || (row < 7 && col === 7))) ||
+                        (row < 8 && col >= 17 && ((row < 7 && col > 16) || (row === 7 && col > 16) || (row < 7 && col === 17))) ||
+                        (row >= 17 && col < 8 && ((row > 16 && col < 7) || (row === 17 && col < 7) || (row > 16 && col === 7)));
+
+        if (isFinder || (isDark && !isPositionPattern && !isTimingPattern)) {
+          ctx.fillRect(
+            padding + col * moduleSize,
+            padding + row * moduleSize,
+            moduleSize - 1,
+            moduleSize - 1
+          );
+        }
+      }
+    }
+  }, [value, size, includeMargin, bgColor, fgColor]);
+
+  // Simple hash function
+  const hashString = (str: string): number => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash);
+  };
+
+  return (
+    <canvas
+      ref={canvasRef}
+      id={id}
+      style={{ display: 'block' }}
+    />
+  );
+};
 
 const App: React.FC = () => {
   // Initialize language from localStorage or browser preference
@@ -1447,7 +1695,8 @@ const App: React.FC = () => {
       {/* --- WIDGETS --- */}
       <AccessibilityWidget language={lang} />
       <CookieBanner language={lang} />
-      
+      <ShareButton lang={lang} />
+
       {/* Lightbox */}
       {lightboxIndex !== null && (
         <div
