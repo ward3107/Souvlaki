@@ -1,0 +1,75 @@
+{
+  "name": "Greek Souvlaki Kfar Yasif | סובלקי יווני כפר יאסיף",
+  "short_name": "Greek Souvlaki",
+  "description": "Authentic Greek souvlaki in Kfar Yasif. Fresh pita, gyros, skewers & more. Open Wed-Sat 13:00-01:00. | סובלקי יווני אותנטי בכפר יאסיף",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "categories": ["restaurant", "food", "greek"],
+  "lang": "multi",
+  "dir": "auto",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/gallery/hero-bg-1280w.webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "label": "Greek Souvlaki Restaurant Interior"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Order Now",
+      "short_name": "Order",
+      "description": "Order delicious Greek souvlaki",
+      "url": "/#menu",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "View Menu",
+      "short_name": "Menu",
+      "description": "See our full menu",
+      "url": "/#menu",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Call Us",
+      "short_name": "Call",
+      "description": "Call to make a reservation",
+      "url": "tel:+97248122980",
+      "icons": [
+        {
+          "src": "/favicon.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
