@@ -93,8 +93,9 @@ We may update this Cookie Policy from time to time. Changes will be posted on th
 
 For questions about cookies, contact:
 
-**[INSERT COMPANY/OWNER NAME]**
+**Greek Souvlaki**
 Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 
 ---
 
@@ -179,8 +180,9 @@ Email: **[INSERT EMAIL]**
 
 לשאלות על עוגיות, צור קשר:
 
-**[הכנס שם חברה/בעלים]**
-אימייל: **[הכנס כתובת אימייל]**
+**Greek Souvlaki**
+אימייל: **[INSERT EMAIL]**
+- אתר: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 
 ---
 
@@ -265,8 +267,8 @@ Email: **[INSERT EMAIL]**
 
 للأسئلة حول ملفات تعريف الارتباط، اتصل بنا:
 
-**[أدخل اسم الشركة/المالك]**
-البريد الإلكتروني: **[أدخل البريد الإلكتروني]**
+**Greek Souvlaki**
+البريد الإلكتروني: **[INSERT EMAIL]**
 
 
 ---
@@ -352,8 +354,8 @@ Cookie — это небольшие текстовые файлы, которы
 
 По вопросам о файлах cookie свяжитесь с нами:
 
-**[ВСТАВЬТЕ НАЗВАНИЕ КОМПАНИИ/ВЛАДЕЛЬЦА]**
-Электронная почта: **[ВСТАВЬТЕ ЭЛЕКТРОННУЮ ПОЧТУ]**
+**Greek Souvlaki**
+Электронная почта: **[INSERT EMAIL]**
 
 ---
 
@@ -438,5 +440,6 @@ Cookie — это небольшие текстовые файлы, которы
 
 Για ερωτήματα σχετικά με τα cookies, επικοινωνήστε μαζί μας:
 
-**[ΕΙΣΑΓΑΓΕΤΕ ΟΝΟΜΙΑ ΕΤΑΙΡΕΙΑΣ/ΙΔΙΟΚΤΗΤΗ]**
-Email: **[ΕΙΣΑΓΑΓΕΤΕ EMAIL]**
+**Greek Souvlaki**
+Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/

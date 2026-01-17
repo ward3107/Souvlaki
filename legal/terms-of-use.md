@@ -18,10 +18,11 @@
 
 Welcome to the Greek Souvlaki restaurant website ("the Website"). By accessing or using this Website, you agree to be bound by these Terms of Use.
 
-The Website is owned and operated by **[INSERT COMPANY/OWNER NAME]** ("we", "us", "our").
+The Website is owned and operated by **Greek Souvlaki** ("we", "us", "our").
 
 **Contact Us:**
 - Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Phone: 04-812-2980
 - Address: Kafr Yasif, Route 70, Israel
 
@@ -66,7 +67,7 @@ When submitting a review, you agree that:
 
 ### 5. Intellectual Property
 
-All content on this Website (text, images, logos, design) is owned by **[INSERT COMPANY/OWNER NAME]** or used with permission. You may NOT:
+All content on this Website (text, images, logos, design) is owned by **Greek Souvlaki** or used with permission. You may NOT:
 - Copy, modify, or distribute our content without permission
 - Use our images for commercial purposes
 - Remove any copyright notices
@@ -81,7 +82,7 @@ This Website contains links to third-party services (Google Maps, Waze, WhatsApp
 
 ### 7. Limitation of Liability
 
-To the fullest extent permitted by law, **[INSERT COMPANY/OWNER NAME]** shall NOT be liable for:
+To the fullest extent permitted by law, **Greek Souvlaki** shall NOT be liable for:
 - Any indirect, incidental, or consequential damages
 - Errors or inaccuracies in the content
 - Temporary unavailability of the Website
@@ -113,10 +114,11 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ברוכים הבאים לאתר האינטרנט של מסעדת "Greek Souvlaki" ("האתר"). כל שימוש באתר מהווה הסכמה לתנאי שימוש אלו.
 
-האתר בבעלות ובניהול של **[הכנס שם חברה/בעלים]** ("אנו", "שלנו").
+האתר בבעלות ובניהול של **Greek Souvlaki** ("אנו", "שלנו").
 
 **צור קשר:**
-- אימייל: **[הכנס כתובת אימייל]**
+- אימייל: **[INSERT EMAIL]**
+- אתר: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - טלפון: 04-812-2980
 - כתובת: כפר יאסיף, כביש 70, ישראל
 
@@ -161,7 +163,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 5. קניין רוחני
 
-כל התוכן באתר זה (טקסט, תמונות, לוגואים, עיצוב) שייך ל-**[הכנס שם חברה/בעלים]** או משומש ברשות. אסור לך:
+כל התוכן באתר זה (טקסט, תמונות, לוגואים, עיצוב) שייך ל-**Greek Souvlaki** או משומש ברשות. אסור לך:
 - להעתיק, לשנות או להפיץ את התוכן שלנו ללא הרשאה
 - להשתמש בתמונות שלנו למטרות מסחריות
 - להסיר הודעות על זכויות יוצרים
@@ -176,7 +178,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 7. הגבלת אחריות
 
-במידה המרבית המותרת על פי חוק, **[הכנס שם חברה/בעלים]** לא יהיה אחראי על:
+במידה המרבית המותרת על פי חוק, **Greek Souvlaki** לא יהיה אחראי על:
 - נזקים עקיפים, אקראיים או תוצאתיים
 - שגיאות או אי-דיוקים בתוכן
 - אי-זמינות זמנית של האתר
@@ -208,12 +210,13 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 مرحبًا بكم في موقع مطعم "Greek Souvlaki" ("الموقع"). من خلال الوصول إلى هذا الموقع أو استخدامه، فإنك توافق على الالتزام بشروط الاستخدام هذه.
 
-الموقع مملوك ويشغله **[أدخل اسم الشركة/المالك]** ("نحن"، "لنا").
+الموقع مملوك ويشغله **Greek Souvlaki** ("نحن"، "لنا").
 
 **اتصل بنا:**
-- البريد الإلكتروني: **[أدخل البريد الإلكتروني]**
+- البريد الإلكتروني: **[INSERT EMAIL]**
 - الهاتف: 04-812-2980
 - العنوان: كفر ياسيف، طريق 70، إسرائيل
+- الموقع: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 
 ---
 
@@ -256,7 +259,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 5. الملكية الفكرية
 
-جميع المحتويات في هذا الموقع (النصوص والصور والشعارات والتصميم) مملوكة لـ **[أدخل اسم الشركة/المالك]** أو مستخدمة بإذن. يجب عليك عدم:
+جميع المحتويات في هذا الموقع (النصوص والصور والشعارات والتصميم) مملوكة لـ **Greek Souvlaki** أو مستخدمة بإذن. يجب عليك عدم:
 - نسخ أو تعديل أو توزيع محتوانا دون إذن
 - استخدام صورنا لأغراض تجارية
 - إزالة إشعارات حقوق النشر
@@ -271,7 +274,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 7. تحديد المسؤولية
 
-بقدر ما يسمح به القانون، لن تكون **[أدخل اسم الشركة/المالك]** مسؤولة عن:
+بقدر ما يسمح به القانون، لن تكون **Greek Souvlaki** مسؤولة عن:
 - أي أضرار غير مباشرة أو عرضية أو تبعية
 - الأخطاء أو عدم الدقة في المحتوى
 - عدم التوفر المؤقت للموقع
@@ -303,11 +306,12 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 Добро пожаловать на веб-сайт ресторана "Greek Souvlaki" ("Сайт"). Получая доступ к этому Сайту или используя его, вы соглашаетесь соблюдать эти Условия использования.
 
-Сайт принадлежит и управляется **[ВСТАВЬТЕ НАЗВАНИЕ КОМПАНИИ/ВЛАДЕЛЬЦА]** ("мы", "наш").
+Сайт принадлежит и управляется **Greek Souvlaki** ("мы", "наш").
 
 **Контакты:**
-- Электронная почта: **[ВСТАВЬТЕ ЭЛЕКТРОННУЮ ПОЧТУ]**
+- Электронная почта: **[INSERT EMAIL]**
 - Телефон: 04-812-2980
+- Веб-сайт: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Адрес: Кафр Ясиф, шоссе 70, Израиль
 
 ---
@@ -351,7 +355,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 5. Интеллектуальная собственность
 
-Весь контент на этом Сайте (текст, изображения, логотипы, дизайн) принадлежит **[ВСТАВЬТЕ НАЗВАНИЕ КОМПАНИИ/ВЛАДЕЛЬЦА]** или используется с разрешения. Вы НЕ ДОЛЖНЫ:
+Весь контент на этом Сайте (текст, изображения, логотипы, дизайн) принадлежит **Greek Souvlaki** или используется с разрешения. Вы НЕ ДОЛЖНЫ:
 - Копировать, изменять или распространять наш контент без разрешения
 - Использовать наши изображения в коммерческих целях
 - Удалять уведомления об авторских правах
@@ -366,7 +370,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 7. Ограничение ответственности
 
-В максимальной степени, разрешенной законом, **[ВСТАВЬТЕ НАЗВАНИЕ КОМПАНИИ/ВЛАДЕЛЬЦА]** НЕ несет ответственности за:
+В максимальной степени, разрешенной законом, **Greek Souvlaki** НЕ несет ответственности за:
 - Любые косвенные, случайные или последующие убытки
 - Ошибки или неточности в контенте
 - Временную недоступность Сайта
@@ -398,10 +402,11 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 Καλώς ήρθατε στον ιστότοπο του εστιατορίου "Greek Souvlaki" ("ο Ιστότοπος"). Με την πρόσβαση ή τη χρήση αυτού του Ιστότοπου, συμφωνείτε να δεστετε από αυτούς τους Όρους Χρήσης.
 
-Ο Ιστότοπος ανήκει και λειτουργεί από τον/την **[ΕΙΣΑΓΑΓΕΤΕ ΟΝΟΜΙΑ ΕΤΑΙΡΕΙΑΣ/ΙΔΙΟΚΤΗΤΗ]** ("εμείς", "μας").
+Ο Ιστότοπος ανήκει και λειτουργεί από τον/την **Greek Souvlaki** ("εμείς", "μας").
 
 **Επικοινωνήστε μαζί μας:**
-- Email: **[ΕΙΣΑΓΑΓΕΤΕ EMAIL]**
+- Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Τηλέφωνο: 04-812-2980
 - Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
 
@@ -446,7 +451,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 5. Πνευματική ιδιοκτησία
 
- Όλο το περιεχόμενο σε αυτόν τον Ιστότοπο (κείμενο, εικόνες, λογότυπα, σχεδιασμός) ανήκει στον/στην **[ΕΙΣΑΓΑΓΕΤΕ ΟΝΟΜΙΑ ΕΤΑΙΡΕΙΑΣ/ΙΔΙΟΚΤΗΤΗ]** ή χρησιμοποιείται με άδεια. ΔΕΝ ΠΡΕΠΕΙ:
+ Όλο το περιεχόμενο σε αυτόν τον Ιστότοπο (κείμενο, εικόνες, λογότυπα, σχεδιασμός) ανήκει στον/στην **Greek Souvlaki** ή χρησιμοποιείται με άδεια. ΔΕΝ ΠΡΕΠΕΙ:
 - Να αντιγράφετε, να τροποποιείτε ή να διανέμετε το περιεχόμενό μας χωρίς άδεια
 - Να χρησιμοποιείτε τις εικόνες μας για εμπορικούς σκοπούς
 - Να αφαιρείτε ειδοποιήσεις πνευματικών δικαιωμάτων
@@ -461,7 +466,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 ### 7. Περιορισμός ευθύνης
 
-Στο μέγιστο βαθμό που επιτρέπεται από τον νόμο, ο/η **[ΕΙΣΑΓΑΓΕΤΕ ΟΝΟΜΙΑ ΕΤΑΙΡΕΙΑΣ/ΙΔΙΟΚΤΗΤΗ]** δεν ευθύνεται για:
+Στο μέγιστο βαθμό που επιτρέπεται από τον νόμο, ο/η **Greek Souvlaki** δεν ευθύνεται για:
 - Οποιαδήποτε έμμεση, τυχαία ή επακόλουθη ζημιά
 - Σφάλματα ή ανακρίβειες στο περιεχόμενο
 - Προσωρινή μη διαθεσιμότητα του Ιστότοπου

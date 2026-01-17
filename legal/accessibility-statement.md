@@ -74,6 +74,7 @@ If you encounter any accessibility barriers, please let us know:
 
 **Contact:**
 - Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Phone: 04-812-2980
 - Address: Kafr Yasif, Route 70, Israel
 
@@ -175,7 +176,8 @@ For issues specifically with Google Maps, please contact [Google Accessibility](
 אם נתקלת במחסומי נגישות, אנא דווח לנו:
 
 **צור קשר:**
-- אימייל: **[הכנס כתובת אימייל]**
+- אימייל: **[INSERT EMAIL]**
+- אתר: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - טלפון: 04-812-2980
 - כתובת: כפר יאסיף, כביש 70, ישראל
 
@@ -277,9 +279,10 @@ For issues specifically with Google Maps, please contact [Google Accessibility](
 إذا واجهت أي حواجز لإمكانية الوصول، يرجى إعلاما:
 
 **التواصل:**
-- البريد الإلكتروني: **[أدخل البريد الإلكتروني]**
+- البريد الإلكتروني: **[INSERT EMAIL]**
 - الهاتف: 04-812-2980
 - العنوان: كفر ياسيف، طريق 70، إسرائيل
+- الموقع: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 
 **ما الذي يجب تضمينه في تقريرك:**
 - الصفحة أو الميزة المحددة التي واجهت فيها الحاجز
@@ -379,8 +382,10 @@ For issues specifically with Google Maps, please contact [Google Accessibility](
 Если вы столкнулись с какими-либо барьерами доступности, сообщите нам:
 
 **Контакты:**
-- Email: **[ВСТАВЬТЕ ЭЛЕКТРОННУЮ ПОЧТУ]**
+- Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Телефон: 04-812-2980
+- Веб-сайт: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Адрес: Кафр Ясиф, шоссе 70, Израиль
 
 **Что включить в ваш отчет:**
@@ -481,7 +486,8 @@ For issues specifically with Google Maps, please contact [Google Accessibility](
 Ατανίστε σε εμπόδια προσβασιμότητας, παρακαλούμε αναφέρετέ μας:
 
 **Επικοινωνία:**
-- Email: **[ΕΙΣΑΓΑΓΕΤΕ EMAIL]**
+- Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 - Τηλέφωνο: 04-812-2980
 - Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
 
