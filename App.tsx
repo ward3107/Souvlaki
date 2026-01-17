@@ -186,6 +186,33 @@ const App: React.FC = () => {
     document.documentElement.lang = lang;
   }, [lang, isRtl]);
 
+  // Detect when user returns from external sites (Facebook, etc.)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        // User returned to the tab - could scroll to top or show a welcome back message
+        console.log('User returned to the site');
+      }
+    };
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      // This fires when navigating back to the page (bfcache)
+      if (event.persisted) {
+        console.log('Page restored from back/forward cache');
+        // Optionally scroll to top or show a message
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, []);
+
   // Update SEO metadata when language changes
   useEffect(() => {
     const seo = SEO_METADATA[lang];
@@ -771,7 +798,7 @@ const App: React.FC = () => {
               <div className="flex flex-wrap justify-center gap-3">
                 <a
                   href="https://www.facebook.com/greeksouvlaki/reviews"
-                  target="_blank"
+                  target="_self"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
                 >
@@ -784,7 +811,7 @@ const App: React.FC = () => {
                 </a>
                 <a
                   href="https://www.facebook.com/greeksouvlaki/reviews"
-                  target="_blank"
+                  target="_self"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-full font-bold hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 transition-all duration-300"
                 >
@@ -796,6 +823,18 @@ const App: React.FC = () => {
                            'Write a Review'}</span>
                 </a>
               </div>
+              {/* Back button hint */}
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                {lang === Language.HE
+                  ? 'לחץ חזרה לחזור לאתר'
+                  : lang === Language.AR
+                  ? 'اضغط للخلف للعودة إلى الموقع'
+                  : lang === Language.RU
+                  ? 'Нажмите "Назад" чтобы вернуться на сайт'
+                  : lang === Language.EL
+                  ? 'Πατήστε "Πίσω" για να επιστρέψετε στον ιστότοπο'
+                  : 'Press back to return to the site'}
+              </p>
             </div>
 
             {/* Facebook Reviews Grid */}
@@ -826,7 +865,7 @@ const App: React.FC = () => {
                   </p>
                   <a
                     href="https://www.facebook.com/greeksouvlaki/reviews"
-                    target="_blank"
+                    target="_self"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
                   >
@@ -1301,7 +1340,7 @@ const App: React.FC = () => {
               
             {/* Social Media Section */}
             <div className="flex gap-4">
-                <a href="https://www.facebook.com/greeksouvlaki" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group" aria-label="Visit our Facebook page">
+                <a href="https://www.facebook.com/greeksouvlaki" target="_self" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group" aria-label="Visit our Facebook page">
                 <Facebook className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
                 </a>
                 <a href="https://www.instagram.com/greek.souvlakii" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group" aria-label="Visit our Instagram page">
