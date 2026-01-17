@@ -8,7 +8,7 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check, Award } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check, Award, Heart, Camera } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -873,6 +873,284 @@ const App: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- TAG US ON INSTAGRAM CTA --- */}
+      <section className="py-16 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 relative overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6 shadow-xl">
+              <Camera className="w-10 h-10 text-white" />
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              {lang === Language.HE ? 'תייג/י אותנו באינסטגרם!' :
+               lang === Language.AR ? 'صورنا على إنستغرام!' :
+               lang === Language.RU ? 'Отметьте нас в Instagram!' :
+               lang === Language.EL ? 'Tag μας στο Instagram!' :
+               'Tag Us on Instagram!'}
+            </h2>
+            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              {lang === Language.HE
+                ? 'צילמ/ת תמונה של האוכל שלנו? תייג/י אותנו ב-@greek.souvlakii ונשתף אותך בעמוד שלנו!'
+                : lang === Language.AR
+                ? 'التقطت صورة لطعامنا؟ ضع علامة علينا في @greek.souvlakii وسنقوم بمشاركتك!'
+                : lang === Language.RU
+                ? 'Сфоткали нашу еду? Отметьте нас @greek.souvlakii и мы поделимся вами!'
+                : lang === Language.EL
+                ? 'Photographiste το φαγητό μας; Tag μας στο @greek.souvlakii και θα σας μοιραστούμε!'
+                : 'Took a photo of our food? Tag us @greek.souvlakii and we\'ll share you on our page!'}
+            </p>
+            <a
+              href="https://www.instagram.com/greek.souvlakii"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300"
+            >
+              <Instagram className="w-6 h-6" />
+              <span>@greek.souvlakii</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* --- INSTAGRAM FEED --- */}
+      <section className="py-16 bg-white dark:bg-slate-900 transition-colors duration-300">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl mb-4 shadow-xl">
+              <Instagram className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              {lang === Language.HE ? 'עקבו אחרינו באינסטגרם' :
+               lang === Language.AR ? 'تابعنا على إنستغرام' :
+               lang === Language.RU ? 'Подпишитесь на нас в Instagram' :
+               lang === Language.EL ? 'Ακολουθήστε μας στο Instagram' :
+               'Follow Us on Instagram'}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto mb-6">
+              {lang === Language.HE
+                ? 'צפו/י בתמונות הכי עדכניות של המנות המיוחדות שלנו, האווירה והעוד.'
+                : lang === Language.AR
+                ? 'شاهد أحدث الصور لأطباقنا المميزة والأجواء والمزيد.'
+                : lang === Language.RU
+                ? 'Смотрите последние фото наших фирменных блюд, атмосферы и многого другого.'
+                : lang === Language.EL
+                ? 'Δείτε τις τελευταίες φωτογραφίες από τα σπεσιαλιτέ μας, την ατμόσφαιρα και πολλά άλλα.'
+                : 'Check out the latest photos of our signature dishes, atmosphere, and more.'}
+            </p>
+            <a
+              href="https://www.instagram.com/greek.souvlakii"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+            >
+              <Instagram className="w-5 h-5" />
+              <span>@greek.souvlakii</span>
+              <Heart className="w-4 h-4 fill-white" />
+            </a>
+          </div>
+
+          {/* Instagram Grid - Using gallery images as Instagram feed preview */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 max-w-5xl mx-auto">
+            {galleryImages.slice(0, 8).map((img, idx) => (
+              <a
+                key={idx}
+                href="https://www.instagram.com/greek.souvlakii"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-square rounded-xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              >
+                <img
+                  src={img}
+                  alt={`Instagram ${idx + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                {/* Instagram-style overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">
+                    <Heart className="w-5 h-5 fill-white" />
+                    <Instagram className="w-5 h-5" />
+                  </div>
+                </div>
+                {/* Instagram icon badge */}
+                <div className="absolute top-2 right-2 bg-white/90 dark:bg-black/70 rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Instagram className="w-4 h-4 text-pink-600" />
+                </div>
+              </a>
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <a
+              href="https://www.instagram.com/greek.souvlakii"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 rounded-full font-bold hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-slate-900 transition-all duration-300"
+            >
+              {lang === Language.HE ? 'עוד תמונות באינסטגרם →' :
+               lang === Language.AR ? 'المزيد من الصور على إنستغرام →' :
+               lang === Language.RU ? 'Больше фото в Instagram →' :
+               lang === Language.EL ? 'Περισσότερες φωτογραφίες στο Instagram →' :
+               'More Photos on Instagram →'}
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FACEBOOK REVIEWS --- */}
+      <section className="py-16 bg-gradient-to-b from-gray-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 transition-colors duration-300">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-xl">
+                <Facebook className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {lang === Language.HE ? 'דירוגי פייסבוק' :
+                 lang === Language.AR ? 'تقييمات فيسبوك' :
+                 lang === Language.RU ? 'Отзывы Facebook' :
+                 lang === Language.EL ? 'Κριτικές Facebook' :
+                 'Facebook Reviews'}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto mb-6">
+                {lang === Language.HE
+                  ? 'ראו/י מה הלקוחות שלנו אומרים עלינו בפייסבוק'
+                  : lang === Language.AR
+                  ? 'شاهد ما يقوله عملاؤنا عنا على فيسبوك'
+                  : lang === Language.RU
+                  ? 'Посмотрите, что наши клиенты говорят о нас на Facebook'
+                  : lang === Language.EL
+                  ? 'Δείτε τι λένε οι πελάτες μας για εμάς στο Facebook'
+                  : 'See what our customers are saying about us on Facebook'}
+              </p>
+              <a
+                href="https://www.facebook.com/greeksouvlaki/reviews"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
+              >
+                <Facebook className="w-5 h-5" />
+                <span>{lang === Language.HE ? 'כל הדירוגים' :
+                         lang === Language.AR ? 'جميع التقييمات' :
+                         lang === Language.RU ? 'Все отзывы' :
+                         lang === Language.EL ? 'Όλες οι κριτικές' :
+                         'See All Reviews'}</span>
+              </a>
+            </div>
+
+            {/* Facebook Reviews Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Sample Facebook Review 1 */}
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+                    <span className="text-xl">👨‍👩‍👧‍👦</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 dark:text-white">משפחת כהן</h4>
+                    <div className="flex text-yellow-400 text-sm">
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                  {lang === Language.HE
+                    ? 'האוכל מעולה! הסובלקי הכי טוב באזור. שירות מעולה ומחירים הוגנים. ממליצים בחום!'
+                    : lang === Language.AR
+                    ? 'الطعام رائع! أفضل سوفلاكي في المنطقة. خدمة ممتازة وأسعار معقولة. نوصي بشدة!'
+                    : lang === Language.RU
+                    ? 'Еда отличная! Лучший сувлаки в районе. Отличный сервис и честные цены. Настоятельно рекомендуем!'
+                    : lang === Language.EL
+                    ? 'Το φαγητό είναι εξαιρετικό! Το καλύτερο σουβλάκι στην περιοχή. Εξαιρετική εξυπηρέτηση και λογικές τιμές. Το συνιστούμε!'
+                    : 'Amazing food! Best souvlaki in the area. Excellent service and fair prices. Highly recommend!'}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <Facebook className="w-3 h-3 text-blue-600" />
+                  <span>Facebook Review</span>
+                </div>
+              </div>
+
+              {/* Sample Facebook Review 2 */}
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/50 rounded-full flex items-center justify-center">
+                    <span className="text-xl">👩</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 dark:text-white">Sarah Johnson</h4>
+                    <div className="flex text-yellow-400 text-sm">
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                  {lang === Language.HE
+                    ? 'חוויה מדהימה! הפיתות טריות והמנות ענק. הצוות ידידותי מאוד. נחזור בוודאות!'
+                    : lang === Language.AR
+                    ? 'تجربة رائعة! الخبز طازج والوجبات ضخمة. الموظفون ودودون للغاية. سنعود بالتأكيد!'
+                    : lang === Language.RU
+                    ? 'Потрясающий опыт! Свежий хлеб и огромные порции. Персонал очень дружелюбный. Обязательно вернемся!'
+                    : lang === Language.EL
+                    ? 'Φανταστική εμπειρία! Φρέσκος πίτες και τεράστιες μερίδες. Το προσωπικό είναι πολύ φιλικό. Σίγουρα θα επιστρέψουμε!'
+                    : 'Amazing experience! Fresh pita and huge portions. The staff is so friendly. Will definitely come back!'}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <Facebook className="w-3 h-3 text-blue-600" />
+                  <span>Facebook Review</span>
+                </div>
+              </div>
+
+              {/* Sample Facebook Review 3 */}
+              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
+                    <span className="text-xl">👨‍💼</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-gray-900 dark:text-white">אלכסנדר פטרוב</h4>
+                    <div className="flex text-yellow-400 text-sm">
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                      <Star className="w-4 h-4 fill-current" />
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                  {lang === Language.HE
+                    ? 'טעמים אותנטיים יווניים! הגירוס בשר לבן פשוט מושלם. שווה כל שקל!'
+                    : lang === Language.AR
+                    ? 'نكهات يونانية أصلية! الغيروس باللحم الأبيض ببساطة مثالي. يستحق كل قرش!'
+                    : lang === Language.RU
+                    ? 'Настоящие греческие вкусы! Гирос из белого мяса просто идеален. Стоит каждого шекеля!'
+                    : lang === Language.EL
+                    ? 'Αυθεντικές ελληνικές γεύσεις! Ο γύρος λευκό κρέας είναι απλά τέλειος. Αξίζει κάθε σεντ!'
+                    : 'Authentic Greek flavors! The white meat gyros is simply perfect. Worth every shekel!'}
+                </p>
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <Facebook className="w-3 h-3 text-blue-600" />
+                  <span>Facebook Review</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

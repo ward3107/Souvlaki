@@ -11,7 +11,13 @@
       "Bash(where:*)",
       "Bash(node:*)",
       "Bash(npx heic-convert:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npm run build:*)",
+      "Bash(dir \"C:\\\\Users\\\\Waseem\\\\Documents\\\\Souvlaki\\\\Souvlaki-1\\\\public\\\\sitemap*.xml\")",
+      "Bash(if exist nul del nul)"
     ]
   }
 }
