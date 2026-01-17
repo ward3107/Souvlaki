@@ -37,7 +37,7 @@
       "name": "Order Now",
       "short_name": "Order",
       "description": "Order delicious Greek souvlaki",
-      "url": "/#menu",
+      "url": "/?scrollTo=menu",
       "icons": [
         {
           "src": "/favicon-32x32.png",
@@ -49,19 +49,7 @@
       "name": "View Menu",
       "short_name": "Menu",
       "description": "See our full menu",
-      "url": "/#menu",
-      "icons": [
-        {
-          "src": "/favicon-32x32.png",
-          "sizes": "96x96"
-        }
-      ]
-    },
-    {
-      "name": "Call Us",
-      "short_name": "Call",
-      "description": "Call to make a reservation",
-      "url": "tel:+97248122980",
+      "url": "/?scrollTo=menu",
       "icons": [
         {
           "src": "/favicon-32x32.png",
