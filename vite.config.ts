@@ -52,31 +52,7 @@ export default defineConfig(({ mode }) => {
           registerType: 'prompt',
           includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icons/*.png'],
           strategies: 'generateSW',
-          manifest: {
-            id: '/greek-souvlaki',
-            name: 'Greek Souvlaki',
-            short_name: 'Souvlaki',
-            description: 'Authentic Greek street food',
-            theme_color: '#1e3a8a',
-            background_color: '#ffffff',
-            display: 'standalone',
-            scope: '/',
-            start_url: '/',
-            icons: [
-              {
-                src: '/icons/icon-192.png',
-                sizes: '192x192',
-                type: 'image/png',
-                purpose: 'any maskable'
-              },
-              {
-                src: '/icons/icon-512.png',
-                sizes: '512x512',
-                type: 'image/png',
-                purpose: 'any maskable'
-              }
-            ]
-          },
+          manifest: false,
           workbox: {
             globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,json,woff2}'],
             navigateFallback: '/index.html',
