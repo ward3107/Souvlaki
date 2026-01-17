@@ -6,7 +6,14 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "github": {
-    "silent": true
+    "silent": true,
+    "enabled": true
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "*": true
+    }
   },
   "rewrites": [
     {
