@@ -1268,19 +1268,19 @@ const App: React.FC = () => {
             </div>
 
             {/* Website Builder Badge */}
-            <div className="flex justify-center md:justify-end items-center">
+            <div className="flex justify-center md:justify-end items-center md:ml-8">
               <a
                 href="https://wwebsie-4.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-gray-500 hover:text-gray-300 transition-colors group"
+                className="flex items-center gap-2 text-gray-400 hover:text-gray-200 transition-colors group"
                 title="Built with wwwebsie"
               >
-                <span className="text-xs">Built with</span>
+                <span className="text-sm">Built with</span>
                 <img
                   src="/ws-logo-100w.avif"
                   alt="wwwebsie logo"
-                  className="h-5 w-auto opacity-60 group-hover:opacity-100 transition-opacity"
+                  className="h-7 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                 />
               </a>
             </div>
