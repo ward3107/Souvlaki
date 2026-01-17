@@ -8,7 +8,7 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Award, Heart, Camera } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Award, Camera } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -1250,67 +1250,25 @@ const App: React.FC = () => {
             </p>
 
             {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="flex justify-center mb-8">
               {/* Virtual Tour */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 max-w-sm">
                 <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
                   <Camera className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">
+                <h3 className="text-xl font-bold text-white mb-2 text-center">
                   {lang === Language.HE ? 'סיור וירטואלי' :
                    lang === Language.AR ? 'جولة افتراضية' :
                    lang === Language.RU ? 'Виртуальный тур' :
                    lang === Language.EL ? 'Εικονικός περίπλους' :
                    'Virtual Tour'}
                 </h3>
-                <p className="text-white/80 text-sm">
+                <p className="text-white/80 text-sm text-center">
                   {lang === Language.HE ? '360° תמונות של המסעדה' :
                    lang === Language.AR ? 'صور 360° للمطعم' :
                    lang === Language.RU ? '360° фото ресторана' :
                    lang === Language.EL ? '360° φωτο του εστιατορίου' :
                    '360° restaurant photos'}
-                </p>
-              </div>
-
-              {/* Video Walkthrough */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {lang === Language.HE ? 'סרטון וידאו' :
-                   lang === Language.AR ? 'جولة فيديو' :
-                   lang === Language.RU ? 'Видеоэкскурсия' :
-                   lang === Language.EL ? 'Βίντεο ξεναγή' :
-                   'Video Walkthrough'}
-                </h3>
-                <p className="text-white/80 text-sm">
-                  {lang === Language.HE ? 'סרטון מלא של החוויה' :
-                   lang === Language.AR ? 'فيديو كامل للتجربة' :
-                   lang === Language.RU ? 'Полное видео опыта' :
-                   lang === Language.EL ? 'Πλήρες βίντεο της εμπειρίας' :
-                   'Full experience video'}
-                </p>
-              </div>
-
-              {/* Online Ordering */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Navigation className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {lang === Language.HE ? 'הזמנה אונליין' :
-                   lang === Language.AR ? 'طلب أونلاين' :
-                   lang === Language.RU ? 'Онлайн заказ' :
-                   lang === Language.EL ? 'Παραγγελία Online' :
-                   'Online Ordering'}
-                </h3>
-                <p className="text-white/80 text-sm">
-                  {lang === Language.HE ? 'הזמנה ישירות מהבית' :
-                   lang === Language.AR ? 'اطلب مباشرة من المنزل' :
-                   lang === Language.RU ? 'Заказывайте прямо из дома' :
-                   lang === Language.EL ? 'Παραγγείλετε απευθείας από το σπίτι' :
-                   'Order directly from home'}
                 </p>
               </div>
             </div>
