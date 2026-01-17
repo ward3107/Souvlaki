@@ -87,7 +87,8 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
 
   // Filter content based on language
   const getLanguageContent = (fullContent: string): { content: string; actualLanguage: Language; isFallback: boolean } => {
-    // Split by section headers
+    // Split by section headers - capturing group includes matches in array
+    // Result: [prefix, "English", EN_content, "עברית (Hebrew)", HE_content, "العربية (Arabic)", AR_content]
     const sections = fullContent.split(/## (English|עברית \(Hebrew\)|العربية \(Arabic\))/);
 
     // Find the right section based on language
@@ -96,33 +97,33 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
     let isFallback = false;
 
     if (language === Language.HE) {
-      // Find Hebrew section (index 2)
-      content = sections[2] || '';
+      // Hebrew content is at index 4 (after prefix, "English", EN_content, "עברית (Hebrew)")
+      content = sections[4] || '';
       if (!content.trim()) {
-        content = sections[1] || '';
+        content = sections[2] || ''; // Fallback to English (index 2)
         actualLanguage = Language.EN;
         isFallback = true;
       }
     } else if (language === Language.AR) {
-      // Find Arabic section (index 3)
-      content = sections[3] || '';
+      // Arabic content is at index 6 (after prefix, "English", EN_content, "עברית", HE_content, "العربية (Arabic)")
+      content = sections[6] || '';
       if (!content.trim()) {
-        content = sections[1] || '';
+        content = sections[2] || ''; // Fallback to English (index 2)
         actualLanguage = Language.EN;
         isFallback = true;
       }
     } else if (language === Language.RU || language === Language.EL) {
-      // Russian and Greek not available, fallback to English
-      content = sections[1] || '';
+      // Russian and Greek not available, fallback to English (index 2)
+      content = sections[2] || '';
       actualLanguage = Language.EN;
       isFallback = true;
     } else {
-      // English section (index 1)
-      content = sections[1] || '';
+      // English content is at index 2 (after prefix and "English" match)
+      content = sections[2] || '';
     }
 
     return {
-      content: content.trim() || sections[1] || fullContent,
+      content: content.trim() || sections[2] || fullContent,
       actualLanguage,
       isFallback
     };
