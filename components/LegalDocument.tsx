@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { ArrowLeft, X, FileText, Shield, Cookie, Accessibility } from 'lucide-react';
+import { ArrowLeft, X, FileText, Shield, Cookie, User, AlertCircle } from 'lucide-react';
 import { Language } from '../types';
 
 interface LegalDocumentProps {
@@ -34,7 +34,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
     if (documentPath.includes('terms')) return <FileText className="w-6 h-6" />;
     if (documentPath.includes('privacy')) return <Shield className="w-6 h-6" />;
     if (documentPath.includes('cookie')) return <Cookie className="w-6 h-6" />;
-    if (documentPath.includes('accessibility')) return <Accessibility className="w-6 h-6" />;
+    if (documentPath.includes('accessibility')) return <User className="w-6 h-6" />;
     return <FileText className="w-6 h-6" />;
   };
 
@@ -86,24 +86,46 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
   };
 
   // Filter content based on language
-  const getLanguageContent = (fullContent: string) => {
+  const getLanguageContent = (fullContent: string): { content: string; actualLanguage: Language; isFallback: boolean } => {
     // Split by section headers
     const sections = fullContent.split(/## (English|עברית \(Hebrew\)|العربية \(Arabic\))/);
 
     // Find the right section based on language
     let content = '';
+    let actualLanguage: Language = language;
+    let isFallback = false;
+
     if (language === Language.HE) {
       // Find Hebrew section (index 2)
       content = sections[2] || '';
+      if (!content.trim()) {
+        content = sections[1] || '';
+        actualLanguage = Language.EN;
+        isFallback = true;
+      }
     } else if (language === Language.AR) {
       // Find Arabic section (index 3)
       content = sections[3] || '';
+      if (!content.trim()) {
+        content = sections[1] || '';
+        actualLanguage = Language.EN;
+        isFallback = true;
+      }
+    } else if (language === Language.RU || language === Language.EL) {
+      // Russian and Greek not available, fallback to English
+      content = sections[1] || '';
+      actualLanguage = Language.EN;
+      isFallback = true;
     } else {
       // English section (index 1)
       content = sections[1] || '';
     }
 
-    return content.trim() || sections[1] || fullContent;
+    return {
+      content: content.trim() || sections[1] || fullContent,
+      actualLanguage,
+      isFallback
+    };
   };
 
   // Check if RTL
@@ -125,8 +147,38 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
     );
   }
 
-  const languageContent = getLanguageContent(content);
+  const { content: languageContent, actualLanguage, isFallback } = getLanguageContent(content);
   const docTitle = getDocumentTitle();
+
+  // Get fallback notice text
+  const getFallbackNotice = () => {
+    if (!isFallback) return null;
+
+    const notices = {
+      [Language.RU]: {
+        title: 'Доступен на английском',
+        message: 'Этот документ в настоящее время доступен только на английском языке.'
+      },
+      [Language.EL]: {
+        title: 'Διαθέσιμο στα Αγγλικά',
+        message: 'Αυτό το έγγραφο είναι προς το παρόν διαθέσιμο μόνο στα Αγγλικά.'
+      },
+      [Language.HE]: {
+        title: 'זמין באנגלית',
+        message: 'מסמך זה זמין כעת באנגלית בלבד.'
+      },
+      [Language.AR]: {
+        title: 'متاح باللغة الإنجليزية',
+        message: 'هذا المستند متاح حاليًا باللغة الإنجليزية فقط.'
+      },
+      [Language.EN]: {
+        title: 'Available in English',
+        message: 'This document is currently only available in English.'
+      }
+    };
+
+    return notices[language] || notices[Language.EN];
+  };
 
   return (
     <div className={`fixed inset-0 z-[100] min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-y-auto ${isRtl ? 'rtl' : 'ltr'}`}>
@@ -179,6 +231,21 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
           <div className="h-2 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"></div>
 
           <div className="p-8 md:p-12">
+            {/* Fallback Notice */}
+            {isFallback && getFallbackNotice() && (
+              <div className="mb-8 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold text-amber-800 dark:text-amber-300 text-sm">
+                    {getFallbackNotice()?.title}
+                  </p>
+                  <p className="text-amber-700 dark:text-amber-400 text-xs mt-1">
+                    {getFallbackNotice()?.message}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Content */}
             <ReactMarkdown
               components={{
@@ -274,7 +341,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
                 ),
               }}
             >
-              {`## ${language === Language.HE ? 'עברית' : language === Language.AR ? 'العربية' : 'English'}\n\n${languageContent}`}
+              {`## ${actualLanguage === Language.HE ? 'עברית' : actualLanguage === Language.AR ? 'العربية' : 'English'}\n\n${languageContent}`}
             </ReactMarkdown>
           </div>
 

@@ -421,7 +421,23 @@ const ReviewForm: React.FC<{ t: (key: TranslationKey) => string, onSubmit: (revi
 };
 
 const App: React.FC = () => {
-  const [lang, setLang] = useState<Language>(Language.HE);
+  // Initialize language from localStorage or browser preference
+  const getInitialLanguage = (): Language => {
+    const savedLang = localStorage.getItem('language');
+    if (savedLang && Object.values(Language).includes(savedLang as Language)) {
+      return savedLang as Language;
+    }
+
+    // Detect browser language
+    const browserLang = navigator.language || navigator.languages?.[0] || 'en';
+    if (browserLang.startsWith('he')) return Language.HE;
+    if (browserLang.startsWith('ar')) return Language.AR;
+    if (browserLang.startsWith('ru')) return Language.RU;
+    if (browserLang.startsWith('el')) return Language.EL;
+    return Language.EN; // Default to English
+  };
+
+  const [lang, setLang] = useState<Language>(getInitialLanguage());
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
@@ -502,6 +518,20 @@ const App: React.FC = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isLangDropdownOpen]);
+
+  // Listen for custom events to open legal documents (e.g., from CookieBanner)
+  useEffect(() => {
+    const handleOpenLegalDocument = (event: Event) => {
+      const customEvent = event as CustomEvent<string>;
+      setLegalDocument(customEvent.detail);
+    };
+
+    window.addEventListener('openLegalDocument', handleOpenLegalDocument as EventListener);
+
+    return () => {
+      window.removeEventListener('openLegalDocument', handleOpenLegalDocument as EventListener);
+    };
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -700,6 +730,7 @@ const App: React.FC = () => {
                       key={l}
                       onClick={() => {
                         setLang(l);
+                        localStorage.setItem('language', l);
                         setIsLangDropdownOpen(false);
                       }}
                       className={`block w-full text-start px-4 py-2 text-sm hover:bg-blue-50 dark:hover:bg-slate-700 ${lang === l ? 'text-blue-600 font-bold' : 'text-gray-700 dark:text-gray-300'}`}
@@ -1203,39 +1234,34 @@ const App: React.FC = () => {
 
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-70 hover:opacity-100 transition-opacity">
             <p>{t('footer_copyright')}</p>
-            <div className="flex gap-6 flex-wrap justify-center md:justify-end">
+            <div className="flex gap-4 flex-wrap justify-center md:justify-end items-center">
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Terms clicked');
+                onClick={() => {
+                  console.log('Terms clicked - opening modal');
                   setLegalDocument('/legal/terms-of-use.md');
+                  setTimeout(() => console.log('legalDocument state set'), 100);
                 }}
-                className="text-gray-400 hover:text-white hover:underline transition-all cursor-pointer bg-transparent border-none p-0 font-medium"
+                className="text-gray-400 hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_terms')}
               </button>
               <span className="text-gray-600">•</span>
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Privacy clicked');
+                onClick={() => {
+                  console.log('Privacy clicked - opening modal');
                   setLegalDocument('/legal/privacy-policy.md');
                 }}
-                className="text-gray-400 hover:text-white hover:underline transition-all cursor-pointer bg-transparent border-none p-0 font-medium"
+                className="text-gray-400 hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_privacy')}
               </button>
               <span className="text-gray-600">•</span>
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('Accessibility clicked');
+                onClick={() => {
+                  console.log('Accessibility clicked - opening modal');
                   setLegalDocument('/legal/accessibility-statement.md');
                 }}
-                className="text-gray-400 hover:text-white hover:underline transition-all cursor-pointer bg-transparent border-none p-0 font-medium"
+                className="text-gray-400 hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_accessibility')}
               </button>
