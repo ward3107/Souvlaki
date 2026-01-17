@@ -1288,18 +1288,6 @@ const App: React.FC = () => {
                          lang === Language.EL ? 'Ακολουθήστε μας' :
                          'Follow Us'}</span>
               </a>
-              <a
-                href="https://wa.me/972542001235"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-white text-white rounded-full font-bold hover:bg-white hover:text-purple-600 transition-all duration-300"
-              >
-                <span>{lang === Language.HE ? 'התעדכן לעדכונים' :
-                         lang === Language.AR ? 'احصل على التحديثات' :
-                         lang === Language.RU ? 'Получайте обновления' :
-                         lang === Language.EL ? 'Λάβετε ενημερώσεις' :
-                         'Get Updates'}</span>
-              </a>
             </div>
           </div>
         </div>
