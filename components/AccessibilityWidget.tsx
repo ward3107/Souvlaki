@@ -174,13 +174,25 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
       {/* Normal state - show full widget */}
       {!isHidden && (
         <div className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50`}>
-          <button
-            onClick={toggleOpen}
-            className="w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
-            aria-label="Accessibility Menu"
-          >
-            <Accessibility className="w-7 h-7" />
-          </button>
+          {/* Accessibility Badge with X button */}
+          <div className="relative group">
+            <button
+              onClick={toggleOpen}
+              className="w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
+              aria-label="Accessibility Menu"
+            >
+              <Accessibility className="w-7 h-7" />
+            </button>
+            {/* X button to close the badge */}
+            <button
+              onClick={closeWidget}
+              className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-[60]"
+              aria-label="Remove Accessibility Badge"
+              title="Remove this badge"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          </div>
 
           {isOpen && (
             <div className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}>
