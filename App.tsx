@@ -1266,6 +1266,24 @@ const App: React.FC = () => {
                 {t('footer_accessibility')}
               </button>
             </div>
+
+            {/* Website Builder Badge */}
+            <div className="flex justify-center md:justify-end items-center">
+              <a
+                href="https://wwebsie-4.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-gray-500 hover:text-gray-300 transition-colors group"
+                title="Built with wwwebsie"
+              >
+                <span className="text-xs">Built with</span>
+                <img
+                  src="/ws-logo-100w.avif"
+                  alt="wwwebsie logo"
+                  className="h-5 w-auto opacity-60 group-hover:opacity-100 transition-opacity"
+                />
+              </a>
+            </div>
           </div>
         </div>
       </footer>
