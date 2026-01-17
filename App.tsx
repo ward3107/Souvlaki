@@ -47,21 +47,21 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
     return () => observer.disconnect();
   }, []);
 
-  // 3D Tilt Logic
+  // 3D Tilt Logic for Desktop (Mouse)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    
+
     // Calculate rotation based on cursor position relative to center
     // Limit rotation to 15 degrees
-    const rotateX = ((y - centerY) / centerY) * -15; 
+    const rotateX = ((y - centerY) / centerY) * -15;
     const rotateY = ((x - centerX) / centerX) * 15;
-    
+
     setRotate({ x: rotateX, y: rotateY });
   };
 
@@ -70,6 +70,66 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
   };
 
   const handleMouseLeave = () => {
+    setIsHovering(false);
+    setRotate({ x: 0, y: 0 });
+  };
+
+  // 3D Tilt Logic for Mobile (Touch)
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!ref.current) return;
+    setIsHovering(true);
+
+    const touch = e.touches[0];
+    const rect = ref.current.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Calculate rotation based on touch position relative to center
+    // Limit rotation to 10 degrees on mobile (subtle effect)
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    setRotate({ x: rotateX, y: rotateY });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    // Only handle touch moves within the card, don't prevent default
+    // This allows normal page scrolling while still providing tilt effect
+    if (!ref.current) return;
+
+    const touch = e.touches[0];
+    const rect = ref.current.getBoundingClientRect();
+
+    // Check if touch is still within the card bounds
+    const isInBounds =
+      touch.clientX >= rect.left &&
+      touch.clientX <= rect.right &&
+      touch.clientY >= rect.top &&
+      touch.clientY <= rect.bottom;
+
+    if (!isInBounds) {
+      setRotate({ x: 0, y: 0 });
+      return;
+    }
+
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    // Calculate rotation based on touch position
+    // Limit rotation to 10 degrees on mobile (subtle effect)
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    setRotate({ x: rotateX, y: rotateY });
+  };
+
+  const handleTouchEnd = () => {
     setIsHovering(false);
     setRotate({ x: 0, y: 0 });
   };
@@ -94,6 +154,9 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
       onMouseMove={isDesktop ? handleMouseMove : undefined}
       onMouseEnter={isDesktop ? handleMouseEnter : undefined}
       onMouseLeave={isDesktop ? handleMouseLeave : undefined}
+      onTouchStart={!isDesktop ? handleTouchStart : undefined}
+      onTouchMove={!isDesktop ? handleTouchMove : undefined}
+      onTouchEnd={!isDesktop ? handleTouchEnd : undefined}
     >
       {/* 3D Card Container */}
       <div 
