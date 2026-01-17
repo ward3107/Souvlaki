@@ -800,105 +800,43 @@ const App: React.FC = () => {
 
             {/* Facebook Reviews Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Sample Facebook Review 1 */}
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-                    <span className="text-xl">👨‍👩‍👧‍👦</span>
+              {/* Call to Action Card */}
+              <div className="md:col-span-3 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-2xl p-8 shadow-lg border border-blue-200 dark:border-blue-800 text-center">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
+                    <Facebook className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                   </div>
-                  <div>
-                    <div className="font-bold text-gray-900 dark:text-white" role="heading" aria-level="4">משפחת כהן</div>
-                    <div className="flex text-yellow-400 text-sm">
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                  {lang === Language.HE
-                    ? 'האוכל מעולה! הסובלקי הכי טוב באזור. שירות מעולה ומחירים הוגנים. ממליצים בחום!'
-                    : lang === Language.AR
-                    ? 'الطعام رائع! أفضل سوفلاكي في المنطقة. خدمة ممتازة وأسعار معقولة. نوصي بشدة!'
-                    : lang === Language.RU
-                    ? 'Еда отличная! Лучший сувлаки в районе. Отличный сервис и честные цены. Настоятельно рекомендуем!'
-                    : lang === Language.EL
-                    ? 'Το φαγητό είναι εξαιρετικό! Το καλύτερο σουβλάκι στην περιοχή. Εξαιρετική εξυπηρέτηση και λογικές τιμές. Το συνιστούμε!'
-                    : 'Amazing food! Best souvlaki in the area. Excellent service and fair prices. Highly recommend!'}
-                </p>
-                <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-500">
-                  <Facebook className="w-3 h-3 text-blue-600" aria-hidden="true" />
-                  <span>Facebook Review</span>
-                </div>
-              </div>
-
-              {/* Sample Facebook Review 2 */}
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/50 rounded-full flex items-center justify-center">
-                    <span className="text-xl">👩</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 dark:text-white" role="heading" aria-level="4">Sarah Johnson</div>
-                    <div className="flex text-yellow-400 text-sm">
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                  {lang === Language.HE
-                    ? 'חוויה מדהימה! הפיתות טריות והמנות ענק. הצוות ידידותי מאוד. נחזור בוודאות!'
-                    : lang === Language.AR
-                    ? 'تجربة رائعة! الخبز طازج والوجبات ضخمة. الموظفون ودودون للغاية. سنعود بالتأكيد!'
-                    : lang === Language.RU
-                    ? 'Потрясающий опыт! Свежий хлеб и огромные порции. Персонал очень дружелюбный. Обязательно вернемся!'
-                    : lang === Language.EL
-                    ? 'Φανταστική εμπειρία! Φρέσκος πίτες και τεράστιες μερίδες. Το προσωπικό είναι πολύ φιλικό. Σίγουρα θα επιστρέψουμε!'
-                    : 'Amazing experience! Fresh pita and huge portions. The staff is so friendly. Will definitely come back!'}
-                </p>
-                <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-500">
-                  <Facebook className="w-3 h-3 text-blue-600" aria-hidden="true" />
-                  <span>Facebook Review</span>
-                </div>
-              </div>
-
-              {/* Sample Facebook Review 3 */}
-              <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-lg border border-gray-100 dark:border-slate-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
-                    <span className="text-xl">👨‍💼</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 dark:text-white" role="heading" aria-level="4">אלכסנדר פטרוב</div>
-                    <div className="flex text-yellow-400 text-sm">
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                      <Star className="w-4 h-4 fill-current" />
-                    </div>
-                  </div>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                  {lang === Language.HE
-                    ? 'טעמים אותנטיים יווניים! הגירוס בשר לבן פשוט מושלם. שווה כל שקל!'
-                    : lang === Language.AR
-                    ? 'نكهات يونانية أصلية! الغيروس باللحم الأبيض ببساطة مثالي. يستحق كل قرش!'
-                    : lang === Language.RU
-                    ? 'Настоящие греческие вкусы! Гирос из белого мяса просто идеален. Стоит каждого шекеля!'
-                    : lang === Language.EL
-                    ? 'Αυθεντικές ελληνικές γεύσεις! Ο γύρος λευκό κρέας είναι απλά τέλειος. Αξίζει κάθε σεντ!'
-                    : 'Authentic Greek flavors! The white meat gyros is simply perfect. Worth every shekel!'}
-                </p>
-                <div className="flex items-center gap-2 text-xs text-gray-600 dark:text-gray-500">
-                  <Facebook className="w-3 h-3 text-blue-600" aria-hidden="true" />
-                  <span>Facebook Review</span>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {lang === Language.HE ? 'השאירו ביקורת אמיתית' :
+                     lang === Language.AR ? 'اترك تقييماً حقيقياً' :
+                     lang === Language.RU ? 'Оставьте настоящий отзыв' :
+                     lang === Language.EL ? 'Αφήστε μια πραγματική κριτική' :
+                     'Leave a Real Review'}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 max-w-md">
+                    {lang === Language.HE
+                      ? 'הזמנו אתכם לשתף את החוויה שלכם עם המסעדה בפייסבוק. הביקורות שלכם עוזרות לנו להשתפר!'
+                      : lang === Language.AR
+                      ? 'ن ندعوكم لمشاركة تجربتكم مع المطعم على فيسبوك. تقييماتكم تساعدنا على التحسن!'
+                      : lang === Language.RU
+                      ? 'Приглашаем вас поделиться своим опытом работы с нашим рестораном на Facebook. Ваши отзывы помогают нам стать лучше!'
+                      : lang === Language.EL
+                      ? 'Σας προσκαλούμε να μοιραστείτε την εμπειρία σας με το εστιατόριό μας στο Facebook. Οι κριτικές σας μας βοηθούν να βελτιωθούμε!'
+                      : 'We invite you to share your experience with our restaurant on Facebook. Your reviews help us improve!'}
+                  </p>
+                  <a
+                    href="https://www.facebook.com/greeksouvlaki/reviews"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
+                  >
+                    <Star className="w-5 h-5" />
+                    <span>{lang === Language.HE ? 'כתוב ביקורת בפייסבוק' :
+                             lang === Language.AR ? 'اكتب تقييماً على فيسبوك' :
+                             lang === Language.RU ? 'Написать отзыв на Facebook' :
+                             lang === Language.EL ? 'Γράψτε κριτική στο Facebook' :
+                             'Write a Review on Facebook'}</span>
+                  </a>
                 </div>
               </div>
             </div>
