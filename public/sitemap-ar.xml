@@ -2,9 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- Arabic Sitemap - خريطة الموقع بالعربية -->
-
-  <!-- Homepage -->
   <url>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#lang=ar</loc>
     <lastmod>2025-01-17</lastmod>
@@ -12,7 +9,6 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- Menu - القائمة -->
   <url>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#menu?lang=ar</loc>
     <lastmod>2025-01-17</lastmod>
@@ -20,7 +16,6 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Gallery - المعرض -->
   <url>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#gallery?lang=ar</loc>
     <lastmod>2025-01-17</lastmod>
@@ -28,7 +23,6 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Contact - اتصل -->
   <url>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#contact?lang=ar</loc>
     <lastmod>2025-01-17</lastmod>
@@ -36,7 +30,6 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- FAQ - الأسئلة الشائعة -->
   <url>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/#faq?lang=ar</loc>
     <lastmod>2025-01-17</lastmod>

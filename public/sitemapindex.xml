@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Main Sitemap (English default) -->
   <sitemap>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/sitemap.xml</loc>
     <lastmod>2025-01-17</lastmod>
   </sitemap>
 
-  <!-- Hebrew Sitemap -->
   <sitemap>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/sitemap-he.xml</loc>
     <lastmod>2025-01-17</lastmod>
   </sitemap>
 
-  <!-- Arabic Sitemap -->
   <sitemap>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/sitemap-ar.xml</loc>
     <lastmod>2025-01-17</lastmod>
   </sitemap>
 
-  <!-- Russian Sitemap -->
   <sitemap>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/sitemap-ru.xml</loc>
     <lastmod>2025-01-17</lastmod>
   </sitemap>
 
-  <!-- Greek Sitemap -->
   <sitemap>
     <loc>https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/sitemap-el.xml</loc>
     <lastmod>2025-01-17</lastmod>
