@@ -169,27 +169,41 @@
         font-size-adjust: 0.5;
         /* Prevent pull-to-refresh and rubber banding on mobile */
         overscroll-behavior: none;
-        /* Control touch actions - only allow pan/zoom */
-        touch-action: pan-x pan-y;
+        /* Control touch actions - only allow vertical scrolling */
+        touch-action: pan-y;
+        /* Prevent horizontal scroll and movement */
+        overflow-x: hidden;
+        position: relative;
       }
       html {
         /* Prevent pull-to-refresh and rubber banding */
         overscroll-behavior: none;
+        /* Prevent horizontal scroll */
+        overflow-x: hidden;
+        /* Prevent horizontal rubber band specifically */
+        overscroll-behavior-x: none;
       }
-      #root { min-height: 100vh; }
+      #root {
+        min-height: 100vh;
+        /* Ensure root doesn't move */
+        position: relative;
+        overflow-x: hidden;
+      }
       /* Loading indicator */
       #reading-guide { display: none; }
       /* Prevent layout shift */
       .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
 
-      /* Reserve space for hero section to prevent CLS */
-      #root {
-        min-height: 100vh;
-      }
-
       /* Prevent layout shift from font loading */
       h1, h2, h3, h4, h5, h6 {
         contain: layout style;
+      }
+
+      /* Prevent any horizontal movement on mobile */
+      @media (max-width: 768px) {
+        * {
+          -webkit-overflow-scrolling: touch;
+        }
       }
     </style>
   </head>

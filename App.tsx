@@ -14,10 +14,22 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
   const [isVisible, setIsVisible] = useState(false);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  
+
   const isRtl = lang === Language.HE || lang === Language.AR;
   const isEven = index % 2 === 0;
+
+  // Detect desktop (non-touch) device using media query for hover capability
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(hover: hover)');
+    setIsDesktop(mediaQuery.matches);
+
+    const handleChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   // Animation Entry Observer
   useEffect(() => {
@@ -70,18 +82,18 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
   };
 
   return (
-    <div 
+    <div
       ref={ref}
-      className={`relative w-full transition-all duration-1000 ease-out 
+      className={`relative w-full transition-all duration-1000 ease-out
         ${isVisible ? 'opacity-100 translate-x-0' : `opacity-0 ${getInitialTransform()}`}
       `}
-      style={{ 
+      style={{
         perspective: '1000px',
         transitionDelay: isVisible ? `${index * 100}ms` : '0ms'
       }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={isDesktop ? handleMouseMove : undefined}
+      onMouseEnter={isDesktop ? handleMouseEnter : undefined}
+      onMouseLeave={isDesktop ? handleMouseLeave : undefined}
     >
       {/* 3D Card Container */}
       <div 
