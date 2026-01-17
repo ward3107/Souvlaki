@@ -8,7 +8,7 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Award, Camera, Heart } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Award, Camera, Heart, Navigation } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
