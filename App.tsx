@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Language, TranslationKey, MenuItem, Review } from './types';
-import { TRANSLATIONS, MENU_ITEMS, FAQS, REVIEWS } from './constants';
+import React, { useState, useEffect, useRef } from 'react';
+import { Language, TranslationKey, MenuItem } from './types';
+import { TRANSLATIONS, MENU_ITEMS, FAQS } from './constants';
 import AccessibilityWidget from './components/AccessibilityWidget';
 import CookieBanner from './components/CookieBanner';
 import LegalDocument from './components/LegalDocument';
@@ -8,7 +8,7 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Quote, Clock, Check, Award, Heart, Camera } from 'lucide-react';
+import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Navigation, Award, Heart, Camera } from 'lucide-react';
 
 const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -137,68 +137,6 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
   );
 };
 
-const ReviewCard: React.FC<{ review: Review; lang: Language; index: number }> = ({ review, lang, index }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div 
-      ref={ref}
-      className={`bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 relative transition-all duration-700 ease-out transform
-        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}
-      `}
-      style={{ transitionDelay: `${index * 150}ms` }}
-    >
-      <div className="absolute top-6 right-6 text-gray-100 dark:text-slate-700 -z-0">
-        <Quote className="w-12 h-12 fill-current transform rotate-180" />
-      </div>
-      
-      <div className="relative z-10">
-        <div className="flex gap-1 mb-4">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />
-          ))}
-        </div>
-        
-        <p className="text-gray-600 dark:text-gray-300 mb-6 italic leading-relaxed min-h-[4rem]">
-          "{review.text[lang]}"
-        </p>
-
-        <div className="flex items-center gap-3 border-t border-gray-100 dark:border-slate-700 pt-4">
-          <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center font-bold text-blue-600 dark:text-blue-300">
-            {review.author.charAt(0)}
-          </div>
-          <div>
-            <h4 className="font-bold text-gray-900 dark:text-white text-sm">{review.author}</h4>
-            <span className="text-xs text-gray-400">{review.date}</span>
-          </div>
-          <div className="ml-auto">
-             <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full opacity-70" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const ParallaxDivider: React.FC<{ image: string }> = ({ image }) => (
   <div 
     className="h-64 md:h-96 w-full bg-fixed bg-center bg-cover relative"
@@ -207,220 +145,6 @@ const ParallaxDivider: React.FC<{ image: string }> = ({ image }) => (
     <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]"></div>
   </div>
 );
-
-const ReviewForm: React.FC<{ t: (key: TranslationKey) => string, onSubmit: (review: any) => void }> = ({ t, onSubmit }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    rating: 0,
-    timeRating: 0,
-    comment: ''
-  });
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  // Quick review tags
-  const quickTags = [
-    { id: 'food', label: 'האוכל היה מעולה 👏', emoji: '👏' },
-    { id: 'service', label: 'שירות מהיר ומצוין ⚡', emoji: '⚡' },
-    { id: 'atmosphere', label: 'אווירה נהדרת 🌟', emoji: '🌟' },
-    { id: 'price', label: 'מחירים הוגנים 💰', emoji: '💰' },
-    { id: 'must-try', label: 'חובה לנסות! 🔥', emoji: '🔥' },
-    { id: 'chips', label: 'אחלה צ\'יפסטי 😋', emoji: '😋' },
-    { id: 'fresh', label: 'רכיבים טריים 🥬', emoji: '🥬' },
-    { id: 'portions', label: 'מנות גדולו�ות 🍽️', emoji: '🍽️' },
-    { id: 'staff', label: 'צוות ידידותי 🤝', emoji: '🤝' },
-    { id: 'authentic', label: 'טעם אותנטי 🇬🇷', emoji: '🇬🇷' },
-  ];
-
-  const handleTagToggle = (tagLabel: string) => {
-    setSelectedTags(prev => {
-      if (prev.includes(tagLabel)) {
-        return prev.filter(t => t !== tagLabel);
-      } else {
-        return [...prev, tagLabel];
-      }
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.rating || !formData.name) return;
-
-    // Combine tags with custom comment
-    const finalComment = [...selectedTags, formData.comment].filter(Boolean).join(' | ');
-
-    setIsSubmitting(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      onSubmit({ ...formData, comment: finalComment });
-      setSubmitted(true);
-      setIsSubmitting(false);
-      setFormData({ name: '', rating: 0, timeRating: 0, comment: '' });
-      setSelectedTags([]);
-      setTimeout(() => setSubmitted(false), 3000);
-    }, 1000);
-  };
-
-  const StarRating = ({ value, onChange, label, icon: Icon = Star }: { value: number, onChange: (v: number) => void, label: string, icon?: React.ElementType }) => (
-    <div className="flex flex-col gap-2">
-      <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</span>
-      <div className="flex gap-2">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <button
-            key={star}
-            type="button"
-            onClick={() => onChange(star)}
-            className="focus:outline-none transition-all duration-200 hover:scale-125 hover:rotate-12 p-1"
-          >
-            <Icon
-              className={`w-8 h-8 transition-all duration-200 ${
-                star <= value
-                  ? 'fill-yellow-400 text-yellow-400 drop-shadow-lg'
-                  : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'
-              }`}
-            />
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="max-w-2xl mx-auto mt-16 relative">
-      {/* Animated gradient border effect */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl opacity-75 blur-sm animate-pulse"></div>
-
-      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border-2 border-blue-200 dark:border-blue-900">
-        {/* Prominent header with icon */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mb-4 shadow-lg animate-bounce">
-            <Star className="w-8 h-8 text-white fill-white" />
-          </div>
-          <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
-            {t('form_title')}
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">⭐ עזור לנו להשתפר - השאר את חוות דעתך! ⭐</p>
-        </div>
-
-      {submitted ? (
-        <div className="flex flex-col items-center justify-center py-10 animate-in fade-in zoom-in duration-300">
-          <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center text-green-600 mb-4">
-            <Check className="w-8 h-8" />
-          </div>
-          <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{t('form_success')}</h4>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <StarRating 
-              value={formData.rating} 
-              onChange={(v) => setFormData({...formData, rating: v})} 
-              label={t('form_rating')}
-            />
-            <StarRating 
-              value={formData.timeRating} 
-              onChange={(v) => setFormData({...formData, timeRating: v})} 
-              label={t('form_time_rating')}
-              icon={Clock}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {t('form_name')}
-            </label>
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-            />
-          </div>
-
-          {/* Quick Tags Section */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
-              🏷️ לחץ כדי לבחור (אופציונלי):
-            </label>
-            <div className="flex flex-wrap gap-2 mb-3">
-              {quickTags.map((tag) => (
-                <button
-                  key={tag.id}
-                  type="button"
-                  onClick={() => handleTagToggle(tag.label)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 transform hover:scale-105 ${
-                    selectedTags.includes(tag.label)
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
-                      : 'bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600 border-2 border-transparent'
-                  }`}
-                >
-                  {tag.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Show selected tags */}
-            {selectedTags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 w-full mb-1">הנבחרים:</span>
-                {selectedTags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="inline-flex items-center gap-1 px-2 py-1 bg-white dark:bg-slate-800 rounded-full text-xs border border-blue-300 dark:border-blue-700"
-                  >
-                    {tag}
-                    <button
-                      type="button"
-                      onClick={() => handleTagToggle(tag)}
-                      className="ml-1 text-blue-600 hover:text-red-500 font-bold"
-                    >
-                      ×
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              {t('form_comment')} <span className="text-gray-400 font-normal">(אופציונלי - הוסף פרטים נוספים)</span>
-            </label>
-            <textarea
-              rows={3}
-              value={formData.comment}
-              onChange={(e) => setFormData({...formData, comment: e.target.value})}
-              placeholder="ספר לנו עוד... (לא חובה)"
-              className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-900/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-none"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting || !formData.rating}
-            className={`w-full py-4 rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2
-              ${isSubmitting || !formData.rating
-                ? 'bg-gray-200 dark:bg-slate-700 text-gray-400 cursor-not-allowed'
-                : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-xl shadow-blue-600/30'}`}
-          >
-            {isSubmitting ? (
-              '...'
-            ) : (
-              <>
-                <Star className="w-5 h-5 fill-white animate-pulse" />
-                {t('form_submit')}
-              </>
-            )}
-          </button>
-        </form>
-      )}
-      </div>
-    </div>
-  );
-};
 
 const App: React.FC = () => {
   // Initialize language from localStorage or browser preference
@@ -448,7 +172,6 @@ const App: React.FC = () => {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isMenuInView, setIsMenuInView] = useState(false);
-  const [reviewsList, setReviewsList] = useState<Review[]>(REVIEWS);
   const [legalDocument, setLegalDocument] = useState<string | null>(null);
   const menuRef = useRef<HTMLElement>(null);
   const langDropdownRef = useRef<HTMLDivElement>(null);
@@ -540,24 +263,6 @@ const App: React.FC = () => {
       top: 0,
       behavior: 'smooth',
     });
-  };
-
-  const handleReviewSubmit = (data: any) => {
-    const newReview: Review = {
-      id: Date.now().toString(),
-      author: data.name,
-      rating: data.rating,
-      date: 'Just now',
-      text: {
-        he: data.comment,
-        en: data.comment,
-        ar: data.comment,
-        ru: data.comment,
-        el: data.comment,
-      }
-    };
-    // Add new review to the top
-    setReviewsList([newReview, ...reviewsList]);
   };
 
   // Lightbox navigation functions
@@ -1260,46 +965,6 @@ const App: React.FC = () => {
               </div>
             </a>
           </div>
-
-          {/* Only show review form when no real reviews yet */}
-          {reviewsList.length === 0 ? (
-            <>
-              {/* Header with invitation to leave first review */}
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-xl">
-                  <Star className="w-10 h-10 text-white fill-white" />
-                </div>
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                  {lang === Language.HE ? 'היה הראשון להשאיר ביקורת!' : 'Be the First to Review!'}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">
-                  {lang === Language.HE
-                    ? 'אין עדיין ביקורות. השאר את חוות הדעת שלך ועזור לנו להשתפר!'
-                    : 'No reviews yet. Share your experience and help us improve!'}
-                </p>
-              </div>
-
-              {/* New Review Form - Centered */}
-              <ReviewForm t={t} onSubmit={handleReviewSubmit} />
-            </>
-          ) : (
-            <>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('reviews_title')}</h2>
-                <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">{t('reviews_subtitle')}</p>
-                <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-4"></div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-16">
-                {reviewsList.map((review, index) => (
-                  <ReviewCard key={review.id} review={review} lang={lang} index={index} />
-                ))}
-              </div>
-
-              {/* New Review Form */}
-              <ReviewForm t={t} onSubmit={handleReviewSubmit} />
-            </>
-          )}
 
           {/* TripAdvisor Review Card */}
           <div className="mt-16">
