@@ -20,7 +20,9 @@
       "Bash(if exist nul del nul)",
       "Bash(timeout:*)",
       "Bash(ping:*)",
-      "Bash(npm ls:*)"
+      "Bash(npm ls:*)",
+      "Bash(gh repo view:*)",
+      "Bash(vercel:*)"
     ]
   }
 }
