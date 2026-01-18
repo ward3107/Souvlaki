@@ -282,12 +282,12 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
 
   const installText = {
     he: {
-      title: 'התקנ את האפליקציה שלנו',
+      title: 'התקנה את האפליקציה שלנו',
       message: 'קבל גישה מהירה ישירות ממסך הבית שלך!',
-      install: 'התקן',
+      install: 'התקנה',
       dismiss: 'לא עכשיו',
       ios: 'הוסף למסך הבית',
-      android: 'התקן אפליקציה'
+      android: 'התקנת אפליקציה'
     },
     en: {
       title: 'Install Our App',
