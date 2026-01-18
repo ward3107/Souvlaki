@@ -25,7 +25,9 @@
       "Bash(vercel:*)",
       "Bash(git pull:*)",
       "Bash(npx vercel:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(npm run preview)",
+      "Bash(cat:*)"
     ]
   }
 }

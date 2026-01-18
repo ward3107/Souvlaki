@@ -221,6 +221,207 @@ const ParallaxDivider: React.FC<{ image: string }> = ({ image }) => (
   </div>
 );
 
+// PWA Install Banner Component
+const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    // Check if already dismissed
+    const dismissed = localStorage.getItem('pwa-install-dismissed');
+    if (dismissed) {
+      return;
+    }
+
+    // Check if already installed
+    const isInstalled = localStorage.getItem('pwa-installed');
+    if (isInstalled) {
+      return;
+    }
+
+    // Listen for install prompt
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowBanner(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    // Also show banner after 3 seconds if no prompt event
+    const timer = setTimeout(() => {
+      if (!deferredPrompt) {
+        setShowBanner(true);
+      }
+    }, 3000);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+      clearTimeout(timer);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        localStorage.setItem('pwa-installed', 'true');
+      }
+      setDeferredPrompt(null);
+    }
+    setShowBanner(false);
+  };
+
+  const handleDismiss = () => {
+    localStorage.setItem('pwa-install-dismissed', 'true');
+    setShowBanner(false);
+  };
+
+  if (!showBanner) return null;
+
+  const installText = {
+    he: {
+      title: 'התקנ את האפליקציה שלנו',
+      message: 'קבל גישה מהירה ישירות ממסך הבית שלך!',
+      install: 'התקן',
+      dismiss: 'לא עכשיו',
+      ios: 'הוסף למסך הבית',
+      android: 'התקן אפליקציה'
+    },
+    en: {
+      title: 'Install Our App',
+      message: 'Get quick access right from your home screen!',
+      install: 'Install',
+      dismiss: 'Not now',
+      ios: 'Add to Home Screen',
+      android: 'Install app'
+    },
+    ar: {
+      title: 'ثبت تطبيقنا',
+      message: 'احصل على وصول سريع من الشاشة الرئيسية!',
+      install: 'تثبيت',
+      dismiss: 'ليس الآن',
+      ios: 'إضافة إلى الشاشة الرئيسية',
+      android: 'تثبيت التطبيق'
+    },
+    ru: {
+      title: 'Установите наше приложение',
+      message: 'Быстрый доступ с главного экрана!',
+      install: 'Установить',
+      dismiss: 'Не сейчас',
+      ios: 'На главный экран',
+      android: 'Установить приложение'
+    },
+    el: {
+      title: 'Εγκαταστήστε την εφαρμογή μας',
+      message: 'Γρήγορη πρόσβαση από την αρχική οθόνη!',
+      install: 'Εγκατάσταση',
+      dismiss: 'Όχι τώρα',
+      ios: 'Στην αρχική οθόνη',
+      android: 'Εγκατάσταση εφαρμογής'
+    }
+  };
+
+  const t = installText[lang] || installText.en;
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isAndroid = /Android/.test(navigator.userAgent);
+
+  return (
+    <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-96 z-40 animate-slide-up">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-2xl p-4 text-white">
+        <div className="flex items-start gap-4">
+          {/* Icon */}
+          <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+            <span className="text-3xl font-bold text-blue-600">Σ</span>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            <h3 className="font-bold text-lg mb-1">{t.title}</h3>
+            <p className="text-sm opacity-90 mb-3">{t.message}</p>
+
+            {/* Buttons */}
+            <div className="flex gap-2">
+              {isIOS ? (
+                <button
+                  onClick={() => {
+                    setShowBanner(false);
+                    // iOS instructions will show in a modal
+                  }}
+                  className="flex-1 bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-opacity-90 transition-opacity"
+                >
+                  {t.ios}
+                </button>
+              ) : isAndroid || deferredPrompt ? (
+                <button
+                  onClick={handleInstall}
+                  className="flex-1 bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-opacity-90 transition-opacity"
+                >
+                  {t.install}
+                </button>
+              ) : (
+                <button
+                  onClick={handleInstall}
+                  className="flex-1 bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-opacity-90 transition-opacity"
+                >
+                  {t.install}
+                </button>
+              )}
+
+              <button
+                onClick={handleDismiss}
+                className="px-4 py-2 rounded-lg font-semibold text-sm hover:bg-white/10 transition-colors"
+              >
+                {t.dismiss}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* iOS Instructions Modal */}
+      {isIOS && showBanner && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setShowBanner(false)}
+        >
+          <div
+            className="bg-white rounded-2xl p-6 max-w-md w-full text-gray-900"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-xl font-bold mb-4 text-center">{t.ios}</h3>
+            <div className="space-y-4 text-sm">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">1</div>
+                <p>Tap the <strong className="text-blue-600">Share</strong> button</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">2</div>
+                <p>Scroll down and tap <strong className="text-blue-600">Add to Home Screen</strong></p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">3</div>
+                <p>Tap <strong className="text-blue-600">Add</strong> to install</p>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                localStorage.setItem('pwa-install-dismissed', 'true');
+                setShowBanner(false);
+              }}
+              className="w-full mt-6 bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 // Share Button Component
 const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
   const [showShareModal, setShowShareModal] = useState(false);
@@ -1716,6 +1917,7 @@ const App: React.FC = () => {
       {/* --- WIDGETS --- */}
       <AccessibilityWidget language={lang} />
       <CookieBanner language={lang} />
+      <InstallBanner lang={lang} />
       <ShareButton lang={lang} />
 
       {/* Lightbox */}
