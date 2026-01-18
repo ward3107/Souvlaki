@@ -87,3 +87,8 @@ html.invert-mode .invert-protect {
 body.reading-guide-active #reading-guide {
   display: block;
 }
+
+/* Custom z-index utilities */
+.z-45 {
+  z-index: 45;
+}

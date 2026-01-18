@@ -22,7 +22,8 @@
       "Bash(ping:*)",
       "Bash(npm ls:*)",
       "Bash(gh repo view:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "Bash(cat:*)"
     ]
   }
 }

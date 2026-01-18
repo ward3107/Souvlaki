@@ -1805,7 +1805,7 @@ const App: React.FC = () => {
         href="https://wa.me/972542001235"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 rtl:right-auto rtl:left-6 z-40 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-xl mix-blend-difference hover:scale-110 transition-all duration-300"
+        className="fixed bottom-16 right-6 rtl:right-auto rtl:left-6 z-45 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-xl mix-blend-difference hover:scale-110 transition-all duration-300"
         aria-label="Chat on WhatsApp"
       >
         <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current">
