@@ -427,6 +427,7 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
   const [showShareModal, setShowShareModal] = useState(false);
 
   const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://greek-souvlaki-website.vercel.app';
+  const isRtl = lang === Language.HE || lang === Language.AR;
   const shareText = {
     he: 'בואו לסובלקי יווני כפר יאסיף! תלוו להזמין טעימה',
     ar: 'مرحباً بكم في سوفلاكي يوناني كفر ياسيف! تفضلوا للحجز',
@@ -483,7 +484,7 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
       {/* Floating Share Button */}
       <button
         onClick={() => setShowShareModal(!showShareModal)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 animate-heartbeat"
+        className={`fixed bottom-6 ${isRtl ? 'left-6' : 'right-6'} z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 animate-heartbeat`}
         aria-label="Share"
         style={{
           animation: 'heartbeat 1.5s ease-in-out infinite'
@@ -1994,7 +1995,7 @@ const App: React.FC = () => {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-24 right-6 rtl:right-auto rtl:left-6 z-40 w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-all transform hover:-translate-y-1 mix-blend-difference hover:scale-110"
+          className="fixed bottom-44 right-6 rtl:right-auto rtl:left-6 z-40 w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-all transform hover:-translate-y-1 mix-blend-difference hover:scale-110"
           aria-label="Back to Top"
         >
           <ArrowUp className="w-6 h-6" />
@@ -2006,7 +2007,7 @@ const App: React.FC = () => {
         href="https://wa.me/972542001235"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 rtl:right-auto rtl:left-6 z-40 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-xl mix-blend-difference hover:scale-110 transition-all duration-300"
+        className="fixed bottom-28 right-6 rtl:right-auto rtl:left-6 z-45 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-xl mix-blend-difference hover:scale-110 transition-all duration-300"
         aria-label="Chat on WhatsApp"
       >
         <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current">

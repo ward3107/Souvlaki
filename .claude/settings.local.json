@@ -23,12 +23,7 @@
       "Bash(npm ls:*)",
       "Bash(gh repo view:*)",
       "Bash(vercel:*)",
-      "Bash(git pull:*)",
-      "Bash(npx vercel:*)",
-      "Bash(git checkout:*)",
-      "Bash(npm run preview)",
-      "Bash(cat:*)",
-      "Bash(curl:*)"
+      "Bash(cat:*)"
     ]
   }
 }

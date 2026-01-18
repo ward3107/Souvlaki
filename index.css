@@ -88,18 +88,7 @@ body.reading-guide-active #reading-guide {
   display: block;
 }
 
-/* PWA Install Banner Animation */
-@keyframes slide-up {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-slide-up {
-  animation: slide-up 0.5s ease-out;
+/* Custom z-index utilities */
+.z-45 {
+  z-index: 45;
 }
