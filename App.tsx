@@ -333,8 +333,8 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl shadow-2xl p-4 text-white">
         <div className="flex items-start gap-4">
           {/* Icon */}
-          <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-            <span className="text-3xl font-bold text-blue-600">Σ</span>
+          <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg overflow-hidden">
+            <img src="/pwa-icon.png" alt="Greek Souvlaki" className="w-full h-full object-cover" />
           </div>
 
           {/* Content */}
