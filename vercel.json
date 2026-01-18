@@ -17,7 +17,7 @@
   },
   "rewrites": [
     {
-      "source": "/((?!api|_next|_vercel|sw\\.js|manifest|service-worker|images|icons|js|css|fonts).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
