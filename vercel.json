@@ -17,7 +17,7 @@
   },
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!manifest\\.webmanifest|manifest\\.json|sw\\.js|workbox-.+\\.js|.*\\.(?:js|css|png|jpg|jpeg|svg|gif|webp|ico|woff2|woff|ttf|json|html|webmanifest)).*)",
       "destination": "/index.html"
     }
   ],
@@ -153,6 +153,14 @@
         {
           "key": "Cache-Control",
           "value": "public, max-age=86400"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/manifest+json"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
       ]
     }
