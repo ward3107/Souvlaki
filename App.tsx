@@ -1455,7 +1455,7 @@ const App: React.FC = () => {
           {/* Google Business Profile Card - Prominent */}
           <div className="mb-8 max-w-4xl mx-auto">
             <a
-              href="https://search.google.com/local/writereview?placeid=ChIJY3h7h8F9NhURRQKF3LxiNIg"
+              href="https://search.google.com/local/writereview?placeid=ChIJwc9vQ-nNHRUROUo1ZqQ-z_k"
               target="_blank"
               rel="noopener noreferrer"
               className="block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
