@@ -38,7 +38,8 @@ const MenuItemCard: React.FC<{
   lang: Language;
   index: number;
   t: (key: TranslationKey) => string;
-}> = ({ item, lang, index, t }) => {
+  onOrder?: () => void;
+}> = ({ item, lang, index, t, onOrder }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -230,7 +231,11 @@ const MenuItemCard: React.FC<{
             {item.description[lang]}
           </p>
 
-          <button className="w-full py-3 rounded-xl bg-gray-50 dark:bg-slate-700 hover:bg-blue-600 hover:text-white text-gray-900 dark:text-white font-bold transition-all duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-1 flex items-center justify-center gap-2">
+          <button
+            onClick={onOrder}
+            className="w-full py-3 rounded-xl bg-gray-50 dark:bg-slate-700 hover:bg-blue-600 hover:text-white text-gray-900 dark:text-white font-bold transition-all duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-1 flex items-center justify-center gap-2"
+            aria-label={`Order ${item.name[lang]} - view contact options`}
+          >
             {t('hero_cta_order')}
           </button>
         </div>
@@ -464,6 +469,8 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
 // Share Button Component
 const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
   const [showShareModal, setShowShareModal] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const triggerButtonRef = useRef<HTMLButtonElement>(null);
 
   const shareUrl =
     typeof window !== 'undefined'
@@ -527,13 +534,40 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
     }
   };
 
+  // Focus management for modal
+  useEffect(() => {
+    if (showShareModal && modalRef.current) {
+      // Focus the modal when opened
+      modalRef.current.focus();
+    } else if (!showShareModal && triggerButtonRef.current) {
+      // Return focus to trigger button when closed
+      triggerButtonRef.current.focus();
+    }
+  }, [showShareModal]);
+
+  // Escape key handler
+  useEffect(() => {
+    if (!showShareModal) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowShareModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [showShareModal]);
+
   return (
     <>
       {/* Floating Share Button */}
       <button
+        ref={triggerButtonRef}
         onClick={() => setShowShareModal(!showShareModal)}
         className={`fixed bottom-6 ${isRtl ? 'left-6' : 'right-6'} z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 animate-heartbeat`}
         aria-label="Share"
+        aria-expanded={showShareModal}
         style={{
           animation: 'heartbeat 1.5s ease-in-out infinite',
         }}
@@ -564,10 +598,14 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
           onClick={() => setShowShareModal(false)}
+          aria-modal="true"
+          role="dialog"
         >
           <div
-            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6"
+            ref={modalRef}
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 outline-none"
             onClick={(e) => e.stopPropagation()}
+            tabIndex={-1}
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
@@ -2151,38 +2189,40 @@ const App: React.FC = () => {
           </div>
 
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-70 hover:opacity-100 transition-opacity">
-            <p>{t('footer_copyright')}</p>
+            <p className="text-gray-400 dark:text-gray-500">{t('footer_copyright')}</p>
             <div className="flex gap-4 flex-wrap justify-center md:justify-end items-center">
-              <button
-                onClick={() => {
-                  console.log('Terms clicked - opening modal');
+              <a
+                href="/legal/terms-of-use.md"
+                onClick={(e) => {
+                  e.preventDefault();
                   setLegalDocument('/legal/terms-of-use.md');
-                  setTimeout(() => console.log('legalDocument state set'), 100);
                 }}
                 className="text-gray-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_terms')}
-              </button>
+              </a>
               <span className="text-gray-600">•</span>
-              <button
-                onClick={() => {
-                  console.log('Privacy clicked - opening modal');
+              <a
+                href="/legal/privacy-policy.md"
+                onClick={(e) => {
+                  e.preventDefault();
                   setLegalDocument('/legal/privacy-policy.md');
                 }}
                 className="text-gray-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_privacy')}
-              </button>
+              </a>
               <span className="text-gray-600">•</span>
-              <button
-                onClick={() => {
-                  console.log('Accessibility clicked - opening modal');
+              <a
+                href="/legal/accessibility-statement.md"
+                onClick={(e) => {
+                  e.preventDefault();
                   setLegalDocument('/legal/accessibility-statement.md');
                 }}
                 className="text-gray-400 dark:text-gray-500 hover:text-blue-400 dark:hover:text-blue-400 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
               >
                 {t('footer_accessibility')}
-              </button>
+              </a>
             </div>
 
             {/* Website Builder Badge */}
@@ -2280,7 +2320,7 @@ const App: React.FC = () => {
           {/* Main Image */}
           <img
             src={galleryImages[lightboxIndex]}
-            alt={`Gallery ${lightboxIndex + 1}`}
+            alt={`Restaurant photo ${lightboxIndex + 1} of ${galleryImages.length}`}
             className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl z-1 transition-opacity duration-300"
           />
 
