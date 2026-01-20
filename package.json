@@ -6,7 +6,19 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "build:analyze": "vite build --mode analyze",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:ci": "vitest --run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "prepare": "husky"
   },
   "dependencies": {
     "lucide-react": "^0.562.0",
@@ -15,16 +27,37 @@
     "react-markdown": "^10.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.3.1",
+    "@commitlint/config-conventional": "^20.3.1",
+    "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.57.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.14.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/ui": "^4.0.17",
     "autoprefixer": "^10.4.23",
+    "eslint": "^9.39.2",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.26",
     "heic-decode": "^2.1.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.4.0",
+    "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
+    "prettier": "^3.8.0",
+    "rollup-plugin-visualizer": "^6.0.5",
     "sharp-heic": "^0.0.1-security",
     "tailwindcss": "^3.4.19",
     "typescript": "~5.8.2",
+    "typescript-eslint": "^8.53.1",
     "vite": "^6.2.0",
     "vite-plugin-pwa": "^1.2.0",
+    "vitest": "^4.0.17",
     "workbox-window": "^7.4.0"
   }
 }

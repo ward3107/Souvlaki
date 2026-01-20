@@ -30,3 +30,12 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# Test artifacts
+coverage
+playwright-report
+test-results
+*.lcov
+
+# Build stats
+dist/stats.html
