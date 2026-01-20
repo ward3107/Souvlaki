@@ -1523,8 +1523,8 @@ const App: React.FC = () => {
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
                   <a
-                    href="https://www.facebook.com/greeksouvlaki/reviews"
-                    target="_self"
+                    href="https://www.facebook.com/profile.php?id=100089667506328"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
                   >
@@ -1542,8 +1542,8 @@ const App: React.FC = () => {
                     </span>
                   </a>
                   <a
-                    href="https://www.facebook.com/greeksouvlaki/reviews"
-                    target="_self"
+                    href="https://www.facebook.com/profile.php?id=100089667506328"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-full font-bold hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 transition-all duration-300"
                   >
@@ -2150,7 +2150,7 @@ const App: React.FC = () => {
             {/* Social Media Section */}
             <div className="flex gap-4">
               <a
-                href="https://www.facebook.com/greeksouvlaki"
+                href="https://www.facebook.com/profile.php?id=100089667506328"
                 target="_self"
                 rel="noopener noreferrer"
                 className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group"
