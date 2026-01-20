@@ -1564,13 +1564,21 @@ const App: React.FC = () => {
                   <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
                     <span className="block text-3xl font-bold text-blue-600 mb-1">100%</span>
                     <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">
-                      Authentic
+                      {tx('אותנטי', 'Authentic', 'أصلي', 'Аутентичный', 'Αυθεντικό')}
                     </span>
                   </div>
                   <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
-                    <span className="block text-3xl font-bold text-blue-600 mb-1">Fresh</span>
+                    <span className="block text-3xl font-bold text-blue-600 mb-1">
+                      {tx('טרי', 'Fresh', 'طازج', 'Свежий', 'Φρέσκο')}
+                    </span>
                     <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">
-                      Daily Ingredients
+                      {tx(
+                        'מרכיבים יומיים',
+                        'Daily Ingredients',
+                        'مكونات يومية',
+                        'Ежедневные ингредиенты',
+                        'Καθημερινά υλικά'
+                      )}
                     </span>
                   </div>
                 </div>
