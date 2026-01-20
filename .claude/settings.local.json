@@ -23,7 +23,11 @@
       "Bash(npm ls:*)",
       "Bash(gh repo view:*)",
       "Bash(vercel:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git checkout:*)",
+      "Bash(npx vercel:*)",
+      "Bash(git merge:*)",
+      "Bash(npx husky init)"
     ]
   }
 }
