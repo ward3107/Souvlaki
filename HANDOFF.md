@@ -80,30 +80,30 @@ Your new modern, professional restaurant website is live and accessible to custo
 
 ### Functionality
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Multi-language switching | ✅ Working | All 5 languages functional |
-| Responsive design | ✅ Working | Tested on desktop, tablet, mobile |
-| Dark mode | ✅ Working | Automatic based on system |
-| Menu display | ✅ Working | All items visible |
-| WhatsApp button | ✅ Working | Links to +972-54-200-1235 |
-| Google Maps | ✅ Working | Routes to restaurant |
-| Facebook reviews | ✅ Working | Displays live reviews |
-| Opening hours | ✅ Working | Shows current status |
-| Language switcher | ✅ Working | In header navigation |
-| Contact form | ✅ Working | Click-to-call, WhatsApp |
-| 3D card effects | ✅ Working | Desktop & mobile |
-| Parallax scrolling | ✅ Working | Desktop & mobile |
+| Feature                  | Status     | Notes                             |
+| ------------------------ | ---------- | --------------------------------- |
+| Multi-language switching | ✅ Working | All 5 languages functional        |
+| Responsive design        | ✅ Working | Tested on desktop, tablet, mobile |
+| Dark mode                | ✅ Working | Automatic based on system         |
+| Menu display             | ✅ Working | All items visible                 |
+| WhatsApp button          | ✅ Working | Links to +972-54-200-1235         |
+| Google Maps              | ✅ Working | Routes to restaurant              |
+| Facebook reviews         | ✅ Working | Displays live reviews             |
+| Opening hours            | ✅ Working | Shows current status              |
+| Language switcher        | ✅ Working | In header navigation              |
+| Contact form             | ✅ Working | Click-to-call, WhatsApp           |
+| 3D card effects          | ✅ Working | Desktop & mobile                  |
+| Parallax scrolling       | ✅ Working | Desktop & mobile                  |
 
 ### SEO & Performance
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| Mobile Friendly | ✅ Pass | Google test passed |
-| PageSpeed Score | 🎯 90+ target | Optimized |
-| Sitemaps | ✅ Submitted | 5 sitemaps (one per language) |
-| Schema.org | ✅ Implemented | Restaurant schema |
-| Meta Tags | ✅ Complete | Open Graph, Twitter Cards |
+| Metric          | Value          | Status                        |
+| --------------- | -------------- | ----------------------------- |
+| Mobile Friendly | ✅ Pass        | Google test passed            |
+| PageSpeed Score | 🎯 90+ target  | Optimized                     |
+| Sitemaps        | ✅ Submitted   | 5 sitemaps (one per language) |
+| Schema.org      | ✅ Implemented | Restaurant schema             |
+| Meta Tags       | ✅ Complete    | Open Graph, Twitter Cards     |
 
 ---
 
@@ -134,6 +134,7 @@ Your new modern, professional restaurant website is live and accessible to custo
 ### For Website Issues
 
 **Developer Contact**: Waseem
+
 - **WhatsApp**: +972-54-200-1235
 - **Email**: [Your email]
 - **Response Time**: Within 24 hours
@@ -210,11 +211,12 @@ These features can be added in the future:
 
 - ✅ Google Search Console configured
 - ✅ Sitemaps submitted to Google
-- ⚠️ Google Analytics - *Can be added on request*
+- ⚠️ Google Analytics - _Can be added on request_
 
 ### Monthly Reporting (Optional)
 
 Monthly reports can include:
+
 - Website visitors
 - Popular pages
 - Search rankings
@@ -228,6 +230,7 @@ Monthly reports can include:
 ### Content Updates
 
 For small changes (prices, hours, menu items):
+
 1. Send changes via WhatsApp or Email
 2. Updates made within 24-48 hours
 3. No additional cost (included in support)
@@ -235,6 +238,7 @@ For small changes (prices, hours, menu items):
 ### Major Changes
 
 For new features or significant updates:
+
 1. Request via email/WhatsApp
 2. Developer provides quote
 3. Approval required
@@ -250,15 +254,16 @@ For new features or significant updates:
 
 **Recommended**: Monthly retainer for ongoing support
 
-| Package | Price | Includes |
-|---------|-------|----------|
-| **Basic** | ₪500/month | • Bug fixes<br>• Content updates (up to 5/month)<br>• Performance monitoring<br>• Email support |
-| **Standard** | ₪1,000/month | • Everything in Basic<br>• Google Analytics reports<br>• SEO monitoring<br>• Priority support<br>• WhatsApp updates |
-| **Premium** | ₪2,000/month | • Everything in Standard<br>• New features (2 hours/month)<br>• Security updates<br>• Backup management<br>• Phone support |
+| Package      | Price        | Includes                                                                                                                   |
+| ------------ | ------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| **Basic**    | ₪500/month   | • Bug fixes<br>• Content updates (up to 5/month)<br>• Performance monitoring<br>• Email support                            |
+| **Standard** | ₪1,000/month | • Everything in Basic<br>• Google Analytics reports<br>• SEO monitoring<br>• Priority support<br>• WhatsApp updates        |
+| **Premium**  | ₪2,000/month | • Everything in Standard<br>• New features (2 hours/month)<br>• Security updates<br>• Backup management<br>• Phone support |
 
 ### Per-Project Pricing
 
 For specific new features:
+
 - **Hourly Rate**: ₪200-300/hour
 - **Project Quote**: Based on requirements
 

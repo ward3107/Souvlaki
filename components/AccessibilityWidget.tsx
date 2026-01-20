@@ -10,7 +10,7 @@ import {
   Contrast,
   Link,
   RotateCcw,
-  X
+  X,
 } from 'lucide-react';
 
 const STORAGE_KEY = 'accessibility_widget_hidden';
@@ -19,11 +19,33 @@ interface AccessibilityWidgetProps {
   language: string;
 }
 
+interface FeatureButtonProps {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ElementType;
+  label: string;
+}
+
+const FeatureButton: React.FC<FeatureButtonProps> = ({ active, onClick, icon: Icon, label }) => (
+  <button
+    onClick={onClick}
+    className={`w-full p-2 rounded-lg flex items-center gap-3 transition-colors ${
+      active
+        ? 'bg-blue-600 text-white'
+        : 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
+    }`}
+  >
+    <Icon className="w-5 h-5 shrink-0" />
+    <span className="text-sm font-medium">{label}</span>
+    {active && <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>}
+  </button>
+);
+
 const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
+  const [isHidden, setIsHidden] = useState(() => localStorage.getItem(STORAGE_KEY) === 'true');
   const [fontSize, setFontSize] = useState(100);
-  
+
   // Feature States
   const [features, setFeatures] = useState({
     contrast: false,
@@ -37,14 +59,6 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
   });
 
   const toggleOpen = () => setIsOpen(!isOpen);
-
-  // Check localStorage on mount for widget hidden state
-  useEffect(() => {
-    const hiddenState = localStorage.getItem(STORAGE_KEY);
-    if (hiddenState === 'true') {
-      setIsHidden(true);
-    }
-  }, []);
 
   // Close widget and persist to localStorage
   const closeWidget = () => {
@@ -84,7 +98,6 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
 
     // Reading Guide
     body.classList.toggle('reading-guide-active', features.readingGuide);
-
   }, [fontSize, features]);
 
   // Reading Guide Logic
@@ -107,7 +120,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
   };
 
   const toggleFeature = (key: keyof typeof features) => {
-    setFeatures(prev => ({ ...prev, [key]: !prev[key] }));
+    setFeatures((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   const reset = () => {
@@ -125,31 +138,6 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
   };
 
   const isRtl = language === 'he' || language === 'ar';
-
-  const FeatureButton = ({ 
-    active, 
-    onClick, 
-    icon: Icon, 
-    label 
-  }: { 
-    active: boolean; 
-    onClick: () => void; 
-    icon: React.ElementType; 
-    label: string; 
-  }) => (
-    <button 
-      onClick={onClick} 
-      className={`w-full p-2 rounded-lg flex items-center gap-3 transition-colors ${
-        active 
-          ? 'bg-blue-600 text-white' 
-          : 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-slate-700 dark:text-gray-200 dark:hover:bg-slate-600'
-      }`}
-    >
-      <Icon className="w-5 h-5 shrink-0" />
-      <span className="text-sm font-medium">{label}</span>
-      {active && <div className="ml-auto w-2 h-2 bg-white rounded-full"></div>}
-    </button>
-  );
 
   return (
     <>
@@ -178,7 +166,9 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
           </div>
 
           {isOpen && (
-            <div className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}>
+            <div
+              className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}
+            >
               <div className="flex justify-between items-center border-b pb-2 dark:border-slate-600 sticky top-0 bg-white dark:bg-slate-800 z-10">
                 <h3 className="font-bold text-lg dark:text-white flex items-center gap-2">
                   <Accessibility className="w-5 h-5" aria-hidden="true" />
@@ -204,68 +194,80 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
                 </div>
               </div>
 
-          <div className="space-y-2">
-            <p className="text-sm font-medium dark:text-gray-300">Text Size: {fontSize}%</p>
-            <div className="flex gap-2">
-              <button onClick={() => adjustFontSize(-10)} className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg" aria-label="Decrease text size">A-</button>
-              <button onClick={() => adjustFontSize(10)} className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg" aria-label="Increase text size">A+</button>
-            </div>
-          </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium dark:text-gray-300">Text Size: {fontSize}%</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => adjustFontSize(-10)}
+                    className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg"
+                    aria-label="Decrease text size"
+                  >
+                    A-
+                  </button>
+                  <button
+                    onClick={() => adjustFontSize(10)}
+                    className="flex-1 bg-gray-100 dark:bg-slate-700 p-2 rounded hover:bg-gray-200 dark:hover:bg-slate-600 font-bold text-lg"
+                    aria-label="Increase text size"
+                  >
+                    A+
+                  </button>
+                </div>
+              </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <FeatureButton 
-              active={features.readableFont} 
-              onClick={() => toggleFeature('readableFont')} 
-              icon={Type} 
-              label="Readable Font" 
-            />
-            <FeatureButton 
-              active={features.highlightLinks} 
-              onClick={() => toggleFeature('highlightLinks')} 
-              icon={Link} 
-              label="Highlight Links" 
-            />
-             <FeatureButton 
-              active={features.contrast} 
-              onClick={() => toggleFeature('contrast')} 
-              icon={Contrast} 
-              label="High Contrast" 
-            />
-            <FeatureButton 
-              active={features.grayscale} 
-              onClick={() => toggleFeature('grayscale')} 
-              icon={Palette} 
-              label="Grayscale" 
-            />
-            <FeatureButton 
-              active={features.invert} 
-              onClick={() => toggleFeature('invert')} 
-              icon={Eye} 
-              label="Invert Colors" 
-            />
-            <FeatureButton 
-              active={features.bigCursor} 
-              onClick={() => toggleFeature('bigCursor')} 
-              icon={MousePointer2} 
-              label="Big Cursor" 
-            />
-            <FeatureButton 
-              active={features.readingGuide} 
-              onClick={() => toggleFeature('readingGuide')} 
-              icon={ScanLine} 
-              label="Reading Guide" 
-            />
-            <FeatureButton 
-              active={features.stopAnimations} 
-              onClick={() => toggleFeature('stopAnimations')} 
-              icon={Pause} 
-              label="Stop Animation" 
-            />
-          </div>
+              <div className="grid grid-cols-2 gap-2">
+                <FeatureButton
+                  active={features.readableFont}
+                  onClick={() => toggleFeature('readableFont')}
+                  icon={Type}
+                  label="Readable Font"
+                />
+                <FeatureButton
+                  active={features.highlightLinks}
+                  onClick={() => toggleFeature('highlightLinks')}
+                  icon={Link}
+                  label="Highlight Links"
+                />
+                <FeatureButton
+                  active={features.contrast}
+                  onClick={() => toggleFeature('contrast')}
+                  icon={Contrast}
+                  label="High Contrast"
+                />
+                <FeatureButton
+                  active={features.grayscale}
+                  onClick={() => toggleFeature('grayscale')}
+                  icon={Palette}
+                  label="Grayscale"
+                />
+                <FeatureButton
+                  active={features.invert}
+                  onClick={() => toggleFeature('invert')}
+                  icon={Eye}
+                  label="Invert Colors"
+                />
+                <FeatureButton
+                  active={features.bigCursor}
+                  onClick={() => toggleFeature('bigCursor')}
+                  icon={MousePointer2}
+                  label="Big Cursor"
+                />
+                <FeatureButton
+                  active={features.readingGuide}
+                  onClick={() => toggleFeature('readingGuide')}
+                  icon={ScanLine}
+                  label="Reading Guide"
+                />
+                <FeatureButton
+                  active={features.stopAnimations}
+                  onClick={() => toggleFeature('stopAnimations')}
+                  icon={Pause}
+                  label="Stop Animation"
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
-      </div>
-    )}
     </>
   );
 };

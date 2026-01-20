@@ -11,6 +11,7 @@
 Greek Souvlaki Kfar Yasif is committed to ensuring digital accessibility for people with disabilities.
 
 ### Accessibility Features
+
 Our website includes the following accessibility features:
 
 1. **Multi-Language Support**
@@ -36,12 +37,15 @@ Our website includes the following accessibility features:
    - Keyboard navigation support
 
 ### How to Use
+
 1. Click the accessibility icon (bottom left/right corner)
 2. Adjust settings to your needs
 3. Settings are saved for future visits
 
 ### Contact Us
+
 If you have any accessibility issues or suggestions:
+
 - 📞 Phone: 04-812-2980
 - 📧 WhatsApp: +972 54-200-1235
 - 📍 In person: Route 70, Kafr Yasif
@@ -57,6 +61,7 @@ We are continuously improving accessibility and welcome your feedback.
 סובלקי יווני כפר יאסיף מחויב להבטיח נגישות דיגיטלית לאנשים עם מוגבלויות.
 
 ### תכונות נגישות
+
 האתר שלנו כולל את התכונות הבאות:
 
 1. **תמיכה רב-לשונית**
@@ -82,6 +87,7 @@ We are continuously improving accessibility and welcome your feedback.
    - תמיכה בניווט מקלדת
 
 ### איך להשתמש
+
 1. לחץ על סמל הנגישות (בפינה השמאלית/ימנית התחתונה)
 2. התאם את ההגדרות לצרכים שלך
 3. ההגדרות נשמרות לביקורות עתידיות
@@ -95,6 +101,7 @@ We are continuously improving accessibility and welcome your feedback.
 يلتزم سوفلاكي يوناني كفر ياسيف بضمان إمكانية الوصول الرقمي للأشخاص ذوي الإعاقة.
 
 ### ميزات إمكانية الوصول
+
 يتضمن موقعنا الإلكتروني الميزات التالية:
 
 1. **دعم متعدد اللغات**

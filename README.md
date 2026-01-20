@@ -5,31 +5,35 @@
     <img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-1280w.webp" alt="Greek Souvlaki" width="1200" height="400">
   </h1>
 
-  # 🇬🇷 Greek Souvlaki Kfar Yasif
+# 🇬🇷 Greek Souvlaki Kfar Yasif
 
-  **A modern, high-performance multi-language responsive website for an authentic Greek restaurant in Kfar Yasif, Israel**
+**A modern, high-performance multi-language responsive website for an authentic Greek restaurant in Kfar Yasif, Israel**
 
-  [![Live Demo](https://img.shields.io/badge/🚀-Live_Demo-success?style=for-the-badge&logo=vercel&logoColor=white)](https://greek-souvlaki-website-ixley74ef-wassems-projects-ab3ab6ba.vercel.app/)
-  [![GitHub Stars](https://img.shields.io/github/stars/ward3107/Souvlaki?style=for-the-badge&logo=github&color=yellow)](https://github.com/ward3107/Souvlaki/stargazers)
-  [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/🚀-Live_Demo-success?style=for-the-badge&logo=vercel&logoColor=white)](https://greek-souvlaki-website-ixley74ef-wassems-projects-ab3ab6ba.vercel.app/)
+[![GitHub Stars](https://img.shields.io/github/stars/ward3107/Souvlaki?style=for-the-badge&logo=github&color=yellow)](https://github.com/ward3107/Souvlaki/stargazers)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
   <!-- Tech Stack Badges -->
-  [![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  [![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
-  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.19-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+
+[![React](https://img.shields.io/badge/React-19.2.3-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-6.2.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.19-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
   <!-- Performance Badges -->
-  [![Performance](https://img.shields.io/badge/⚡-Performance-Excellent-success?style=for-the-badge)](#performance)
-  [![Mobile Friendly](https://img.shields.io/badge/📱-Mobile_Friendly-4CAF50?style=for-the-badge)](https://search.google.com/test/mobile-friendly)
-  [![SEO](https://img.shields.io/badge/🔍-SEO_Optimized-4CAF50?style=for-the-badge)](#seo-optimization)
-  [![Accessibility](https://img-shields.io/badge/♿-WCAG_2.1_AA-4CAF50?style=for-the-badge)](#accessibility)
+
+[![Performance](https://img.shields.io/badge/⚡-Performance-Excellent-success?style=for-the-badge)](#performance)
+[![Mobile Friendly](https://img.shields.io/badge/📱-Mobile_Friendly-4CAF50?style=for-the-badge)](https://search.google.com/test/mobile-friendly)
+[![SEO](https://img.shields.io/badge/🔍-SEO_Optimized-4CAF50?style=for-the-badge)](#seo-optimization)
+[![Accessibility](https://img-shields.io/badge/♿-WCAG_2.1_AA-4CAF50?style=for-the-badge)](#accessibility)
 
   <!-- Language Links -->
-  [English](#english) | [עברית](#hebrew) | [العربية](#arabic) | [Русский](#russian) | [Ελληνικά](#greek)
+
+[English](#english) | [עברית](#hebrew) | [العربية](#arabic) | [Русский](#russian) | [Ελληνικά](#greek)
 
   <!-- Quick Links -->
-  [📸 Screenshots](#screenshots) • [✨ Features](#features) • [🚀 Getting Started](#getting-started) • [📖 Documentation](#documentation)
+
+[📸 Screenshots](#screenshots) • [✨ Features](#features) • [🚀 Getting Started](#getting-started) • [📖 Documentation](#documentation)
 
 </div>
 
@@ -38,6 +42,7 @@
 ## 📸 Screenshots
 
 ### Desktop View
+
 <table>
   <tr>
     <td align="center"><img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-1280w.webp" width="400" alt="Desktop Hero Section"></td>
@@ -50,6 +55,7 @@
 </table>
 
 ### Mobile View
+
 <table>
   <tr>
     <td align="center"><img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-640w.webp" width="200" alt="Mobile View"></td>
@@ -64,21 +70,24 @@
 ## ✨ Features
 
 ### 🌐 Multi-Language Support
+
 - **5 Languages**: Hebrew, Arabic, Russian, Greek, English
 - **RTL Support**: Full right-to-left layout for Hebrew and Arabic
 - **Dynamic Translations**: Instant language switching
 - **Localized SEO**: Separate sitemaps for each language
 
 ### 🎨 Modern UI/UX
-| Feature | Description |
-|---------|-------------|
-| **3D Tilt Effects** | Interactive menu cards with 3D perspective (desktop & mobile) |
-| **Dark Mode** | Automatic theme switching based on system preferences |
-| **Smooth Animations** | Scroll-reveal effects with intersection observers |
-| **Parallax Backgrounds** | Beautiful parallax scrolling on desktop |
-| **Responsive Design** | Optimized for desktop, tablet, and mobile devices |
+
+| Feature                  | Description                                                   |
+| ------------------------ | ------------------------------------------------------------- |
+| **3D Tilt Effects**      | Interactive menu cards with 3D perspective (desktop & mobile) |
+| **Dark Mode**            | Automatic theme switching based on system preferences         |
+| **Smooth Animations**    | Scroll-reveal effects with intersection observers             |
+| **Parallax Backgrounds** | Beautiful parallax scrolling on desktop                       |
+| **Responsive Design**    | Optimized for desktop, tablet, and mobile devices             |
 
 ### 🚀 Performance Optimizations
+
 - ⚡ **Code Splitting**: Manual chunks for better caching (React vendor: 60KB, Icons: 4KB, App: 71KB)
 - 🖼️ **Image Optimization**: 76 WebP images with responsive sizes
 - 📦 **Resource Preloading**: DNS prefetch, preconnect, and module preloads
@@ -86,6 +95,7 @@
 - 🌐 **Font Loading**: `display: optional` to prevent CLS
 
 ### 🔍 SEO & Accessibility
+
 - **Schema.org**: JSON-LD structured data for restaurants
 - **Open Graph**: Social media sharing optimization
 - **Sitemaps**: Multi-language sitemap generation
@@ -93,12 +103,14 @@
 - **ARIA Labels**: Screen reader friendly markup
 
 ### 📱 Mobile Optimizations
+
 - **Touch Events**: 3D tilt effects with touch handling
 - **Smooth Scrolling**: No horizontal movement issues
 - **Large Tap Targets**: Minimum 48x48px for buttons
 - **Responsive Images**: Adaptive image sizes
 
 ### 🛡️ Legal & Privacy
+
 - **Cookie Consent**: GDPR-compliant cookie banner
 - **Legal Documents**: Privacy Policy, Terms of Service, Accessibility Statement
 - **Data Protection**: User privacy controls
@@ -107,15 +119,16 @@
 
 ## 📊 Performance Metrics
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| **LCP** (Largest Contentful Paint) | < 2.5s | 🟢 Good |
-| **CLS** (Cumulative Layout Shift) | < 0.1 | 🟢 Good |
-| **FCP** (First Contentful Paint) | < 1.8s | 🟢 Good |
-| **TBT** (Total Blocking Time) | < 200ms | 🟢 Good |
-| **Bundle Size** | ~135 KB (gzipped) | 🟢 Excellent |
+| Metric                             | Value             | Status       |
+| ---------------------------------- | ----------------- | ------------ |
+| **LCP** (Largest Contentful Paint) | < 2.5s            | 🟢 Good      |
+| **CLS** (Cumulative Layout Shift)  | < 0.1             | 🟢 Good      |
+| **FCP** (First Contentful Paint)   | < 1.8s            | 🟢 Good      |
+| **TBT** (Total Blocking Time)      | < 200ms           | 🟢 Good      |
+| **Bundle Size**                    | ~135 KB (gzipped) | 🟢 Excellent |
 
 ### Optimization Techniques
+
 ```bash
 # Build output sizes
 react-vendor.js   193 KB → 60 KB gzipped
@@ -131,16 +144,19 @@ Total:           515 KB → 145 KB gzipped
 ## 🛠️ Technologies Used
 
 ### Frontend Framework
+
 - **[React 19.2.3](https://react.dev/)** - UI library with latest features
 - **[TypeScript 5.8.2](https://www.typescriptlang.org/)** - Type-safe development
 - **[Vite 6.2.0](https://vitejs.dev/)** - Lightning-fast build tool
 
 ### Styling & UI
+
 - **[Tailwind CSS 3.4.19](https://tailwindcss.com/)** - Utility-first CSS
 - **[PostCSS 8.5.6](https://postcss.org/)** - CSS transformations
 - **[Lucide React 0.562.0](https://lucide.dev/)** - Beautiful icon library
 
 ### Development Tools
+
 - **ESBuild** - Fast JavaScript bundler
 - **Autoprefixer** - CSS vendor prefixes
 - **React Markdown** - Markdown rendering
@@ -225,6 +241,7 @@ Souvlaki/
 <summary><b>🌍 Adding a New Language</b></summary>
 
 1. **Add language enum** in `types.ts`:
+
 ```typescript
 export enum Language {
   HE = 'he',
@@ -232,19 +249,20 @@ export enum Language {
   RU = 'ru',
   EL = 'el',
   EN = 'en',
-  YOUR_LANG = 'code'  // Add your language code
+  YOUR_LANG = 'code', // Add your language code
 }
 ```
 
 2. **Add translations** in `constants.ts`:
+
 ```typescript
 export const TRANSLATIONS: Record<Language, Partial<TranslationDict>> = {
   YOUR_LANG: {
     hero_title: 'Your translation',
     hero_subtitle: 'Subtitle translation',
     // ... add all translation keys
-  }
-}
+  },
+};
 ```
 
 3. **Update meta tags** in `index.html` for SEO
@@ -259,6 +277,7 @@ export const TRANSLATIONS: Record<Language, Partial<TranslationDict>> = {
 The project uses custom Vite plugins:
 
 **`injectPreloads()`** - Automatically adds preload hints
+
 ```typescript
 function injectPreloads(): Plugin {
   return {
@@ -266,12 +285,13 @@ function injectPreloads(): Plugin {
     transformIndexHtml(html: string) {
       // Inject modulepreload for JS bundles
       // Inject preload for CSS bundles
-    }
+    },
   };
 }
 ```
 
 **Code Splitting** - Manual chunks for caching:
+
 ```typescript
 manualChunks: {
   'react-vendor': ['react', 'react-dom', 'react-dom/client'],
@@ -285,6 +305,7 @@ manualChunks: {
 <summary><b>🚢 Deployment</b></summary>
 
 ### Vercel (Recommended)
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -294,6 +315,7 @@ npx vercel --prod
 ```
 
 ### Other Platforms
+
 - **Netlify**: Drag and drop `dist/` folder
 - **GitHub Pages**: Push to `gh-pages` branch
 - **AWS S3**: Upload `dist/` contents
@@ -328,18 +350,19 @@ Contributions are welcome! Please follow these guidelines:
 
 ### Commit Convention
 
-| Type | Description |
-|------|-------------|
-| `feat:` | ✨ New feature |
-| `fix:` | 🐛 Bug fix |
-| `docs:` | 📚 Documentation changes |
-| `style:` | 💄 Code style changes |
-| `refactor:` | ♻️ Code refactoring |
-| `perf:` | ⚡ Performance improvements |
-| `test:` | ✅ Adding tests |
-| `chore:` | 🔨 Maintenance tasks |
+| Type        | Description                 |
+| ----------- | --------------------------- |
+| `feat:`     | ✨ New feature              |
+| `fix:`      | 🐛 Bug fix                  |
+| `docs:`     | 📚 Documentation changes    |
+| `style:`    | 💄 Code style changes       |
+| `refactor:` | ♻️ Code refactoring         |
+| `perf:`     | ⚡ Performance improvements |
+| `test:`     | ✅ Adding tests             |
+| `chore:`    | 🔨 Maintenance tasks        |
 
 ### Code Style Guidelines
+
 - ✅ Use TypeScript for type safety
 - ✅ Follow React best practices
 - ✅ Use functional components with hooks
@@ -352,6 +375,7 @@ Contributions are welcome! Please follow these guidelines:
 ## 🗺️ Roadmap
 
 ### Completed ✅
+
 - [x] Multi-language support (5 languages)
 - [x] 3D tilt effects on menu cards
 - [x] Mobile touch event handling
@@ -363,6 +387,7 @@ Contributions are welcome! Please follow these guidelines:
 - [x] Legal documents viewer
 
 ### Planned 📋
+
 - [ ] PWA support (offline mode)
 - [ ] Customer reviews integration
 - [ ] Admin dashboard
@@ -376,6 +401,7 @@ Contributions are welcome! Please follow these guidelines:
 <summary><b>How do I change the restaurant information?</b></summary>
 
 Update the constants in `constants.ts`:
+
 - `SEO_METADATA` - Restaurant name, description, contact info
 - `MENU_ITEMS` - Menu items, prices, descriptions
 - `OPENING_HOURS` - Business hours
@@ -386,6 +412,7 @@ Update the constants in `constants.ts`:
 <summary><b>How do I add a new menu item?</b></summary>
 
 Add to `MENU_ITEMS` array in `constants.ts`:
+
 ```typescript
 {
   id: 'item-id',
@@ -396,6 +423,7 @@ Add to `MENU_ITEMS` array in `constants.ts`:
   image: '/gallery/image.webp'
 }
 ```
+
 </details>
 
 <details>
@@ -423,12 +451,14 @@ Add to `MENU_ITEMS` array in `constants.ts`:
 ### Build Errors
 
 **TypeScript errors:**
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
 **Styles not applying:**
+
 - Clear browser cache (Ctrl+Shift+R)
 - Check `dist/assets/` for CSS files
 - Verify Tailwind configuration
@@ -436,6 +466,7 @@ npm install
 ### Development Issues
 
 **Port already in use:**
+
 ```bash
 # Kill process on port 5173
 npx kill-port 5173
@@ -444,6 +475,7 @@ npm run dev -- --port 3000
 ```
 
 **Hot reload not working:**
+
 - Check Vite HMR configuration
 - Clear browser cache
 - Restart dev server
@@ -469,19 +501,22 @@ in the Software without restriction...
 ## 📞 Contact
 
 ### Restaurant Information
-| Detail | Information |
-|--------|-------------|
-| **Name** | Greek Souvlaki Kfar Yasif |
+
+| Detail       | Information                                     |
+| ------------ | ----------------------------------------------- |
+| **Name**     | Greek Souvlaki Kfar Yasif                       |
 | **Location** | Route 70, Kafr Yasif, Northern District, Israel |
-| **Phone** | +972-4-812-2980 |
-| **WhatsApp** | +972-54-200-1235 |
-| **Hours** | Wed-Sat: 13:00 - 01:00 |
+| **Phone**    | +972-4-812-2980                                 |
+| **WhatsApp** | +972-54-200-1235                                |
+| **Hours**    | Wed-Sat: 13:00 - 01:00                          |
 
 ### Social Media
+
 - **Facebook**: [facebook.com/greeksouvlaki](https://www.facebook.com/greeksouvlaki)
 - **Instagram**: [@greek.souvlakii](https://www.instagram.com/greek.souvlakii)
 
 ### Project Links
+
 - **GitHub**: [github.com/ward3107/Souvlaki](https://github.com/ward3107/Souvlaki)
 - **Live Demo**: [greek-souvlaki-website.vercel.app](https://greek-souvlaki-website-ixley74ef-wassems-projects-ab3ab6ba.vercel.app/)
 - **Issues**: [GitHub Issues](https://github.com/ward3107/Souvlaki/issues)
@@ -508,23 +543,23 @@ in the Software without restriction...
 
 <div align="center">
 
-  ## 🍢 Built with passion for Greek cuisine 🇬🇷
+## 🍢 Built with passion for Greek cuisine 🇬🇷
 
-  **⚡ Powered by React • TypeScript • Vite**
+**⚡ Powered by React • TypeScript • Vite**
 
-  **♿ Accessible • 🔍 SEO Optimized • 📱 Mobile Friendly**
+**♿ Accessible • 🔍 SEO Optimized • 📱 Mobile Friendly**
 
-  **Supporting local businesses in the Galilee region 🇮🇱**
+**Supporting local businesses in the Galilee region 🇮🇱**
 
-  **Made with ❤️ in Kfar Yasif**
+**Made with ❤️ in Kfar Yasif**
 
-  [⬆ Back to Top](#-greek-souvlaki-kfar-yasif)
+[⬆ Back to Top](#-greek-souvlaki-kfar-yasif)
 
   <br>
 
-  [![Stargazers](https://img.shields.io/github/stars/ward3107/Souvlaki?style=social)](https://github.com/ward3107/Souvlaki/stargazers)
-  [![Watchers](https://img.shields.io/github/watchers/ward3107/Souvlaki?style=social)](https://github.com/ward3107/Souvlaki/watchers)
-  [![Forks](https://img.shields.io/github/forks/ward3107/Souvlaki?style=social)](https://github.com/ward3107/Souvlaki/network/members)
+[![Stargazers](https://img.shields.io/github/stars/ward3107/Souvlaki?style=social)](https://github.com/ward3107/Souvlaki/stargazers)
+[![Watchers](https://img.shields.io/github/watchers/ward3107/Souvlaki?style=social)](https://github.com/ward3107/Souvlaki/watchers)
+[![Forks](https://img.shields.io/github/forks/ward3107/Souvlaki?style=social)](https://github.com/ward3107/Souvlaki/network/members)
 
 </div>
 
@@ -539,6 +574,7 @@ in the Software without restriction...
 <div dir="rtl">
 
 ## תכונות
+
 - **תמיכה ב-5 שפות**: עברית, ערבית, רוסית, יוונית, אנגלית
 - **עיצוב רספונסיבי**: מותאם למחשב, טאבלט ונייד
 - **אפקטי תלת-ממד**: כרטיסי תפריט אינטראקטיביים
@@ -546,12 +582,14 @@ in the Software without restriction...
 - **נגישות**: פתרונות נגישות מובנים (WCAG 2.1 AA)
 
 ## התקנה
+
 ```bash
 npm install
 npm run dev
 ```
 
 ## יצירת קשר
+
 - **טלפון**: 04-812-2980
 - **וואטסאפ**: 054-200-1235
 - **כתובת**: כביש 70, כפר יאסיף
@@ -565,6 +603,7 @@ npm run dev
 <div dir="rtl">
 
 ## الميزات
+
 - **دعم 5 لغات**: العبرية، العربية، الروسية، اليونانية، الإنجليزية
 - **تصميم متجاوب**: متوافق مع الكمبيوتر والتابلت والجوال
 - **تأثيرات ثلاثية الأبعاد**: بطاقات القائمة التفاعلية
@@ -572,12 +611,14 @@ npm run dev
 - **إمكانية الوصول**: حلول إمكانية الوصول المدمجة (WCAG 2.1 AA)
 
 ## التثبيت
+
 ```bash
 npm install
 npm run dev
 ```
 
 ## للتواصل
+
 - **هاتف**: 04-812-2980
 - **واتساب**: 054-200-1235
 - **العنوان**: طريق 70، كفر ياسيف
@@ -589,6 +630,7 @@ npm run dev
 # Русский - Russian
 
 ## Особенности
+
 - **Поддержка 5 языков**: иврит, арабский, русский, греческий, английский
 - **Адаптивный дизайн**: оптимизирован для ПК, планшета и мобильных устройств
 - **3D эффекты**: интерактивные карточки меню
@@ -596,12 +638,14 @@ npm run dev
 - **Доступность**: встроенные решения доступности (WCAG 2.1 AA)
 
 ## Установка
+
 ```bash
 npm install
 npm run dev
 ```
 
 ## Контакты
+
 - **Телефон**: 04-812-2980
 - **WhatsApp**: 054-200-1235
 - **Адрес**: Трасса 70, Кафр Ясиф
@@ -611,6 +655,7 @@ npm run dev
 # Ελληνικά - Greek
 
 ## Χαρακτηριστικά
+
 - **Υποστήριξη 5 γλωσσών**: Εβραϊκά, Αραβικά, Ρωσικά, Ελληνικά, Αγγλικά
 - **Ανταποκρυστικός σχεδιασμός**: βελτιστοποιημένο για υπολογιστή, ταμπλέτα και κινητό
 - **3D εφέ**: Διαδραστικές κάρτες μενού
@@ -618,12 +663,14 @@ npm run dev
 - **Προσβασιμότητα**: ενσωματωμένες λύσεις προσβασιμότητας (WCAG 2.1 AA)
 
 ## Εγκατάσταση
+
 ```bash
 npm install
 npm run dev
 ```
 
 ## Επικοινωνία
+
 - **Τηλέφωνο**: 04-812-2980
 - **WhatsApp**: 054-200-1235
 - **Διεύθυνση**: Λεωφόρος 70, Καρ Γιουσίφ
@@ -632,6 +679,6 @@ npm run dev
 
 <div align="center">
 
-  **[⬆ Back to Top](#-greek-souvlaki-kfar-yasif)**
+**[⬆ Back to Top](#-greek-souvlaki-kfar-yasif)**
 
 </div>

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🎉 Initial Release - Production Launch
 
 #### Added
+
 - ✅ Multi-language support (Hebrew, Arabic, Russian, Greek, English)
 - ✅ RTL layout support for Hebrew and Arabic
 - ✅ Fully responsive design (desktop, tablet, mobile)
@@ -32,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Legal document viewer (Privacy Policy, Terms, Accessibility)
 
 #### Performance
+
 - ✅ Code splitting with manual chunks (React vendor: 60KB, Icons: 4KB, App: 71KB gzipped)
 - ✅ Resource preloading (DNS prefetch, preconnect, modulepreload)
 - ✅ Image optimization (76 WebP images, responsive sizes, AVIF fallbacks)
@@ -40,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ CSS containment for layout stability
 
 #### SEO
+
 - ✅ Multi-language meta tags and Open Graph
 - ✅ Twitter Card integration
 - ✅ JSON-LD structured data (Restaurant Schema)
@@ -50,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Semantic HTML structure
 
 #### Accessibility
+
 - ✅ WCAG 2.1 AA compliance
 - ✅ Skip to main content link
 - ✅ ARIA labels and roles
@@ -59,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ✅ Touch-friendly tap targets (48x48px minimum)
 
 #### Deployment
+
 - ✅ Vercel hosting configuration
 - ✅ Automated deployment pipeline
 - ✅ Production build optimization
@@ -69,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Planned for Version 1.1
+
 - [ ] Mobile parallax performance testing
 - [ ] iOS Safari compatibility improvements
 - [ ] Android Chrome compatibility testing
@@ -81,6 +87,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version History Format
 
 ### Types of Changes
+
 - **Added** - New features
 - **Changed** - Changes to existing functionality
 - **Deprecated** - Soon-to-be removed features
@@ -89,6 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Security** - Security vulnerability fixes
 
 ### Release Categories
+
 - **Major** (X.0.0) - Breaking changes, major features
 - **Minor** (0.X.0) - New features, backward compatible
 - **Patch** (0.0.X) - Bug fixes, small improvements
@@ -98,14 +106,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Upcoming Releases
 
 ### Version 1.1 - Bug Fixes & Optimizations
+
 **Target**: February 2026
 **Focus**: Performance, compatibility, minor fixes
 
 ### Version 1.2 - Content & SEO
+
 **Target**: March 2026
 **Focus**: Content expansion, SEO improvements
 
 ### Version 2.0 - Online Ordering
+
 **Target**: Q2 2026
 **Focus**: E-commerce capabilities
 

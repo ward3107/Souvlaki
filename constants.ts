@@ -1,4 +1,3 @@
-
 import { Language, MenuItem, FAQItem, TranslationKey, Review } from './types';
 
 export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
@@ -15,8 +14,10 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     hero_cta_order: 'הזמן עכשיו',
     hero_cta_menu: 'לצפייה בתפריט',
     about_title: 'הסיפור שלנו',
-    about_content_1: 'אנחנו מביאים את הטעמים האותנטיים של יוון היישר לכפר יאסיף. מתכונים שעברו מדור לדור עם חומרי גלם טריים ואיכותיים.',
-    about_content_2: 'האווירה במסעדה משלבת אירוח חם עם מוזיקה יוונית שמחה, היוצרת חוויה קולינרית בלתי נשכחת.',
+    about_content_1:
+      'אנחנו מביאים את הטעמים האותנטיים של יוון היישר לכפר יאסיף. מתכונים שעברו מדור לדור עם חומרי גלם טריים ואיכותיים.',
+    about_content_2:
+      'האווירה במסעדה משלבת אירוח חם עם מוזיקה יוונית שמחה, היוצרת חוויה קולינרית בלתי נשכחת.',
     gallery_title: 'גלריה',
     menu_title: 'התפריט שלנו',
     reviews_title: 'לקוחות מספרים',
@@ -33,7 +34,8 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     category_sides: 'תוספות',
     open_status_open: 'פתוח עכשיו',
     open_status_closed: 'סגור כעת',
-    cookie_text: 'אתר זה משתמש בעוגיות (Cookies) על מנת לשפר את חווית הגלישה ולהתאים את התוכן עבורך, בהתאם להוראות החוק.',
+    cookie_text:
+      'אתר זה משתמש בעוגיות (Cookies) על מנת לשפר את חווית הגלישה ולהתאים את התוכן עבורך, בהתאם להוראות החוק.',
     cookie_accept: 'אני מסכים/ה',
     cookie_decline: 'לא תודה',
     form_title: 'השאר ביקורת',
@@ -57,8 +59,10 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     hero_cta_order: 'Order Now',
     hero_cta_menu: 'View Menu',
     about_title: 'Our Story',
-    about_content_1: 'We bring the authentic flavors of Greece straight to Kafr Yasif. Recipes passed down through generations with fresh, high-quality ingredients.',
-    about_content_2: 'The restaurant atmosphere combines warm hospitality with joyful Greek music, creating an unforgettable culinary experience.',
+    about_content_1:
+      'We bring the authentic flavors of Greece straight to Kafr Yasif. Recipes passed down through generations with fresh, high-quality ingredients.',
+    about_content_2:
+      'The restaurant atmosphere combines warm hospitality with joyful Greek music, creating an unforgettable culinary experience.',
     gallery_title: 'Gallery',
     menu_title: 'Our Menu',
     reviews_title: 'What Customers Say',
@@ -75,7 +79,8 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     category_sides: 'Sides',
     open_status_open: 'Open Now',
     open_status_closed: 'Closed Now',
-    cookie_text: 'This website uses cookies to improve the browsing experience and customize content for you, in accordance with the law.',
+    cookie_text:
+      'This website uses cookies to improve the browsing experience and customize content for you, in accordance with the law.',
     cookie_accept: 'I Accept',
     cookie_decline: 'Decline',
     form_title: 'Leave a Review',
@@ -99,8 +104,10 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     hero_cta_order: 'اطلب الآن',
     hero_cta_menu: 'شاهد القائمة',
     about_title: 'قصتنا',
-    about_content_1: 'نحضر النكهات اليونانية الأصيلة مباشرة إلى كفر ياسيف. وصفات متوارثة عبر الأجيال بمكونات طازجة وعالية الجودة.',
-    about_content_2: 'يجمع جو المطعم بين الضيافة الدافئة والموسيقى اليونانية المبهجة، مما يخلق تجربة طهي لا تُنسى.',
+    about_content_1:
+      'نحضر النكهات اليونانية الأصيلة مباشرة إلى كفر ياسيف. وصفات متوارثة عبر الأجيال بمكونات طازجة وعالية الجودة.',
+    about_content_2:
+      'يجمع جو المطعم بين الضيافة الدافئة والموسيقى اليونانية المبهجة، مما يخلق تجربة طهي لا تُنسى.',
     gallery_title: 'معرض الصور',
     menu_title: 'قائمتنا',
     reviews_title: 'ماذا يقول عملاؤنا',
@@ -117,7 +124,8 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     category_sides: 'إضافات',
     open_status_open: 'مفتوح الآن',
     open_status_closed: 'مغلق الآن',
-    cookie_text: 'يستخدم هذا الموقع ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وتخصيص المحتوى لك، وفقًا للقانون.',
+    cookie_text:
+      'يستخدم هذا الموقع ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وتخصيص المحتوى لك، وفقًا للقانون.',
     cookie_accept: 'أوافق',
     cookie_decline: 'لا شكرًا',
     form_title: 'أترك تقييماً',
@@ -141,8 +149,10 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     hero_cta_order: 'Заказать',
     hero_cta_menu: 'Меню',
     about_title: 'Наша история',
-    about_content_1: 'Мы привозим аутентичные вкусы Греции прямо в Кафр-Ясиф. Рецепты, передаваемые из поколения в поколение, и свежие ингредиенты.',
-    about_content_2: 'Атмосфера ресторана сочетает в себе теплое гостеприимство и веселую греческую музыку.',
+    about_content_1:
+      'Мы привозим аутентичные вкусы Греции прямо в Кафр-Ясиф. Рецепты, передаваемые из поколения в поколение, и свежие ингредиенты.',
+    about_content_2:
+      'Атмосфера ресторана сочетает в себе теплое гостеприимство и веселую греческую музыку.',
     gallery_title: 'Галерея',
     menu_title: 'Наше Меню',
     reviews_title: 'Отзывы Клиентов',
@@ -159,7 +169,8 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     category_sides: 'Гарниры',
     open_status_open: 'Открыто',
     open_status_closed: 'Закрыто',
-    cookie_text: 'Этот сайт использует файлы cookie для улучшения просмотра и персонализации контента в соответствии с законом.',
+    cookie_text:
+      'Этот сайт использует файлы cookie для улучшения просмотра и персонализации контента в соответствии с законом.',
     cookie_accept: 'Принять',
     cookie_decline: 'Отклонить',
     form_title: 'Оставить отзыв',
@@ -184,7 +195,8 @@ export const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     hero_cta_menu: 'Δείτε το μενού',
     about_title: 'Η ιστορία μας',
     about_content_1: 'Φέρνουμε τις αυθεντικές γεύσεις της Ελλάδας απευθείας στο Kafr Yasif.',
-    about_content_2: 'Η ατμόσφαιρα του εστιατορίου συνδυάζει ζεστή φιλοξενία με χαρούμενη ελληνική μουσική.',
+    about_content_2:
+      'Η ατμόσφαιρα του εστιατορίου συνδυάζει ζεστή φιλοξενία με χαρούμενη ελληνική μουσική.',
     gallery_title: 'Συλλογή',
     menu_title: 'Το Μενού μας',
     reviews_title: 'Τι λένε οι πελάτες',
@@ -378,52 +390,70 @@ export const MENU_ITEMS: MenuItem[] = [
 ];
 
 // SEO Metadata for multi-language optimization
-export const SEO_METADATA: Record<Language, {
-  title: string;
-  description: string;
-  keywords: string;
-  ogTitle: string;
-  ogDescription: string;
-  ogLocale: string;
-}> = {
+export const SEO_METADATA: Record<
+  Language,
+  {
+    title: string;
+    description: string;
+    keywords: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogLocale: string;
+  }
+> = {
   [Language.HE]: {
     title: 'סובלקי יווני כפר יאסיף | Greek Souvlaki Kfar Yasif - מסעדה יוונית אותנטית',
-    description: 'סובלקי יווני אותנטי בכפר יאסיף. פיתה טרה, גירוס, שישודים ועוד. הזמן עכשיו! פתוח רביעי-שבת 13:00-01:00. התקשרו 04-812-2980. מסעדה יוונית מקומית',
-    keywords: 'סובלקי, גירוס, מסעדה יוונית, אוכל יווני, פיתה יוונית, שווארמה יוונית, כפר יאסיף, מסעדה בגליל, אוכל בצפון, סובלקי בפיתה, גירוס בפיטה',
+    description:
+      'סובלקי יווני אותנטי בכפר יאסיף. פיתה טרה, גירוס, שישודים ועוד. הזמן עכשיו! פתוח רביעי-שבת 13:00-01:00. התקשרו 04-812-2980. מסעדה יוונית מקומית',
+    keywords:
+      'סובלקי, גירוס, מסעדה יוונית, אוכל יווני, פיתה יוונית, שווארמה יוונית, כפר יאסיף, מסעדה בגליל, אוכל בצפון, סובלקי בפיתה, גירוס בפיטה',
     ogTitle: 'סובלקי יווני כפר יאסיף | מסעדה יוונית אותנטית',
-    ogDescription: 'הכי טוב סובלקי יווני בכפר יאסיף! פיתה טרה, גירוס עסיסי, שישודים על האש. פתוח רביעי-שבת 13:00-01:00. הזמן עכשיו!',
+    ogDescription:
+      'הכי טוב סובלקי יווני בכפר יאסיף! פיתה טרה, גירוס עסיסי, שישודים על האש. פתוח רביעי-שבת 13:00-01:00. הזמן עכשיו!',
     ogLocale: 'he_IL',
   },
   [Language.AR]: {
     title: 'سوفلاكي يوناني كفر ياسيف | Greek Souvlaki Kafr Yasif - مطعم يوناني أصيل',
-    description: 'سوفلاكي يوناني أصيل في كفر ياسيف. خبز بيتا طازج، جيروس، أسياخ والمزيد. اطلب الآن! مفتوح الأربعاء-السبت 13:00-01:00. اتصل 04-812-2980. مطعم يوناني محلي',
-    keywords: 'سوفلاكي, جيروس, مطعم يوناني, طعام يوناني, خبز بيتا يوناني, شاورما يونانية, كفر ياسيف, مطعم في الجليل, طعام في الشمال, سوفلاكي في بيتا, جيروس في بيتا',
+    description:
+      'سوفلاكي يوناني أصيل في كفر ياسيف. خبز بيتا طازج، جيروس، أسياخ والمزيد. اطلب الآن! مفتوح الأربعاء-السبت 13:00-01:00. اتصل 04-812-2980. مطعم يوناني محلي',
+    keywords:
+      'سوفلاكي, جيروس, مطعم يوناني, طعام يوناني, خبز بيتا يوناني, شاورما يونانية, كفر ياسيف, مطعم في الجليل, طعام في الشمال, سوفلاكي في بيتا, جيروس في بيتا',
     ogTitle: 'سوفلاكي يوناني كفر ياسيف | مطعم يوناني أصيل',
-    ogDescription: 'أفضل سوفلاكي يوناني في كفر ياسيف! خبز بيتا طازج، جيروس طري، أسياخ مشوية. مفتوح الأربعاء-السبت 13:00-01:00. اطلب الآن!',
+    ogDescription:
+      'أفضل سوفلاكي يوناني في كفر ياسيف! خبز بيتا طازج، جيروس طري، أسياخ مشوية. مفتوح الأربعاء-السبت 13:00-01:00. اطلب الآن!',
     ogLocale: 'ar_IL',
   },
   [Language.RU]: {
     title: 'Греческий сувлаки Кафр Ясиф | Greek Souvlaki Kfar Yasif - Греческий ресторан',
-    description: 'Аутентичный греческий сувлаки в Кафр Ясиф. Свежая пита, гирос, шашлыки и многое другое. Закажите сейчас! Открыто ср-сб 13:00-01:00. Тел 04-812-2980. Греческий ресторан',
-    keywords: 'сувлаки, гирос, греческий ресторан, греческая кухня, греческая пита, греческая шаурма, Кафр Ясиф, ресторан в Галилее, еда на севере, сувлаки в пите, гирос в пите',
+    description:
+      'Аутентичный греческий сувлаки в Кафр Ясиф. Свежая пита, гирос, шашлыки и многое другое. Закажите сейчас! Открыто ср-сб 13:00-01:00. Тел 04-812-2980. Греческий ресторан',
+    keywords:
+      'сувлаки, гирос, греческий ресторан, греческая кухня, греческая пита, греческая шаурма, Кафр Ясиф, ресторан в Галилее, еда на севере, сувлаки в пите, гирос в пите',
     ogTitle: 'Греческий сувлаки Кафр Ясиф | Аутентичный греческий ресторан',
-    ogDescription: 'Лучший греческий сувлаки в Кафр Ясиф! Свежая пита, сочный гирос, шашлыки на углях. Открыто ср-сб 13:00-01:00. Закажите сейчас!',
+    ogDescription:
+      'Лучший греческий сувлаки в Кафр Ясиф! Свежая пита, сочный гирос, шашлыки на углях. Открыто ср-сб 13:00-01:00. Закажите сейчас!',
     ogLocale: 'ru_IL',
   },
   [Language.EL]: {
     title: 'Ελληνικό σουβλάκι Κουφ Γιασίφ | Greek Souvlaki Kfar Yasif - Ελληνικό εστιατόριο',
-    description: 'Αυθεντικό ελληνικό σουβλάκι στο Κουφ Γιασίφ. Φρέσκος πίτες, γύρος, σουβλάκια και πολλά περισσότερα. Παραγγείλετε τώρα! Ανοιχτά Τετ-Σαβ 13:00-01:00. Τηλ 04-812-2980. Ελληνικό εστιατόριο',
-    keywords: 'σουβλάκι, γύρος, ελληνικό εστιατόριο, ελληνική κουζίνα, ελληνική πίτα, ελληνική σούβλα, Κουφ Γιασίφ, εστιατόριο στη Γαλιλαία, φαγητό στον βορρά, σουβλάκι στην πίτα, γύρος στην πίτα',
+    description:
+      'Αυθεντικό ελληνικό σουβλάκι στο Κουφ Γιασίφ. Φρέσκος πίτες, γύρος, σουβλάκια και πολλά περισσότερα. Παραγγείλετε τώρα! Ανοιχτά Τετ-Σαβ 13:00-01:00. Τηλ 04-812-2980. Ελληνικό εστιατόριο',
+    keywords:
+      'σουβλάκι, γύρος, ελληνικό εστιατόριο, ελληνική κουζίνα, ελληνική πίτα, ελληνική σούβλα, Κουφ Γιασίφ, εστιατόριο στη Γαλιλαία, φαγητό στον βορρά, σουβλάκι στην πίτα, γύρος στην πίτα',
     ogTitle: 'Ελληνικό σουβλάκι Κουφ Γιασίφ | Αυθεντικό ελληνικό εστιατόριο',
-    ogDescription: 'Το καλύτερο ελληνικό σουβλάκι στο Κουφ Γιασίφ! Φρέσκος πίτες, ζουμερός γύρος, σουβλάκια στην φωτιά. Ανοιχτά Τετ-Σαβ 13:00-01:00. Παραγγείλετε τώρα!',
+    ogDescription:
+      'Το καλύτερο ελληνικό σουβλάκι στο Κουφ Γιασίφ! Φρέσκος πίτες, ζουμερός γύρος, σουβλάκια στην φωτιά. Ανοιχτά Τετ-Σαβ 13:00-01:00. Παραγγείλετε τώρα!',
     ogLocale: 'el_IL',
   },
   [Language.EN]: {
     title: 'Greek Souvlaki Kafr Yasif | סובלקי יווני כפר יאסיף - Authentic Greek Restaurant',
-    description: 'Authentic Greek souvlaki in Kafr Yasif. Fresh pita, gyros, skewers & more. Order now! Open Wed-Sat 13:00-01:00. Call 04-812-2980. Local Greek restaurant',
-    keywords: 'souvlaki, gyros, greek restaurant, greek food, greek pita, greek shawarma, kafr yasif, galilee restaurant, northern israel food, souvlaki in pita, gyros in pita',
+    description:
+      'Authentic Greek souvlaki in Kafr Yasif. Fresh pita, gyros, skewers & more. Order now! Open Wed-Sat 13:00-01:00. Call 04-812-2980. Local Greek restaurant',
+    keywords:
+      'souvlaki, gyros, greek restaurant, greek food, greek pita, greek shawarma, kafr yasif, galilee restaurant, northern israel food, souvlaki in pita, gyros in pita',
     ogTitle: 'Greek Souvlaki Kafr Yasif | Authentic Greek Restaurant',
-    ogDescription: 'Best Greek souvlaki in Kafr Yasif! Fresh pita, juicy gyros, grilled skewers. Open Wed-Sat 13:00-01:00. Order now!',
+    ogDescription:
+      'Best Greek souvlaki in Kafr Yasif! Fresh pita, juicy gyros, grilled skewers. Open Wed-Sat 13:00-01:00. Order now!',
     ogLocale: 'en_IL',
   },
 };
@@ -437,7 +467,7 @@ export const FAQS: FAQItem[] = [
     id: '1',
     question: {
       he: 'מה שעות הפעילות של המסעדה?',
-      en: 'What are the restaurant\'s opening hours?',
+      en: "What are the restaurant's opening hours?",
       ar: 'ما هي ساعات عمل المطعم؟',
       ru: 'Каковы часы работы ресторана?',
       el: 'Ποιες είναι οι ώρες λειτουργίας του εστιατορίου;',
@@ -477,7 +507,7 @@ export const FAQS: FAQItem[] = [
       el: 'Πόσο κοστίζει το σουβλάκι στην πίτα;',
     },
     answer: {
-      he: 'סובלאקי בפיתה מתחיל מ-30₪ וכולל פיתה יוונית, שיפוד לבחירה, רוטב צזיקי/חריף, ירקות טריים וצ\'יפס.',
+      he: "סובלאקי בפיתה מתחיל מ-30₪ וכולל פיתה יוונית, שיפוד לבחירה, רוטב צזיקי/חריף, ירקות טריים וצ'יפס.",
       en: 'Pita souvlaki starts from ₪30 and includes Greek pita, skewer of choice, tzatziki/spicy sauce, fresh vegetables and fries.',
       ar: 'سوفلاكي في خبز بيتا يبدأ من 30 شيكل ويشمل خبز بيتا يوناني، سيخ حسب الاختيار، صلصة تزاتزيكي/حارة، خضروات طازجة وبطاطس.',
       ru: 'Сувлаки в пите стоит от 30 ₪ и включает греческую питу, шашлычок на выбор, соус цацики/острый, свежие овощи и картофель фри.',
@@ -522,7 +552,7 @@ export const FAQS: FAQItem[] = [
     id: '6',
     question: {
       he: 'מה ההבדל בין סובלאקי לגירוס?',
-      en: 'What\'s the difference between souvlaki and gyros?',
+      en: "What's the difference between souvlaki and gyros?",
       ar: 'ما الفرق بين السوفلاكي والجيروس؟',
       ru: 'В чем разница между сувлаки и гирос?',
       el: 'Ποια είναι η διαφορά μεταξύ σουβλάκι και γύρο;',

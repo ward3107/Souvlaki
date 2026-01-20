@@ -46,7 +46,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
         en: 'Terms of Use',
         ar: 'شروط الاستخدام',
         ru: 'Условия использования',
-        el: 'Όροι Χρήσης'
+        el: 'Όροι Χρήσης',
       };
     }
     if (documentPath.includes('privacy')) {
@@ -55,7 +55,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
         en: 'Privacy Policy',
         ar: 'سياسة الخصوصية',
         ru: 'Политика конфиденциальности',
-        el: 'Πολιτική Απορρήτου'
+        el: 'Πολιτική Απορρήτου',
       };
     }
     if (documentPath.includes('cookie')) {
@@ -64,7 +64,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
         en: 'Cookie Policy',
         ar: 'سياسة ملفات تعريف الارتباط',
         ru: 'Политика cookie',
-        el: 'Πολιτική Cookies'
+        el: 'Πολιτική Cookies',
       };
     }
     if (documentPath.includes('accessibility')) {
@@ -73,7 +73,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
         en: 'Accessibility Statement',
         ar: 'بيان إمكانية الوصول',
         ru: 'Заявление о доступности',
-        el: 'Δήλωση Προσβασιμότητας'
+        el: 'Δήλωση Προσβασιμότητας',
       };
     }
     return {
@@ -81,15 +81,19 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
       en: 'Document',
       ar: 'وثيقة',
       ru: 'Документ',
-      el: 'Έγγραφο'
+      el: 'Έγγραφο',
     };
   };
 
   // Filter content based on language
-  const getLanguageContent = (fullContent: string): { content: string; actualLanguage: Language; isFallback: boolean } => {
+  const getLanguageContent = (
+    fullContent: string
+  ): { content: string; actualLanguage: Language; isFallback: boolean } => {
     // Split by section headers - capturing group includes matches in array
     // Result: [prefix, "English", EN_content, "עברית (Hebrew)", HE_content, "العربية (Arabic)", AR_content, "Русский (Russian)", RU_content, "Ελληνικά (Greek)", EL_content]
-    const sections = fullContent.split(/## (English|עברית \(Hebrew\)|العربية \(Arabic\)|Русский \(Russian\)|Ελληνικά \(Greek\))/);
+    const sections = fullContent.split(
+      /## (English|עברית \(Hebrew\)|العربية \(Arabic\)|Русский \(Russian\)|Ελληνικά \(Greek\))/
+    );
 
     // Find the right section based on language
     let content = '';
@@ -136,7 +140,7 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
     return {
       content: content.trim() || sections[2] || fullContent,
       actualLanguage,
-      isFallback
+      isFallback,
     };
   };
 
@@ -153,7 +157,9 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
               {getDocumentIcon()}
             </div>
           </div>
-          <p className="mt-6 text-gray-600 dark:text-gray-400 text-lg font-medium animate-pulse">טוען...</p>
+          <p className="mt-6 text-gray-600 dark:text-gray-400 text-lg font-medium animate-pulse">
+            טוען...
+          </p>
         </div>
       </div>
     );
@@ -169,31 +175,33 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
     const notices = {
       [Language.RU]: {
         title: 'Доступен на английском',
-        message: 'Этот документ в настоящее время доступен только на английском языке.'
+        message: 'Этот документ в настоящее время доступен только на английском языке.',
       },
       [Language.EL]: {
         title: 'Διαθέσιμο στα Αγγλικά',
-        message: 'Αυτό το έγγραφο είναι προς το παρόν διαθέσιμο μόνο στα Αγγλικά.'
+        message: 'Αυτό το έγγραφο είναι προς το παρόν διαθέσιμο μόνο στα Αγγλικά.',
       },
       [Language.HE]: {
         title: 'זמין באנגלית',
-        message: 'מסמך זה זמין כעת באנגלית בלבד.'
+        message: 'מסמך זה זמין כעת באנגלית בלבד.',
       },
       [Language.AR]: {
         title: 'متاح باللغة الإنجليزية',
-        message: 'هذا المستند متاح حاليًا باللغة الإنجليزية فقط.'
+        message: 'هذا المستند متاح حاليًا باللغة الإنجليزية فقط.',
       },
       [Language.EN]: {
         title: 'Available in English',
-        message: 'This document is currently only available in English.'
-      }
+        message: 'This document is currently only available in English.',
+      },
     };
 
     return notices[language] || notices[Language.EN];
   };
 
   return (
-    <div className={`fixed inset-0 z-[100] min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-y-auto ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div
+      className={`fixed inset-0 z-[100] min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 overflow-y-auto ${isRtl ? 'rtl' : 'ltr'}`}
+    >
       {/* Animated background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
@@ -211,7 +219,11 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
               <ArrowLeft className="w-5 h-5" />
             </div>
             <span className="hidden sm:inline">
-              {language === Language.HE ? 'חזרה לאתר' : language === Language.AR ? 'العودة للموقع' : 'Back to Website'}
+              {language === Language.HE
+                ? 'חזרה לאתר'
+                : language === Language.AR
+                  ? 'العودة للموقع'
+                  : 'Back to Website'}
             </span>
           </button>
 
@@ -262,21 +274,33 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
             <ReactMarkdown
               components={{
                 h1: ({ node, ...props }) => (
-                  <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-8 pb-6 border-b-2 border-gray-200 dark:border-slate-700" {...props} />
+                  <h1
+                    className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-8 pb-6 border-b-2 border-gray-200 dark:border-slate-700"
+                    {...props}
+                  />
                 ),
                 h2: ({ node, children, ...props }) => (
-                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-12 mb-6 flex items-center gap-3" {...props}>
+                  <h2
+                    className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mt-12 mb-6 flex items-center gap-3"
+                    {...props}
+                  >
                     <span className="w-8 h-1 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full"></span>
                     {children}
                   </h2>
                 ),
                 h3: ({ node, children, ...props }) => (
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mt-8 mb-4" {...props}>
+                  <h3
+                    className="text-xl font-bold text-gray-800 dark:text-gray-100 mt-8 mb-4"
+                    {...props}
+                  >
                     {children}
                   </h3>
                 ),
                 p: ({ node, children, ...props }) => (
-                  <p className="mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-lg" {...props}>
+                  <p
+                    className="mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-lg"
+                    {...props}
+                  >
                     {children}
                   </p>
                 ),
@@ -291,7 +315,10 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
                   </ol>
                 ),
                 li: ({ node, children, ...props }) => (
-                  <li className="flex items-start gap-3 text-gray-700 dark:text-gray-300 leading-relaxed" {...props}>
+                  <li
+                    className="flex items-start gap-3 text-gray-700 dark:text-gray-300 leading-relaxed"
+                    {...props}
+                  >
                     <span className="w-2 h-2 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full mt-2 flex-shrink-0"></span>
                     <span>{children}</span>
                   </li>
@@ -308,12 +335,18 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
                   </a>
                 ),
                 table: ({ node, children, ...props }) => (
-                  <div className="my-8 overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-700" {...props}>
+                  <div
+                    className="my-8 overflow-x-auto rounded-2xl border border-gray-200 dark:border-slate-700"
+                    {...props}
+                  >
                     <table className="w-full">{children}</table>
                   </div>
                 ),
                 thead: ({ node, children, ...props }) => (
-                  <thead className="bg-gradient-to-r from-blue-600 to-purple-600 text-white" {...props}>
+                  <thead
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                    {...props}
+                  >
                     {children}
                   </thead>
                 ),
@@ -323,12 +356,18 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
                   </tbody>
                 ),
                 tr: ({ node, children, ...props }) => (
-                  <tr className="hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" {...props}>
+                  <tr
+                    className="hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                    {...props}
+                  >
                     {children}
                   </tr>
                 ),
                 th: ({ node, children, ...props }) => (
-                  <th className="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider" {...props}>
+                  <th
+                    className="px-6 py-4 text-left font-semibold text-sm uppercase tracking-wider"
+                    {...props}
+                  >
                     {children}
                   </th>
                 ),
@@ -338,13 +377,18 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
                   </td>
                 ),
                 blockquote: ({ node, children, ...props }) => (
-                  <blockquote className="border-l-4 border-blue-600 pl-6 py-4 my-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-r-xl italic text-gray-700 dark:text-gray-300" {...props}>
+                  <blockquote
+                    className="border-l-4 border-blue-600 pl-6 py-4 my-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-r-xl italic text-gray-700 dark:text-gray-300"
+                    {...props}
+                  >
                     {children}
                   </blockquote>
                 ),
                 hr: ({ node, ...props }) => (
-                  <hr className="my-12 border-t-2 border-dashed border-gray-300 dark:border-slate-700" {...props}
-                />
+                  <hr
+                    className="my-12 border-t-2 border-dashed border-gray-300 dark:border-slate-700"
+                    {...props}
+                  />
                 ),
                 strong: ({ node, children, ...props }) => (
                   <strong className="font-bold text-blue-600 dark:text-blue-400" {...props}>
@@ -354,11 +398,15 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
               }}
             >
               {`## ${
-                actualLanguage === Language.HE ? 'עברית' :
-                actualLanguage === Language.AR ? 'العربية' :
-                actualLanguage === Language.RU ? 'Русский' :
-                actualLanguage === Language.EL ? 'Ελληνικά' :
-                'English'
+                actualLanguage === Language.HE
+                  ? 'עברית'
+                  : actualLanguage === Language.AR
+                    ? 'العربية'
+                    : actualLanguage === Language.RU
+                      ? 'Русский'
+                      : actualLanguage === Language.EL
+                        ? 'Ελληνικά'
+                        : 'English'
               }\n\n${languageContent}`}
             </ReactMarkdown>
           </div>
@@ -374,7 +422,13 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
             className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-lg rounded-2xl transition-all transform hover:scale-105 shadow-xl shadow-blue-600/30"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>{language === Language.HE ? 'חזרה לאתר' : language === Language.AR ? 'العودة للموقع' : 'Back to Website'}</span>
+            <span>
+              {language === Language.HE
+                ? 'חזרה לאתר'
+                : language === Language.AR
+                  ? 'العودة للموقع'
+                  : 'Back to Website'}
+            </span>
           </button>
         </div>
       </main>

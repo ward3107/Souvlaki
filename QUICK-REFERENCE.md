@@ -28,12 +28,12 @@ git push origin feature/name
 
 ## 📋 Branch Names
 
-| Type | Use | Example |
-|------|-----|---------|
-| `fix/` | Bug fixes | `fix/mobile-menu` |
-| `feature/` | New features | `feature/reservations` |
-| `hotfix/` | Urgent fixes | `hotfix/critical-bug` |
-| `chore/` | Small updates | `chore/update-text` |
+| Type       | Use           | Example                |
+| ---------- | ------------- | ---------------------- |
+| `fix/`     | Bug fixes     | `fix/mobile-menu`      |
+| `feature/` | New features  | `feature/reservations` |
+| `hotfix/`  | Urgent fixes  | `hotfix/critical-bug`  |
+| `chore/`   | Small updates | `chore/update-text`    |
 
 ---
 

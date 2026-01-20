@@ -27,7 +27,12 @@
       "Bash(git checkout:*)",
       "Bash(npx vercel:*)",
       "Bash(git merge:*)",
-      "Bash(npx husky init)"
+      "Bash(npx husky init)",
+      "Bash(dir:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run format:check:*)",
+      "Bash(npm run format)"
     ]
   }
 }

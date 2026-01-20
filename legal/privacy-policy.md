@@ -1,7 +1,11 @@
 # Privacy Policy
+
 # מדיניות פרטיות
+
 # سياسة الخصوصية
+
 # Политика конфиденциальности
+
 # Πολιτική Απορρήτου
 
 **Effective Date:** January 17, 2025
@@ -27,14 +31,15 @@ At Greek Souvlaki ("we", "us", "our"), we respect your privacy and are committed
 
 We collect minimal personal data:
 
-| Data | Purpose | Legal Basis | Collected From |
-|------|---------|-------------|----------------|
-| **Name** (optional) | Display with review | Consent | Review form |
-| **Review Content** (optional) | Display on website | Consent | Review form |
-| **Star Ratings** (optional) | Display average rating | Consent | Review form |
-| **Browser Information** | Basic analytics (if enabled) | Legitimate interest | Google Analytics |
+| Data                          | Purpose                      | Legal Basis         | Collected From   |
+| ----------------------------- | ---------------------------- | ------------------- | ---------------- |
+| **Name** (optional)           | Display with review          | Consent             | Review form      |
+| **Review Content** (optional) | Display on website           | Consent             | Review form      |
+| **Star Ratings** (optional)   | Display average rating       | Consent             | Review form      |
+| **Browser Information**       | Basic analytics (if enabled) | Legitimate interest | Google Analytics |
 
 **What we DON'T collect:**
+
 - Email addresses
 - Phone numbers
 - Payment information
@@ -47,11 +52,13 @@ We collect minimal personal data:
 ### 3. How We Use Your Data
 
 We use your data **only** for:
+
 - Displaying your review on our website
 - Calculating and showing average ratings
 - Improving our services based on feedback
 
 We **do NOT**:
+
 - Sell or rent your data to third parties
 - Use your data for marketing purposes
 - Send you promotional messages
@@ -62,10 +69,12 @@ We **do NOT**:
 ### 4. Cookies and Tracking
 
 **Essential Cookies:**
+
 - Google Maps may set cookies for map functionality
 - These are necessary for the map to work properly
 
 **Non-Essential Cookies:**
+
 - Currently disabled
 - We may enable Google Analytics in the future (with your consent)
 
@@ -77,12 +86,12 @@ For more details, see our [Cookie Policy](./cookie-policy.md).
 
 Our website integrates with the following third-party services:
 
-| Service | Purpose | Data Shared | Your Rights |
-|---------|---------|-------------|-------------|
-| **Google Maps** | Display restaurant location | Your IP & location data (goes to Google, not us) | See Google's privacy policy |
-| **Waze** | Navigation link | No data collected by us | See Waze's privacy policy |
-| **WhatsApp** | Direct messaging | No data collected by us | See WhatsApp's privacy policy |
-| **Facebook/Instagram** | Social media links | No data collected by us | See Meta's privacy policy |
+| Service                | Purpose                     | Data Shared                                      | Your Rights                   |
+| ---------------------- | --------------------------- | ------------------------------------------------ | ----------------------------- |
+| **Google Maps**        | Display restaurant location | Your IP & location data (goes to Google, not us) | See Google's privacy policy   |
+| **Waze**               | Navigation link             | No data collected by us                          | See Waze's privacy policy     |
+| **WhatsApp**           | Direct messaging            | No data collected by us                          | See WhatsApp's privacy policy |
+| **Facebook/Instagram** | Social media links          | No data collected by us                          | See Meta's privacy policy     |
 
 ---
 
@@ -105,6 +114,7 @@ We will respond within 30 days.
 ### 7. Data Retention
 
 We retain review data indefinitely unless:
+
 - You request deletion
 - The review violates our terms
 - We close the website
@@ -120,6 +130,7 @@ Our website is not directed to children under 16. We do not knowingly collect da
 ### 9. Data Security
 
 We implement reasonable security measures to protect your data:
+
 - HTTPS encryption
 - Secure hosting (Vercel)
 - Regular security updates
@@ -131,6 +142,7 @@ However, no method of transmission is 100% secure. We cannot guarantee absolute 
 ### 10. Changes to This Policy
 
 We may update this Privacy Policy from time to time. We will notify you of significant changes by:
+
 - Posting the new policy on this page
 - Updating the "Effective Date" above
 
@@ -163,14 +175,15 @@ Address: Kafr Yasif, Route 70, Israel
 
 אנו אוספים מינימום של מידע אישי:
 
-| סוג מידע | מטרה | בסיס משפטי | מקור איסוף |
-|-----------|--------|-------------|-------------|
-| **שם** (אופציונלי) | הצגה עם ביקורת | הסכמה | טופס ביקורת |
-| **תוכן ביקורת** (אופציונלי) | הצגה באתר | הסכמה | טופס ביקורת |
-| **דירוג כוכבים** (אופציונלי) | הצגת דירוג ממוצע | הסכמה | טופס ביקורת |
-| **מידע דפדפן** | ניתוח בסיסי (אם מאופשר) | אינטרס חוקי | Google Analytics |
+| סוג מידע                     | מטרה                    | בסיס משפטי  | מקור איסוף       |
+| ---------------------------- | ----------------------- | ----------- | ---------------- |
+| **שם** (אופציונלי)           | הצגה עם ביקורת          | הסכמה       | טופס ביקורת      |
+| **תוכן ביקורת** (אופציונלי)  | הצגה באתר               | הסכמה       | טופס ביקורת      |
+| **דירוג כוכבים** (אופציונלי) | הצגת דירוג ממוצע        | הסכמה       | טופס ביקורת      |
+| **מידע דפדפן**               | ניתוח בסיסי (אם מאופשר) | אינטרס חוקי | Google Analytics |
 
 **מה שאנו לא אוספים:**
+
 - כתובות אימייל
 - מספרי טלפון
 - מידע תשלומים
@@ -183,11 +196,13 @@ Address: Kafr Yasif, Route 70, Israel
 ### 3. כיצד אנו משתמשים בנתונים שלך
 
 אנו משתמשים בנתונים שלך **רק** ל:
+
 - הצגת הביקורת שלך באתר שלנו
 - חישוב והצגת דירוג ממוצע
 - שיפור השירותים שלנו על סמס המשוב
 
 אנו **לא**:
+
 - מוכרים או משכירים את הנתונים שלך לצד שלישי
 - משתמשים בנתונים שלך למטרות שיווק
 - שולחים לך הודעות פרסומיות
@@ -198,10 +213,12 @@ Address: Kafr Yasif, Route 70, Israel
 ### 4. עוגיות ומעקב
 
 **עוגיות הכרחיות:**
+
 - Google Maps עשוי להגדיר עוגיות לתפקוד מפה
 - אלו נחוצות כדי שהמפה תעבוד כראוי
 
 **עוגיות לא הכרחיות:**
+
 - כרגע מנוטרלות
 - אנו עשויים לאפשר Google Analytics בעתיד (עם הסכמתך)
 
@@ -213,11 +230,11 @@ Address: Kafr Yasif, Route 70, Israel
 
 האתר שלנו משולב עם שירותי צד שלישי הבאים:
 
-| שירות | מטרה | מידע משותף | הזכויות שלך |
-|--------|--------|-------------|---------------|
-| **Google Maps** | הצגת מיקום מסעדה | ה-IP ומיקום שלך (הולך ל-Google, לא לנו) | ראה מדיניות הפרטיות של Google |
-| **Waze** | קישור ניווט | לא נאסף מידע על ידינו | ראה מדיניות הפרטיות של Waze |
-| **WhatsApp** | הודעות ישירות | לא נאסף מידע על ידינו | ראה מדיניות הפרטיות של WhatsApp |
+| שירות           | מטרה             | מידע משותף                              | הזכויות שלך                     |
+| --------------- | ---------------- | --------------------------------------- | ------------------------------- |
+| **Google Maps** | הצגת מיקום מסעדה | ה-IP ומיקום שלך (הולך ל-Google, לא לנו) | ראה מדיניות הפרטיות של Google   |
+| **Waze**        | קישור ניווט      | לא נאסף מידע על ידינו                   | ראה מדיניות הפרטיות של Waze     |
+| **WhatsApp**    | הודעות ישירות    | לא נאסף מידע על ידינו                   | ראה מדיניות הפרטיות של WhatsApp |
 
 ---
 
@@ -240,6 +257,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 7. שמירת נתונים
 
 אנו שומרים נתוני ביקורות ללא הגבלת זמן אלא אם:
+
 - אתה מבקש מחיקה
 - הביקורת מפרה את התנאים שלנו
 - אנו סוגרים את האתר
@@ -255,6 +273,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 9. אבטחת מידע
 
 אנו מיישמים אמצעי אבטחה סבירים להגן על המידע שלך:
+
 - הצפנת HTTPS
 - אחסון מאובטח (Vercel)
 - עדכוני אבטחה תקופתיים
@@ -266,6 +285,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 10. שינויים במדיניות זו
 
 אנו עשויים לעדכן מדיניות פרטיות זה מעת לעת. נודיע לך על שינויים משמעותיים על ידי:
+
 - פרסום המדיניות החדשה בעמוד זה
 - עדכון "תאריך עדכון" למעלה
 
@@ -277,9 +297,10 @@ Address: Kafr Yasif, Route 70, Israel
 
 **Greek Souvlaki**
 אימייל: **[INSERT EMAIL]**
+
 - אתר: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
-טלפון: 04-812-2980
-כתובת: כפר יאסיף, כביש 70, ישראל
+  טלפון: 04-812-2980
+  כתובת: כפר יאסיף, כביש 70, ישראל
 
 ---
 
@@ -298,14 +319,15 @@ Address: Kafr Yasif, Route 70, Israel
 
 نجمع الحد الأدنى من البيانات الشخصية:
 
-| البيانات | الغرض | الأساس القانوني | المصدر |
-|----------|--------|-----------------|--------|
-| **الاسم** (اختياري) | العرض مع التقييم | الموافقة | نموذج التقييم |
-| **محتوى التقييم** (اختياري) | العرض على الموقع | الموافقة | نموذج التقييم |
-| **تقييمات النجوم** (اختياري) | عرض التقييم المتوسط | الموافقة | نموذج التقييم |
-| **معلومات المتصفح** | التحليلات الأساسية (إذا كانت مفعلة) | المصالح المشروعة | Google Analytics |
+| البيانات                     | الغرض                               | الأساس القانوني  | المصدر           |
+| ---------------------------- | ----------------------------------- | ---------------- | ---------------- |
+| **الاسم** (اختياري)          | العرض مع التقييم                    | الموافقة         | نموذج التقييم    |
+| **محتوى التقييم** (اختياري)  | العرض على الموقع                    | الموافقة         | نموذج التقييم    |
+| **تقييمات النجوم** (اختياري) | عرض التقييم المتوسط                 | الموافقة         | نموذج التقييم    |
+| **معلومات المتصفح**          | التحليلات الأساسية (إذا كانت مفعلة) | المصالح المشروعة | Google Analytics |
 
 **ما الذي لا نجمعه:**
+
 - عناوين البريد الإلكتروني
 - أرقام الهواتف
 - معلومات الدفع
@@ -318,11 +340,13 @@ Address: Kafr Yasif, Route 70, Israel
 ### 3. كيف نستخدم بياناتك
 
 نحن نستخدم بياناتك **فقط** لـ:
+
 - عرض تقييمك على موقعنا
 - حساب وعرض متوسط التقييمات
 - تحسين خدماتنا بناءً على التعليقات
 
 نحن **لا**:
+
 - نبيع أو نؤجر بياناتك لأطراف ثالثة
 - نستخدم بياناتك لأغراض تسويقية
 - نرسل لك رسائل ترويجية
@@ -333,10 +357,12 @@ Address: Kafr Yasif, Route 70, Israel
 ### 4. ملفات تعريف الارتباط والتتبع
 
 **ملفات تعريف الارتباط الضرورية:**
+
 - قد يقوم Google Maps بتعيين ملفات تعريف الارتباط لوظيفة الخريطة
 - هذه ضرورية لكي تعمل الخريطة بشكل صحيح
 
 **ملفات تعريف الارتباط غير الضرورية:**
+
 - معطلة حالياً
 - قد نقوم بتمكين Google Analytics في المستقبل (بموافقتك)
 
@@ -348,11 +374,11 @@ Address: Kafr Yasif, Route 70, Israel
 
 يتم تكامل موقعنا مع خدمات الطرف الثالث التالية:
 
-| الخدمة | الغرض | البيانات المشتركة | حقوقك |
-|---------|--------|-------------------|--------|
-| **Google Maps** | عرض موقع المطعم | عنوان IP وموقعك (يذهب إلى Google، وليس إلينا) | راجع سياسة خصوصية Google |
-| **Waze** | رابط التنقل | لا نجمع بيانات | راجع سياسة خصوصية Waze |
-| **WhatsApp** | المراسلة المباشرة | لا نجمع بيانات | راجع سياسة خصوصية WhatsApp |
+| الخدمة          | الغرض             | البيانات المشتركة                             | حقوقك                      |
+| --------------- | ----------------- | --------------------------------------------- | -------------------------- |
+| **Google Maps** | عرض موقع المطعم   | عنوان IP وموقعك (يذهب إلى Google، وليس إلينا) | راجع سياسة خصوصية Google   |
+| **Waze**        | رابط التنقل       | لا نجمع بيانات                                | راجع سياسة خصوصية Waze     |
+| **WhatsApp**    | المراسلة المباشرة | لا نجمع بيانات                                | راجع سياسة خصوصية WhatsApp |
 
 ---
 
@@ -375,6 +401,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 7. الاحتفاظ بالبيانات
 
 نحتفظ ببيانات التقييم إلى أجل غير محدد ما لم:
+
 - تطلب الحذف
 - ينتهك التقييم شروطنا
 - نغلق الموقع
@@ -390,6 +417,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 9. أمن البيانات
 
 نحن ننفذ تدابير أمنية معقولة لحماية بياناتك:
+
 - تشفير HTTPS
 - استضافة آمنة (Vercel)
 - تحديثات أمنية منتظمة
@@ -401,6 +429,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 10. التغييرات على هذه السياسة
 
 قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنبلغك بأي تغييرات كبيرة عن طريق:
+
 - نشر السياسة الجديدة على هذه الصفحة
 - تحديث "تاريخ التحديث" أعلاه
 
@@ -414,6 +443,7 @@ Address: Kafr Yasif, Route 70, Israel
 البريد الإلكتروني: **[INSERT EMAIL]**
 الهاتف: 04-812-2980
 العنوان: كفر ياسيف، طريق 70، إسرائيل
+
 - الموقع: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 
 ---
@@ -432,16 +462,19 @@ Address: Kafr Yasif, Route 70, Israel
 ### 2. Какую информацию мы собираем
 
 #### 2.1. Информация, которую вы предоставляете
+
 - Отзывы (имя, рейтинг, комментарий)
 - Сообщения через контактную форму (имя, email, сообщение)
 
 #### 2.2. Автоматически собираемая информация
+
 - IP-адрес
 - Тип браузера и устройство
 - Операционная система
 - Ссылки на наш сайт
 
 #### 2.3. Файлы cookie
+
 - Необходимые файлы (Google Maps)
 - Функциональные файлы (язык)
 - Аналитические файлы (отключены)
@@ -451,12 +484,14 @@ Address: Kafr Yasif, Route 70, Israel
 ### 3. Как мы используем вашу информацию
 
 Мы используем вашу информацию для:
+
 - Отображения отзывов на нашем сайте
 - Ответа на ваши запросы
 - Запоминания вашего языка
 - Улучшения функциональности сайта
 
 Мы **НЕ** используем вашу информацию для:
+
 - Продажи третьим лицам
 - Маркетинговых рассылок
 - Профилирования
@@ -474,6 +509,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 5. Обмен данными с третьими лицами
 
 Мы делимся данными только с:
+
 - **Vercel** (хостинг) - для хранения и обслуживания сайта
 - **Google** (Maps) - только когда вы просматриваете карту
 
@@ -484,6 +520,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 6. Ваши права
 
 Согласно израильскому закону о защите конфиденциальности, вы имеете право:
+
 - **Доступа:** Запросить копию ваших данных
 - **Исправления:** Запросить исправление неточных данных
 - **Удаления:** Запросить удаление ваших данных
@@ -511,6 +548,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 9. Безопасность данных
 
 Мы внедряем разумные меры безопасности для защиты ваших данных:
+
 - HTTPS-шифрование
 - Безопасный хостинг (Vercel)
 - Регулярные обновления безопасности
@@ -522,6 +560,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 10. Изменения в этой политике
 
 Мы можем обновлять эту Политику конфиденциальности время от времени. Мы уведомим вас о любых существенных изменениях:
+
 - Публикацией новой политики на этой странице
 - Обновлением "Даты вступления в силу" выше
 
@@ -552,16 +591,19 @@ Address: Kafr Yasif, Route 70, Israel
 ### 2. Ποιες πληροφορίες συλλέγουμε
 
 #### 2.1. Πληροφορίες που παρέχετε
+
 - Κριτικές (όνομα, βαθμολογία, σχόλια)
 - Μηνύματα μέσω φόρμας επαφής (όνομα, email, μήνυμα)
 
 #### 2.2. Αυτόματα συλλεγόμενες πληροφορίες
+
 - Διεύθυνση IP
 - Τύπος προγράμματος περιήγησης και συσκευής
 - Λειτουργικό σύστημα
 - Σύνδεσμοι προς τον ιστότοπό μας
 
 #### 2.3. Cookies
+
 - Απαραίτητα cookies (Google Maps)
 - Λειτουργικά cookies (γλώσσα)
 - Analytics cookies (απενεργοποιημένα)
@@ -571,12 +613,14 @@ Address: Kafr Yasif, Route 70, Israel
 ### 3. Πώς χρησιμοποιούμε τις πληροφορίες σας
 
 Χρησιμοποιούμε τις πληροφορίες σας για:
+
 - Εμφάνιση κριτικών στον ιστότοπό μας
 - Απάντηση στα αιτήματά σας
 - Απομνημόνευση της γλώσσας σας
 - Βελτίωση της λειτουργικότητας του ιστότοπου
 
 ΔΕΝ χρησιμοποιούμε τις πληροφορίες σας για:
+
 - Πώληση σε τρίτους
 - Marketing emails
 - Profiling
@@ -594,6 +638,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 5. Κοινή χρήση δεδομένων με τρίτους
 
 Μοιραζόμαστε δεδομένα μόνο με:
+
 - **Vercel** (hosting) - για αποθήκευση και εξυπηρέτηση του ιστότοπου
 - **Google** (Maps) - μόνο όταν βλέπετε τον χάρτη
 
@@ -604,6 +649,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 6. Τα δικαιώματά σας
 
 Σύμφωνα με τον ισραηλινό νόμο προστασίας προσωπικών δεδομένων, έχετε το δικαίωμα:
+
 - **Πρόσβασης:** Να ζητήσετε αντίγραφο των δεδομένων σας
 - **Διόρθωσης:** Να ζητήσετε διόρθωση ανακριβών δεδομένων
 - **Διαγραφής:** Να ζητήσετε διαγραφή των δεδομένων σας
@@ -631,6 +677,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 9. Ασφάλεια δεδομένων
 
 Εφαρμόζουμε λογικά μέτρα ασφαλείας για την προστασία των δεδομένων σας:
+
 - Κρυπτογράφηση HTTPS
 - Ασφαλής hosting (Vercel)
 - Τακτικές ενημερώσεις ασφαλείας
@@ -642,6 +689,7 @@ Address: Kafr Yasif, Route 70, Israel
 ### 10. Αλλαγές σε αυτή την πολιτική
 
 Μπορούμε να ενημερώνουμε αυτή την Πολιτική Απορρήτου κατά καιρούς. Θα σας ειδοποιήσουμε για任何 σημαντικές αλλαγές:
+
 - Δημοσιεύοντας τη νέα πολιτική σε αυτή τη σελίδα
 - Ενημερώνοντας την "Ημερομηνία ισχύος" παραπάνω
 

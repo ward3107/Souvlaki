@@ -24,7 +24,7 @@ if (!fs.existsSync(distIconsDir)) {
 
 // Create icons
 const sizes = [192, 512];
-sizes.forEach(size => {
+sizes.forEach((size) => {
   const svg = createIconSVG(size);
 
   // Save to public/icons
@@ -43,6 +43,8 @@ fs.writeFileSync(path.join(__dirname, 'dist', 'apple-touch-icon.png'), appleIcon
 console.log('✅ Created apple-touch-icon.png (180x180)');
 
 console.log('\n✅ All placeholder icons created!');
-console.log('⚠️  Note: These are SVG placeholders. For production, convert to real PNG images using:');
+console.log(
+  '⚠️  Note: These are SVG placeholders. For production, convert to real PNG images using:'
+);
 console.log('   - https://realfavicongenerator.net/');
 console.log('   - https://www.pwabuilder.com/imageGenerator');

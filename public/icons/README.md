@@ -11,6 +11,7 @@ public/icons/
 ```
 
 And in the `public/` folder:
+
 ```
 public/
 ├── apple-touch-icon.png  (180x180 pixels)
@@ -19,6 +20,7 @@ public/
 ## Quick Ways to Generate Icons
 
 ### Option 1: Use an Online Tool (Easiest)
+
 1. Go to: https://realfavicongenerator.net/
 2. Upload your logo or image
 3. Download the generated icons
@@ -26,12 +28,14 @@ public/
 5. Copy `apple-touch-icon.png` to `public/`
 
 ### Option 2: Use PWA Asset Generator
+
 1. Go to: https://www.pwabuilder.com/imageGenerator
 2. Upload your image
 3. Download the icons
 4. Place them in the correct folders
 
 ### Option 3: Manual with Image Editor
+
 - Use Photoshop, GIMP, or Canva
 - Create PNG images at exact sizes:
   - 192x192 pixels

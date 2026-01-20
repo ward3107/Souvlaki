@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Language } from '../types';
-import { Cookie, X, Check, ChevronDown, ChevronUp, Shield, Settings, BarChart3 } from 'lucide-react';
+import {
+  Cookie,
+  X,
+  Check,
+  ChevronDown,
+  ChevronUp,
+  Shield,
+  Settings,
+  BarChart3,
+} from 'lucide-react';
 
 interface CookieBannerProps {
   language: Language;
@@ -70,7 +79,9 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
   if (!isVisible) return null;
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-[60] p-4 animate-in slide-in-from-bottom duration-500 ${isRtl ? 'rtl' : 'ltr'}`}>
+    <div
+      className={`fixed bottom-0 left-0 right-0 z-[60] p-4 animate-in slide-in-from-bottom duration-500 ${isRtl ? 'rtl' : 'ltr'}`}
+    >
       <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 overflow-hidden">
         {/* Gradient top border */}
         <div className="h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"></div>
@@ -88,7 +99,7 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
               <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                 {t(
                   'אנו משתמשים בעוגיות כדי לשפר את חווית השימוש שלך. אנא בחר אילו עוגיות ברצונך לאפשר.',
-                  'We use cookies to enhance your experience. Please choose which cookies you\'d like to allow.',
+                  "We use cookies to enhance your experience. Please choose which cookies you'd like to allow.",
                   'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. يرجى اختيار ملفات تعريف الارتباط التي تريد السماح بها.'
                 )}
               </p>
@@ -107,7 +118,11 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
             <div className="mb-6 p-5 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-200 dark:border-slate-700 animate-in slide-in-from-top-2 duration-300">
               <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200 mb-4 flex items-center gap-2">
                 <Settings className="w-4 h-4" />
-                {t('בחר קטגוריות עוגיות', 'Choose Cookie Categories', 'اختر فئات ملفات تعريف الارتباط')}
+                {t(
+                  'בחר קטגוריות עוגיות',
+                  'Choose Cookie Categories',
+                  'اختر فئات ملفات تعريف الارتباط'
+                )}
               </h4>
 
               {/* Essential Cookies */}
@@ -122,7 +137,11 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                         {t('עוגיות הכרחיות', 'Essential Cookies', 'ملفات تعريف الارتباط الضرورية')}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {t('Google Maps - נדרש לתצוגת המפה', 'Required for map functionality', 'مطلوب لعمل الخريطة')}
+                        {t(
+                          'Google Maps - נדרש לתצוגת המפה',
+                          'Required for map functionality',
+                          'مطلوب لعمل الخريطة'
+                        )}
                       </p>
                     </div>
                   </div>
@@ -148,24 +167,44 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                     </div>
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white text-sm">
-                        {t('עוגיות פונקציונליות', 'Functional Cookies', 'ملفات تعريف الارتباط الوظيفية')}
+                        {t(
+                          'עוגיות פונקציונליות',
+                          'Functional Cookies',
+                          'ملفات تعريف الارتباط الوظيفية'
+                        )}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {t('שמירת שפה והעדפות', 'Remember language & preferences', 'تذكر اللغة والتفضيلات')}
+                        {t(
+                          'שמירת שפה והעדפות',
+                          'Remember language & preferences',
+                          'تذكر اللغة والتفضيلات'
+                        )}
                       </p>
                     </div>
                   </div>
                   <button
-                    onClick={() => setPreferences({ ...preferences, functional: !preferences.functional })}
+                    onClick={() =>
+                      setPreferences({ ...preferences, functional: !preferences.functional })
+                    }
                     className={`relative w-12 h-7 rounded-full transition-colors ${
                       preferences.functional ? 'bg-purple-500' : 'bg-gray-300 dark:bg-slate-600'
                     }`}
-                    aria-label={t('הפעל עוגיות פונקציונליות', 'Toggle functional cookies', 'تبديل ملفات تعريف الارتباط الوظيفية')}
+                    aria-label={t(
+                      'הפעל עוגיות פונקציונליות',
+                      'Toggle functional cookies',
+                      'تبديل ملفات تعريف الارتباط الوظيفية'
+                    )}
                     aria-pressed={preferences.functional}
                   >
                     <div
                       className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
-                        preferences.functional ? (isRtl ? 'right-1' : 'left-1') : (isRtl ? 'left-1' : 'right-1')
+                        preferences.functional
+                          ? isRtl
+                            ? 'right-1'
+                            : 'left-1'
+                          : isRtl
+                            ? 'left-1'
+                            : 'right-1'
                       }`}
                     />
                   </button>
@@ -191,21 +230,37 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                         {t('עוגיות ניתוח', 'Analytics Cookies', 'ملفات تعريف الارتباط التحليلية')}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {t('Google Analytics - כרגע מנוטרל', 'Google Analytics - Currently disabled', 'Google Analytics - معطلة حاليًا')}
+                        {t(
+                          'Google Analytics - כרגע מנוטרל',
+                          'Google Analytics - Currently disabled',
+                          'Google Analytics - معطلة حاليًا'
+                        )}
                       </p>
                     </div>
                   </div>
                   <button
-                    onClick={() => setPreferences({ ...preferences, analytics: !preferences.analytics })}
+                    onClick={() =>
+                      setPreferences({ ...preferences, analytics: !preferences.analytics })
+                    }
                     className={`relative w-12 h-7 rounded-full transition-colors ${
                       preferences.analytics ? 'bg-pink-500' : 'bg-gray-300 dark:bg-slate-600'
                     }`}
-                    aria-label={t('הפעל עוגיות ניתוח', 'Toggle analytics cookies', 'تبديل ملفات تعريف الارتباط التحليلية')}
+                    aria-label={t(
+                      'הפעל עוגיות ניתוח',
+                      'Toggle analytics cookies',
+                      'تبديل ملفات تعريف الارتباط التحليلية'
+                    )}
                     aria-pressed={preferences.analytics}
                   >
                     <div
                       className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
-                        preferences.analytics ? (isRtl ? 'right-1' : 'left-1') : (isRtl ? 'left-1' : 'right-1')
+                        preferences.analytics
+                          ? isRtl
+                            ? 'right-1'
+                            : 'left-1'
+                          : isRtl
+                            ? 'left-1'
+                            : 'right-1'
                       }`}
                     />
                   </button>
@@ -242,7 +297,11 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
             >
               <Settings className="w-4 h-4" />
               {t('התאם אישית', 'Customize', 'تخصيص')}
-              {isCustomizeOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              {isCustomizeOpen ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
             </button>
             {isCustomizeOpen && (
               <button
@@ -259,7 +318,9 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
           <div className="mt-4 text-center">
             <button
               onClick={() => {
-                const event = new CustomEvent('openLegalDocument', { detail: '/legal/cookie-policy.md' });
+                const event = new CustomEvent('openLegalDocument', {
+                  detail: '/legal/cookie-policy.md',
+                });
                 window.dispatchEvent(event);
               }}
               className="text-xs text-blue-600 dark:text-blue-400 hover:text-purple-600 dark:hover:text-purple-400 hover:underline transition-colors"

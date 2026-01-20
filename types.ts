@@ -1,4 +1,3 @@
-
 export enum Language {
   HE = 'he',
   EN = 'en',
@@ -46,7 +45,7 @@ export interface SocialLink {
   icon: string;
 }
 
-export type TranslationKey = 
+export type TranslationKey =
   | 'nav_home'
   | 'nav_menu'
   | 'nav_gallery'

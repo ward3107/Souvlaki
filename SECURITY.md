@@ -9,22 +9,23 @@
 
 ### ✅ Current Security Status: SAFE
 
-| Security Area | Status | Notes |
-|---------------|--------|-------|
-| **API Keys** | ✅ None in use | No secrets required |
-| **Environment Variables** | ✅ Secure | `.env` files in `.gitignore` |
-| **Public Code** | ✅ Clean | No hardcoded secrets |
-| **Dependencies** | ✅ Up to date | Regular updates recommended |
-| **HTTPS** | ✅ Enabled | Vercel provides SSL |
-| **Data Collection** | ⚠️ None | Consider adding analytics |
-| **User Input** | ✅ Safe | No form submissions yet |
-| **Authentication** | ⚠️ N/A | No user accounts needed |
+| Security Area             | Status         | Notes                        |
+| ------------------------- | -------------- | ---------------------------- |
+| **API Keys**              | ✅ None in use | No secrets required          |
+| **Environment Variables** | ✅ Secure      | `.env` files in `.gitignore` |
+| **Public Code**           | ✅ Clean       | No hardcoded secrets         |
+| **Dependencies**          | ✅ Up to date  | Regular updates recommended  |
+| **HTTPS**                 | ✅ Enabled     | Vercel provides SSL          |
+| **Data Collection**       | ⚠️ None        | Consider adding analytics    |
+| **User Input**            | ✅ Safe        | No form submissions yet      |
+| **Authentication**        | ⚠️ N/A         | No user accounts needed      |
 
 ---
 
 ## 🚨 Security Rules - MUST FOLLOW
 
 ### Rule #1: Never Commit Secrets
+
 ```bash
 # ❌ NEVER do this:
 git add .env
@@ -35,6 +36,7 @@ git commit -m "Add API keys"
 ```
 
 ### Rule #2: Use `.env.example` Template
+
 ```bash
 # ✅ DO: Commit template without real values
 .env.example  ← Safe to commit (has placeholder values)
@@ -42,18 +44,21 @@ git commit -m "Add API keys"
 ```
 
 ### Rule #3: All Client-Side Keys Are Public
+
 Remember: **Any key in your frontend code is PUBLIC**
 
 ```javascript
 // ❌ This is NOT secure - anyone can see it
-const apiKey = "sk-1234567890abcdef";  // Visible in browser!
+const apiKey = 'sk-1234567890abcdef'; // Visible in browser!
 
 // ✅ If you need real security, use a backend API
 // Frontend → Backend API → Protected service
 ```
 
 ### Rule #4: Rotate Exposed Keys Immediately
+
 If you accidentally commit a secret:
+
 1. Remove it from the code **immediately**
 2. **Rotate/replace** the key in the service
 3. Consider it compromised
@@ -66,6 +71,7 @@ If you accidentally commit a secret:
 ### Before Launching to Users
 
 #### ✅ Completed
+
 - [x] No hardcoded API keys in code
 - [x] No hardcoded passwords in code
 - [x] `.env` files added to `.gitignore`
@@ -77,16 +83,19 @@ If you accidentally commit a secret:
 #### ⚠️ Recommended (Optional)
 
 **Analytics:**
+
 - [ ] Add Google Analytics (optional, no secrets needed)
 - [ ] Add Facebook Pixel (optional, no secrets needed)
 
 **Security Enhancements:**
+
 - [ ] Content Security Policy (CSP) headers
 - [ ] Subresource Integrity (SRI) for external scripts
 - [ ] X-XSS-Protection headers (already in vercel.json)
 - [ ] Strict-Transport-Security (already in vercel.json)
 
 **Future Features (When Adding Backend):**
+
 - [ ] API rate limiting
 - [ ] Input validation & sanitization
 - [ ] CSRF protection
@@ -112,6 +121,7 @@ Your `vercel.json` already has excellent security headers:
 ```
 
 **What these do:**
+
 - **X-Content-Type-Options**: Prevents MIME sniffing
 - **X-Frame-Options**: Prevents clickjacking attacks
 - **X-XSS-Protection**: Enables browser XSS filter
@@ -142,7 +152,7 @@ const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
 
 ```javascript
 // ❌ NEVER do this (client-side):
-const stripeSecretKey = "sk_live_12345";  // VISIBLE TO EVERYONE!
+const stripeSecretKey = 'sk_live_12345'; // VISIBLE TO EVERYONE!
 
 // ✅ CORRECT: Use a backend
 // Frontend → Your Backend → Stripe API
@@ -175,15 +185,15 @@ const stripeSecretKey = "sk_live_12345";  // VISIBLE TO EVERYONE!
 
 ### What You CAN Add Without Security Concerns:
 
-| Feature | Safe? | Notes |
-|---------|-------|-------|
-| Google Analytics | ✅ Yes | Measurement ID is public |
-| Facebook Pixel | ✅ Yes | Pixel ID is public |
-| Google Maps | ✅ Yes | API key is public (restrict usage in Google Console) |
-| WhatsApp Links | ✅ Yes | Just a phone number |
-| Social Media Links | ✅ Yes | Public profiles |
-| Email Links | ✅ Yes | `mailto:` links are safe |
-| Contact Forms | ⚠️ Caution | Use Formspree or add backend |
+| Feature            | Safe?      | Notes                                                |
+| ------------------ | ---------- | ---------------------------------------------------- |
+| Google Analytics   | ✅ Yes     | Measurement ID is public                             |
+| Facebook Pixel     | ✅ Yes     | Pixel ID is public                                   |
+| Google Maps        | ✅ Yes     | API key is public (restrict usage in Google Console) |
+| WhatsApp Links     | ✅ Yes     | Just a phone number                                  |
+| Social Media Links | ✅ Yes     | Public profiles                                      |
+| Email Links        | ✅ Yes     | `mailto:` links are safe                             |
+| Contact Forms      | ⚠️ Caution | Use Formspree or add backend                         |
 
 ---
 
@@ -200,13 +210,13 @@ const stripeSecretKey = "sk_live_12345";  // VISIBLE TO EVERYONE!
 
 ### Backend Options:
 
-| Option | Cost | Complexity | When to Use |
-|--------|------|------------|-------------|
-| **Vercel Serverless** | Free tier | Medium | Simple API endpoints |
-| **Netlify Functions** | Free tier | Medium | Simple API endpoints |
-| **Firebase** | Free tier | Low | Database + Auth |
-| **Supabase** | Free tier | Low | Database + Auth |
-| **Custom Backend** | $$ | High | Full control needed |
+| Option                | Cost      | Complexity | When to Use          |
+| --------------------- | --------- | ---------- | -------------------- |
+| **Vercel Serverless** | Free tier | Medium     | Simple API endpoints |
+| **Netlify Functions** | Free tier | Medium     | Simple API endpoints |
+| **Firebase**          | Free tier | Low        | Database + Auth      |
+| **Supabase**          | Free tier | Low        | Database + Auth      |
+| **Custom Backend**    | $$        | High       | Full control needed  |
 
 ---
 
@@ -234,12 +244,14 @@ const stripeSecretKey = "sk_live_12345";  // VISIBLE TO EVERYONE!
 ### If You Find a Security Problem
 
 1. **Immediate Actions:**
+
    ```bash
    # Stop what you're doing
    # Assess the severity
    ```
 
 2. **Critical Issues (Data exposed, secrets leaked):**
+
    ```bash
    # 1. Remove secrets from code
    # 2. Rotate all exposed keys
@@ -262,11 +274,13 @@ const stripeSecretKey = "sk_live_12345";  // VISIBLE TO EVERYONE!
 ## 📞 Security Resources
 
 ### Learning Resources
+
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [MDN Web Security](https://developer.mozilla.org/en-US/docs/Web/Security)
 - [Vercel Security Best Practices](https://vercel.com/docs/security)
 
 ### Tools
+
 - **npm audit**: Check for vulnerable dependencies
 - **Snyk**: Security scanning for dependencies
 - **GitGuardian**: Detect secrets in Git history
@@ -305,6 +319,7 @@ curl -I https://greek-souvlaki-website.vercel.app
 ### Your Website is SECURE and ready for users! ✅
 
 **Why it's safe:**
+
 - ✅ No API keys or secrets in use
 - ✅ All code is public-facing only
 - ✅ Security headers configured
@@ -313,6 +328,7 @@ curl -I https://greek-souvlaki-website.vercel.app
 - ✅ `.env` files protected in `.gitignore`
 
 **What to remember:**
+
 - 🔒 Never commit secrets to Git
 - 🔒 Use `.env.example` for templates
 - 🔒 All frontend code is public

@@ -230,17 +230,20 @@ git push origin hotfix/critical-bug
 Before merging ANY branch to main, complete this checklist:
 
 ### Desktop Testing
+
 - [ ] Chrome (latest version)
 - [ ] Safari (if on Mac)
 - [ ] Firefox (optional)
 - [ ] Edge (optional)
 
 ### Mobile Testing
+
 - [ ] iOS Safari
 - [ ] Android Chrome
 - [ ] Test on real device (not just emulator)
 
 ### Functionality Testing
+
 - [ ] All language switching works (HE, AR, RU, EL, EN)
 - [ ] RTL languages display correctly (HE, AR)
 - [ ] All menu items visible
@@ -255,12 +258,14 @@ Before merging ANY branch to main, complete this checklist:
 - [ ] No console errors
 
 ### Performance Testing
+
 - [ ] Page loads quickly
 - [ ] No visible lag/jank
 - [ ] Images load properly
 - [ ] No broken links
 
 ### Regression Testing
+
 - [ ] Features that worked before still work
 - [ ] Didn't break any existing functionality
 
@@ -293,22 +298,23 @@ git push origin main --force  ← VERY DANGEROUS!
 
 Use these prefixes:
 
-| Prefix | When to Use | Example |
-|--------|-------------|---------|
-| `fix/` | Bug fixes | `fix/mobile-menu-bug` |
-| `hotfix/` | Urgent production fixes | `hotfix/critical-security-issue` |
-| `feature/` | New features | `feature/online-ordering` |
-| `chore/` | Minor updates | `chore/update-phone-number` |
-| `refactor/` | Code refactoring | `refactor/menu-component` |
-| `style/` | Code style only | `style/formatting` |
-| `docs/` | Documentation | `docs/update-readme` |
-| `perf/` | Performance | `perf/image-optimization` |
+| Prefix      | When to Use             | Example                          |
+| ----------- | ----------------------- | -------------------------------- |
+| `fix/`      | Bug fixes               | `fix/mobile-menu-bug`            |
+| `hotfix/`   | Urgent production fixes | `hotfix/critical-security-issue` |
+| `feature/`  | New features            | `feature/online-ordering`        |
+| `chore/`    | Minor updates           | `chore/update-phone-number`      |
+| `refactor/` | Code refactoring        | `refactor/menu-component`        |
+| `style/`    | Code style only         | `style/formatting`               |
+| `docs/`     | Documentation           | `docs/update-readme`             |
+| `perf/`     | Performance             | `perf/image-optimization`        |
 
 ---
 
 ## 🔍 Finding Preview URLs
 
 ### Option 1: Vercel Dashboard
+
 ```
 1. Go to https://vercel.com/dashboard
 2. Click "greek-souvlaki-website"
@@ -318,6 +324,7 @@ Use these prefixes:
 ```
 
 ### Option 2: GitHub
+
 ```
 1. Go to https://github.com/ward3107/Souvlaki
 2. Click the "Checks" tab (or "Actions")
@@ -327,6 +334,7 @@ Use these prefixes:
 ```
 
 ### Option 3: Terminal
+
 ```bash
 # After pushing, Vercel CLI shows URL
 vercel list
@@ -364,6 +372,7 @@ git push origin feature/blog
 ## 📋 Daily Workflow Template
 
 ### Morning - Start New Work
+
 ```bash
 # 1. Get latest main
 git checkout main
@@ -381,6 +390,7 @@ git push origin feature/todays-work
 ```
 
 ### Evening - Deploy If Ready
+
 ```bash
 # 1. Final test on preview
 # Checklist completed ✓
@@ -424,6 +434,7 @@ git push origin main
 Before clicking "Merge Pull Request":
 
 **Testing:**
+
 - [ ] Tested on preview URL
 - [ ] Desktop browsers tested
 - [ ] Mobile devices tested
@@ -432,12 +443,14 @@ Before clicking "Merge Pull Request":
 - [ ] No regressions
 
 **Code Review:**
+
 - [ ] Code is clean
 - [ ] No console.log() left in
 - [ ] No commented-out code
 - [ ] No TODO comments (or documented)
 
 **Client Approval (if needed):**
+
 - [ ] Client has tested preview URL
 - [ ] Client has approved changes
 - [ ] Any feedback addressed
@@ -447,6 +460,7 @@ Before clicking "Merge Pull Request":
 ## 🎓 Best Practices
 
 ### ✅ DO
+
 - Always create a branch for changes
 - Test thoroughly on preview URL
 - Write clear commit messages
@@ -455,6 +469,7 @@ Before clicking "Merge Pull Request":
 - Use descriptive branch names
 
 ### ❌ DON'T
+
 - Never work directly on main
 - Never merge without testing
 - Never skip preview testing

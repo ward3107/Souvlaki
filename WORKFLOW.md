@@ -9,6 +9,7 @@
 This guide explains the professional workflow for continuing development on a live website using **Git branches** and **Vercel preview deployments**.
 
 ### Key Concepts
+
 - **Live site (Production)** = `main` branch → All users see this
 - **Preview site (Staging)** = Feature branches → Only you & client see this
 - **Never break the live site!** - Test everything on preview first
@@ -119,13 +120,14 @@ git push origin feature/online-ordering
 
 **This happens automatically!**
 
-| Branch Type | URL Example | Who Can See |
-|-------------|-------------|-------------|
-| **main** | `greek-souvlaki-website.vercel.app` | Everyone (PRODUCTION) |
-| **feature/*** | `greek-souvlaki-website-j4k2m1.vercel.app` | Only you (PREVIEW) |
-| **fix/*** | `greek-souvlaki-website-x9p3q5.vercel.app` | Only you (PREVIEW) |
+| Branch Type    | URL Example                                | Who Can See           |
+| -------------- | ------------------------------------------ | --------------------- |
+| **main**       | `greek-souvlaki-website.vercel.app`        | Everyone (PRODUCTION) |
+| **feature/\*** | `greek-souvlaki-website-j4k2m1.vercel.app` | Only you (PREVIEW)    |
+| **fix/\***     | `greek-souvlaki-website-x9p3q5.vercel.app` | Only you (PREVIEW)    |
 
 **Key Points:**
+
 - Preview URL is unique for each branch
 - Preview updates automatically when you push
 - Live site is **never affected**
@@ -142,6 +144,7 @@ git push origin feature/online-ordering
 ```
 
 **Testing Checklist:**
+
 - [ ] Feature works as expected
 - [ ] No console errors
 - [ ] Mobile responsive
@@ -157,6 +160,7 @@ git push origin feature/online-ordering
 ```
 
 **Client can:**
+
 - Test the feature
 - Request changes
 - Approve when satisfied
@@ -178,6 +182,7 @@ git push origin feature/online-ordering
 When approved, create a PR on GitHub:
 
 **Option 1: Via GitHub Website**
+
 1. Go to: https://github.com/ward3107/Souvlaki
 2. Click "Pull requests" → "New pull request"
 3. Select branch: `feature/online-ordering` → `main`
@@ -185,6 +190,7 @@ When approved, create a PR on GitHub:
 5. Click "Create pull request"
 
 **Option 2: Via Command Line**
+
 ```bash
 # Using GitHub CLI (if installed)
 gh pr create --title "Add online ordering system" --body "Implements shopping cart and checkout"
@@ -208,6 +214,7 @@ git branch -d feature/online-ordering  # Delete local branch
 ```
 
 **Production Deployment:**
+
 - Vercel detects `main` branch changed
 - Builds and deploys automatically
 - **Live site updated!**
@@ -327,23 +334,24 @@ git merge main
 
 Use these prefixes for clarity:
 
-| Prefix | Usage | Example |
-|--------|-------|---------|
-| `feature/` | New features | `feature/online-ordering` |
-| `fix/` | Bug fixes | `fix/mobile-menu-bug` |
-| `hotfix/` | Urgent production fixes | `hotfix/security-patch` |
-| `refactor/` | Code refactoring | `refactor/menu-component` |
-| `perf/` | Performance improvements | `perf/image-optimization` |
-| `docs/` | Documentation updates | `docs/update-readme` |
-| `style/` | Code style changes | `style/formatting` |
-| `test/` | Adding tests | `test/menu-tests` |
-| `chore/` | Maintenance tasks | `chore/update-dependencies` |
+| Prefix      | Usage                    | Example                     |
+| ----------- | ------------------------ | --------------------------- |
+| `feature/`  | New features             | `feature/online-ordering`   |
+| `fix/`      | Bug fixes                | `fix/mobile-menu-bug`       |
+| `hotfix/`   | Urgent production fixes  | `hotfix/security-patch`     |
+| `refactor/` | Code refactoring         | `refactor/menu-component`   |
+| `perf/`     | Performance improvements | `perf/image-optimization`   |
+| `docs/`     | Documentation updates    | `docs/update-readme`        |
+| `style/`    | Code style changes       | `style/formatting`          |
+| `test/`     | Adding tests             | `test/menu-tests`           |
+| `chore/`    | Maintenance tasks        | `chore/update-dependencies` |
 
 ---
 
 ## 🔄 Git Commands Reference
 
 ### Branch Management
+
 ```bash
 # Create new branch
 git checkout -b feature/name
@@ -365,6 +373,7 @@ git branch -m old-name new-name
 ```
 
 ### Syncing
+
 ```bash
 # Update local main from remote
 git checkout main
@@ -379,6 +388,7 @@ git push origin feature/name
 ```
 
 ### Commit History
+
 ```bash
 # See commit history
 git log --oneline --graph --all
@@ -398,11 +408,13 @@ git reset HEAD~1
 ## 🌐 Vercel Deployment URLs
 
 ### Production
+
 - **URL**: `greek-souvlaki-website.vercel.app`
 - **Branch**: `main`
 - **Updates**: Every time you push to `main`
 
 ### Previews
+
 - **URL Pattern**: `greek-souvlaki-website-[random].vercel.app`
 - **Branch**: All branches except `main`
 - **Updates**: Every time you push to the branch
@@ -411,6 +423,7 @@ git reset HEAD~1
 ### Finding Preview URLs
 
 **Option 1: Vercel Dashboard**
+
 1. Go to https://vercel.com/dashboard
 2. Select your project
 3. Click "Deployments"
@@ -418,12 +431,14 @@ git reset HEAD~1
 5. Click "Visit" to see preview URL
 
 **Option 2: GitHub**
+
 1. Go to your repository on GitHub
 2. Click the "🔍 Checks" tab (or "Actions")
 3. Find the deployment status
 4. Click "Details" to see preview URL
 
 **Option 3: Terminal**
+
 ```bash
 # After pushing, Vercel CLI shows the URL
 vercel --prod
@@ -434,6 +449,7 @@ vercel --prod
 ## ✅ Best Practices
 
 ### ✅ DO
+
 - Always create a branch for new work
 - Test thoroughly on preview URL
 - Share preview URL with client before merging
@@ -443,6 +459,7 @@ vercel --prod
 - Use descriptive branch names
 
 ### ❌ DON'T
+
 - Never work directly on `main` branch
 - Never merge untested code to `main`
 - Never skip preview testing
@@ -455,13 +472,17 @@ vercel --prod
 ## 📞 Troubleshooting
 
 ### Issue: Preview URL not working
+
 **Solution:**
+
 1. Check Vercel dashboard for build errors
 2. Fix errors and push again
 3. Preview URL updates automatically
 
 ### Issue: Merge conflict
+
 **Solution:**
+
 ```bash
 # 1. Pull latest main
 git checkout main
@@ -485,7 +506,9 @@ git push origin feature/name
 ```
 
 ### Issue: Wrong code deployed to production
+
 **Solution:**
+
 ```bash
 # 1. Revert the merge (create revert commit)
 git revert HEAD

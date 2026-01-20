@@ -37,10 +37,7 @@ const isOpenNow = (): boolean => {
     hour12: false,
   };
 
-  const israelHour = parseInt(
-    new Intl.DateTimeFormat('en-US', hourOptions).format(now),
-    10
-  );
+  const israelHour = parseInt(new Intl.DateTimeFormat('en-US', hourOptions).format(now), 10);
 
   // Get day of week in Israel timezone (0=Sunday, 6=Saturday)
   // Use Intl.DateTimeFormat with weekday and map to number
@@ -51,13 +48,13 @@ const isOpenNow = (): boolean => {
 
   const dayName = new Intl.DateTimeFormat('en-US', dayOptions).format(now);
   const dayMap: Record<string, DayOfWeek> = {
-    'Sunday': 0,
-    'Monday': 1,
-    'Tuesday': 2,
-    'Wednesday': 3,
-    'Thursday': 4,
-    'Friday': 5,
-    'Saturday': 6,
+    Sunday: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 3,
+    Thursday: 4,
+    Friday: 5,
+    Saturday: 6,
   };
 
   const dayOfWeek = dayMap[dayName];
@@ -215,9 +212,7 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
           <span className="font-bold text-gray-800 dark:text-gray-200 text-lg">
             {dayNames[0]} - {dayNames[2]}
           </span>
-          <span className="text-red-500/70 dark:text-red-400/70 font-medium text-sm">
-            Closed
-          </span>
+          <span className="text-red-500/70 dark:text-red-400/70 font-medium text-sm">Closed</span>
         </li>
       </ul>
     </div>

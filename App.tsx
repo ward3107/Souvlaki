@@ -8,13 +8,41 @@ import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
 // Icons
-import { Menu as MenuIcon, X, Globe, Moon, Sun, Phone, MapPin, Facebook, Instagram, ChevronDown, ChevronUp, ArrowUp, Star, MessageCircle, Award, Camera, Heart, Navigation, Share2, QrCode, Copy, Download } from 'lucide-react';
+import {
+  Menu as MenuIcon,
+  X,
+  Globe,
+  Moon,
+  Sun,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  ChevronDown,
+  ChevronUp,
+  ArrowUp,
+  Star,
+  MessageCircle,
+  Award,
+  Camera,
+  Heart,
+  Navigation,
+  Share2,
+  QrCode,
+  Copy,
+  Download,
+} from 'lucide-react';
 
-const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t: (key: TranslationKey) => string }> = ({ item, lang, index, t }) => {
+const MenuItemCard: React.FC<{
+  item: MenuItem;
+  lang: Language;
+  index: number;
+  t: (key: TranslationKey) => string;
+}> = ({ item, lang, index, t }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(hover: hover)').matches);
   const ref = useRef<HTMLDivElement>(null);
 
   const isRtl = lang === Language.HE || lang === Language.AR;
@@ -23,7 +51,6 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
   // Detect desktop (non-touch) device using media query for hover capability
   useEffect(() => {
     const mediaQuery = window.matchMedia('(hover: hover)');
-    setIsDesktop(mediaQuery.matches);
 
     const handleChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
     mediaQuery.addEventListener('change', handleChange);
@@ -136,7 +163,7 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
 
   const getInitialTransform = () => {
     if (!isRtl) {
-       return isEven ? '-translate-x-32' : 'translate-x-32';
+      return isEven ? '-translate-x-32' : 'translate-x-32';
     }
     return isEven ? 'translate-x-32' : '-translate-x-32';
   };
@@ -149,7 +176,7 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
       `}
       style={{
         perspective: '1000px',
-        transitionDelay: isVisible ? `${index * 100}ms` : '0ms'
+        transitionDelay: isVisible ? `${index * 100}ms` : '0ms',
       }}
       onMouseMove={isDesktop ? handleMouseMove : undefined}
       onMouseEnter={isDesktop ? handleMouseEnter : undefined}
@@ -159,7 +186,7 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
       onTouchEnd={!isDesktop ? handleTouchEnd : undefined}
     >
       {/* 3D Card Container */}
-      <div 
+      <div
         className="relative w-full bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-2xl border border-gray-100 dark:border-slate-700"
         style={{
           transformStyle: 'preserve-3d',
@@ -168,20 +195,20 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
         }}
       >
         {/* Floating Image Layer */}
-        <div 
+        <div
           className="relative h-64 w-full rounded-2xl overflow-visible mb-10"
           style={{ transform: 'translateZ(50px)' }}
         >
-          <img 
-            src={item.image} 
-            alt={item.name[lang]} 
+          <img
+            src={item.image}
+            alt={item.name[lang]}
             className="w-full h-full object-cover rounded-2xl shadow-lg transform transition-transform duration-500"
           />
           {/* Shine effect */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/0 via-white/20 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-          
+
           {/* Price Badge - Floats above image */}
-          <div 
+          <div
             className="absolute -bottom-5 right-6 rtl:right-auto rtl:left-6 bg-blue-600 text-white font-bold text-lg px-5 py-2 rounded-full shadow-xl border-4 border-white dark:border-slate-800"
             style={{ transform: 'translateZ(30px)' }}
           >
@@ -194,11 +221,11 @@ const MenuItemCard: React.FC<{ item: MenuItem; lang: Language; index: number; t:
           <span className="inline-block px-3 py-1 mb-2 text-xs font-bold tracking-wider text-blue-600 dark:text-blue-400 uppercase bg-blue-50 dark:bg-blue-900/30 rounded-full">
             {t(item.category as TranslationKey)}
           </span>
-          
+
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
             {item.name[lang]}
           </h3>
-          
+
           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 px-2">
             {item.description[lang]}
           </p>
@@ -287,7 +314,7 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
       install: 'התקן',
       dismiss: 'לא עכשיו',
       ios: 'הוסף למסך הבית',
-      android: 'התקנת אפליקציה'
+      android: 'התקנת אפליקציה',
     },
     en: {
       title: 'Install Our App',
@@ -295,7 +322,7 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
       install: 'Install',
       dismiss: 'Not now',
       ios: 'Add to Home Screen',
-      android: 'Install app'
+      android: 'Install app',
     },
     ar: {
       title: 'ثبت تطبيقنا',
@@ -303,7 +330,7 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
       install: 'تثبيت',
       dismiss: 'ليس الآن',
       ios: 'إضافة إلى الشاشة الرئيسية',
-      android: 'تثبيت التطبيق'
+      android: 'تثبيت التطبيق',
     },
     ru: {
       title: 'Установите наше приложение',
@@ -311,7 +338,7 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
       install: 'Установить',
       dismiss: 'Не сейчас',
       ios: 'На главный экран',
-      android: 'Установить приложение'
+      android: 'Установить приложение',
     },
     el: {
       title: 'Εγκαταστήστε την εφαρμογή μας',
@@ -319,8 +346,8 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
       install: 'Εγκατάσταση',
       dismiss: 'Όχι τώρα',
       ios: 'Στην αρχική οθόνη',
-      android: 'Εγκατάσταση εφαρμογής'
-    }
+      android: 'Εγκατάσταση εφαρμογής',
+    },
   };
 
   const t = installText[lang] || installText.en;
@@ -394,16 +421,28 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
             <h3 className="text-xl font-bold mb-4 text-center">{t.ios}</h3>
             <div className="space-y-4 text-sm">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">1</div>
-                <p>Tap the <strong className="text-blue-600">Share</strong> button</p>
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">
+                  1
+                </div>
+                <p>
+                  Tap the <strong className="text-blue-600">Share</strong> button
+                </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">2</div>
-                <p>Scroll down and tap <strong className="text-blue-600">Add to Home Screen</strong></p>
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">
+                  2
+                </div>
+                <p>
+                  Scroll down and tap <strong className="text-blue-600">Add to Home Screen</strong>
+                </p>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">3</div>
-                <p>Tap <strong className="text-blue-600">Add</strong> to install</p>
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold">
+                  3
+                </div>
+                <p>
+                  Tap <strong className="text-blue-600">Add</strong> to install
+                </p>
               </div>
             </div>
             <button
@@ -426,14 +465,17 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
 const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
   const [showShareModal, setShowShareModal] = useState(false);
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : 'https://greek-souvlaki-website.vercel.app';
+  const shareUrl =
+    typeof window !== 'undefined'
+      ? window.location.href
+      : 'https://greek-souvlaki-website.vercel.app';
   const isRtl = lang === Language.HE || lang === Language.AR;
   const shareText = {
     he: 'בואו לסובלקי יווני כפר יאסיף! תלוו להזמין טעימה',
     ar: 'مرحباً بكم في سوفلاكي يوناني كفر ياسيف! تفضلوا للحجز',
     ru: 'Добро пожаловать в Греческий Сувлаки Кафр Ясиф!',
     el: 'Καλώς ήρθατε στο Ελληνικό Σουβλάκι Καφρ Γιασίφ!',
-    en: 'Welcome to Greek Souvlaki Kfar Yasif!'
+    en: 'Welcome to Greek Souvlaki Kfar Yasif!',
   };
 
   const handleNativeShare = async () => {
@@ -442,7 +484,7 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
         await navigator.share({
           title: 'Greek Souvlaki Kfar Yasif',
           text: shareText[lang] || shareText.en,
-          url: shareUrl
+          url: shareUrl,
         });
       } catch (error) {
         console.log('Share canceled:', error);
@@ -459,11 +501,17 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
-    alert(lang === Language.HE ? 'הקישור הועתק!' :
-          lang === Language.AR ? 'تم نسخ الرابط!' :
-          lang === Language.RU ? 'Ссылка скопирована!' :
-          lang === Language.EL ? 'Ο σύνδεσμος αντιγράφηκε!' :
-          'Link copied!');
+    alert(
+      lang === Language.HE
+        ? 'הקישור הועתק!'
+        : lang === Language.AR
+          ? 'تم نسخ الرابط!'
+          : lang === Language.RU
+            ? 'Ссылка скопирована!'
+            : lang === Language.EL
+              ? 'Ο σύνδεσμος αντιγράφηκε!'
+              : 'Link copied!'
+    );
     setShowShareModal(false);
   };
 
@@ -487,7 +535,7 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
         className={`fixed bottom-6 ${isRtl ? 'left-6' : 'right-6'} z-50 w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center hover:scale-110 animate-heartbeat`}
         aria-label="Share"
         style={{
-          animation: 'heartbeat 1.5s ease-in-out infinite'
+          animation: 'heartbeat 1.5s ease-in-out infinite',
         }}
       >
         {showShareModal ? <X className="w-6 h-6" /> : <Share2 className="w-6 h-6" />}
@@ -513,18 +561,31 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
 
       {/* Share Modal */}
       {showShareModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowShareModal(false)}>
-          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          onClick={() => setShowShareModal(false)}
+        >
+          <div
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                {lang === Language.HE ? 'שתף את האתר' :
-                 lang === Language.AR ? 'شارك الموقع' :
-                 lang === Language.RU ? 'Поделиться сайтом' :
-                 lang === Language.EL ? 'Μοιραστείτε τον ιστότοπο' :
-                 'Share the Website'}
+                {lang === Language.HE
+                  ? 'שתף את האתר'
+                  : lang === Language.AR
+                    ? 'شارك الموقع'
+                    : lang === Language.RU
+                      ? 'Поделиться сайтом'
+                      : lang === Language.EL
+                        ? 'Μοιραστείτε τον ιστότοπο'
+                        : 'Share the Website'}
               </h3>
-              <button onClick={() => setShowShareModal(false)} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+              <button
+                onClick={() => setShowShareModal(false)}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              >
                 <X className="w-6 h-6" />
               </button>
             </div>
@@ -540,22 +601,30 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
                 fgColor="#1e293b"
               />
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
-                {lang === Language.HE ? 'סרקו את הקוד להורדה או להדפיסה' :
-                 lang === Language.AR ? 'امسح الكود للتنزيل أو الطباعة' :
-                 lang === Language.RU ? 'Сканируйте для скачивания или печати' :
-                 lang === Language.EL ? 'Σαρώστε για λήψη ή εκτύπωση' :
-                 'Scan to download or print'}
+                {lang === Language.HE
+                  ? 'סרקו את הקוד להורדה או להדפיסה'
+                  : lang === Language.AR
+                    ? 'امسح الكود للتنزيل أو الطباعة'
+                    : lang === Language.RU
+                      ? 'Сканируйте для скачивания или печати'
+                      : lang === Language.EL
+                        ? 'Σαρώστε για λήψη ή εκτύπωση'
+                        : 'Scan to download or print'}
               </p>
               <button
                 onClick={handleDownloadQR}
                 className="mt-2 flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
-                {lang === Language.HE ? 'הורד QR' :
-                 lang === Language.AR ? 'تنزيل QR' :
-                 lang === Language.RU ? 'Скачать QR' :
-                 lang === Language.EL ? 'Λήψη QR' :
-                 'Download QR'}
+                {lang === Language.HE
+                  ? 'הורד QR'
+                  : lang === Language.AR
+                    ? 'تنزيل QR'
+                    : lang === Language.RU
+                      ? 'Скачать QR'
+                      : lang === Language.EL
+                        ? 'Λήψη QR'
+                        : 'Download QR'}
               </button>
             </div>
 
@@ -577,11 +646,15 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
               >
                 <Copy className="w-8 h-8 text-blue-600 dark:text-blue-400" />
                 <span className="text-sm font-medium text-gray-900 dark:text-white">
-                  {lang === Language.HE ? 'העתק קישור' :
-                   lang === Language.AR ? 'نسخ الرابط' :
-                   lang === Language.RU ? 'Копировать' :
-                   lang === Language.EL ? 'Αντιγράφη' :
-                   'Copy Link'}
+                  {lang === Language.HE
+                    ? 'העתק קישור'
+                    : lang === Language.AR
+                      ? 'نسخ الرابط'
+                      : lang === Language.RU
+                        ? 'Копировать'
+                        : lang === Language.EL
+                          ? 'Αντιγράφη'
+                          : 'Copy Link'}
                 </span>
               </button>
 
@@ -593,11 +666,15 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
                 >
                   <Share2 className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
-                    {lang === Language.HE ? 'שתף...' :
-                     lang === Language.AR ? 'مشاركة...' :
-                     lang === Language.RU ? 'Поделиться...' :
-                     lang === Language.EL ? 'Μοιραστείτε...' :
-                     'Share...'}
+                    {lang === Language.HE
+                      ? 'שתף...'
+                      : lang === Language.AR
+                        ? 'مشاركة...'
+                        : lang === Language.RU
+                          ? 'Поделиться...'
+                          : lang === Language.EL
+                            ? 'Μοιραστείτε...'
+                            : 'Share...'}
                   </span>
                 </button>
               )}
@@ -605,9 +682,7 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
 
             {/* URL Display */}
             <div className="mt-4 p-3 bg-gray-100 dark:bg-slate-700 rounded-lg">
-              <p className="text-xs text-gray-600 dark:text-gray-400 break-all">
-                {shareUrl}
-              </p>
+              <p className="text-xs text-gray-600 dark:text-gray-400 break-all">{shareUrl}</p>
             </div>
           </div>
         </div>
@@ -617,8 +692,26 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
 };
 
 // QRCode Icon Component (simple implementation)
-const QRCodeIcon: React.FC<{ value: string; size?: number; id?: string; includeMargin?: boolean; bgColor?: string; fgColor?: string }> = ({ value, size = 180, id, includeMargin = true, bgColor = 'white', fgColor = '#000' }) => {
+const QRCodeIcon: React.FC<{
+  value: string;
+  size?: number;
+  id?: string;
+  includeMargin?: boolean;
+  bgColor?: string;
+  fgColor?: string;
+}> = ({ value, size = 180, id, includeMargin = true, bgColor = 'white', fgColor = '#000' }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // Simple hash function
+  const hashString = (str: string): number => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash);
+  };
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -647,18 +740,27 @@ const QRCodeIcon: React.FC<{ value: string; size?: number; id?: string; includeM
     for (let row = 0; row < qrSize; row++) {
       for (let col = 0; col < qrSize; col++) {
         // Position patterns (top-left, top-right, bottom-left)
-        const isPositionPattern = (row < 7 && col < 7) || (row < 7 && col >= 18) || (row >= 18 && col < 7);
+        const isPositionPattern =
+          (row < 7 && col < 7) || (row < 7 && col >= 18) || (row >= 18 && col < 7);
 
         // Timing patterns
-        const isTimingPattern = (row === 6 && col >= 8 && col <= 16) || (col === 6 && row >= 8 && row <= 16);
+        const isTimingPattern =
+          (row === 6 && col >= 8 && col <= 16) || (col === 6 && row >= 8 && row <= 16);
 
         // Dark module (based on hash)
         const isDark = (urlHash + row * col) % 3 === 0;
 
         // Finder patterns (3 large squares)
-        const isFinder = (row < 8 && col < 8 && ((row < 7 && col < 7) || (row === 7 && col < 7) || (row < 7 && col === 7))) ||
-                        (row < 8 && col >= 17 && ((row < 7 && col > 16) || (row === 7 && col > 16) || (row < 7 && col === 17))) ||
-                        (row >= 17 && col < 8 && ((row > 16 && col < 7) || (row === 17 && col < 7) || (row > 16 && col === 7)));
+        const isFinder =
+          (row < 8 &&
+            col < 8 &&
+            ((row < 7 && col < 7) || (row === 7 && col < 7) || (row < 7 && col === 7))) ||
+          (row < 8 &&
+            col >= 17 &&
+            ((row < 7 && col > 16) || (row === 7 && col > 16) || (row < 7 && col === 17))) ||
+          (row >= 17 &&
+            col < 8 &&
+            ((row > 16 && col < 7) || (row === 17 && col < 7) || (row > 16 && col === 7)));
 
         if (isFinder || (isDark && !isPositionPattern && !isTimingPattern)) {
           ctx.fillRect(
@@ -672,24 +774,7 @@ const QRCodeIcon: React.FC<{ value: string; size?: number; id?: string; includeM
     }
   }, [value, size, includeMargin, bgColor, fgColor]);
 
-  // Simple hash function
-  const hashString = (str: string): number => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash);
-  };
-
-  return (
-    <canvas
-      ref={canvasRef}
-      id={id}
-      style={{ display: 'block' }}
-    />
-  );
+  return <canvas ref={canvasRef} id={id} style={{ display: 'block' }} />;
 };
 
 const App: React.FC = () => {
@@ -724,6 +809,16 @@ const App: React.FC = () => {
 
   // Translation helper
   const t = (key: TranslationKey): string => TRANSLATIONS[lang][key] || key;
+
+  // Helper for direct text selection (hebrew, english, arabic, russian, greek)
+  const tx = (he: string, en: string, ar: string, ru?: string, el?: string): string => {
+    if (lang === Language.HE) return he;
+    if (lang === Language.AR) return ar;
+    if (lang === Language.RU && ru) return ru;
+    if (lang === Language.EL && el) return el;
+    return en;
+  };
+
   const isRtl = lang === Language.HE || lang === Language.AR;
 
   // Effects for Document Attributes
@@ -1028,7 +1123,10 @@ const App: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-slate-800 shadow-sm transition-colors duration-300">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => scrollToSection('home')}>
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => scrollToSection('home')}
+          >
             <img
               src="/favicon.png"
               alt="Greek Souvlaki Logo"
@@ -1089,7 +1187,11 @@ const App: React.FC = () => {
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-yellow-500 dark:text-yellow-300"
               aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
-              {theme === 'light' ? <Moon className="w-5 h-5" aria-hidden="true" /> : <Sun className="w-5 h-5" aria-hidden="true" />}
+              {theme === 'light' ? (
+                <Moon className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <Sun className="w-5 h-5" aria-hidden="true" />
+              )}
             </button>
 
             {/* Mobile Menu Btn */}
@@ -1125,737 +1227,892 @@ const App: React.FC = () => {
       {/* --- MAIN CONTENT --- */}
       <main id="main-content" role="main">
         {/* --- HERO --- */}
-      <section id="home" className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Parallax Background - fixed on all devices */}
-        <div
-          className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
-          style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
+        <section
+          id="home"
+          className="relative h-[90vh] flex items-center justify-center overflow-hidden"
         >
-          <div className="absolute inset-0 bg-gray-900/60"></div>
-        </div>
+          {/* Parallax Background - fixed on all devices */}
+          <div
+            className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
+            style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
+          >
+            <div className="absolute inset-0 bg-gray-900/60"></div>
+          </div>
 
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto" style={{ contain: 'layout style' }}>
-          
-          {/* Google Rating in Hero */}
-          <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">
-             <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
-             <div className="flex gap-0.5 text-yellow-400">
+          <div
+            className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+            style={{ contain: 'layout style' }}
+          >
+            {/* Google Rating in Hero */}
+            <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">
+              <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
+              <div className="flex gap-0.5 text-yellow-400">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className="w-8 h-8 fill-current"
                     style={{
                       animation: 'flip-horizontal 3s ease-in-out infinite',
-                      animationDelay: `${i * 0.1}s`
+                      animationDelay: `${i * 0.1}s`,
                     }}
                   />
                 ))}
-             </div>
+              </div>
 
-             {/* Add 3D flip animation */}
-             <style>{`
+              {/* Add 3D flip animation */}
+              <style>{`
                @keyframes flip-horizontal {
                  0%, 100% { transform: rotateY(0deg); }
                  50% { transform: rotateY(180deg); }
                }
              `}</style>
-             <span className="text-white font-bold text-sm ml-1.5">4.9/5</span>
-          </div>
-
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl" style={{ minHeight: '4.5rem' }}>
-            {t('hero_title')}
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-100 mb-10 font-light max-w-2xl mx-auto drop-shadow-lg" style={{ minHeight: '3rem' }}>
-            {t('hero_subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => scrollToSection('menu')} className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-lg transition-all">
-              {t('hero_cta_menu')}
-            </button>
-          </div>
-        </div>
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
-          <ChevronDown className="w-8 h-8" />
-        </div>
-      </section>
-
-      {/* --- MENU --- */}
-      <Menu language={lang} />
-
-      {/* --- PARALLAX SEPARATOR --- */}
-      <ParallaxDivider image="/favicon.png" />
-
-      {/* --- TAG US ON INSTAGRAM CTA --- */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse animate-in fade-in slide-in-from-bottom duration-1000" style={{ animationDelay: '0s' }}></div>
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse animate-in fade-in slide-in-from-bottom duration-1000" style={{ animationDelay: '0.5s' }}></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse animate-in fade-in slide-in-from-bottom duration-1000" style={{ animationDelay: '1s' }}></div>
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6 shadow-xl">
-              <Camera className="w-10 h-10 text-white" />
+              <span className="text-white font-bold text-sm ml-1.5">4.9/5</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {lang === Language.HE ? 'תייג/י אותנו באינסטגרם!' :
-               lang === Language.AR ? 'صورنا على إنستغرام!' :
-               lang === Language.RU ? 'Отметьте нас в Instagram!' :
-               lang === Language.EL ? 'Tag μας στο Instagram!' :
-               'Tag Us on Instagram!'}
-            </h2>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              {lang === Language.HE
-                ? 'צילמ/ת תמונה של האוכל שלנו? תייג/י אותנו ב-@greek.souvlakii ונשתף אותך בעמוד שלנו!'
-                : lang === Language.AR
-                ? 'التقطت صورة لطعامنا؟ ضع علامة علينا في @greek.souvlakii وسنقوم بمشاركتك!'
-                : lang === Language.RU
-                ? 'Сфоткали нашу еду? Отметьте нас @greek.souvlakii и мы поделимся вами!'
-                : lang === Language.EL
-                ? 'Photographiste το φαγητό μας; Tag μας στο @greek.souvlakii και θα σας μοιραστούμε!'
-                : 'Took a photo of our food? Tag us @greek.souvlakii and we\'ll share you on our page!'}
-            </p>
-            <a
-              href="https://www.instagram.com/greek.souvlakii"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300"
-            >
-              <Instagram className="w-6 h-6" />
-              <span>@greek.souvlakii</span>
-            </a>
-          </div>
-        </div>
-      </section>
 
-      {/* --- INSTAGRAM FEED --- */}
-      <section className="py-16 bg-white dark:bg-slate-900 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl mb-4 shadow-xl">
-              <Instagram className="w-8 h-8 text-white" />
+            <h1
+              className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl"
+              style={{ minHeight: '4.5rem' }}
+            >
+              {t('hero_title')}
+            </h1>
+            <p
+              className="text-xl md:text-2xl text-gray-100 mb-10 font-light max-w-2xl mx-auto drop-shadow-lg"
+              style={{ minHeight: '3rem' }}
+            >
+              {t('hero_subtitle')}
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => scrollToSection('menu')}
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-lg transition-all"
+              >
+                {t('hero_cta_menu')}
+              </button>
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {lang === Language.HE ? 'עקבו אחרינו באינסטגרם' :
-               lang === Language.AR ? 'تابعنا على إنستغرام' :
-               lang === Language.RU ? 'Подпишитесь на нас в Instagram' :
-               lang === Language.EL ? 'Ακολουθήστε μας στο Instagram' :
-               'Follow Us on Instagram'}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto mb-6">
-              {lang === Language.HE
-                ? 'צפו/י בתמונות הכי עדכניות של המנות המיוחדות שלנו, האווירה והעוד.'
-                : lang === Language.AR
-                ? 'شاهد أحدث الصور لأطباقنا المميزة والأجواء والمزيد.'
-                : lang === Language.RU
-                ? 'Смотрите последние фото наших фирменных блюд, атмосферы и многого другого.'
-                : lang === Language.EL
-                ? 'Δείτε τις τελευταίες φωτογραφίες από τα σπεσιαλιτέ μας, την ατμόσφαιρα και πολλά άλλα.'
-                : 'Check out the latest photos of our signature dishes, atmosphere, and more.'}
-            </p>
-            <a
-              href="https://www.instagram.com/greek.souvlakii"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-            >
-              <Instagram className="w-5 h-5" />
-              <span>@greek.souvlakii</span>
-              <Heart className="w-4 h-4 fill-white" />
-            </a>
+          </div>
+          {/* Scroll Indicator */}
+          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+            <ChevronDown className="w-8 h-8" />
+          </div>
+        </section>
+
+        {/* --- MENU --- */}
+        <Menu language={lang} />
+
+        {/* --- PARALLAX SEPARATOR --- */}
+        <ParallaxDivider image="/favicon.png" />
+
+        {/* --- TAG US ON INSTAGRAM CTA --- */}
+        <section className="py-16 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 relative overflow-hidden">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 opacity-20">
+            <div
+              className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse animate-in fade-in slide-in-from-bottom duration-1000"
+              style={{ animationDelay: '0s' }}
+            ></div>
+            <div
+              className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse animate-in fade-in slide-in-from-bottom duration-1000"
+              style={{ animationDelay: '0.5s' }}
+            ></div>
+            <div
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse animate-in fade-in slide-in-from-bottom duration-1000"
+              style={{ animationDelay: '1s' }}
+            ></div>
           </div>
 
-          {/* Instagram Grid - Using gallery images as Instagram feed preview */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 max-w-5xl mx-auto">
-            {galleryImages.slice(0, 8).map((img, idx) => (
+          <div className="container mx-auto px-4 relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-6 shadow-xl">
+                <Camera className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                {lang === Language.HE
+                  ? 'תייג/י אותנו באינסטגרם!'
+                  : lang === Language.AR
+                    ? 'صورنا على إنستغرام!'
+                    : lang === Language.RU
+                      ? 'Отметьте нас в Instagram!'
+                      : lang === Language.EL
+                        ? 'Tag μας στο Instagram!'
+                        : 'Tag Us on Instagram!'}
+              </h2>
+              <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                {lang === Language.HE
+                  ? 'צילמ/ת תמונה של האוכל שלנו? תייג/י אותנו ב-@greek.souvlakii ונשתף אותך בעמוד שלנו!'
+                  : lang === Language.AR
+                    ? 'التقطت صورة لطعامنا؟ ضع علامة علينا في @greek.souvlakii وسنقوم بمشاركتك!'
+                    : lang === Language.RU
+                      ? 'Сфоткали нашу еду? Отметьте нас @greek.souvlakii и мы поделимся вами!'
+                      : lang === Language.EL
+                        ? 'Photographiste το φαγητό μας; Tag μας στο @greek.souvlakii και θα σας μοιραστούμε!'
+                        : "Took a photo of our food? Tag us @greek.souvlakii and we'll share you on our page!"}
+              </p>
               <a
-                key={idx}
                 href="https://www.instagram.com/greek.souvlakii"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative aspect-square rounded-xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-full font-bold text-lg shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300"
               >
-                <img
-                  src={img}
-                  alt={`Instagram ${idx + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                {/* Instagram-style overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">
-                    <Heart className="w-5 h-5 fill-white" />
-                    <Instagram className="w-5 h-5" />
-                  </div>
-                </div>
-                {/* Instagram icon badge */}
-                <div className="absolute top-2 right-2 bg-white/90 dark:bg-black/70 rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Instagram className="w-4 h-4 text-pink-600" />
-                </div>
+                <Instagram className="w-6 h-6" />
+                <span>@greek.souvlakii</span>
               </a>
-            ))}
+            </div>
           </div>
+        </section>
 
-          <div className="text-center mt-8">
-            <a
-              href="https://www.instagram.com/greek.souvlakii"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 rounded-full font-bold hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-slate-900 transition-all duration-300"
-            >
-              {lang === Language.HE ? 'עוד תמונות באינסטגרם →' :
-               lang === Language.AR ? 'المزيد من الصور على إنستغرام →' :
-               lang === Language.RU ? 'Больше фото в Instagram →' :
-               lang === Language.EL ? 'Περισσότερες φωτογραφίες στο Instagram →' :
-               'More Photos on Instagram →'}
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* --- FACEBOOK REVIEWS --- */}
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
+        {/* --- INSTAGRAM FEED --- */}
+        <section className="py-16 bg-white dark:bg-slate-900 transition-colors duration-300">
+          <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-xl">
-                <Facebook className="w-8 h-8 text-white" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 rounded-2xl mb-4 shadow-xl">
+                <Instagram className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                {lang === Language.HE ? 'דירוגי פייסבוק' :
-                 lang === Language.AR ? 'تقييمات فيسبوك' :
-                 lang === Language.RU ? 'Отзывы Facebook' :
-                 lang === Language.EL ? 'Κριτικές Facebook' :
-                 'Facebook Reviews'}
+                {lang === Language.HE
+                  ? 'עקבו אחרינו באינסטגרם'
+                  : lang === Language.AR
+                    ? 'تابعنا على إنستغرام'
+                    : lang === Language.RU
+                      ? 'Подпишитесь на нас в Instagram'
+                      : lang === Language.EL
+                        ? 'Ακολουθήστε μας στο Instagram'
+                        : 'Follow Us on Instagram'}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto mb-6">
                 {lang === Language.HE
-                  ? 'ראו/י מה הלקוחות שלנו אומרים עלינו בפייסבוק'
+                  ? 'צפו/י בתמונות הכי עדכניות של המנות המיוחדות שלנו, האווירה והעוד.'
                   : lang === Language.AR
-                  ? 'شاهد ما يقوله عملاؤنا عنا على فيسبوك'
-                  : lang === Language.RU
-                  ? 'Посмотрите, что наши клиенты говорят о нас на Facebook'
-                  : lang === Language.EL
-                  ? 'Δείτε τι λένε οι πελάτες μας για εμάς στο Facebook'
-                  : 'See what our customers are saying about us on Facebook'}
+                    ? 'شاهد أحدث الصور لأطباقنا المميزة والأجواء والمزيد.'
+                    : lang === Language.RU
+                      ? 'Смотрите последние фото наших фирменных блюд, атмосферы и многого другого.'
+                      : lang === Language.EL
+                        ? 'Δείτε τις τελευταίες φωτογραφίες από τα σπεσιαλιτέ μας, την ατμόσφαιρα και πολλά άλλα.'
+                        : 'Check out the latest photos of our signature dishes, atmosphere, and more.'}
               </p>
-              <div className="flex flex-wrap justify-center gap-3">
-                <a
-                  href="https://www.facebook.com/greeksouvlaki/reviews"
-                  target="_self"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
-                >
-                  <Facebook className="w-5 h-5" />
-                  <span>{lang === Language.HE ? 'כל הדירוגים' :
-                           lang === Language.AR ? 'جميع التقييمات' :
-                           lang === Language.RU ? 'Все отзывы' :
-                           lang === Language.EL ? 'Όλες οι κριτικές' :
-                           'See All Reviews'}</span>
-                </a>
-                <a
-                  href="https://www.facebook.com/greeksouvlaki/reviews"
-                  target="_self"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-full font-bold hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 transition-all duration-300"
-                >
-                  <Star className="w-5 h-5" />
-                  <span>{lang === Language.HE ? 'כתוב ביקורת' :
-                           lang === Language.AR ? 'اكتب تقييماً' :
-                           lang === Language.RU ? 'Написать отзыв' :
-                           lang === Language.EL ? 'Γράψτε κριτική' :
-                           'Write a Review'}</span>
-                </a>
-              </div>
-              {/* Back button hint */}
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
-                {lang === Language.HE
-                  ? 'לחץ חזרה לחזור לאתר'
-                  : lang === Language.AR
-                  ? 'اضغط للخلف للعودة إلى الموقع'
-                  : lang === Language.RU
-                  ? 'Нажмите "Назад" чтобы вернуться на сайт'
-                  : lang === Language.EL
-                  ? 'Πατήστε "Πίσω" για να επιστρέψετε στον ιστότοπο'
-                  : 'Press back to return to the site'}
-              </p>
-            </div>
-
-            {/* Facebook Reviews Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- ABOUT --- */}
-      <section id="about" className="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
-            <div className="flex-1 space-y-6">
-              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative inline-block">
-                {t('about_title')}
-                <span className="absolute -bottom-2 start-0 w-1/2 h-1 bg-blue-600 rounded-full"></span>
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                {t('about_content_1')}
-              </p>
-              <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                {t('about_content_2')}
-              </p>
-              <div className="pt-4 flex gap-4">
-                 <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
-                    <span className="block text-3xl font-bold text-blue-600 mb-1">100%</span>
-                    <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">Authentic</span>
-                 </div>
-                 <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
-                    <span className="block text-3xl font-bold text-blue-600 mb-1">Fresh</span>
-                    <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">Daily Ingredients</span>
-                 </div>
-              </div>
-            </div>
-            <div className="flex-1 relative">
-              <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                 <img src="/about/restaurant-interior.webp" alt="Restaurant Interior" className="w-full h-auto object-cover" />
-              </div>
-              <div className="absolute top-10 -end-6 w-full h-full bg-blue-100 dark:bg-blue-900/20 rounded-2xl -z-0"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- REVIEWS --- */}
-      <section id="reviews" className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          {/* Section Header */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {lang === Language.HE ? 'דירוגים וביקורות' :
-               lang === Language.AR ? 'التقييمات والمراجعات' :
-               lang === Language.RU ? 'Отзывы и рейтинги' :
-               lang === Language.EL ? 'Κριτικές και βαθμολογίες' :
-               'Reviews & Ratings'}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {lang === Language.HE
-                ? 'ראו מה הלקוחות שלנו אומרים עלינו'
-                : lang === Language.AR
-                ? 'شاهد ما يقوله عملاؤنا عنا'
-                : lang === Language.RU
-                ? 'Посмотрите, что говорят наши клиенты'
-                : lang === Language.EL
-                ? 'Δείτε τι λένε οι πελάτες μας για εμάς'
-                : 'See what our customers are saying about us'}
-            </p>
-            <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-4"></div>
-          </div>
-
-          {/* Google Business Profile Card - Prominent */}
-          <div className="mb-8 max-w-4xl mx-auto">
-            <a
-              href="https://search.google.com/local/writereview?placeid=ChIJwc9vQ-nNHRUROUo1ZqQ-z_k"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 bg-white/20 rounded-xl flex items-center justify-center">
-                    <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-2xl font-bold text-white">
-                        {lang === Language.HE ? 'Google' :
-                         lang === Language.AR ? 'جوجل' :
-                         lang === Language.RU ? 'Google' :
-                         lang === Language.EL ? 'Google' :
-                         'Google'}
-                      </h3>
-                      <div className="flex items-center gap-1 bg-white/20 rounded-full px-3 py-1">
-                        <span className="text-white font-bold text-lg">4.9</span>
-                        <Star className="w-4 h-4 text-yellow-300 fill-yellow-300" />
-                      </div>
-                    </div>
-                    <p className="text-blue-50 text-sm">
-                      {lang === Language.HE
-                        ? 'השאר ביקורת ב-Google ועזור לנו להתפתח!'
-                        : lang === Language.AR
-                        ? 'اكتب تقييماً على Google وساعدنا على النمو!'
-                        : lang === Language.RU
-                        ? 'Оставьте отзыв на Google и помогите нам расти!'
-                        : lang === Language.EL
-                        ? 'Γράψτε κριτική στο Google και βοηθήστε μας να αναπτυχθούμε!'
-                        : 'Leave a review on Google and help us grow!'}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-0.5 text-yellow-300">
-                    <Star className="w-6 h-6 fill-current" />
-                    <Star className="w-6 h-6 fill-current" />
-                    <Star className="w-6 h-6 fill-current" />
-                    <Star className="w-6 h-6 fill-current" />
-                    <Star className="w-6 h-6 fill-current" />
-                  </div>
-                  <span className="text-white font-bold ml-2">
-                    {lang === Language.HE ? 'כתוב ביקורת' :
-                     lang === Language.AR ? 'اكتب تقييماً' :
-                     lang === Language.RU ? 'Написать отзыв' :
-                     lang === Language.EL ? 'Γράψτε κριτική' :
-                     'Write a Review'}
-                  </span>
-                </div>
-              </div>
-            </a>
-          </div>
-
-          {/* TripAdvisor Review Card */}
-          <div className="mt-16">
-            <a
-              href="https://www.tripadvisor.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
-                    <Award className="w-10 h-10 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-bold text-white mb-1">
-                      {lang === Language.HE ? 'דרג/י אותנו ב-TripAdvisor' :
-                       lang === Language.AR ? 'قيمنا على TripAdvisor' :
-                       lang === Language.RU ? 'Оцените нас на TripAdvisor' :
-                       lang === Language.EL ? 'Βαθμολογήστε μας στο TripAdvisor' :
-                       'Rate Us on TripAdvisor'}
-                    </h3>
-                    <p className="text-green-50 text-sm">
-                      {lang === Language.HE
-                        ? 'השאר את חוות הדעת שלך ועזור לאחרים לגלות אותנו!'
-                        : lang === Language.AR
-                        ? 'شارك تجربتك وساعد الآخرين في اكتشافنا!'
-                        : lang === Language.RU
-                        ? 'Поделитесь своим опытом и помогите другим найти нас!'
-                        : lang === Language.EL
-                        ? 'Μοιραστείτε την εμπειρία σας και βοηθήστε άλλους να μας βρουν!'
-                        : 'Share your experience and help others discover us!'}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 bg-white/20 rounded-full px-6 py-3">
-                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
-                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
-                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
-                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
-                  <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
-                  <span className="text-white font-bold ml-2">
-                    {lang === Language.HE ? 'כתוב ביקורת' :
-                     lang === Language.AR ? 'اكتب مراجعة' :
-                     lang === Language.RU ? 'Написать отзыв' :
-                     lang === Language.EL ? 'Γράψτε κριτική' :
-                     'Write a Review'}
-                  </span>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* --- FAQ --- */}
-      <section id="faq" className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50 transition-colors duration-300">
-        <div className="container mx-auto px-4 max-w-3xl">
-          {/* Highlighted header */}
-          <div className="text-center mb-12 relative">
-            {/* Animated background decoration */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
-            <div className="relative">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-6 shadow-xl shadow-blue-600/30">
-                <MessageCircle className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
-                {t('faq_title')}
-              </h2>
-              <div className="flex items-center justify-center gap-2">
-                <div className="w-12 h-1 bg-gradient-to-r from-transparent to-blue-600 rounded-full"></div>
-                <div className="w-8 h-1 bg-blue-600 rounded-full animate-pulse"></div>
-                <div className="w-12 h-1 bg-gradient-to-l from-transparent to-blue-600 rounded-full"></div>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {FAQS.map((faq, index) => (
-              <details
-                key={faq.id}
-                className="group relative bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-700"
+              <a
+                href="https://www.instagram.com/greek.souvlakii"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
               >
-                {/* Gradient accent on left */}
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-500 to-purple-500 rounded-l-2xl"></div>
+                <Instagram className="w-5 h-5" />
+                <span>@greek.souvlakii</span>
+                <Heart className="w-4 h-4 fill-white" />
+              </a>
+            </div>
 
-                <summary className="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
-                  <div className="flex items-center gap-4 flex-1">
-                    {/* Question number badge */}
-                    <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">
-                      {index + 1}
-                    </span>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white pr-4 rtl:pr-0 rtl:pl-4">
-                      {faq.question[lang]}
-                    </h3>
+            {/* Instagram Grid - Using gallery images as Instagram feed preview */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 max-w-5xl mx-auto">
+              {galleryImages.slice(0, 8).map((img, idx) => (
+                <a
+                  key={idx}
+                  href="https://www.instagram.com/greek.souvlakii"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative aspect-square rounded-xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                >
+                  <img
+                    src={img}
+                    alt={`Instagram ${idx + 1}`}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Instagram-style overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">
+                      <Heart className="w-5 h-5 fill-white" />
+                      <Instagram className="w-5 h-5" />
+                    </div>
                   </div>
-                  <span className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center transition group-open:rotate-180 group-open:bg-blue-200 dark:group-open:bg-blue-800">
-                    <ChevronDown className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </span>
-                </summary>
-                <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-slate-700 bg-gradient-to-b from-transparent to-blue-50/50 dark:to-blue-900/10">
-                  <p className="pt-4">{faq.answer[lang]}</p>
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+                  {/* Instagram icon badge */}
+                  <div className="absolute top-2 right-2 bg-white/90 dark:bg-black/70 rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Instagram className="w-4 h-4 text-pink-600" />
+                  </div>
+                </a>
+              ))}
+            </div>
 
-      {/* --- CONTACT & MAP --- */}
-      <section id="contact" className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300">
-        <div className="container mx-auto px-4">
+            <div className="text-center mt-8">
+              <a
+                href="https://www.instagram.com/greek.souvlakii"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 rounded-full font-bold hover:bg-purple-600 hover:text-white dark:hover:bg-purple-400 dark:hover:text-slate-900 transition-all duration-300"
+              >
+                {lang === Language.HE
+                  ? 'עוד תמונות באינסטגרם →'
+                  : lang === Language.AR
+                    ? 'المزيد من الصور على إنستغرام →'
+                    : lang === Language.RU
+                      ? 'Больше фото в Instagram →'
+                      : lang === Language.EL
+                        ? 'Περισσότερες φωτογραφίες στο Instagram →'
+                        : 'More Photos on Instagram →'}
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* --- FACEBOOK REVIEWS --- */}
+        <section className="py-16 bg-gradient-to-b from-gray-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 transition-colors duration-300">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-xl">
+                  <Facebook className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                  {lang === Language.HE
+                    ? 'דירוגי פייסבוק'
+                    : lang === Language.AR
+                      ? 'تقييمات فيسبوك'
+                      : lang === Language.RU
+                        ? 'Отзывы Facebook'
+                        : lang === Language.EL
+                          ? 'Κριτικές Facebook'
+                          : 'Facebook Reviews'}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto mb-6">
+                  {lang === Language.HE
+                    ? 'ראו/י מה הלקוחות שלנו אומרים עלינו בפייסבוק'
+                    : lang === Language.AR
+                      ? 'شاهد ما يقوله عملاؤنا عنا على فيسبوك'
+                      : lang === Language.RU
+                        ? 'Посмотрите, что наши клиенты говорят о нас на Facebook'
+                        : lang === Language.EL
+                          ? 'Δείτε τι λένε οι πελάτες μας για εμάς στο Facebook'
+                          : 'See what our customers are saying about us on Facebook'}
+                </p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  <a
+                    href="https://www.facebook.com/greeksouvlaki/reviews"
+                    target="_self"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
+                  >
+                    <Facebook className="w-5 h-5" />
+                    <span>
+                      {lang === Language.HE
+                        ? 'כל הדירוגים'
+                        : lang === Language.AR
+                          ? 'جميع التقييمات'
+                          : lang === Language.RU
+                            ? 'Все отзывы'
+                            : lang === Language.EL
+                              ? 'Όλες οι κριτικές'
+                              : 'See All Reviews'}
+                    </span>
+                  </a>
+                  <a
+                    href="https://www.facebook.com/greeksouvlaki/reviews"
+                    target="_self"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-full font-bold hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-slate-900 transition-all duration-300"
+                  >
+                    <Star className="w-5 h-5" />
+                    <span>
+                      {lang === Language.HE
+                        ? 'כתוב ביקורת'
+                        : lang === Language.AR
+                          ? 'اكتب تقييماً'
+                          : lang === Language.RU
+                            ? 'Написать отзыв'
+                            : lang === Language.EL
+                              ? 'Γράψτε κριτική'
+                              : 'Write a Review'}
+                    </span>
+                  </a>
+                </div>
+                {/* Back button hint */}
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 text-center">
+                  {lang === Language.HE
+                    ? 'לחץ חזרה לחזור לאתר'
+                    : lang === Language.AR
+                      ? 'اضغط للخلف للعودة إلى الموقع'
+                      : lang === Language.RU
+                        ? 'Нажмите "Назад" чтобы вернуться на сайт'
+                        : lang === Language.EL
+                          ? 'Πατήστε "Πίσω" για να επιστρέψετε στον ιστότοπο'
+                          : 'Press back to return to the site'}
+                </p>
+              </div>
+
+              {/* Facebook Reviews Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            </div>
+          </div>
+        </section>
+
+        {/* --- ABOUT --- */}
+        <section
+          id="about"
+          className="py-20 bg-white dark:bg-slate-900 transition-colors duration-300"
+        >
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
+              <div className="flex-1 space-y-6">
+                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 relative inline-block">
+                  {t('about_title')}
+                  <span className="absolute -bottom-2 start-0 w-1/2 h-1 bg-blue-600 rounded-full"></span>
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {t('about_content_1')}
+                </p>
+                <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {t('about_content_2')}
+                </p>
+                <div className="pt-4 flex gap-4">
+                  <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
+                    <span className="block text-3xl font-bold text-blue-600 mb-1">100%</span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">
+                      Authentic
+                    </span>
+                  </div>
+                  <div className="bg-blue-50 dark:bg-slate-800 p-4 rounded-lg text-center flex-1">
+                    <span className="block text-3xl font-bold text-blue-600 mb-1">Fresh</span>
+                    <span className="text-xs text-gray-700 dark:text-gray-300 uppercase tracking-wide font-semibold">
+                      Daily Ingredients
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1 relative">
+                <div className="relative z-10 rounded-2xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                  <img
+                    src="/about/restaurant-interior.webp"
+                    alt="Restaurant Interior"
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+                <div className="absolute top-10 -end-6 w-full h-full bg-blue-100 dark:bg-blue-900/20 rounded-2xl -z-0"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* --- REVIEWS --- */}
+        <section
+          id="reviews"
+          className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300"
+        >
+          <div className="container mx-auto px-4">
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {lang === Language.HE
+                  ? 'דירוגים וביקורות'
+                  : lang === Language.AR
+                    ? 'التقييمات والمراجعات'
+                    : lang === Language.RU
+                      ? 'Отзывы и рейтинги'
+                      : lang === Language.EL
+                        ? 'Κριτικές και βαθμολογίες'
+                        : 'Reviews & Ratings'}
+              </h2>
+              <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                {lang === Language.HE
+                  ? 'ראו מה הלקוחות שלנו אומרים עלינו'
+                  : lang === Language.AR
+                    ? 'شاهد ما يقوله عملاؤنا عنا'
+                    : lang === Language.RU
+                      ? 'Посмотрите, что говорят наши клиенты'
+                      : lang === Language.EL
+                        ? 'Δείτε τι λένε οι πελάτες μας για εμάς'
+                        : 'See what our customers are saying about us'}
+              </p>
+              <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full mt-4"></div>
+            </div>
+
+            {/* Google Business Profile Card - Prominent */}
+            <div className="mb-8 max-w-4xl mx-auto">
+              <a
+                href="https://search.google.com/local/writereview?placeid=ChIJwc9vQ-nNHRUROUo1ZqQ-z_k"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-20 h-20 bg-white/20 rounded-xl flex items-center justify-center">
+                      <svg className="w-12 h-12 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="text-2xl font-bold text-white">
+                          {lang === Language.HE
+                            ? 'Google'
+                            : lang === Language.AR
+                              ? 'جوجل'
+                              : lang === Language.RU
+                                ? 'Google'
+                                : lang === Language.EL
+                                  ? 'Google'
+                                  : 'Google'}
+                        </h3>
+                        <div className="flex items-center gap-1 bg-white/20 rounded-full px-3 py-1">
+                          <span className="text-white font-bold text-lg">4.9</span>
+                          <Star className="w-4 h-4 text-yellow-300 fill-yellow-300" />
+                        </div>
+                      </div>
+                      <p className="text-blue-50 text-sm">
+                        {lang === Language.HE
+                          ? 'השאר ביקורת ב-Google ועזור לנו להתפתח!'
+                          : lang === Language.AR
+                            ? 'اكتب تقييماً على Google وساعدنا على النمو!'
+                            : lang === Language.RU
+                              ? 'Оставьте отзыв на Google и помогите нам расти!'
+                              : lang === Language.EL
+                                ? 'Γράψτε κριτική στο Google και βοηθήστε μας να αναπτυχθούμε!'
+                                : 'Leave a review on Google and help us grow!'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-0.5 text-yellow-300">
+                      <Star className="w-6 h-6 fill-current" />
+                      <Star className="w-6 h-6 fill-current" />
+                      <Star className="w-6 h-6 fill-current" />
+                      <Star className="w-6 h-6 fill-current" />
+                      <Star className="w-6 h-6 fill-current" />
+                    </div>
+                    <span className="text-white font-bold ml-2">
+                      {lang === Language.HE
+                        ? 'כתוב ביקורת'
+                        : lang === Language.AR
+                          ? 'اكتب تقييماً'
+                          : lang === Language.RU
+                            ? 'Написать отзыв'
+                            : lang === Language.EL
+                              ? 'Γράψτε κριτική'
+                              : 'Write a Review'}
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div>
+
+            {/* TripAdvisor Review Card */}
+            <div className="mt-16">
+              <a
+                href="https://www.tripadvisor.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center">
+                      <Award className="w-10 h-10 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-white mb-1">
+                        {lang === Language.HE
+                          ? 'דרג/י אותנו ב-TripAdvisor'
+                          : lang === Language.AR
+                            ? 'قيمنا على TripAdvisor'
+                            : lang === Language.RU
+                              ? 'Оцените нас на TripAdvisor'
+                              : lang === Language.EL
+                                ? 'Βαθμολογήστε μας στο TripAdvisor'
+                                : 'Rate Us on TripAdvisor'}
+                      </h3>
+                      <p className="text-green-50 text-sm">
+                        {lang === Language.HE
+                          ? 'השאר את חוות הדעת שלך ועזור לאחרים לגלות אותנו!'
+                          : lang === Language.AR
+                            ? 'شارك تجربتك وساعد الآخرين في اكتشافنا!'
+                            : lang === Language.RU
+                              ? 'Поделитесь своим опытом и помогите другим найти нас!'
+                              : lang === Language.EL
+                                ? 'Μοιραστείτε την εμπειρία σας και βοηθήστε άλλους να μας βρουν!'
+                                : 'Share your experience and help others discover us!'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/20 rounded-full px-6 py-3">
+                    <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <Star className="w-5 h-5 text-yellow-300 fill-yellow-300" />
+                    <span className="text-white font-bold ml-2">
+                      {lang === Language.HE
+                        ? 'כתוב ביקורת'
+                        : lang === Language.AR
+                          ? 'اكتب مراجعة'
+                          : lang === Language.RU
+                            ? 'Написать отзыв'
+                            : lang === Language.EL
+                              ? 'Γράψτε κριτική'
+                              : 'Write a Review'}
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* --- FAQ --- */}
+        <section
+          id="faq"
+          className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50 transition-colors duration-300"
+        >
+          <div className="container mx-auto px-4 max-w-3xl">
+            {/* Highlighted header */}
+            <div className="text-center mb-12 relative">
+              {/* Animated background decoration */}
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+              <div className="relative">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl mb-6 shadow-xl shadow-blue-600/30">
+                  <MessageCircle className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-4">
+                  {t('faq_title')}
+                </h2>
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-12 h-1 bg-gradient-to-r from-transparent to-blue-600 rounded-full"></div>
+                  <div className="w-8 h-1 bg-blue-600 rounded-full animate-pulse"></div>
+                  <div className="w-12 h-1 bg-gradient-to-l from-transparent to-blue-600 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {FAQS.map((faq, index) => (
+                <details
+                  key={faq.id}
+                  className="group relative bg-white dark:bg-slate-800 rounded-2xl shadow-lg border border-gray-200 dark:border-slate-700 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-700"
+                >
+                  {/* Gradient accent on left */}
+                  <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-blue-500 to-purple-500 rounded-l-2xl"></div>
+
+                  <summary className="flex justify-between items-center p-6 cursor-pointer list-none hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                    <div className="flex items-center gap-4 flex-1">
+                      {/* Question number badge */}
+                      <span className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 text-white text-sm font-bold rounded-full flex items-center justify-center shadow-md">
+                        {index + 1}
+                      </span>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white pr-4 rtl:pr-0 rtl:pl-4">
+                        {faq.question[lang]}
+                      </h3>
+                    </div>
+                    <span className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center transition group-open:rotate-180 group-open:bg-blue-200 dark:group-open:bg-blue-800">
+                      <ChevronDown className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </span>
+                  </summary>
+                  <div className="px-6 pb-6 text-gray-700 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-slate-700 bg-gradient-to-b from-transparent to-blue-50/50 dark:to-blue-900/10">
+                    <p className="pt-4">{faq.answer[lang]}</p>
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --- CONTACT & MAP --- */}
+        <section
+          id="contact"
+          className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300"
+        >
+          <div className="container mx-auto px-4">
             {/* Title */}
             <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('contact_title')}</h2>
-                <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
+              <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                {t('contact_title')}
+              </h2>
+              <div className="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-                {/* Info Column */}
-                <div className="space-y-8">
-                    {/* Contact Details */}
-                    <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">📞 צור קשר</h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">לחץ על הכפתורים ליצירת קשר מהירה</p>
+              {/* Info Column */}
+              <div className="space-y-8">
+                {/* Contact Details */}
+                <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    📞 צור קשר
+                  </h3>
+                  <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
+                    לחץ על הכפתורים ליצירת קשר מהירה
+                  </p>
 
-                        <div className="grid grid-cols-1 gap-3">
-                            {/* Call Button */}
-                            <a
-                              href="tel:048122980"
-                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl border-2 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20"
-                            >
-                              <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-                                <Phone className="w-6 h-6" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-bold text-gray-900 dark:text-white text-lg">04-812-2980</div>
-                                <div className="text-blue-600 dark:text-blue-400 text-sm font-medium">לחץ להתקשר →</div>
-                              </div>
-                            </a>
-
-                            {/* WhatsApp Jennje */}
-                            <a
-                              href="https://wa.me/972542001235"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
-                            >
-                              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-                                <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
-                                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                                </svg>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-bold text-gray-900 dark:text-white text-lg">Jennje</div>
-                                <div className="text-green-600 dark:text-green-400 text-sm font-medium">054-200-1235 • לחצו כאן 💬</div>
-                              </div>
-                            </a>
-
-                            {/* WhatsApp Andreia */}
-                            <a
-                              href="https://wa.me/972528921454"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
-                            >
-                              <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-                                <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
-                                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                                </svg>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-bold text-gray-900 dark:text-white text-lg">Andreia</div>
-                                <div className="text-green-600 dark:text-green-400 text-sm font-medium">052-892-1454 • לחצו כאן 💬</div>
-                              </div>
-                            </a>
-
-                            {/* Waze Navigation */}
-                            <a
-                              href="https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="group flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/20"
-                            >
-                              <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-                                <Navigation className="w-6 h-6" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-bold text-gray-900 dark:text-white text-lg">ניווט Waze</div>
-                                <div className="text-purple-600 dark:text-purple-400 text-sm font-medium">כפר יאסיף, כביש 70 🧭</div>
-                              </div>
-                            </a>
+                  <div className="grid grid-cols-1 gap-3">
+                    {/* Call Button */}
+                    <a
+                      href="tel:048122980"
+                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl border-2 border-blue-200 dark:border-blue-800 hover:border-blue-400 dark:hover:border-blue-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/20"
+                    >
+                      <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                        <Phone className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-gray-900 dark:text-white text-lg">
+                          04-812-2980
                         </div>
-                    </div>
-
-                    {/* Hours */}
-                    <div className="relative group">
-                        {/* Animated gradient border */}
-                        <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse"></div>
-
-                        <OpeningHours language={lang} />
-                    </div>
-                </div>
-
-                {/* Map Column */}
-                <div className="h-full min-h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-slate-700 relative group">
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        src="https://maps.google.com/maps?q=Greek%20Souvlaki%20Kafr%20Yasif&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                        frameBorder="0"
-                        scrolling="no"
-                        marginHeight={0}
-                        marginWidth={0}
-                        className="w-full h-full absolute inset-0 grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
-                        title="Google Maps Location"
-                    ></iframe>
-                    <div className="absolute bottom-4 left-4 right-4 p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex justify-between items-center shadow-lg transform translate-y-2 group-hover:translate-y-0 duration-300">
-                        <div>
-                            <p className="font-bold text-gray-900 dark:text-white">Greek Souvlaki</p>
-                            <div className="flex text-yellow-500 text-xs">★★★★★ (4.9)</div>
+                        <div className="text-blue-600 dark:text-blue-400 text-sm font-medium">
+                          לחץ להתקשר →
                         </div>
-                        <a
-                            href="https://www.google.com/maps/search/?api=1&query=Greek+Souvlaki+Kafr+Yasif"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors"
-                        >
-                            {lang === Language.HE ? 'צפה במפה' :
-                             lang === Language.AR ? 'عرض الخريطة' :
-                             lang === Language.RU ? 'Смотреть карту' :
-                             lang === Language.EL ? 'Δείτε τον χάρτη' :
-                             'View on Map'}
-                        </a>
-                    </div>
+                      </div>
+                    </a>
+
+                    {/* WhatsApp Jennje */}
+                    <a
+                      href="https://wa.me/972542001235"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
+                    >
+                      <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                        <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-gray-900 dark:text-white text-lg">
+                          Jennje
+                        </div>
+                        <div className="text-green-600 dark:text-green-400 text-sm font-medium">
+                          054-200-1235 • לחצו כאן 💬
+                        </div>
+                      </div>
+                    </a>
+
+                    {/* WhatsApp Andreia */}
+                    <a
+                      href="https://wa.me/972528921454"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
+                    >
+                      <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                        <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                        </svg>
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-gray-900 dark:text-white text-lg">
+                          Andreia
+                        </div>
+                        <div className="text-green-600 dark:text-green-400 text-sm font-medium">
+                          052-892-1454 • לחצו כאן 💬
+                        </div>
+                      </div>
+                    </a>
+
+                    {/* Waze Navigation */}
+                    <a
+                      href="https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 rounded-xl border-2 border-purple-200 dark:border-purple-800 hover:border-purple-400 dark:hover:border-purple-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/20"
+                    >
+                      <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
+                        <Navigation className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-gray-900 dark:text-white text-lg">
+                          ניווט Waze
+                        </div>
+                        <div className="text-purple-600 dark:text-purple-400 text-sm font-medium">
+                          כפר יאסיף, כביש 70 🧭
+                        </div>
+                      </div>
+                    </a>
+                  </div>
                 </div>
-            </div>
-        </div>
-      </section>
 
-      {/* --- COMING SOON --- */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-900 dark:via-purple-900 dark:to-pink-900 transition-colors duration-300">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-              <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
-              <span className="text-white font-semibold text-sm uppercase tracking-wide">
-                {lang === Language.HE ? 'בקרוב' :
-                 lang === Language.AR ? 'قريباً' :
-                 lang === Language.RU ? 'Скоро' :
-                 lang === Language.EL ? 'Σύντομα' :
-                 'Coming Soon'}
-              </span>
-            </div>
+                {/* Hours */}
+                <div className="relative group">
+                  {/* Animated gradient border */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500 animate-pulse"></div>
 
-            {/* Title */}
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              {lang === Language.HE
-                ? 'חדשות ודברים מגיעים'
-                : lang === Language.AR
-                ? 'شيء جديد قادم'
-                : lang === Language.RU
-                ? 'Новое и интересное'
-                : lang === Language.EL
-                ? 'Καινούρια και συναρπαστικά'
-                : 'New & Exciting Things Coming'}
-            </h2>
-
-            {/* Description */}
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              {lang === Language.HE
-                ? 'אנחנו עובדים כל הזמן על חוויות חדשות כדי לשפר את השירות שלכם. הישארו מעודכדים!'
-                : lang === Language.AR
-                ? 'نعمل باستمرار على تجارب جديدة لتحسين تجربتك. ابق على اطلاع!'
-                : lang === Language.RU
-                ? 'Мы постоянно работаем над новыми возможностями для улучшения вашего опыта. Оставайтесь на связи!'
-                : lang === Language.EL
-                ? 'Εργαζόμαστε συνεχώς σε νέες εμπειρίες για να βελτιώσουμε την εμπειρία σας. Μείτε ενήμεροι!'
-                : 'We\'re constantly working on new experiences to make your visit even better. Stay tuned!'}
-            </p>
-
-            {/* Features Grid */}
-            <div className="flex justify-center mb-8">
-              {/* Virtual Tour */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 max-w-sm">
-                <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Camera className="w-8 h-8 text-white" />
+                  <OpeningHours language={lang} />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2 text-center">
-                  {lang === Language.HE ? 'סיור וירטואלי' :
-                   lang === Language.AR ? 'جولة افتراضية' :
-                   lang === Language.RU ? 'Виртуальный тур' :
-                   lang === Language.EL ? 'Εικονικός περίπλους' :
-                   'Virtual Tour'}
-                </h3>
-                <p className="text-white/80 text-sm text-center">
-                  {lang === Language.HE ? '360° תמונות של המסעדה' :
-                   lang === Language.AR ? 'صور 360° للمطعم' :
-                   lang === Language.RU ? '360° фото ресторана' :
-                   lang === Language.EL ? '360° φωτο του εστιατορίου' :
-                   '360° restaurant photos'}
-                </p>
+              </div>
+
+              {/* Map Column */}
+              <div className="h-full min-h-[400px] rounded-2xl overflow-hidden shadow-lg border border-gray-100 dark:border-slate-700 relative group">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://maps.google.com/maps?q=Greek%20Souvlaki%20Kafr%20Yasif&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  frameBorder="0"
+                  scrolling="no"
+                  marginHeight={0}
+                  marginWidth={0}
+                  className="w-full h-full absolute inset-0 grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out"
+                  title="Google Maps Location"
+                ></iframe>
+                <div className="absolute bottom-4 left-4 right-4 p-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex justify-between items-center shadow-lg transform translate-y-2 group-hover:translate-y-0 duration-300">
+                  <div>
+                    <p className="font-bold text-gray-900 dark:text-white">Greek Souvlaki</p>
+                    <div className="flex text-yellow-500 text-xs">★★★★★ (4.9)</div>
+                  </div>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Greek+Souvlaki+Kafr+Yasif"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    {lang === Language.HE
+                      ? 'צפה במפה'
+                      : lang === Language.AR
+                        ? 'عرض الخريطة'
+                        : lang === Language.RU
+                          ? 'Смотреть карту'
+                          : lang === Language.EL
+                            ? 'Δείτε τον χάρτη'
+                            : 'View on Map'}
+                  </a>
+                </div>
               </div>
             </div>
-
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* --- COMING SOON --- */}
+        <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-900 dark:via-purple-900 dark:to-pink-900 transition-colors duration-300">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
+                <span className="text-white font-semibold text-sm uppercase tracking-wide">
+                  {lang === Language.HE
+                    ? 'בקרוב'
+                    : lang === Language.AR
+                      ? 'قريباً'
+                      : lang === Language.RU
+                        ? 'Скоро'
+                        : lang === Language.EL
+                          ? 'Σύντομα'
+                          : 'Coming Soon'}
+                </span>
+              </div>
+
+              {/* Title */}
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                {lang === Language.HE
+                  ? 'חדשות ודברים מגיעים'
+                  : lang === Language.AR
+                    ? 'شيء جديد قادم'
+                    : lang === Language.RU
+                      ? 'Новое и интересное'
+                      : lang === Language.EL
+                        ? 'Καινούρια και συναρπαστικά'
+                        : 'New & Exciting Things Coming'}
+              </h2>
+
+              {/* Description */}
+              <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                {lang === Language.HE
+                  ? 'אנחנו עובדים כל הזמן על חוויות חדשות כדי לשפר את השירות שלכם. הישארו מעודכדים!'
+                  : lang === Language.AR
+                    ? 'نعمل باستمرار على تجارب جديدة لتحسين تجربتك. ابق على اطلاع!'
+                    : lang === Language.RU
+                      ? 'Мы постоянно работаем над новыми возможностями для улучшения вашего опыта. Оставайтесь на связи!'
+                      : lang === Language.EL
+                        ? 'Εργαζόμαστε συνεχώς σε νέες εμπειρίες για να βελτιώσουμε την εμπειρία σας. Μείτε ενήμεροι!'
+                        : "We're constantly working on new experiences to make your visit even better. Stay tuned!"}
+              </p>
+
+              {/* Features Grid */}
+              <div className="flex justify-center mb-8">
+                {/* Virtual Tour */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 max-w-sm">
+                  <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <Camera className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2 text-center">
+                    {lang === Language.HE
+                      ? 'סיור וירטואלי'
+                      : lang === Language.AR
+                        ? 'جولة افتراضية'
+                        : lang === Language.RU
+                          ? 'Виртуальный тур'
+                          : lang === Language.EL
+                            ? 'Εικονικός περίπλους'
+                            : 'Virtual Tour'}
+                  </h3>
+                  <p className="text-white/80 text-sm text-center">
+                    {lang === Language.HE
+                      ? '360° תמונות של המסעדה'
+                      : lang === Language.AR
+                        ? 'صور 360° للمطعم'
+                        : lang === Language.RU
+                          ? '360° фото ресторана'
+                          : lang === Language.EL
+                            ? '360° φωτο του εστιατορίου'
+                            : '360° restaurant photos'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* --- FOOTER --- */}
       <footer className="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
-            
             {/* Brand */}
             <div className="text-center md:text-start">
               <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
                 <img
-                src="/favicon.png"
-                alt="Greek Souvlaki Logo"
-                className="w-14 h-14 rounded-full object-cover"
-              />
+                  src="/favicon.png"
+                  alt="Greek Souvlaki Logo"
+                  className="w-14 h-14 rounded-full object-cover"
+                />
                 <h2 className="text-2xl font-bold text-white">Greek Souvlaki</h2>
               </div>
-              <p className="opacity-70 text-sm">Authentic Greek flavors in the heart of Kafr Yasif.</p>
+              <p className="opacity-70 text-sm">
+                Authentic Greek flavors in the heart of Kafr Yasif.
+              </p>
             </div>
-              
+
             {/* Social Media Section */}
             <div className="flex gap-4">
-                <a href="https://www.facebook.com/greeksouvlaki" target="_self" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group" aria-label="Visit our Facebook page">
-                <Facebook className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
-                </a>
-                <a href="https://www.instagram.com/greek.souvlakii" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group" aria-label="Visit our Instagram page">
-                <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
-                </a>
-                <a href="https://www.tripadvisor.com" target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group" aria-label="Find us on TripAdvisor">
-                <Award className="w-6 h-6 group-hover:scale-110 transition-transform" aria-hidden="true" />
-                </a>
+              <a
+                href="https://www.facebook.com/greeksouvlaki"
+                target="_self"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group"
+                aria-label="Visit our Facebook page"
+              >
+                <Facebook
+                  className="w-6 h-6 group-hover:scale-110 transition-transform"
+                  aria-hidden="true"
+                />
+              </a>
+              <a
+                href="https://www.instagram.com/greek.souvlakii"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group"
+                aria-label="Visit our Instagram page"
+              >
+                <Instagram
+                  className="w-6 h-6 group-hover:scale-110 transition-transform"
+                  aria-hidden="true"
+                />
+              </a>
+              <a
+                href="https://www.tripadvisor.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group"
+                aria-label="Find us on TripAdvisor"
+              >
+                <Award
+                  className="w-6 h-6 group-hover:scale-110 transition-transform"
+                  aria-hidden="true"
+                />
+              </a>
             </div>
           </div>
 
@@ -1930,13 +2187,13 @@ const App: React.FC = () => {
           onTouchEnd={onTouchEnd}
           role="dialog"
           aria-modal="true"
-          aria-label={`${t('גלריית תמונות', 'Image Gallery', 'معرض الصور')} - ${lightboxIndex + 1} / ${galleryImages.length}`}
+          aria-label={`${tx('גלריית תמונות', 'Image Gallery', 'معرض الصور')} - ${lightboxIndex + 1} / ${galleryImages.length}`}
         >
           {/* Close Button */}
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 text-white p-2 hover:bg-white/20 rounded-full z-10 transition-colors"
-            aria-label={t('סגור גלריה', 'Close gallery', 'إغلاق المعرض')}
+            aria-label={tx('סגור גלריה', 'Close gallery', 'إغلاق المعرض')}
           >
             <X className="w-8 h-8" aria-hidden="true" />
           </button>
@@ -1950,9 +2207,12 @@ const App: React.FC = () => {
           <button
             onClick={goToPrevImage}
             className="absolute left-4 rtl:left-auto rtl:right-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
-            aria-label={t('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
+            aria-label={tx('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
           >
-            <ChevronDown className={`w-10 h-10 ${isRtl ? 'rotate-90' : '-rotate-90'}`} aria-hidden="true" />
+            <ChevronDown
+              className={`w-10 h-10 ${isRtl ? 'rotate-90' : '-rotate-90'}`}
+              aria-hidden="true"
+            />
           </button>
 
           {/* Navigation Areas - Click on left/right sides */}
@@ -1961,7 +2221,7 @@ const App: React.FC = () => {
             onClick={goToPrevImage}
             role="button"
             tabIndex={0}
-            aria-label={t('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
+            aria-label={tx('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
             onKeyDown={(e) => e.key === 'Enter' && goToPrevImage()}
           />
           <div
@@ -1969,7 +2229,7 @@ const App: React.FC = () => {
             onClick={goToNextImage}
             role="button"
             tabIndex={0}
-            aria-label={t('תמונה הבאה', 'Next image', 'الصورة التالية')}
+            aria-label={tx('תמונה הבאה', 'Next image', 'الصورة التالية')}
             onKeyDown={(e) => e.key === 'Enter' && goToNextImage()}
           />
 
@@ -1984,9 +2244,12 @@ const App: React.FC = () => {
           <button
             onClick={goToNextImage}
             className="absolute right-4 rtl:right-auto rtl:left-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
-            aria-label={t('תמונה הבאה', 'Next image', 'الصورة التالية')}
+            aria-label={tx('תמונה הבאה', 'Next image', 'الصورة التالية')}
           >
-            <ChevronDown className={`w-10 h-10 ${isRtl ? '-rotate-90' : 'rotate-90'}`} aria-hidden="true" />
+            <ChevronDown
+              className={`w-10 h-10 ${isRtl ? '-rotate-90' : 'rotate-90'}`}
+              aria-hidden="true"
+            />
           </button>
         </div>
       )}
@@ -2011,7 +2274,7 @@ const App: React.FC = () => {
         aria-label="Chat on WhatsApp"
       >
         <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
         </svg>
       </a>
 
