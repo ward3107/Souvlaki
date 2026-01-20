@@ -1834,10 +1834,17 @@ const App: React.FC = () => {
                 {/* Contact Details */}
                 <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                    📞 צור קשר
+                    📞{' '}
+                    {tx('צור קשר', 'Contact Us', 'اتصل بنا', 'Свяжитесь с нами', 'Επικοινωνήστε')}
                   </h3>
                   <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
-                    לחץ על הכפתורים ליצירת קשר מהירה
+                    {tx(
+                      'לחץ על הכפתורים ליצירת קשר מהירה',
+                      'Click the buttons for quick contact',
+                      'اضغط على الأزرار للتواصل السريع',
+                      'Нажмите на кнопки для быстрой связи',
+                      'Πατήστε τα κουμπιά για γρήγορη επικοινωνία'
+                    )}
                   </p>
 
                   <div className="grid grid-cols-1 gap-3">
@@ -1854,7 +1861,13 @@ const App: React.FC = () => {
                           04-812-2980
                         </div>
                         <div className="text-blue-600 dark:text-blue-400 text-sm font-medium">
-                          לחץ להתקשר →
+                          {tx(
+                            'לחץ להתקשר →',
+                            'Tap to call →',
+                            'اضغط للاتصال →',
+                            'Нажмите, чтобы позвонить →',
+                            'Πατήστε για κλήση →'
+                          )}
                         </div>
                       </div>
                     </a>
@@ -1876,7 +1889,13 @@ const App: React.FC = () => {
                           Jennje
                         </div>
                         <div className="text-green-600 dark:text-green-400 text-sm font-medium">
-                          054-200-1235 • לחצו כאן 💬
+                          {tx(
+                            '054-200-1235 • לחצו כאן 💬',
+                            '054-200-1235 • Tap here 💬',
+                            '054-200-1235 • اضغط هنا 💬',
+                            '054-200-1235 • Нажмите здесь 💬',
+                            '054-200-1235 • Πατήστε εδώ 💬'
+                          )}
                         </div>
                       </div>
                     </a>
@@ -1898,7 +1917,13 @@ const App: React.FC = () => {
                           Andreia
                         </div>
                         <div className="text-green-600 dark:text-green-400 text-sm font-medium">
-                          052-892-1454 • לחצו כאן 💬
+                          {tx(
+                            '052-892-1454 • לחצו כאן 💬',
+                            '052-892-1454 • Tap here 💬',
+                            '052-892-1454 • اضغط هنا 💬',
+                            '052-892-1454 • Нажмите здесь 💬',
+                            '052-892-1454 • Πατήστε εδώ 💬'
+                          )}
                         </div>
                       </div>
                     </a>
