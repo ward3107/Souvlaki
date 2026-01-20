@@ -1123,9 +1123,10 @@ const App: React.FC = () => {
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-slate-800 shadow-sm transition-colors duration-300">
         <div className="container mx-auto px-4 h-20 flex items-center justify-between">
           {/* Logo */}
-          <div
-            className="flex items-center gap-2 cursor-pointer"
+          <button
+            className="flex items-center gap-2 bg-transparent border-0 p-0 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => scrollToSection('home')}
+            aria-label="Go to home"
           >
             <img
               src="/favicon.png"
@@ -1135,7 +1136,7 @@ const App: React.FC = () => {
             <h1 className="text-xl font-bold text-blue-900 dark:text-blue-100 hidden sm:block">
               Greek Souvlaki
             </h1>
-          </div>
+          </button>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-6 rtl:space-x-reverse">
@@ -1413,7 +1414,7 @@ const App: React.FC = () => {
                 >
                   <img
                     src={img}
-                    alt={`Instagram ${idx + 1}`}
+                    alt=""
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   {/* Instagram-style overlay */}
@@ -2255,7 +2256,12 @@ const App: React.FC = () => {
             role="button"
             tabIndex={0}
             aria-label={tx('תמונה קודמת', 'Previous image', 'الصورة السابقة')}
-            onKeyDown={(e) => e.key === 'Enter' && goToPrevImage()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                goToPrevImage();
+              }
+            }}
           />
           <div
             className="absolute right-0 top-0 bottom-0 w-1/3 rtl:right-auto rtl:left-0 z-0 cursor-pointer"
@@ -2263,7 +2269,12 @@ const App: React.FC = () => {
             role="button"
             tabIndex={0}
             aria-label={tx('תמונה הבאה', 'Next image', 'الصورة التالية')}
-            onKeyDown={(e) => e.key === 'Enter' && goToNextImage()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                goToNextImage();
+              }
+            }}
           />
 
           {/* Main Image */}

@@ -180,6 +180,11 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
         </h3>
       </div>
 
+      {/* Screen reader announcement for status changes */}
+      <div aria-live="polite" aria-atomic="true" className="sr-only">
+        {statusText}
+      </div>
+
       {/* Status Badge - PROMINENT when open, subtle when closed */}
       <div className="mb-6">
         {isOpen ? (
