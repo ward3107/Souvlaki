@@ -141,6 +141,13 @@ const STATUS_TEXT = {
     ru: 'Закрыто',
     el: 'Κλειστά',
   },
+  title: {
+    en: 'Opening Hours',
+    he: 'שעות פתיחה',
+    ar: 'ساعات العمل',
+    ru: 'Часы работы',
+    el: 'Ώρες λειτουργίας',
+  },
 };
 
 export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
@@ -158,6 +165,8 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
   const lang = language as keyof typeof DAY_NAMES;
   const dayNames = DAY_NAMES[lang] || DAY_NAMES.en;
   const statusText = STATUS_TEXT[isOpen ? 'open' : 'closed'][lang] || STATUS_TEXT.open.en;
+  const titleText = STATUS_TEXT.title[lang] || STATUS_TEXT.title.en;
+  const closedText = STATUS_TEXT.closed[lang] || STATUS_TEXT.closed.en;
 
   return (
     <div className="relative bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-xl border-2 border-green-200 dark:border-green-900">
@@ -167,7 +176,7 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
           <Clock className="w-6 h-6 text-white" />
         </div>
         <h3 className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
-          Opening Hours
+          {titleText}
         </h3>
       </div>
 
@@ -212,7 +221,9 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
           <span className="font-bold text-gray-800 dark:text-gray-200 text-lg">
             {dayNames[0]} - {dayNames[2]}
           </span>
-          <span className="text-red-500/70 dark:text-red-400/70 font-medium text-sm">Closed</span>
+          <span className="text-red-500/70 dark:text-red-400/70 font-medium text-sm">
+            {closedText}
+          </span>
         </li>
       </ul>
     </div>
