@@ -53,7 +53,7 @@
     "rollup-plugin-visualizer": "^6.0.5",
     "sharp-heic": "^0.0.1-security",
     "tailwindcss": "^3.4.19",
-    "typescript": "~5.8.2",
+    "typescript": "~5.9.3",
     "typescript-eslint": "^8.53.1",
     "vite": "^6.2.0",
     "vite-plugin-pwa": "^1.2.0",
