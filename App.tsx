@@ -1523,7 +1523,7 @@ const App: React.FC = () => {
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
                   <a
-                    href="https://www.facebook.com/profile.php?id=100089667506328"
+                    href="https://www.facebook.com/profile.php?id=100089667506328&sk=reviews"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 hover:shadow-xl transition-all duration-300"
