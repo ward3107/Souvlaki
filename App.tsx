@@ -1315,11 +1315,23 @@ const App: React.FC = () => {
               {t('hero_title')}
             </h1>
             <p
-              className="text-xl md:text-2xl text-gray-100 mb-10 font-light max-w-2xl mx-auto drop-shadow-lg"
+              className="text-xl md:text-2xl text-gray-100 mb-6 font-light max-w-2xl mx-auto drop-shadow-lg"
               style={{ minHeight: '3rem' }}
             >
               {t('hero_subtitle')}
             </p>
+
+            {/* Summary Paragraph for SEO/AEO */}
+            <p className="text-lg md:text-xl text-white/95 mb-8 font-normal max-w-3xl mx-auto drop-shadow-md leading-relaxed">
+              {tx(
+                'מסעדה יוונית אותנטית בכפר יאסיף, הגליל המערבי. מתכונים משפחתיים מדור לדור, שילוב ייחודי של טריות ואותנטיות באווירה משפחתית חמה.',
+                'An authentic Greek restaurant in Kfar Yasif, Western Galilee. Family recipes passed down through generations, featuring a unique blend of freshness and authenticity in a warm family atmosphere.',
+                'مطعم يوناني أصيل في كفر ياسيف، الجليل الغربي. وصفات عائلية تنتقل عبر الأجيال، مزيج فريد من الطزاجة والأصالة في أجواء عائلية دافئة.',
+                'Аутентичный греческий ресторан в Кафр-Ясиф, Западная Галилея. Семейные рецепты, передаваемые из поколения в поколение, уникальное сочетание свежести и аутентичности в теплой семейной атмосфере.',
+                'Αυθεντικό ελληνικό εστιατόριο στο Καφρ Γιασίφ, Δυτική Γαλιλαία. Οικογενικές συνταγές που περνούν από γενιά σε γενιά, μοναδικός συνδυασμός φρεσκάδας και αυθεντικότητας σε μια ζεστή οικογενειακή ατμόσφαιρα.'
+              )}
+            </p>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => scrollToSection('menu')}
