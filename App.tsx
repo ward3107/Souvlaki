@@ -1270,9 +1270,9 @@ const App: React.FC = () => {
           id="home"
           className="relative h-[90vh] flex items-center justify-center overflow-hidden"
         >
-          {/* Parallax Background - fixed on all devices */}
+          {/* Parallax Background - normal on mobile for better scrolling, fixed on desktop */}
           <div
-            className="absolute inset-0 z-0 bg-fixed bg-center bg-cover"
+            className="absolute inset-0 z-0 bg-center bg-cover md:bg-fixed"
             style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
           >
             <div className="absolute inset-0 bg-gray-900/60"></div>
@@ -1280,7 +1280,6 @@ const App: React.FC = () => {
 
           <div
             className="relative z-10 text-center px-4 max-w-4xl mx-auto"
-            style={{ contain: 'layout style' }}
           >
             {/* Google Rating in Hero */}
             <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">

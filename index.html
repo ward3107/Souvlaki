@@ -384,21 +384,17 @@
           Cantarell,
           sans-serif;
         font-size-adjust: 0.5;
-        /* Prevent pull-to-refresh and rubber banding on mobile */
-        overscroll-behavior: none;
-        /* Control touch actions - only allow vertical scrolling */
-        touch-action: pan-y;
-        /* Prevent horizontal scroll and movement */
+        /* Allow natural touch scrolling on mobile */
+        touch-action: auto;
+        /* Prevent horizontal scroll only */
         overflow-x: hidden;
         position: relative;
+        -webkit-overflow-scrolling: touch;
       }
       html {
-        /* Prevent pull-to-refresh and rubber banding */
-        overscroll-behavior: none;
-        /* Prevent horizontal scroll */
+        /* Allow natural scrolling */
         overflow-x: hidden;
-        /* Prevent horizontal rubber band specifically */
-        overscroll-behavior-x: none;
+        -webkit-overflow-scrolling: touch;
       }
       #root {
         min-height: 100vh;
@@ -433,10 +429,13 @@
         contain: layout style;
       }
 
-      /* Prevent any horizontal movement on mobile */
+      /* Enable smooth scrolling on mobile */
       @media (max-width: 768px) {
         * {
           -webkit-overflow-scrolling: touch;
+        }
+        html, body {
+          overscroll-behavior: auto;
         }
       }
     </style>
