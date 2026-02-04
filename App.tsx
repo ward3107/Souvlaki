@@ -1278,9 +1278,7 @@ const App: React.FC = () => {
             <div className="absolute inset-0 bg-gray-900/60"></div>
           </div>
 
-          <div
-            className="relative z-10 text-center px-4 max-w-4xl mx-auto"
-          >
+          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             {/* Google Rating in Hero */}
             <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">
               <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
