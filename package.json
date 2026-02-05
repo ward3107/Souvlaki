@@ -52,7 +52,7 @@
     "prettier": "^3.8.0",
     "rollup-plugin-visualizer": "^6.0.5",
     "sharp-heic": "^0.0.1-security",
-    "tailwindcss": "^3.4.19",
+    "tailwindcss": "^4.1.18",
     "typescript": "~5.8.2",
     "typescript-eslint": "^8.53.1",
     "vite": "^6.2.0",
