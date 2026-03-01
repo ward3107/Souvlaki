@@ -88,11 +88,9 @@ export default defineConfig(({ mode }) => {
           background_color: '#0f172a',
           display: 'standalone',
           orientation: 'portrait',
-          dir: 'auto',
-          lang: 'multi',
+          lang: 'en',
           scope: '/',
-          start_url: '/',
-          categories: ['restaurant', 'food', 'greek'],
+          start_url: './',
           icons: [
             {
               src: '/icons/icon-192.png',
