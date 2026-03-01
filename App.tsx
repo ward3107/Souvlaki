@@ -2237,7 +2237,7 @@ const App: React.FC = () => {
             {/* Website Builder Badge */}
             <div className="flex justify-center md:justify-end items-center md:ml-24">
               <a
-                href="https://wwebsie-4.vercel.app/"
+                href="https://waseemp.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-gray-400 hover:text-gray-200 transition-colors group"
