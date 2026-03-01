@@ -11,10 +11,16 @@
   },
   "git": {
     "deploymentEnabled": {
-      "main": false,
+      "main": true,
       "*": true
     }
   },
+  "redirects": [
+    {
+      "source": "/((?!manifest\\.webmanifest|manifest\\.json|sw\\.js|workbox-.+\\.js|.*\\.(?:js|css|png|jpg|jpeg|svg|gif|webp|ico|woff2|woff|ttf|json|html|webmanifest)).*)",
+      "destination": "https://souvlaki.pages.dev/"
+    }
+  ],
   "rewrites": [
     {
       "source": "/((?!manifest\\.webmanifest|manifest\\.json|sw\\.js|workbox-.+\\.js|.*\\.(?:js|css|png|jpg|jpeg|svg|gif|webp|ico|woff2|woff|ttf|json|html|webmanifest)).*)",
