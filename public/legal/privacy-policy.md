@@ -1,626 +1,768 @@
 # Privacy Policy
 
-**מדיניות פרטיות | سياسة الخصوصية | Политика конфиденциальности | Πολιτική Απορρήτου | Privacy Policy**
+# מדיניות פרטיות
+
+# سياسة الخصوصية
+
+# Политика конфиденциальности
+
+# Πολιτική Απορρήτου
+
+**Effective Date:** January 17, 2025
+**תאריך עדכון:** 17 בינואר 2025
+**تاريخ التحديث:** 17 يناير 2025
+**Дата вступления в силу:** 17 января 2025 г.
+**Ημερομηνία ισχύος:** 17 Ιανουαρίου 2025
 
 ---
 
 ## English
 
-**Last Updated: January 17, 2026**
+### 1. Introduction
 
-### Introduction
+At Greek Souvlaki ("we", "us", "our"), we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and protect your data when you visit our website.
 
-Greek Souvlaki Kfar Yasif ("we", "our", or "us") respects your privacy and is committed to protecting your personal data. This privacy policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.
+**Data Controller:** **Greek Souvlaki**
+**Contact:** **[INSERT EMAIL]** | 04-812-2980
 
-### 1. Information We Collect
+---
 
-#### 1.1 Personal Information
+### 2. What Personal Data We Collect
 
-- **Name and Contact Details**: First name, last name, phone number, email address
-- **Order Information**: Menu items ordered, delivery address, special requests
-- **Payment Information**: Payment method details (processed securely by third parties)
-- **Reservation Details**: Date, time, number of guests, special requirements
+We collect minimal personal data:
 
-#### 1.2 Automatically Collected Information
+| Data                          | Purpose                      | Legal Basis         | Collected From   |
+| ----------------------------- | ---------------------------- | ------------------- | ---------------- |
+| **Name** (optional)           | Display with review          | Consent             | Review form      |
+| **Review Content** (optional) | Display on website           | Consent             | Review form      |
+| **Star Ratings** (optional)   | Display average rating       | Consent             | Review form      |
+| **Browser Information**       | Basic analytics (if enabled) | Legitimate interest | Google Analytics |
 
-- **Device Information**: IP address, browser type, operating system, device type
-- **Usage Data**: Pages visited, time spent, features used, click patterns
-- **Location Data**: Approximate location based on IP address (when enabled)
-- **Cookies and Tracking Technologies**: See Section 7 below
+**What we DON'T collect:**
 
-#### 1.3 Sensitive Information
+- Email addresses
+- Phone numbers
+- Payment information
+- Account passwords
+- Location data
+- IP addresses (not stored by us)
 
-We do not collect sensitive information such as:
+---
 
-- Biometric data
-- Health information
-- Political opinions
-- Religious beliefs
-- Criminal records
+### 3. How We Use Your Data
 
-### 2. Legal Basis for Processing (GDPR & Israeli Law)
+We use your data **only** for:
 
-We process your personal data based on the following legal bases:
+- Displaying your review on our website
+- Calculating and showing average ratings
+- Improving our services based on feedback
 
-#### 2.1 Contract Performance
+We **do NOT**:
 
-- Processing orders and reservations
-- Delivering products/services
-- Payment processing
+- Sell or rent your data to third parties
+- Use your data for marketing purposes
+- Send you promotional messages
+- Share your data with advertisers
 
-#### 2.2 Legal Obligation
+---
 
-- **Israeli Privacy Protection Law, 5741-1981** (חוק הגנת הפרטיות, תשמ"א-1981)
-- **13th Amendment (2017)** requiring:
-  - Explicit consent for data collection
-  - Right to access and correction
-  - Right to erasure (right to be forgotten)
-  - Right to data portability
-  - Right to object to processing
-  - Duty to notify of data breaches
-  - Appointment of Data Protection Officer (if applicable)
+### 4. Cookies and Tracking
 
-#### 2.3 Legitimate Interests
+**Essential Cookies:**
 
-- Improving our services
-- Marketing (with consent)
-- Fraud prevention
-- Security purposes
+- Google Maps may set cookies for map functionality
+- These are necessary for the map to work properly
 
-#### 2.4 Consent
+**Non-Essential Cookies:**
 
-- Promotional communications
-- Cookies and tracking technologies
-- Location services
+- Currently disabled
+- We may enable Google Analytics in the future (with your consent)
 
-### 3. How We Use Your Information
+For more details, see our [Cookie Policy](./cookie-policy.md).
 
-#### 3.1 Primary Purposes
+---
 
-- **Order Fulfillment**: Process and deliver your orders
-- **Reservation Management**: Book tables and manage availability
-- **Customer Service**: Respond to inquiries and resolve issues
-- **Payment Processing**: Process payments securely
+### 5. Third-Party Services
 
-#### 3.2 Secondary Purposes
+Our website integrates with the following third-party services:
 
-- **Marketing**: Send promotional offers (with your consent)
-- **Analytics**: Understand user behavior to improve our services
-- **Personalization**: Customize your experience
-- **Research**: Develop new products and services
+| Service                | Purpose                     | Data Shared                                      | Your Rights                   |
+| ---------------------- | --------------------------- | ------------------------------------------------ | ----------------------------- |
+| **Google Maps**        | Display restaurant location | Your IP & location data (goes to Google, not us) | See Google's privacy policy   |
+| **Waze**               | Navigation link             | No data collected by us                          | See Waze's privacy policy     |
+| **WhatsApp**           | Direct messaging            | No data collected by us                          | See WhatsApp's privacy policy |
+| **Facebook/Instagram** | Social media links          | No data collected by us                          | See Meta's privacy policy     |
 
-### 4. Data Sharing and Disclosure
+---
 
-We do **NOT** sell your personal data. We may share your information with:
+### 6. Your Privacy Rights
 
-#### 4.1 Service Providers
+Under Israeli Privacy Protection Law 5741-1981 (and Amendment 13 from 2017), you have the right to:
 
-- **Payment Processors**: Credit card processors, payment gateways
-- **Delivery Services**: Third-party delivery companies
-- **Website Hosting**: Vercel Inc., GitHub Pages
-- **Analytics Providers**: Google Analytics, Vercel Analytics
-- **Email Services**: Transactional email providers
+✅ **Access** - Request a copy of your personal data
+✅ **Correction** - Request inaccurate data be corrected
+✅ **Deletion** - Request your review be removed
+✅ **Objection** - Object to processing of your data
+✅ **Restrict** - Request we limit how we use your data
 
-#### 4.2 Legal Requirements
+To exercise these rights, contact us: **[INSERT EMAIL]**
 
-We may disclose information when required by law:
+We will respond within 30 days.
 
-- Court orders or subpoenas
-- Law enforcement requests
-- Regulatory authorities
-- To protect our rights and property
+---
 
-#### 4.3 Business Transfers
+### 7. Data Retention
 
-In case of merger, acquisition, or sale of assets, your data may be transferred.
+We retain review data indefinitely unless:
 
-### 5. Data Retention
+- You request deletion
+- The review violates our terms
+- We close the website
 
-| Data Type               | Retention Period                 | Legal Basis        |
-| ----------------------- | -------------------------------- | ------------------ |
-| Order Records           | 7 years                          | Tax Law (Israel)   |
-| Customer Communications | 2 years                          | Customer Service   |
-| Website Analytics       | 26 months                        | GDPR Best Practice |
-| Marketing Data          | Until opt-out                    | Consent            |
-| Payment Data            | As required by payment processor | PCI DSS            |
-| IP Addresses            | 7 days (logs)                    | Security           |
+---
 
-**Note**: Data is securely deleted after retention period expires.
+### 8. Children's Privacy
 
-### 6. Data Security
+Our website is not directed to children under 16. We do not knowingly collect data from children.
 
-#### 6.1 Technical Measures
+---
 
-- **Encryption**: SSL/TLS encryption for data in transit
-- **Secure Storage**: Encrypted databases where applicable
-- **Access Controls**: Role-based access, authentication required
-- **Regular Backups**: Daily backups with secure storage
-- **Monitoring**: Intrusion detection and prevention systems
+### 9. Data Security
 
-#### 6.2 Organizational Measures
+We implement reasonable security measures to protect your data:
 
-- Employee training on data protection
-- Confidentiality agreements
-- Privacy by design principles
-- Regular security audits
+- HTTPS encryption
+- Secure hosting (Vercel)
+- Regular security updates
 
-#### 6.3 Data Breaches
+However, no method of transmission is 100% secure. We cannot guarantee absolute security.
 
-In case of a data breach, we will:
+---
 
-- Notify affected users within 72 hours (as required by Israeli Law 13th Amendment)
-- Inform the Israeli Law, Information and Technology Authority (ILITA)
-- Provide details of the breach and mitigation steps
+### 10. Changes to This Policy
 
-### 7. Cookies and Tracking Technologies
+We may update this Privacy Policy from time to time. We will notify you of significant changes by:
 
-#### 7.1 Essential Cookies (Required)
+- Posting the new policy on this page
+- Updating the "Effective Date" above
 
-- **Session Cookies**: Maintain your session
-- **Security Cookies**: Prevent fraud and protect your data
-- **Preference Cookies**: Remember your settings (language, theme)
+---
 
-#### 7.2 Analytics Cookies
+### 11. Contact Us
 
-- **Google Analytics**: Website usage statistics
-- **Vercel Analytics**: Performance monitoring
-- **Purpose**: Understand user behavior, improve performance
-- **Opt-out**: Available at [Google Analytics Opt-out](https://tools.google.com/dlpage/gaoptout)
+For privacy-related questions, contact:
 
-#### 7.3 Marketing Cookies
-
-- **Facebook Pixel**: Track ad conversions
-- **Google Ads**: Remarketing and conversion tracking
-- **Purpose**: Show relevant ads
-- **Opt-out**: Available through cookie settings
-
-#### 7.4 Third-Party Cookies
-
-- **Google Maps**: Location services
-- **Social Media**: Facebook, Instagram sharing buttons
-- **WhatsApp**: Click-to-chat functionality
-
-**Cookie Control**: Use our Cookie Banner to manage preferences or browser settings to disable cookies.
-
-### 8. Your Rights
-
-Under GDPR, Israeli Law (13th Amendment), and international privacy laws, you have the right to:
-
-#### 8.1 Right to Access
-
-- Request a copy of your personal data
-- Know how your data is being used
-- Request information about data processing
-
-#### 8.2 Right to Rectification
-
-- Correct inaccurate data
-- Complete incomplete data
-
-#### 8.3 Right to Erasure (Right to be Forgotten)
-
-- Request deletion of your personal data
-- Exceptions: legal obligations, contract performance, legitimate interests
-
-#### 8.4 Right to Restrict Processing
-
-- Limit how we use your data
-- Maintain data without actively using it
-
-#### 8.5 Right to Data Portability
-
-- Receive your data in a structured, machine-readable format
-- Transfer data to another service provider
-
-#### 8.6 Right to Object
-
-- Object to processing based on legitimate interests
-- Object to direct marketing
-
-#### 8.7 Rights Related to Automated Decision Making
-
-- Not subject to solely automated decisions
-- Human intervention available
-
-#### 8.8 Right to Withdraw Consent
-
-- Withdraw consent at any time
-- Effect: Processing stops after withdrawal (except legal requirements)
-
-#### 8.9 Right to Lodge a Complaint
-
-- **Israeli Authority**: ILITA (Israeli Law, Information and Technology Authority)
-- **EU Authority**: GDPR supervisory authority
-- **Contact Us First**: We will address your concerns
-
-### 9. Children's Privacy
-
-Our services are not directed to children under 16. We do not knowingly collect information from children under 16. If we become aware of such collection, we will take immediate steps to delete the information.
-
-### 10. International Data Transfers
-
-Your data may be transferred to and processed in countries other than Israel:
-
-- **United States**: Google Analytics, Google Maps, Facebook, Instagram
-- **EU Countries**: Vercel hosting infrastructure
-
-**Safeguards**:
-
-- Standard Contractual Clauses (SCC)
-- GDPR adequacy decisions
-- Privacy Shield framework (where applicable)
-
-### 11. Changes to This Privacy Policy
-
-We may update this privacy policy from time to time. We will:
-
-- Notify you of significant changes via email or website notice
-- Update the "Last Updated" date
-- Obtain new consent where required by law
-
-### 12. Contact Information
-
-#### For Privacy Inquiries:
-
-- **Email**: privacy@greeksouvlaki.co.il
-- **Phone**: +972-4-812-2980
-- **WhatsApp**: +972-54-200-1235
-- **Address**: Route 70, Kafr Yasif, Israel 2490800
-- **Website**: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
-
-#### Data Protection Officer (if applicable):
-
-- **Email**: dpo@greeksouvlaki.co.il
-
-#### Regulatory Authorities:
-
-- **ILITA (Israel)**: https://www.justice.gov.il/Units/ILITA
-- **GDPR Authority**: https://ec.europa.eu/newsroom/article29/items/612053
+**Greek Souvlaki**
+Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+Phone: 04-812-2980
+Address: Kafr Yasif, Route 70, Israel
 
 ---
 
 ## עברית (Hebrew)
 
-**עודכן לאחרונה: 17 בינואר 2026**
+### 1. מבוא
 
-### מבוא
+במסעדת Greek Souvlaki ("אנו", "שלנו"), אנו מכבדים את הפרטיות שלך ומחויבים להגן על המידע האישי שלך. מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים ומגנים על הנתונים שלך בעת ביקור באתר שלנו.
 
-סובלקי יווני כפר יאסיף מכבד את הפרטיות שלך ומחויב להגן על הנתונים האישיים שלך. מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים, חושפים ומגנים על המידע שלך.
+**בקרת הנתונים:** **Greek Souvlaki**
+**צור קשר:** **[INSERT EMAIL]** | 04-812-2980
 
-### 1. מידע שאנו אוספים
+---
 
-#### 1.1 מידע אישי
+### 2. איזה מידע אישי אנו אוספים
 
-- **פרטי קשר**: שם פרטי, שם משפחה, מספר טלפון, כתובת אימייל
-- **פרטי הזמנה**: פריטים מהתפריט, כתובת למשלוח, בקשות מיוחדות
-- **מידע תשלומים**: אמצעי תשלום (מעובד בצורה מאובטחת על ידי צד שלישי)
-- **פרטי הזמנה**: תאריך, שעה, מספר סועדים, דרישות מיוחדות
+אנו אוספים מינימום של מידע אישי:
 
-#### 1.2 מידע שנאסף אוטומטית
+| סוג מידע                     | מטרה                    | בסיס משפטי  | מקור איסוף       |
+| ---------------------------- | ----------------------- | ----------- | ---------------- |
+| **שם** (אופציונלי)           | הצגה עם ביקורת          | הסכמה       | טופס ביקורת      |
+| **תוכן ביקורת** (אופציונלי)  | הצגה באתר               | הסכמה       | טופס ביקורת      |
+| **דירוג כוכבים** (אופציונלי) | הצגת דירוג ממוצע        | הסכמה       | טופס ביקורת      |
+| **מידע דפדפן**               | ניתוח בסיסי (אם מאופשר) | אינטרס חוקי | Google Analytics |
 
-- **פרטי מכשיר**: כתובת IP, סוג דפדפן, מערכת הפעלה, סוג מכשיר
-- **נתוני שימוש**: דפים שביקרת, זמן שהוקדש, תכונות ששימשת
-- **נתוני מיקום**: מיקום משוער מבוסס על כתובת IP (כאשר מופעל)
-- **עוגיות וטכנולוגיות מעקב**: ראה סעיף 7 למטה
+**מה שאנו לא אוספים:**
 
-### 2. בסיס משפטי לעיבוד (GDPR והחוק הישראלי)
+- כתובות אימייל
+- מספרי טלפון
+- מידע תשלומים
+- סיסמאות חשבון
+- נתוני מיקום
+- כתובות IP (לא נשמרות על ידינו)
 
-#### 2.1 ביצוע חוזה
+---
 
-- עיבוד הזמנות והזמנות
-- אספקת מוצרים/שירותים
-- עיבוד תשלומים
+### 3. כיצד אנו משתמשים בנתונים שלך
 
-#### 2.2 חובה משפטית
+אנו משתמשים בנתונים שלך **רק** ל:
 
-- **חוק הגנת הפרטיות, התשמ"א-1981** (Privacy Protection Law, 5741-1981)
-- **תיקון מס' 13 (2017)** הדורש:
-  - הסכמה מפורשת לאיסוף נתונים
-  - זכות לגישה ותיקון
-  - זכות למחיקה (זכות להישכח)
-  - זכות לניידות נתונים
-  - זכות להתנגד לעיבוד
-  - חובה לדווח על הפרות נתונים
-  - מינוי מופקל הגנת הפרטיות (במידת הצורך)
+- הצגת הביקורת שלך באתר שלנו
+- חישוב והצגת דירוג ממוצע
+- שיפור השירותים שלנו על סמס המשוב
 
-#### 2.3 אינטרסים לגיטימיים
+אנו **לא**:
 
-- שיפור השירותים שלנו
-- שיווק (בהסכמה)
-- מניעת הונאה
-- מטרות אבטחה
+- מוכרים או משכירים את הנתונים שלך לצד שלישי
+- משתמשים בנתונים שלך למטרות שיווק
+- שולחים לך הודעות פרסומיות
+- חולקים את הנתונים שלך עם מפרסמים
 
-#### 2.4 הסכמה
+---
 
-- הודעות שיווקיות
-- עוגיות וטכנולוגיות מעקב
-- שירותי מיקום
+### 4. עוגיות ומעקב
 
-### 3. שימוש בעוגיות
+**עוגיות הכרחיות:**
 
-#### 3.1 עוגיות הכרחיות
+- Google Maps עשוי להגדיר עוגיות לתפקוד מפה
+- אלו נחוצות כדי שהמפה תעבוד כראוי
 
-- שמירת הפעלה שלך
-- אבטחת המידע שלך
-- זכירת העדפות (שפה, ערכת נושא)
+**עוגיות לא הכרחיות:**
 
-#### 3.2 עוגיות ניתוח
+- כרגע מנוטרלות
+- אנו עשויים לאפשר Google Analytics בעתיד (עם הסכמתך)
 
-- Google Analytics
-- Vercel Analytics
-- מטרה: הבנת התנהגו�ות משתמשים
+לפרטים נוספים, ראה [מדיניות עוגיות](./cookie-policy.md).
 
-### 4. זכויותיך
+---
 
-לפי GDPR והחוק הישראלי (תיקון 13), לך הזכות ל:
+### 5. שירותי צד שלישי
 
-#### 4.1 זכות לגישה
+האתר שלנו משולב עם שירותי צד שלישי הבאים:
 
-- לבקות עותק של הנתונים האישיים שלך
-- לדעת כיצד הנתונים שלך משמשים
+| שירות           | מטרה             | מידע משותף                              | הזכויות שלך                     |
+| --------------- | ---------------- | --------------------------------------- | ------------------------------- |
+| **Google Maps** | הצגת מיקום מסעדה | ה-IP ומיקום שלך (הולך ל-Google, לא לנו) | ראה מדיניות הפרטיות של Google   |
+| **Waze**        | קישור ניווט      | לא נאסף מידע על ידינו                   | ראה מדיניות הפרטיות של Waze     |
+| **WhatsApp**    | הודעות ישירות    | לא נאסף מידע על ידינו                   | ראה מדיניות הפרטיות של WhatsApp |
 
-#### 4.2 זכות לתיקון
+---
 
-- לתקן נתונים לא מדויקים
-- להשלים נתונים חלקיים
+### 6. הזכויות שלך על פי חוק
 
-#### 4.3 זכות למחיקה (זכות להישכח)
+על פי חוק הגנת הפרטיות, התשמ"א-1981 (ותיקון מס' 13 מ-2017), יש לך את הזכות ל:
 
-- לבקור מחיקת הנתונים האישיים שלך
-- חריגים: חובות משפטיות, ביצוע חוזה, אינטרסים לגיטימיים
+✅ **גישה** - לבקות עותק של המידע האישי שלך
+✅ **תיקון** - לבקות תיקון של מידע לא מדויק
+✅ **מחיקה** - לבקות הסרה של הביקורת שלך
+✅ **התנגדות** - להתנגד לעיבוד המידע שלך
+✅ **הגבלה** - לבקות שנגביל את השימוש במידע שלך
 
-#### 4.4 זכות להתנגד
+כדי לממש זכויות אלו, צור קשר: **[INSERT EMAIL]**
 
-- להתנגד לעיבוד מבוסס על אינטרסים לגיטימיים
-- להתנגד לשיווק ישיר
+אנו נענה תוך 30 יום.
 
-#### 4.5 זכות למשוך הסכמה
+---
 
-- למשוך הסכמה בכל עת
-- השפעה: העיבוד נפסק לאחר המשיך (למעט דרישות חוקיות)
+### 7. שמירת נתונים
 
-### 5. פרטי מגע
+אנו שומרים נתוני ביקורות ללא הגבלת זמן אלא אם:
 
-#### לשאלות בנושא פרטיות:
+- אתה מבקש מחיקה
+- הביקורת מפרה את התנאים שלנו
+- אנו סוגרים את האתר
 
-- **אימייל**: privacy@greeksouvlaki.co.il
-- **טלפון**: 04-812-2980
-- **וואטסאפ**: 054-200-1235
-- **כתובת**: כביש 70, כפר יאסיף, ישראל
+---
 
-#### רשויות רגולטוריות:
+### 8. פרטיות ילדים
 
-- **ILITA (ישראל)**: https://www.justice.gov.il/Units/ILITA
-- **רשות הגנת הפרטיות האירופית**: https://ec.europa.eu/newsroom/article29/items/612053
+האתר שלנו לא מיועד לילדים מתחת לגיל 16. אנו לא אוספים במודעין מידע מילדים.
+
+---
+
+### 9. בסיס חוקי לעיבוד
+
+בהתאם לתיקון 13 לחוק הגנת הפרטיות, התשמ"א-1981, אנו מעבדים מידע אישי על בסיס החוקי הבא:
+
+| בסיס חוקי          | שימוש                        | דוגמאות                                             |
+| ------------------ | ---------------------------- | --------------------------------------------------- |
+| **חוזה**           | ביצוע הזמנות והזמנת מקומות   | עיבוד הזמנות אוכל, הזמנת שולחנות                    |
+| **הסכמה**          | עוגיות ניתוח, שיווק בוואטסאפ | Google Analytics, Vercel Analytics, הודעות שיווקיות |
+| **חובה חוקית**     | שמירת רשומות מס              | חשבוניות ורשומות חשבונאיות                          |
+| **אינטרס לגיטימי** | שיפור שירות, מניעת הונאה     | ניתוח דפוסי שימוש, אבטחת עסקאות                     |
+
+---
+
+### 10. תקופות שמירת מידע
+
+| סוג מידע                    | תקופת שמירה               |
+| --------------------------- | ------------------------- |
+| **הזמנות**                  | 7 שנים (דרישות מס)        |
+| **פרטי תשלום**              | לא נשמרים על ידינו        |
+| **פרטי קשר**                | 3 שנים מאינטראקציה אחרונה |
+| **הזמנות שולחן**            | 12 חודשים                 |
+| **נתוני ניתוח (Analytics)** | 26 חודשים                 |
+| **עוגיות**                  | 24 חודשים                 |
+| **רשומות הסכמה**            | 3 שנים                    |
+
+---
+
+### 11. העברת מידע לחו"ל
+
+| שירות                | יעד                    | אמצעי הגנה                                   |
+| -------------------- | ---------------------- | -------------------------------------------- |
+| **Google Analytics** | ארה"ב / האיחוד האירופי | SCCs (סעיפי חוזה סטנדרטיים), אנונימיזציית IP |
+| **Vercel**           | ארה"ב / האיחוד האירופי | SCCs (סעיפי חוזה סטנדרטיים)                  |
+| **מעבד תשלומים**     | ייקבע                  | עמידה בתקן PCI-DSS                           |
+
+---
+
+### 12. צדדים שלישיים
+
+אנו עובדים עם הצדדים השלישיים הבאים:
+
+| שם                | מטרה                              |
+| ----------------- | --------------------------------- |
+| **Google LLC**    | Google Analytics, Google Maps     |
+| **Vercel Inc**    | אחסון אתר, Vercel Analytics       |
+| **מעבד תשלומים**  | עיבוד תשלומי כרטיסי אשראי (ייקבע) |
+| **שירות משלוחים** | ביצוע משלוחים (ייקבע)             |
+
+**אנו לא מוכרים, משכירים או מסחרים במידע האישי שלך לצדדים שלישיים.**
+
+---
+
+### 13. אבטחת מידע
+
+אנו מיישמים אמצעי אבטחה מתקדמים להגן על המידע שלך:
+
+- **הצפנת HTTPS** בכל הדפים
+- **עמידה בתקן PCI-DSS** לתשלומי כרטיסי אשראי
+- **בקרת גישה** מוגבלת לעובדים מורשים בלבד
+- **גיבויים** שוטפים ומוצפנים
+- **הודעה על פריצת מידע** לרשות להגנת הפרטיות (ILITA) בהתאם לחוק
+
+עם זאת, שיטת העברה לא 100% מאובטחת. אנו לא יכולים להבטיח אבטחה מוחלטת.
+
+---
+
+### 14. תקשורת שיווקית
+
+- הודעות שיווקיות בוואטסאפ ובאימייל יישלחו **רק עם הסכמה נפרדת ומפורשת**.
+- להסרה מרשימת התפוצה: שלח הודעת "הסר" בוואטסאפ או פנה לכתובת privacy@greeksouvlaki.co.il.
+- ההסרה תיכנס לתוקף תוך **3 ימי עסקים**.
+
+---
+
+### 15. שינויים במדיניות זו
+
+אנו עשויים לעדכן מדיניות פרטיות זו מעת לעת. נודיע לך על שינויים משמעותיים על ידי:
+
+- פרסום המדיניות החדשה בעמוד זה
+- עדכון "תאריך עדכון" למעלה
+
+---
+
+### 16. צור קשר
+
+לשאלות בנושא פרטיות, צור קשר:
+
+**Greek Souvlaki**
+אימייל: **[INSERT EMAIL]**
+
+- אתר: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+  טלפון: 04-812-2980
+  כתובת: כפר יאסיף, כביש 70, ישראל
 
 ---
 
 ## العربية (Arabic)
 
-**آخر تحديث: 17 يناير 2026**
+### 1. مقدمة
 
-### المقدمة
+في مطعم Greek Souvlaki ("نحن")، نحترم خصوصيتك ونلتزم بحماية معلوماتك الشخصية. توضح سياسة الخصوصية هذه كيف نجمع ونستخدم ونحمي بياناتك عند زيارة موقعنا الإلكتروني.
 
-تحترم سوفلاكي يوناني كفر ياسيف خصوصيتك ونحن ملتزمون بحماية بياناتك الشخصية.
+**متحكم البيانات:** **Greek Souvlaki**
+**التواصل:** **[INSERT EMAIL]** | 04-812-2980
 
-### 1. المعلومات التي نجمعها
+---
 
-#### 1.1 المعلومات الشخصية
+### 2. البيانات الشخصية التي نجمعها
 
-- **معلومات الاتصال**: الاسم الأول، اسم العائلة، رقم الهاتف، البريد الإلكتروني
-- **معلومات الطلب**: عناصر القائمة، عنوان التسليم، طلبات خاصة
-- **معلومات الدفع**: طرق الدفع (تتم معالجتها بأمان بواسطة أطراف ثالثة)
+نجمع الحد الأدنى من البيانات الشخصية:
 
-#### 1.2 المعلومات التي يتم جمعها تلقائيًا
+| البيانات                     | الغرض                               | الأساس القانوني  | المصدر           |
+| ---------------------------- | ----------------------------------- | ---------------- | ---------------- |
+| **الاسم** (اختياري)          | العرض مع التقييم                    | الموافقة         | نموذج التقييم    |
+| **محتوى التقييم** (اختياري)  | العرض على الموقع                    | الموافقة         | نموذج التقييم    |
+| **تقييمات النجوم** (اختياري) | عرض التقييم المتوسط                 | الموافقة         | نموذج التقييم    |
+| **معلومات المتصفح**          | التحليلات الأساسية (إذا كانت مفعلة) | المصالح المشروعة | Google Analytics |
 
-- **معلومات الجهاز**: عنوان IP، نوع المتصفح، نظام التشغيل
-- **بيانات الاستخدام**: الصفحات التي تمت زيارتها، الوقت المقضي
-- **بيانات الموقع**: الموقع التقريبي بناءً على عنوان IP
+**ما الذي لا نجمعه:**
 
-### 2. الأساس القانوني للمعالجة
+- عناوين البريد الإلكتروني
+- أرقام الهواتف
+- معلومات الدفع
+- كلمات مرور الحسابات
+- بيانات الموقع
+- عناوين IP (لا نخزنها)
 
-#### 2.1 أداء العقد
+---
 
-- معالجة الطلبات والحجوزات
-- تسليم المنتجات/الخدمات
-- معالجة المدفوعات
+### 3. كيف نستخدم بياناتك
 
-#### 2.2 الالتزام القانوني
+نحن نستخدم بياناتك **فقط** لـ:
 
-- **قانون حماية الخصوصية الإسرائيلي (التعديل الثالث عشر - 2017)**
-  - الموافقة الصريحة على جمع البيانات
-  - الحق في الوصول والتصحيح
-  - الحق في المحو (الحق في النسيان)
-  - حق نقل البيانات
-  - الحق في الاعتراض على المعالجة
-  - واجب الإبلاغ عن خروقات البيانات
+- عرض تقييمك على موقعنا
+- حساب وعرض متوسط التقييمات
+- تحسين خدماتنا بناءً على التعليقات
 
-#### 2.3 المصالح المشروعة
+نحن **لا**:
 
-- تحسين خدماتنا
-- التسويق (بموافقتك)
-- منع الاحتيال
-- أغراض أمنية
+- نبيع أو نؤجر بياناتك لأطراف ثالثة
+- نستخدم بياناتك لأغراض تسويقية
+- نرسل لك رسائل ترويجية
+- نشارك بياناتك مع المعلنين
 
-### 3. حقوقك
+---
 
-لديك الحق في:
+### 4. ملفات تعريف الارتباط والتتبع
 
-#### 3.1 حق الوصول
+**ملفات تعريف الارتباط الضرورية:**
 
-- طلب نسخة من بياناتك الشخصية
-- معرفة كيفية استخدام بياناتك
+- قد يقوم Google Maps بتعيين ملفات تعريف الارتباط لوظيفة الخريطة
+- هذه ضرورية لكي تعمل الخريطة بشكل صحيح
 
-#### 3.2 حق التصحيح
+**ملفات تعريف الارتباط غير الضرورية:**
 
-- تصحيح البيانات غير الدقيقة
-- إكمال البيانات الناقصة
+- معطلة حالياً
+- قد نقوم بتمكين Google Analytics في المستقبل (بموافقتك)
 
-#### 3.3 حق المحو (الحق في النسيان)
+لمزيد من التفاصيل، راجع [سياسة ملفات تعريف الارتباط](./cookie-policy.md).
 
-- طلب حذف بياناتك الشخصية
-- الاستثناءات: الالتزامات القانونية، أداء العقد
+---
 
-#### 3.4 حق الاعتراض
+### 5. خدمات الطرف الثالث
 
-- الاعتراض على المعالجة بناءً على المصالح المشروعة
-- الاعتراض على التسويق المباشر
+يتم تكامل موقعنا مع خدمات الطرف الثالث التالية:
 
-#### 3.5 حق سحب الموافقة
+| الخدمة          | الغرض             | البيانات المشتركة                             | حقوقك                      |
+| --------------- | ----------------- | --------------------------------------------- | -------------------------- |
+| **Google Maps** | عرض موقع المطعم   | عنوان IP وموقعك (يذهب إلى Google، وليس إلينا) | راجع سياسة خصوصية Google   |
+| **Waze**        | رابط التنقل       | لا نجمع بيانات                                | راجع سياسة خصوصية Waze     |
+| **WhatsApp**    | المراسلة المباشرة | لا نجمع بيانات                                | راجع سياسة خصوصية WhatsApp |
 
-- سحب الموافقة في أي وقت
+---
 
-### 4. معلومات الاتصال
+### 6. حقوق الخصوصية الخاصة بك
 
-#### للاستفسارات المتعلقة بالخصوصية:
+وفقًا لقانون حماية الخصوصية الإسرائيلي، لديك الحق في:
 
-- **البريد الإلكتروني**: privacy@greeksouvlaki.co.il
-- **الهاتف**: +972-4-812-2980
-- **واتساب**: +972-54-200-1235
-- **العنوان**: طريق 70، كفر ياسيف، إسرائيل
+✅ **الوصول** - طلب نسخة من بياناتك الشخصية
+✅ **التصحيح** - طلب تصحيح البيانات غير الدقيقة
+✅ **الحذف** - طلب إزالة تقييمك
+✅ **الاعتراض** - الاعتراض على معالجة بياناتك
+✅ **التقييد** - طلب تقييد كيفية استخدامنا لبياناتك
 
-#### السلطات التنظيمية:
+لتمارك هذه الحقوق، اتصل بنا: **[INSERT EMAIL]**
 
-- **ILITA (إسرائيل)**: https://www.justice.gov.il/Units/ILITA
+سنرد خلال 30 يومًا.
+
+---
+
+### 7. الاحتفاظ بالبيانات
+
+نحتفظ ببيانات التقييم إلى أجل غير محدد ما لم:
+
+- تطلب الحذف
+- ينتهك التقييم شروطنا
+- نغلق الموقع
+
+---
+
+### 8. خصوصية الأطفال
+
+موقعنا ليس موجهًا للأطفال دون سن 16. لا نجمع بيانات من الأطفال عن قصد.
+
+---
+
+### 9. أمن البيانات
+
+نحن ننفذ تدابير أمنية معقولة لحماية بياناتك:
+
+- تشفير HTTPS
+- استضافة آمنة (Vercel)
+- تحديثات أمنية منتظمة
+
+ومع ذلك، لا توجد طريقة إرسار آمنة 100٪. لا يمكننا ضمان الأمان المطلق.
+
+---
+
+### 10. التغييرات على هذه السياسة
+
+قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنبلغك بأي تغييرات كبيرة عن طريق:
+
+- نشر السياسة الجديدة على هذه الصفحة
+- تحديث "تاريخ التحديث" أعلاه
+
+---
+
+### 11. اتصل بنا
+
+للأسئلة المتعلقة بالخصوصية، اتصل بنا:
+
+**Greek Souvlaki**
+البريد الإلكتروني: **[INSERT EMAIL]**
+الهاتف: 04-812-2980
+العنوان: كفر ياسيف، طريق 70، إسرائيل
+
+- الموقع: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
 
 ---
 
 ## Русский (Russian)
 
-**Последнее обновление: 17 января 2026**
+### 1. Введение
 
-### Введение
+В Greek Souvlaki ("мы", "наш") мы уважаем вашу конфиденциальность и обязуемся защищать вашу личную информацию. Эта Политика конфиденциальности объясняет, как мы собираем, используем и защищаем ваши данные при посещении нашего веб-сайта.
 
-Greek Souvlaki Kfar Yasif уважает вашу конфиденциальность и обязуется защищать ваши личные данные.
+**Контролер данных:** **Greek Souvlaki**
+**Контакты:** **[INSERT EMAIL]** | 04-812-2980
 
-### 1. Собираемая информация
+---
 
-#### 1.1 Личная информация
+### 2. Какую информацию мы собираем
 
-- **Контактная информация**: Имя, фамилия, номер телефона, адрес электронной почты
-- **Информация о заказе**: Позиции меню, адрес доставки, особые запросы
-- **Платежная информация**: Способы оплаты (безопасно обрабатывается третьими сторонами)
+#### 2.1. Информация, которую вы предоставляете
 
-#### 1.2 Автоматически собираемая информация
+- Отзывы (имя, рейтинг, комментарий)
+- Сообщения через контактную форму (имя, email, сообщение)
 
-- **Информация об устройстве**: IP-адрес, тип браузера, операционная система
-- **Данные об использовании**: Посещенные страницы, затраченное время
+#### 2.2. Автоматически собираемая информация
 
-### 2. Законные основания для обработки
+- IP-адрес
+- Тип браузера и устройство
+- Операционная система
+- Ссылки на наш сайт
 
-#### 2.1 Исполнение договора
+#### 2.3. Файлы cookie
 
-- Обработка заказов и бронирований
-- Доставка продуктов/услуг
-- Обработка платежей
+- Необходимые файлы (Google Maps)
+- Функциональные файлы (язык)
+- Аналитические файлы (отключены)
 
-#### 2.2 Юридическое обязательство
+---
 
-- **Израильский закон о защите конфиденциальности (13-я поправка - 2017)**
-  - Явное согласие на сбор данных
-  - Право на доступ и исправление
-  - Право на удаление
-  - Право на перенос данных
-  - Право возражать на обработку
-  - Обязательство уведомлять о нарушениях данных
+### 3. Как мы используем вашу информацию
 
-### 3. Ваши права
+Мы используем вашу информацию для:
 
-#### 3.1 Право на доступ
+- Отображения отзывов на нашем сайте
+- Ответа на ваши запросы
+- Запоминания вашего языка
+- Улучшения функциональности сайта
 
-- Запросить копию ваших личных данных
-- Узнать, как используются ваши данные
+Мы **НЕ** используем вашу информацию для:
 
-#### 3.2 Право на исправление
+- Продажи третьим лицам
+- Маркетинговых рассылок
+- Профилирования
 
-- Исправить неточные данные
-- Дополнить неполные данные
+---
 
-#### 3.3 Право на удаление
+### 4. Правовая основа обработки данных
 
-- Запросить удаление ваших личных данных
-- Исключения: юридические обязательства
+- **Отзывы:** С вашего согласия (вы можете отозвать в любое время)
+- **Контактные формы:** С вашего согласия
+- **Технические данные:** Законный интерес (обеспечение работы сайта)
 
-#### 3.4 Право отзывать согласие
+---
 
-- Отозвать согласие в любое время
+### 5. Обмен данными с третьими лицами
 
-### 4. Контактная информация
+Мы делимся данными только с:
 
-#### Для запросов о конфиденциальности:
+- **Vercel** (хостинг) - для хранения и обслуживания сайта
+- **Google** (Maps) - только когда вы просматриваете карту
 
-- **Электронная почта**: privacy@greeksouvlaki.co.il
-- **Телефон**: +972-4-812-2980
-- **WhatsApp**: +972-54-200-1235
-- **Адрес**: Route 70, Кафр Ясиф, Израиль
+Мы **НЕ** продаем ваши данные третьим лицам.
+
+---
+
+### 6. Ваши права
+
+Согласно израильскому закону о защите конфиденциальности, вы имеете право:
+
+- **Доступа:** Запросить копию ваших данных
+- **Исправления:** Запросить исправление неточных данных
+- **Удаления:** Запросить удаление ваших данных
+- **Возражения:** Возразить против обработки ваших данных
+- **Ограничения:** Ограничить обработку ваших данных
+
+Для осуществления этих прав свяжитесь с нами.
+
+---
+
+### 7. Хранение данных
+
+- **Отзывы:** Хранятся, пока вы не попросите удалить
+- **Лог-файлы:** Удаляются через 90 дней
+- **Файлы cookie:** Сохраняются в вашем браузере
+
+---
+
+### 8. Конфиденциальность детей
+
+Наш сайт не предназначен для детей младше 13 лет. Мы сознательно не собираем информацию у детей.
+
+---
+
+### 9. Безопасность данных
+
+Мы внедряем разумные меры безопасности для защиты ваших данных:
+
+- HTTPS-шифрование
+- Безопасный хостинг (Vercel)
+- Регулярные обновления безопасности
+
+Однако не существует способа передачи 100% безопасным. Мы не можем гарантировать абсолютную безопасность.
+
+---
+
+### 10. Изменения в этой политике
+
+Мы можем обновлять эту Политику конфиденциальности время от времени. Мы уведомим вас о любых существенных изменениях:
+
+- Публикацией новой политики на этой странице
+- Обновлением "Даты вступления в силу" выше
+
+---
+
+### 11. Связаться с нами
+
+По вопросам, связанным с конфиденциальностью, свяжитесь с нами:
+
+**Greek Souvlaki**
+Электронная почта: **[INSERT EMAIL]**
+Телефон: 04-812-2980
+Адрес: Кафр Ясиф, шоссе 70, Израиль
 
 ---
 
 ## Ελληνικά (Greek)
 
-**Τελευταία ενημέρωση: 17 Ιανουαρίου 2026**
+### 1. Εισαγωγή
 
-### Εισαγωγή
+Στο Greek Souvlaki ("εμείς", "μας"), σεβόμαστε την ιδιωτικότητά σας και δεόμαστε να προστατεύουμε τις προσωπικές σας πληροφορίες. Αυτή η Πολιτική Απορρήτου εξηγεί πώς συλλέγουμε, χρησιμοποιούμε και προστατεύουμε τα δεδομένα σας όταν επισκέπτεστε τον ιστότοπό μας.
 
-Το Ελληνικό σουβλάκι Κουφ Γιασίφ σέβεται την ιδιωτικότητά σας και δεσμεύεται να προστατεύσει τα προσωπικά σας δεδομένα.
-
-### 1. Πληροφορίες που συλλέγουμε
-
-#### 1.1 Προσωπικές πληροφορίες
-
-- **Στοιχεία επαφής**: Όνομα, επίθετο, τηλέφωνο, email
-- **Πληροφορίες παραγγελίας**: Στοιχεία μενού, διεύθυνση παράδοσης
-- **Πληροφορίες πληρωμής**: Τρόποι πληρωμής
-
-#### 1.2 Αυτόματα συλλεγόμενες πληροφορίες
-
-- **Πληροφορίες συσκευής**: IP address, τύπος browser
-- **Δεδομένα χρήσης**: Σελίδες που επισκεφτήκατε
-
-### 2. Νομική βάση επεξεργασίας
-
-#### 2.1 Εκτέλεση συμβολαίου
-
-- Επεξεργασία παραγγελιών και κρατήσεων
-- Παράδοση προϊόντων/υπηρεσιών
-
-#### 2.2 Νομική υποχρέωση
-
-- **Νόμος Προστασίας Προσωπικών Δεδομένων Ισραήλ (13η Τροποποίηση - 2017)**
-  - Ρητή συγκατάθεση για συλλογή δεδομένων
-  - Δικαίωμα πρόσβασης και διόρθωσης
-  - Δικαίωμα διαγραφής
-  - Δικαίωμα φορητότητας δεδομένων
-  - Δικαίωμα αντίρρησης στην επεξεργασία
-
-### 3. Τα δικαιώματά σας
-
-#### 3.1 Δικαίωμα πρόσβασης
-
-- Αίτημα αντίγραφου των προσωπικών σας δεδομένων
-
-#### 3.2 Δικαίωμα διόρθωσης
-
-- Διόρθωση ανακριβών δεδομένων
-
-#### 3.3 Δικαίωμα διαγραφής
-
-- Αίτημα διαγραφής των προσωπικών σας δεδομένων
-
-#### 3.4 Δικαίωμα ανάκλησης συγκατάθεσης
-
-- Αναίρεση συγκατάθεσης οποτεδήποτε
-
-### 4. Πληροφορίες επικοινωνίας
-
-#### Για ερωτήματα απορρήτου:
-
-- **Email**: privacy@greeksouvlaki.co.il
-- **Τηλέφωνο**: +972-4-812-2980
-- **WhatsApp**: +972-54-200-1235
-- **Διεύθυνση**: Route 70, Κουφ Γιασίφ, Ισραήλ
+**Υπεύθυνος επεξεργασίας δεδομένων:** **Greek Souvlaki**
+**Επικοινωνία:** **[INSERT EMAIL]** | 04-812-2980
 
 ---
 
-**Effective Date**: January 17, 2026
-**Version**: 2.0
+### 2. Ποιες πληροφορίες συλλέγουμε
+
+#### 2.1. Πληροφορίες που παρέχετε
+
+- Κριτικές (όνομα, βαθμολογία, σχόλια)
+- Μηνύματα μέσω φόρμας επαφής (όνομα, email, μήνυμα)
+
+#### 2.2. Αυτόματα συλλεγόμενες πληροφορίες
+
+- Διεύθυνση IP
+- Τύπος προγράμματος περιήγησης και συσκευής
+- Λειτουργικό σύστημα
+- Σύνδεσμοι προς τον ιστότοπό μας
+
+#### 2.3. Cookies
+
+- Απαραίτητα cookies (Google Maps)
+- Λειτουργικά cookies (γλώσσα)
+- Analytics cookies (απενεργοποιημένα)
+
+---
+
+### 3. Πώς χρησιμοποιούμε τις πληροφορίες σας
+
+Χρησιμοποιούμε τις πληροφορίες σας για:
+
+- Εμφάνιση κριτικών στον ιστότοπό μας
+- Απάντηση στα αιτήματά σας
+- Απομνημόνευση της γλώσσας σας
+- Βελτίωση της λειτουργικότητας του ιστότοπου
+
+ΔΕΝ χρησιμοποιούμε τις πληροφορίες σας για:
+
+- Πώληση σε τρίτους
+- Marketing emails
+- Profiling
+
+---
+
+### 4. Νομική βάση επεξεργασίας δεδομένων
+
+- **Κριτικές:** Avec τη συγκατάθεσή σας (μπορείτε να την ανακαλέσετε οποιαδήποτε στιγμή)
+- **Φόρμες επαφής:** Avec τη συγκατάθεσή σας
+- **Τεχνικά δεδομένα:** Νόμιμο συμφέρον (λειτουργία του ιστότοπου)
+
+---
+
+### 5. Κοινή χρήση δεδομένων με τρίτους
+
+Μοιραζόμαστε δεδομένα μόνο με:
+
+- **Vercel** (hosting) - για αποθήκευση και εξυπηρέτηση του ιστότοπου
+- **Google** (Maps) - μόνο όταν βλέπετε τον χάρτη
+
+ΔΕΝ πωλούμε τα δεδομένα σας σε τρίτους.
+
+---
+
+### 6. Τα δικαιώματά σας
+
+Σύμφωνα με τον ισραηλινό νόμο προστασίας προσωπικών δεδομένων, έχετε το δικαίωμα:
+
+- **Πρόσβασης:** Να ζητήσετε αντίγραφο των δεδομένων σας
+- **Διόρθωσης:** Να ζητήσετε διόρθωση ανακριβών δεδομένων
+- **Διαγραφής:** Να ζητήσετε διαγραφή των δεδομένων σας
+- **Αντίρρησης:** Να αντιρρήσετε στην επεξεργασία των δεδομένων σας
+- **Περιορισμού:** Να περιορίσετε την επεξεργασία των δεδομένων σας
+
+Για να ασκήσετε αυτά τα δικαιώματα, επικοινωνήστε μαζί μας.
+
+---
+
+### 7. Αποθήκευση δεδομένων
+
+- **Κριτικές:** Αποθηκεύονται μέχρι να ζητήσετε διαγραφή
+- **Log files:** Διαγράφονται μετά από 90 ημέρες
+- **Cookies:** Αποθηκεύονται στον browser σας
+
+---
+
+### 8. Ιδιωτικότητα παιδιών
+
+Αυτός ο ιστότοπος δεν προορίζεται για παιδιά κάτω των 13 ετών. Δεν συλλέγουμε σκόπιμα πληροφορίες από παιδιά.
+
+---
+
+### 9. Ασφάλεια δεδομένων
+
+Εφαρμόζουμε λογικά μέτρα ασφαλείας για την προστασία των δεδομένων σας:
+
+- Κρυπτογράφηση HTTPS
+- Ασφαλής hosting (Vercel)
+- Τακτικές ενημερώσεις ασφαλείας
+
+Ωστόσο, δεν υπάρχει μέθοδος μετάδοσης 100% ασφαλής. Δεν μπορούμε να εγγυηθούμε απόλυτη ασφάλεια.
+
+---
+
+### 10. Αλλαγές σε αυτή την πολιτική
+
+Μπορούμε να ενημερώνουμε αυτή την Πολιτική Απορρήτου κατά καιρούς. Θα σας ειδοποιήσουμε για任何 σημαντικές αλλαγές:
+
+- Δημοσιεύοντας τη νέα πολιτική σε αυτή τη σελίδα
+- Ενημερώνοντας την "Ημερομηνία ισχύος" παραπάνω
+
+---
+
+### 11. Επικοινωνήστε μαζί μας
+
+Για ερωτήματα σχετικά με την ιδιωτικότητα, επικοινωνήστε μαζί μας:
+
+**Greek Souvlaki**
+Email: **[INSERT EMAIL]**
+Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+Τηλέφωνο: 04-812-2980
+Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
