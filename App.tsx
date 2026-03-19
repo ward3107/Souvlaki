@@ -843,6 +843,7 @@ const App: React.FC = () => {
   const [isMenuInView, setIsMenuInView] = useState(false);
   const [legalDocument, setLegalDocument] = useState<string | null>(null);
   const [showWhatsAppNotice, setShowWhatsAppNotice] = useState(false);
+  const [whatsAppTarget, setWhatsAppTarget] = useState('https://wa.me/972542001235');
   const menuRef = useRef<HTMLElement>(null);
   const langDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -1930,11 +1931,12 @@ const App: React.FC = () => {
                     </a>
 
                     {/* WhatsApp Jennje */}
-                    <a
-                      href="https://wa.me/972542001235"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
+                    <button
+                      onClick={() => {
+                        setWhatsAppTarget('https://wa.me/972542001235');
+                        setShowWhatsAppNotice(true);
+                      }}
+                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20 w-full text-start"
                     >
                       <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
                         <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
@@ -1955,14 +1957,15 @@ const App: React.FC = () => {
                           )}
                         </div>
                       </div>
-                    </a>
+                    </button>
 
                     {/* WhatsApp Andreia */}
-                    <a
-                      href="https://wa.me/972528921454"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20"
+                    <button
+                      onClick={() => {
+                        setWhatsAppTarget('https://wa.me/972528921454');
+                        setShowWhatsAppNotice(true);
+                      }}
+                      className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 dark:hover:border-green-600 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/20 w-full text-start"
                     >
                       <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
                         <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current">
@@ -1983,7 +1986,7 @@ const App: React.FC = () => {
                           )}
                         </div>
                       </div>
-                    </a>
+                    </button>
 
                     {/* Waze Navigation */}
                     <a
@@ -2361,7 +2364,10 @@ const App: React.FC = () => {
 
       {/* WhatsApp Floating Button with Privacy Notice */}
       <button
-        onClick={() => setShowWhatsAppNotice(true)}
+        onClick={() => {
+          setWhatsAppTarget('https://wa.me/972542001235');
+          setShowWhatsAppNotice(true);
+        }}
         className="fixed bottom-28 right-6 rtl:right-auto rtl:left-6 z-45 w-14 h-14 bg-white text-black rounded-full flex items-center justify-center shadow-xl mix-blend-difference hover:scale-110 transition-all duration-300"
         aria-label="Chat on WhatsApp"
       >
@@ -2395,7 +2401,7 @@ const App: React.FC = () => {
             </p>
             <div className="flex gap-3">
               <a
-                href="https://wa.me/972542001235"
+                href={whatsAppTarget}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 px-4 py-2.5 rounded-xl font-semibold text-sm text-white text-center transition-all hover:brightness-110"
