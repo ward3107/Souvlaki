@@ -169,6 +169,8 @@ export default defineConfig(({ mode }) => {
             'react-vendor': ['react', 'react-dom', 'react-dom/client'],
             // Lucide icons chunk
             icons: ['lucide-react'],
+            // Animation library chunk (cached independently from app code)
+            motion: ['framer-motion'],
           },
         },
       },

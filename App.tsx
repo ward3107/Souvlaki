@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Language, TranslationKey, MenuItem } from './types';
 import { TRANSLATIONS, MENU_ITEMS, FAQS, SEO_METADATA } from './constants';
 import AccessibilityWidget from './components/AccessibilityWidget';
@@ -6,6 +7,45 @@ import CookieBanner from './components/CookieBanner';
 import LegalDocument from './components/LegalDocument';
 import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
+
+// Floating food emojis drifting around the hero background
+const HeroFloaters: React.FC = () => {
+  const items = [
+    { emoji: '🫒', top: '14%', left: '8%', size: 'text-6xl', delay: 0 },
+    { emoji: '🍅', top: '22%', left: '86%', size: 'text-5xl', delay: 1.1 },
+    { emoji: '🫓', top: '70%', left: '10%', size: 'text-7xl', delay: 0.4 },
+    { emoji: '🍋', top: '74%', left: '88%', size: 'text-5xl', delay: 1.8 },
+    { emoji: '🌿', top: '40%', left: '92%', size: 'text-5xl', delay: 0.8 },
+    { emoji: '🔥', top: '55%', left: '5%', size: 'text-4xl', delay: 2.2 },
+  ];
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 z-[1] select-none opacity-40"
+    >
+      {items.map((it, i) => (
+        <motion.span
+          key={i}
+          className={`absolute drop-shadow-2xl ${it.size}`}
+          style={{ top: it.top, left: it.left, filter: 'drop-shadow(0 6px 12px rgba(0,0,0,0.45))' }}
+          animate={{
+            y: [0, -22, 0, 22, 0],
+            x: [0, 10, 0, -10, 0],
+            rotate: [0, 10, -6, 4, 0],
+          }}
+          transition={{
+            duration: 10 + (i % 3) * 2,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: it.delay,
+          }}
+        >
+          {it.emoji}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
 
 // Icons
 import {
@@ -1276,12 +1316,29 @@ const App: React.FC = () => {
             className="absolute inset-0 z-0 bg-center bg-cover md:bg-fixed"
             style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
           >
-            <div className="absolute inset-0 bg-gray-900/60"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-gray-900/60 to-gray-900/80"></div>
           </div>
 
-          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          {/* Floating food decorations */}
+          <HeroFloaters />
+
+          <motion.div
+            className="relative z-10 text-center px-4 max-w-4xl mx-auto"
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.15, delayChildren: 0.1 } },
+            }}
+          >
             {/* Google Rating in Hero */}
-            <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl animate-[fadeInDown_1s_ease-out] hover:bg-white/20 transition-all cursor-default">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: -20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+              }}
+              className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-xl hover:bg-white/20 transition-all cursor-default"
+            >
               <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
               <div className="flex gap-0.5 text-yellow-400">
                 {[...Array(5)].map((_, i) => (
@@ -1304,20 +1361,33 @@ const App: React.FC = () => {
                }
              `}</style>
               <span className="text-white font-bold text-sm ml-1.5">4.9/5</span>
-            </div>
+            </motion.div>
 
-            <h1
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  filter: 'blur(0px)',
+                  transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+                },
+              }}
               className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight drop-shadow-2xl"
               style={{ minHeight: '4.5rem' }}
             >
               {t('hero_title')}
-            </h1>
-            <p
+            </motion.h1>
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+              }}
               className="text-xl md:text-2xl text-gray-100 mb-6 font-light max-w-2xl mx-auto drop-shadow-lg"
               style={{ minHeight: '3rem' }}
             >
               {t('hero_subtitle')}
-            </p>
+            </motion.p>
 
             {/* Summary Paragraph for SEO/AEO */}
             <p className="text-lg md:text-xl text-white/95 mb-8 font-normal max-w-3xl mx-auto drop-shadow-md leading-relaxed">
@@ -1330,19 +1400,33 @@ const App: React.FC = () => {
               )}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.7 } },
+              }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
+              <motion.button
+                whileHover={{ scale: 1.06, y: -3 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                 onClick={() => scrollToSection('menu')}
-                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-lg transition-all"
+                className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/30 rounded-full font-bold text-lg transition-colors shadow-lg hover:shadow-orange-500/30"
               >
                 {t('hero_cta_menu')}
-              </button>
-            </div>
-          </div>
+              </motion.button>
+            </motion.div>
+          </motion.div>
           {/* Scroll Indicator */}
-          <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+          <motion.div
+            aria-hidden
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70"
+            animate={{ y: [0, 12, 0], opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
             <ChevronDown className="w-8 h-8" />
-          </div>
+          </motion.div>
         </section>
 
         {/* --- MENU --- */}
