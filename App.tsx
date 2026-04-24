@@ -8,6 +8,60 @@ import LegalDocument from './components/LegalDocument';
 import Menu from './components/Menu';
 import OpeningHours from './components/OpeningHours';
 
+// Hero background: looping video when available, static poster image as fallback.
+// Respects prefers-reduced-motion (shows poster instead of playing).
+// Drop an MP4 at /public/gallery/hero-video.mp4 and a WebM at /public/gallery/hero-video.webm to activate.
+const HeroBackground: React.FC<{ poster: string }> = ({ poster }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [canPlay, setCanPlay] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Poster image: always rendered, revealed if video fails to load or user prefers reduced motion */}
+      <div
+        className={`absolute inset-0 bg-center bg-cover md:bg-fixed transition-opacity duration-700 ${
+          canPlay && !reducedMotion ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{ backgroundImage: `url(${poster})` }}
+      />
+
+      {/* Video: only plays when user hasn't requested reduced motion */}
+      {!reducedMotion && (
+        <video
+          ref={videoRef}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+            canPlay ? 'opacity-100' : 'opacity-0'
+          }`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={poster}
+          aria-hidden="true"
+          onCanPlay={() => setCanPlay(true)}
+          onError={() => setCanPlay(false)}
+        >
+          <source src="/gallery/hero-video.webm" type="video/webm" />
+          <source src="/gallery/hero-video.mp4" type="video/mp4" />
+        </video>
+      )}
+
+      {/* Dark gradient overlay for text contrast */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900/55 via-gray-900/60 to-gray-900/80" />
+    </div>
+  );
+};
+
 // Floating food emojis drifting around the hero background
 const HeroFloaters: React.FC = () => {
   const items = [
@@ -1311,13 +1365,8 @@ const App: React.FC = () => {
           id="home"
           className="relative h-[90vh] flex items-center justify-center overflow-hidden"
         >
-          {/* Parallax Background - normal on mobile for better scrolling, fixed on desktop */}
-          <div
-            className="absolute inset-0 z-0 bg-center bg-cover md:bg-fixed"
-            style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-gray-900/50 via-gray-900/60 to-gray-900/80"></div>
-          </div>
+          {/* Video background (with poster fallback + reduced-motion support) */}
+          <HeroBackground poster="/gallery/hero-bg.webp" />
 
           {/* Floating food decorations */}
           <HeroFloaters />
