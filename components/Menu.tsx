@@ -949,7 +949,7 @@ function CartBar({
   const itemWord = count === 1 ? ITEM_LABEL[lang] : ITEMS_LABEL[lang];
   return (
     <div
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[min(92vw,28rem)]"
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] w-[min(92vw,28rem)]"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       <button
@@ -1224,6 +1224,14 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
       document.body.style.overflow = prevOverflow;
     };
   }, [cartOpen]);
+
+  // Signal to other floating widgets (share, rating) to step aside so the
+  // checkout CTA owns the bottom of the screen while the cart has items.
+  useEffect(() => {
+    if (itemCount === 0) return;
+    document.body.classList.add('cart-active');
+    return () => document.body.classList.remove('cart-active');
+  }, [itemCount]);
 
   return (
     <section
