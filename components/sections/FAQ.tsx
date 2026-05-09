@@ -11,7 +11,7 @@ export default function FAQ({ lang }: Props) {
   return (
     <section
       id="faq"
-      className="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-slate-900 dark:to-slate-800/50 transition-colors duration-300"
+      className="py-20 bg-gradient-to-b from-white/50 to-gray-50/50 dark:from-slate-900/50 dark:to-slate-800/40 backdrop-blur-[2px] transition-colors duration-300"
     >
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="text-center mb-12">
