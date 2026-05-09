@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import './src/pwa';
+import { initSmoothScroll } from './src/smoothScroll';
+
+initSmoothScroll();
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

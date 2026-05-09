@@ -27,7 +27,7 @@ The Website is owned and operated by **Greek Souvlaki** ("we", "us", "our").
 **Contact Us:**
 
 - Email: **[INSERT EMAIL]**
-  Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+  Website: https://souvlaki.pages.dev/
 - Phone: 04-812-2980
 - Address: Kafr Yasif, Route 70, Israel
 
@@ -250,7 +250,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 - البريد الإلكتروني: **[INSERT EMAIL]**
 - الهاتف: 04-812-2980
 - العنوان: كفر ياسيف، طريق 70، إسرائيل
-- الموقع: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+- الموقع: https://souvlaki.pages.dev/
 
 ---
 
@@ -352,7 +352,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 - Электронная почта: **[INSERT EMAIL]**
 - Телефон: 04-812-2980
-- Веб-сайт: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+- Веб-сайт: https://souvlaki.pages.dev/
 - Адрес: Кафр Ясиф, шоссе 70, Израиль
 
 ---
@@ -454,7 +454,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 **Επικοινωνήστε μαζί μας:**
 
 - Email: **[INSERT EMAIL]**
-  Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+  Website: https://souvlaki.pages.dev/
 - Τηλέφωνο: 04-812-2980
 - Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
 
