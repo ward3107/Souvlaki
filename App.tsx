@@ -22,6 +22,8 @@ import ShareButton from './components/ShareButton';
 import BackToTopButton from './components/BackToTopButton';
 import WhatsAppFloating from './components/WhatsAppFloating';
 import Lightbox from './components/Lightbox';
+import ParallaxStripe from './components/ParallaxStripe';
+import { tx } from './utils/i18n';
 
 // Lazy chunks
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
@@ -162,8 +164,49 @@ const App: React.FC = () => {
         <MarqueeStrip lang={lang} />
         <InstagramCTA lang={lang} />
         <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
+
+        <ParallaxStripe image="/gallery/hero-bg-1280w.webp" height="55vh">
+          <div className="text-center px-6 max-w-3xl">
+            <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
+              {tx(
+                lang,
+                'מתכונים משפחתיים. רגעים אמיתיים. מאז ומתמיד.',
+                'Family recipes. Real moments. Always.',
+                'وصفات عائلية. لحظات حقيقية. دائماً.',
+                'Семейные рецепты. Настоящие моменты. Всегда.',
+                'Οικογενιακές συνταγές. Πραγματικές στιγμές. Πάντα.'
+              )}
+            </p>
+            <div
+              className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
+              aria-hidden="true"
+            />
+          </div>
+        </ParallaxStripe>
+
         <About lang={lang} />
         <Reviews lang={lang} />
+
+        {/* Kitchen/chef parallax — swap image when a real kitchen shot exists */}
+        <ParallaxStripe image="/about/restaurant-interior.webp" height="55vh" overlay={0.5}>
+          <div className="text-center px-6 max-w-3xl">
+            <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
+              {tx(
+                lang,
+                'מהאש שלנו, אל הצלחת שלך.',
+                'From our grill to your plate.',
+                'من شوائنا إلى طبقك.',
+                'С нашего гриля — на вашу тарелку.',
+                'Από τη σχάρα μας στο πιάτο σας.'
+              )}
+            </p>
+            <div
+              className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
+              aria-hidden="true"
+            />
+          </div>
+        </ParallaxStripe>
+
         <FAQ lang={lang} />
         <Contact lang={lang} />
       </main>

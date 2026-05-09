@@ -1,15 +1,24 @@
 import { Heart, Instagram } from 'lucide-react';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
+import { MouseParallax, ParallaxLayer } from '../MouseParallax';
+import { useTilt3D } from '../hooks/useTilt3D';
 
 interface Props {
   lang: Language;
   galleryImages: string[];
 }
 
+// Each card sits at a slightly different z-depth so the parallax layer
+// translates them independently — the grid feels like a window onto a
+// shallow 3D space, not a flat wall of pictures.
+const DEPTHS = [0.25, 0.55, 0.4, 0.7, 0.5, 0.3, 0.65, 0.45];
+
 export default function InstagramGrid({ lang, galleryImages }: Props) {
+  const photos = galleryImages.slice(0, 8);
+
   return (
-    <section className="py-16 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <section className="py-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] transition-colors duration-300">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-terracotta-400 rounded-2xl mb-4 shadow-soft">
@@ -46,36 +55,18 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
           </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 max-w-5xl mx-auto">
-          {galleryImages.slice(0, 8).map((img, idx) => (
-            <a
-              key={idx}
-              href="https://www.instagram.com/greek.souvlakii"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative aspect-square rounded-xl overflow-hidden group shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            >
-              <img
-                src={img}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">
-                  <Heart className="w-5 h-5 fill-white" />
-                  <Instagram className="w-5 h-5" />
-                </div>
-              </div>
-              <div className="absolute top-2 right-2 bg-white/90 dark:bg-black/70 rounded-full p-1.5 shadow-md opacity-0 group-hover:opacity-100 transition-opacity">
-                <Instagram className="w-4 h-4 text-pink-600" />
-              </div>
-            </a>
-          ))}
-        </div>
+        {/* 3D depth wall: outer mouse-parallax, per-card tilt */}
+        <MouseParallax range={28} className="max-w-5xl mx-auto" style={{ perspective: '1200px' }}>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+            {photos.map((img, idx) => (
+              <ParallaxLayer key={idx} depth={DEPTHS[idx % DEPTHS.length]}>
+                <DepthCard img={img} />
+              </ParallaxLayer>
+            ))}
+          </div>
+        </MouseParallax>
 
-        <div className="text-center mt-8">
+        <div className="text-center mt-10">
           <a
             href="https://www.instagram.com/greek.souvlakii"
             target="_blank"
@@ -94,5 +85,45 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
         </div>
       </div>
     </section>
+  );
+}
+
+function DepthCard({ img }: { img: string }) {
+  const {
+    ref: tiltRef,
+    style: tiltOuterStyle,
+    innerStyle: tiltInnerStyle,
+    handlers: tiltHandlers,
+  } = useTilt3D<HTMLAnchorElement>({ max: 8, scale: 1.04, perspective: 800 });
+
+  return (
+    <a
+      ref={tiltRef}
+      href="https://www.instagram.com/greek.souvlakii"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={tiltOuterStyle}
+      {...tiltHandlers}
+      className="relative aspect-square rounded-xl overflow-hidden group shadow-soft hover:shadow-pop transition-shadow duration-300 block"
+    >
+      <div style={tiltInnerStyle} className="relative w-full h-full">
+        <img
+          src={img}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">
+            <Heart className="w-5 h-5 fill-white" />
+            <Instagram className="w-5 h-5" />
+          </div>
+        </div>
+        <div className="absolute top-2 right-2 bg-white/90 dark:bg-black/70 rounded-full p-1.5 shadow-soft opacity-0 group-hover:opacity-100 transition-opacity">
+          <Instagram className="w-4 h-4 text-pink-600" />
+        </div>
+      </div>
+    </a>
   );
 }
