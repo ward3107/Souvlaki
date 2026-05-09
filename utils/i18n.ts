@@ -1,8 +1,7 @@
 import { TRANSLATIONS } from '../constants';
 import { Language, type TranslationKey } from '../types';
 
-export const t = (lang: Language, key: TranslationKey): string =>
-  TRANSLATIONS[lang][key] || key;
+export const t = (lang: Language, key: TranslationKey): string => TRANSLATIONS[lang][key] || key;
 
 export const tx = (
   lang: Language,
@@ -19,5 +18,4 @@ export const tx = (
   return en;
 };
 
-export const isRtlLang = (lang: Language): boolean =>
-  lang === Language.HE || lang === Language.AR;
+export const isRtlLang = (lang: Language): boolean => lang === Language.HE || lang === Language.AR;

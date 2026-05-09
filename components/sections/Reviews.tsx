@@ -43,9 +43,7 @@ export default function Reviews({ lang }: Props) {
 
         <div className="max-w-6xl mx-auto">
           <Suspense
-            fallback={
-              <div className="py-12 text-center text-gray-400 dark:text-gray-500">…</div>
-            }
+            fallback={<div className="py-12 text-center text-gray-400 dark:text-gray-500">…</div>}
           >
             <GoogleReviews language={lang} isRtl={isRtl} />
           </Suspense>

@@ -30,10 +30,7 @@ export default function Marquee({
       className={`overflow-hidden whitespace-nowrap select-none border-y border-brand-blue-100/30 bg-brand-blue-500 text-white py-5 ${className}`}
       aria-hidden="true"
     >
-      <div
-        className="flex marquee-track"
-        style={{ animationDuration: `${durationSec}s` }}
-      >
+      <div className="flex marquee-track" style={{ animationDuration: `${durationSec}s` }}>
         {sequence}
         {sequence}
       </div>

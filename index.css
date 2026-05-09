@@ -31,9 +31,9 @@
 .dark ::-webkit-scrollbar-track {
   background: #1e293b;
 }
-html {
-  scroll-behavior: smooth;
-}
+/* No scroll-behavior here — Lenis handles smooth scroll on desktop, and
+   native scroll handles mobile (where Lenis is disabled). Setting both
+   makes anchor jumps fight each other and feels laggy. */
 
 /* Accessibility Styles */
 html.high-contrast {

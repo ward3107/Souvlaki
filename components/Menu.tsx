@@ -17,8 +17,11 @@ import {
   Trash2,
   type LucideIcon,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Language } from '../types';
 import Reveal from './Reveal';
+import { useTilt3D } from './hooks/useTilt3D';
+import IngredientFloaters from './IngredientFloaters';
 
 // ============================================================================
 // Types
@@ -39,6 +42,7 @@ interface MenuItem {
   name: LocalizedString;
   description?: LocalizedString;
   price: number; // shekels
+  image?: string; // optional dish photo (front face of 3D card)
   variants?: Variant[];
   badges?: BadgeKey[];
 }
@@ -123,6 +127,22 @@ const ADD_LABEL: LocalizedString = {
   ar: 'أضف',
   ru: 'Добавить',
   el: 'Προσθήκη',
+};
+
+const DETAILS_HINT: LocalizedString = {
+  en: 'Tap for details',
+  he: 'הקש לפרטים',
+  ar: 'اضغط للتفاصيل',
+  ru: 'Нажмите для деталей',
+  el: 'Πατήστε για λεπτομέρειες',
+};
+
+const BACK_LABEL: LocalizedString = {
+  en: 'Back',
+  he: 'חזור',
+  ar: 'رجوع',
+  ru: 'Назад',
+  el: 'Πίσω',
 };
 
 const YOUR_ORDER_LABEL: LocalizedString = {
@@ -314,6 +334,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'pita-souvlaki',
+        image: '/gallery/IMG-20251205-WA0032-400.webp',
         name: {
           en: 'Souvlaki Pita',
           he: 'פיתה סובלקי',
@@ -334,6 +355,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'pita-gf',
+        image: '/gallery/IMG-20251205-WA0033-400.webp',
         name: {
           en: 'Souvlaki Pita — Gluten-Free',
           he: 'פיתה סובלקי ללא גלוטן',
@@ -373,6 +395,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'plate-souvlaki',
+        image: '/gallery/IMG-20251205-WA0034-400.webp',
         name: {
           en: 'Souvlaki Plate',
           he: 'צלחת סובלקי',
@@ -391,6 +414,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'plate-gyros',
+        image: '/gallery/IMG-20251205-WA0035-400.webp',
         name: {
           en: 'Gyros Plate',
           he: 'צלחת גירוס',
@@ -416,6 +440,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'platter-personal',
+        image: '/gallery/IMG-20251205-WA0036-400.webp',
         name: {
           en: 'Personal Platter',
           he: 'מגש אישי',
@@ -434,6 +459,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'platter-couple',
+        image: '/gallery/IMG-20251205-WA0037-400.webp',
         name: {
           en: 'Couple Platter',
           he: 'מגש זוגי',
@@ -453,6 +479,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'platter-family',
+        image: '/gallery/IMG-20251205-WA0038-400.webp',
         name: {
           en: 'Family Platter',
           he: 'מגש משפחתי',
@@ -484,6 +511,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'pizza-small',
+        image: '/gallery/IMG-20251205-WA0039-400.webp',
         name: {
           en: 'Pizza Gyros — Small',
           he: 'פיצה גירוס קטנה',
@@ -502,6 +530,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'pizza-large',
+        image: '/gallery/IMG-20251205-WA0040-400.webp',
         name: {
           en: 'Pizza Gyros — Large',
           he: 'פיצה גירוס גדולה',
@@ -527,6 +556,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'greek-salad',
+        image: '/gallery/IMG-20251205-WA0041-400.webp',
         name: {
           en: 'Greek Salad',
           he: 'סלט יווני',
@@ -558,6 +588,7 @@ const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'fries',
+        image: '/gallery/IMG-20251205-WA0042-400.webp',
         name: {
           en: 'Greek Chips',
           he: 'צ׳יפס',
@@ -739,8 +770,7 @@ interface ResolvedLine {
   lineTotal: number;
 }
 
-const lineKey = (itemId: string, variantId?: string) =>
-  `${itemId}::${variantId ?? ''}`;
+const lineKey = (itemId: string, variantId?: string) => `${itemId}::${variantId ?? ''}`;
 
 function resolveLine(line: CartLine, lang: Lang): ResolvedLine | null {
   for (const cat of MENU_CATEGORIES) {
@@ -805,8 +835,7 @@ function Badge({ kind, lang }: { kind: BadgeKey; lang: Lang }) {
     popular:
       'bg-brand-terracotta-50 text-brand-terracotta-500 dark:bg-brand-terracotta-400/15 dark:text-brand-terracotta-200',
     gf: 'bg-brand-blue-50 text-brand-blue-500 dark:bg-brand-blue-900/30 dark:text-brand-blue-300',
-    vegan:
-      'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
+    vegan: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300',
     spicy: 'bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-300',
     new: 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300',
   };
@@ -860,6 +889,162 @@ function AddPill({ lang, onAdd }: { lang: Lang; onAdd: () => void }) {
       <Plus className="w-3.5 h-3.5" aria-hidden="true" />
       <span>{ADD_LABEL[lang]}</span>
     </button>
+  );
+}
+
+function MenuCard({
+  item,
+  lang,
+  onAdd,
+}: {
+  item: MenuItem;
+  lang: Lang;
+  onAdd: (itemId: string, variantId?: string) => void;
+}) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const {
+    ref: tiltRef,
+    style: tiltOuterStyle,
+    innerStyle: tiltInnerStyle,
+    handlers: tiltHandlers,
+  } = useTilt3D<HTMLDivElement>({ max: 6, scale: 1.02, perspective: 1400 });
+  const name = getLocalized(item.name, lang);
+  const desc = getLocalized(item.description, lang);
+  const hasVariants = !!item.variants?.length;
+
+  const flipBack = () => setIsFlipped(false);
+  const handleAdd = (variantId?: string) => onAdd(item.id, variantId);
+
+  return (
+    <div ref={tiltRef} style={tiltOuterStyle} {...tiltHandlers} className="aspect-[4/5]">
+      <div style={tiltInnerStyle} className="relative w-full h-full">
+        <motion.div
+          className="relative w-full h-full"
+          animate={{ rotateY: isFlipped ? 180 : 0 }}
+          transition={{ type: 'spring', stiffness: 90, damping: 18 }}
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          {/* FRONT */}
+          <button
+            type="button"
+            onClick={() => setIsFlipped(true)}
+            aria-label={`${name} — ${getLocalized(DETAILS_HINT, lang)}`}
+            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 shadow-soft hover:shadow-pop overflow-hidden text-start transition-shadow group"
+            style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' as const }}
+          >
+            <div className="relative h-3/5 overflow-hidden bg-brand-cream-200 dark:bg-slate-700">
+              {item.image ? (
+                <img
+                  src={item.image}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <Sandwich
+                    className="w-16 h-16 text-brand-blue-200 dark:text-slate-500"
+                    aria-hidden="true"
+                  />
+                </div>
+              )}
+              <div className="absolute top-2 end-2 flex flex-col items-end gap-1">
+                {item.badges?.map((b) => (
+                  <Badge key={b} kind={b} lang={lang} />
+                ))}
+              </div>
+              <div className="absolute bottom-2 end-2">
+                <span className="bg-brand-terracotta-400 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-soft whitespace-nowrap">
+                  {hasVariants
+                    ? `${getLocalized(FROM_LABEL, lang)} ${formatPrice(item.price)}`
+                    : formatPrice(item.price)}
+                </span>
+              </div>
+            </div>
+            <div className="p-4 h-2/5 flex flex-col justify-between">
+              <h4 className="font-display text-lg md:text-xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
+                {name}
+              </h4>
+              <div className="text-[11px] text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">
+                <ChevronRight className="w-3 h-3 rtl:rotate-180" aria-hidden="true" />
+                {getLocalized(DETAILS_HINT, lang)}
+              </div>
+            </div>
+          </button>
+
+          {/* BACK */}
+          <div
+            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 shadow-pop p-5 flex flex-col"
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden' as const,
+              transform: 'rotateY(180deg)',
+            }}
+          >
+            <button
+              type="button"
+              onClick={flipBack}
+              className="self-start mb-2 inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-brand-blue-500 transition-colors"
+              aria-label={getLocalized(BACK_LABEL, lang)}
+            >
+              <ChevronRight className="w-3 h-3 rotate-180 rtl:rotate-0" aria-hidden="true" />
+              <span>{getLocalized(BACK_LABEL, lang)}</span>
+            </button>
+
+            <div className="flex items-baseline justify-between gap-2 mb-2">
+              <h4 className="font-display text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
+                {name}
+              </h4>
+              <span className="font-display text-lg font-semibold text-brand-blue-500 whitespace-nowrap">
+                {formatPrice(item.price)}
+              </span>
+            </div>
+
+            {desc && (
+              <p className="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed mb-3 line-clamp-5">
+                {desc}
+              </p>
+            )}
+
+            <div className="mt-auto">
+              {hasVariants ? (
+                <>
+                  <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">
+                    {getLocalized(CHOOSE_HINT, lang)}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {item.variants!.map((v) => (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => handleAdd(v.id)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-xs hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors"
+                      >
+                        <Plus className="w-3 h-3" aria-hidden="true" />
+                        <span>{v.label[lang]}</span>
+                        {v.extra ? (
+                          <span className="text-[10px] opacity-70">+{v.extra}</span>
+                        ) : null}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => handleAdd()}
+                  className="w-full inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all"
+                >
+                  <Plus className="w-4 h-4" aria-hidden="true" />
+                  <span>{getLocalized(ADD_LABEL, lang)}</span>
+                </button>
+              )}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </div>
   );
 }
 
@@ -1159,20 +1344,15 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const active = MENU_CATEGORIES.find((c) => c.id === activeId) ?? MENU_CATEGORIES[0];
 
   const resolvedLines = useMemo(
-    () =>
-      cart
-        .map((l) => resolveLine(l, lang))
-        .filter((l): l is ResolvedLine => l !== null),
-    [cart, lang],
+    () => cart.map((l) => resolveLine(l, lang)).filter((l): l is ResolvedLine => l !== null),
+    [cart, lang]
   );
   const itemCount = resolvedLines.reduce((sum, l) => sum + l.qty, 0);
   const cartTotal = resolvedLines.reduce((sum, l) => sum + l.lineTotal, 0);
 
   const handleAdd = (itemId: string, variantId?: string) => {
     setCart((prev) => {
-      const idx = prev.findIndex(
-        (l) => l.itemId === itemId && l.variantId === variantId,
-      );
+      const idx = prev.findIndex((l) => l.itemId === itemId && l.variantId === variantId);
       if (idx >= 0) {
         const next = [...prev];
         next[idx] = { ...next[idx], qty: next[idx].qty + 1 };
@@ -1185,19 +1365,13 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const adjustQty = (key: string, delta: number) => {
     setCart((prev) =>
       prev
-        .map((l) =>
-          lineKey(l.itemId, l.variantId) === key
-            ? { ...l, qty: l.qty + delta }
-            : l,
-        )
-        .filter((l) => l.qty > 0),
+        .map((l) => (lineKey(l.itemId, l.variantId) === key ? { ...l, qty: l.qty + delta } : l))
+        .filter((l) => l.qty > 0)
     );
   };
 
   const removeLine = (key: string) => {
-    setCart((prev) =>
-      prev.filter((l) => lineKey(l.itemId, l.variantId) !== key),
-    );
+    setCart((prev) => prev.filter((l) => lineKey(l.itemId, l.variantId) !== key));
   };
 
   const clearCart = () => {
@@ -1236,10 +1410,11 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   return (
     <section
       id={id}
-      className="py-20 px-4 bg-brand-cream-100 dark:bg-slate-900"
+      className="relative py-20 px-4 bg-brand-cream-100 dark:bg-slate-900 overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
-      <div className="max-w-4xl mx-auto">
+      <IngredientFloaters />
+      <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <Reveal>
           <div className="text-center mb-10">
@@ -1283,17 +1458,21 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
           </div>
         </div>
 
-        {/* Items list */}
-        <Reveal>
-          <div className="bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-gray-200/60 dark:border-slate-700/60 px-6 md:px-8 py-2 mt-6 pb-24">
-            {active.items.map((item) => (
-              <MenuRow key={item.id} item={item} lang={lang} onAdd={handleAdd} />
+        {/* Items grid — 3D flip cards */}
+        <div className="mt-6 pb-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+            {active.items.map((item, idx) => (
+              <Reveal key={`${active.id}-${item.id}`} delay={idx * 0.05} y={20}>
+                <MenuCard item={item} lang={lang} onAdd={handleAdd} />
+              </Reveal>
             ))}
-            {active.addons && active.addons.length > 0 && (
-              <AddOnsList addons={active.addons} lang={lang} />
-            )}
           </div>
-        </Reveal>
+          {active.addons && active.addons.length > 0 && (
+            <div className="mt-6 bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-gray-200/60 dark:border-slate-700/60 px-6 md:px-8 py-2">
+              <AddOnsList addons={active.addons} lang={lang} />
+            </div>
+          )}
+        </div>
       </div>
 
       {itemCount > 0 && !cartOpen && (

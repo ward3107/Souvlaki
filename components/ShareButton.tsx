@@ -10,7 +10,14 @@ const QRCodeIcon: React.FC<{
   includeMargin?: boolean;
   bgColor?: string;
   fgColor?: string;
-}> = ({ value, size = 180, id, includeMargin = true, bgColor = '#FFFFFF', fgColor = '#0B5FA5' }) => {
+}> = ({
+  value,
+  size = 180,
+  id,
+  includeMargin = true,
+  bgColor = '#FFFFFF',
+  fgColor = '#0B5FA5',
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -77,7 +84,16 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(shareUrl);
-    alert(tx(lang, 'הקישור הועתק!', 'Link copied!', 'تم نسخ الرابط!', 'Ссылка скопирована!', 'Ο σύνδεσμος αντιγράφηκε!'));
+    alert(
+      tx(
+        lang,
+        'הקישור הועתק!',
+        'Link copied!',
+        'تم نسخ الرابط!',
+        'Ссылка скопирована!',
+        'Ο σύνδεσμος αντιγράφηκε!'
+      )
+    );
     setShowShareModal(false);
   };
 
@@ -137,8 +153,18 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
             tabIndex={-1}
           >
             <div className="flex justify-between items-center mb-6">
-              <h3 id="share-modal-title" className="font-display text-xl font-semibold text-gray-900 dark:text-white">
-                {tx(lang, 'שתף את האתר', 'Share the Website', 'شارك الموقع', 'Поделиться сайтом', 'Μοιραστείτε τον ιστότοπο')}
+              <h3
+                id="share-modal-title"
+                className="font-display text-xl font-semibold text-gray-900 dark:text-white"
+              >
+                {tx(
+                  lang,
+                  'שתף את האתר',
+                  'Share the Website',
+                  'شارك الموقع',
+                  'Поделиться сайтом',
+                  'Μοιραστείτε τον ιστότοπο'
+                )}
               </h3>
               <button
                 onClick={() => setShowShareModal(false)}
@@ -159,7 +185,14 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
                 fgColor="#0B5FA5"
               />
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
-                {tx(lang, 'סרקו את הקוד להורדה או להדפיסה', 'Scan to download or print', 'امسح الكود للتنزيل أو الطباعة', 'Сканируйте для скачивания или печати', 'Σαρώστε για λήψη ή εκτύπωση')}
+                {tx(
+                  lang,
+                  'סרקו את הקוד להורדה או להדפיסה',
+                  'Scan to download or print',
+                  'امسح الكود للتنزيل أو الطباعة',
+                  'Сканируйте для скачивания или печати',
+                  'Σαρώστε για λήψη ή εκτύπωση'
+                )}
               </p>
               <button
                 onClick={handleDownloadQR}

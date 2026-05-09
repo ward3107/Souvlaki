@@ -6,14 +6,19 @@ export function initSmoothScroll() {
   if (typeof window === 'undefined') return;
   if (lenis) return lenis;
 
+  // Respect reduced-motion AND skip on touch devices — native scroll on
+  // phones/tablets is already buttery and Lenis just fights it.
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return null;
+  const isTouch = matchMedia('(pointer: coarse)').matches || !matchMedia('(hover: hover)').matches;
+  if (reduce || isTouch) return null;
 
   lenis = new Lenis({
-    duration: 1.1,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    // Snappier feel: lerp-driven (constant catch-up) instead of duration-based,
+    // gives a clean "tracks the wheel" response on desktop trackpads + mice.
+    lerp: 0.12,
+    wheelMultiplier: 1.1,
     smoothWheel: true,
-    touchMultiplier: 1,
+    syncTouch: false,
   });
 
   function raf(time: number) {

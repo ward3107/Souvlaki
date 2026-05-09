@@ -76,12 +76,6 @@ jobs:
           name: coverage-report
           path: coverage/
 
-      - name: Coverage Summary
-        uses: icortex/action-coverage@v1
-        with:
-          coverage-path: coverage/lcov.info
-          fail-on-coverage-decrease: false
-
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest

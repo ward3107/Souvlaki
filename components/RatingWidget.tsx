@@ -68,7 +68,8 @@ const T: Record<string, Record<string, string>> = {
     low_placeholder: 'Расскажите, что случилось (по желанию)…',
     send: 'Отправить',
     high_title: 'Очень рады!',
-    high_sub: 'Если вам понравилось, поделитесь отзывом на Google — это займёт минуту и очень нам поможет.',
+    high_sub:
+      'Если вам понравилось, поделитесь отзывом на Google — это займёт минуту и очень нам поможет.',
     high_cta: 'Оставить отзыв на Google',
     done_title: 'Спасибо!',
     done_sub: 'Ваш отзыв получен.',
@@ -120,10 +121,34 @@ const T: Record<string, Record<string, string>> = {
 const tt = (lang: string, key: keyof typeof T.en) => (T[lang] ?? T.en)[key] ?? T.en[key];
 
 const FACES = [
-  { score: 1, Icon: Frown, color: 'text-rose-500', bg: 'hover:bg-rose-50 dark:hover:bg-rose-900/20', labelKey: 'e1' as const },
-  { score: 2, Icon: Meh, color: 'text-amber-500', bg: 'hover:bg-amber-50 dark:hover:bg-amber-900/20', labelKey: 'e2' as const },
-  { score: 3, Icon: Smile, color: 'text-lime-500', bg: 'hover:bg-lime-50 dark:hover:bg-lime-900/20', labelKey: 'e3' as const },
-  { score: 4, Icon: Heart, color: 'text-emerald-500', bg: 'hover:bg-emerald-50 dark:hover:bg-emerald-900/20', labelKey: 'e4' as const },
+  {
+    score: 1,
+    Icon: Frown,
+    color: 'text-rose-500',
+    bg: 'hover:bg-rose-50 dark:hover:bg-rose-900/20',
+    labelKey: 'e1' as const,
+  },
+  {
+    score: 2,
+    Icon: Meh,
+    color: 'text-amber-500',
+    bg: 'hover:bg-amber-50 dark:hover:bg-amber-900/20',
+    labelKey: 'e2' as const,
+  },
+  {
+    score: 3,
+    Icon: Smile,
+    color: 'text-lime-500',
+    bg: 'hover:bg-lime-50 dark:hover:bg-lime-900/20',
+    labelKey: 'e3' as const,
+  },
+  {
+    score: 4,
+    Icon: Heart,
+    color: 'text-emerald-500',
+    bg: 'hover:bg-emerald-50 dark:hover:bg-emerald-900/20',
+    labelKey: 'e4' as const,
+  },
 ];
 
 export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
@@ -131,18 +156,28 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
   const [step, setStep] = useState<Step>('select');
   const [score, setScore] = useState<number | null>(null);
   const [comment, setComment] = useState('');
-  const [hidden, setHidden] = useState(false);
+  // Lazy initial state — read localStorage once at mount instead of in an
+  // effect, so we don't cascade-render on first paint.
+  const [hidden, setHidden] = useState<boolean>(() => {
+    try {
+      return !!localStorage.getItem(STORAGE_KEY);
+    } catch {
+      return false;
+    }
+  });
   const panelRef = useRef<HTMLDivElement>(null);
   const fabRef = useRef<HTMLButtonElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  useEffect(() => {
-    try {
-      if (localStorage.getItem(STORAGE_KEY)) setHidden(true);
-    } catch {
-      // ignore storage errors
-    }
-  }, []);
+  const closePanel = () => {
+    setOpen(false);
+    setTimeout(() => {
+      setStep('select');
+      setScore(null);
+      setComment('');
+    }, 200);
+    fabRef.current?.focus();
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -158,16 +193,6 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
       requestAnimationFrame(() => textareaRef.current?.focus());
     }
   }, [open, step]);
-
-  const closePanel = () => {
-    setOpen(false);
-    setTimeout(() => {
-      setStep('select');
-      setScore(null);
-      setComment('');
-    }, 200);
-    fabRef.current?.focus();
-  };
 
   const markSubmitted = () => {
     try {
@@ -340,8 +365,16 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
                     className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold bg-brand-blue-500 hover:bg-brand-blue-600 text-white shadow-soft hover:shadow-lift transition-all"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
-                      <path fill="#FFFFFF" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" opacity="0.95"/>
-                      <path fill="#FFFFFF" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" opacity="0.9"/>
+                      <path
+                        fill="#FFFFFF"
+                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                        opacity="0.95"
+                      />
+                      <path
+                        fill="#FFFFFF"
+                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                        opacity="0.9"
+                      />
                     </svg>
                     {tt(language, 'high_cta')}
                   </button>
