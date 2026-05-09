@@ -320,11 +320,18 @@ export default function GoogleReviews({ language, isRtl }: GoogleReviewsProps) {
       </Reveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {reviews.map((r, i) => (
-          <Reveal key={r.name ?? i} delay={i * 0.05} y={20}>
-            <ReviewCard review={r} />
-          </Reveal>
-        ))}
+        {reviews.map((r, i) => {
+          const isLeft = i < reviews.length / 2;
+          const isMiddle = reviews.length % 2 === 1 && i === Math.floor(reviews.length / 2);
+          let x = isLeft ? -60 : 60;
+          if (isMiddle) x = 0;
+          if (isRtl) x = -x;
+          return (
+            <Reveal key={r.name ?? i} y={isMiddle ? 20 : 0} x={x}>
+              <ReviewCard review={r} />
+            </Reveal>
+          );
+        })}
       </div>
 
       <Reveal>
