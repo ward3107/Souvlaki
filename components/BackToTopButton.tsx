@@ -1,0 +1,26 @@
+import { useEffect, useState } from 'react';
+import { ArrowUp } from 'lucide-react';
+import { scrollToTop } from '../utils/scroll';
+
+export default function BackToTopButton() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 300);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <button
+      onClick={scrollToTop}
+      className="fixed bottom-44 right-6 rtl:right-auto rtl:left-6 z-40 w-12 h-12 bg-white text-black rounded-full shadow-lift flex items-center justify-center transition-all transform hover:-translate-y-1 mix-blend-difference hover:scale-110"
+      aria-label="Back to Top"
+    >
+      <ArrowUp className="w-6 h-6" />
+    </button>
+  );
+}
