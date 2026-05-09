@@ -154,7 +154,7 @@ For privacy-related questions, contact:
 
 **Greek Souvlaki**
 Email: **[INSERT EMAIL]**
-Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+Website: https://souvlaki.pages.dev/
 Phone: 04-812-2980
 Address: Kafr Yasif, Route 70, Israel
 
@@ -360,7 +360,7 @@ Address: Kafr Yasif, Route 70, Israel
 **Greek Souvlaki**
 אימייל: **[INSERT EMAIL]**
 
-- אתר: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+- אתר: https://souvlaki.pages.dev/
   טלפון: 04-812-2980
   כתובת: כפר יאסיף, כביש 70, ישראל
 
@@ -506,7 +506,7 @@ Address: Kafr Yasif, Route 70, Israel
 الهاتف: 04-812-2980
 العنوان: كفر ياسيف، طريق 70، إسرائيل
 
-- الموقع: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+- الموقع: https://souvlaki.pages.dev/
 
 ---
 
@@ -763,6 +763,6 @@ Address: Kafr Yasif, Route 70, Israel
 
 **Greek Souvlaki**
 Email: **[INSERT EMAIL]**
-Website: https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/
+Website: https://souvlaki.pages.dev/
 Τηλέφωνο: 04-812-2980
 Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
