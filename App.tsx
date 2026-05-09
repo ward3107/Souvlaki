@@ -165,7 +165,11 @@ const App: React.FC = () => {
         <InstagramCTA lang={lang} />
         <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
 
-        <ParallaxStripe image="/gallery/hero-bg-1280w.webp" height="55vh">
+        <ParallaxStripe
+          image="/video/family-recipes-poster.jpg"
+          video="/video/family-recipes.mp4"
+          height="55vh"
+        >
           <div className="text-center px-6 max-w-3xl">
             <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
               {tx(
@@ -187,8 +191,12 @@ const App: React.FC = () => {
         <About lang={lang} />
         <Reviews lang={lang} />
 
-        {/* Kitchen/chef parallax — swap image when a real kitchen shot exists */}
-        <ParallaxStripe image="/about/restaurant-interior.webp" height="55vh" overlay={0.5}>
+        <ParallaxStripe
+          image="/video/grill-poster.jpg"
+          video="/video/grill.mp4"
+          height="55vh"
+          overlay={0.5}
+        >
           <div className="text-center px-6 max-w-3xl">
             <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
               {tx(
