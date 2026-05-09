@@ -32,10 +32,12 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
     const handleKey = (e: KeyboardEvent) => {
       switch (e.key) {
         case 'ArrowLeft':
-          isRtl ? next() : prev();
+          if (isRtl) next();
+          else prev();
           break;
         case 'ArrowRight':
-          isRtl ? prev() : next();
+          if (isRtl) prev();
+          else next();
           break;
         case 'Escape':
           onClose();
@@ -60,9 +62,11 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
     if (distance > SWIPE_THRESHOLD) {
-      isRtl ? prev() : next();
+      if (isRtl) prev();
+      else next();
     } else if (distance < -SWIPE_THRESHOLD) {
-      isRtl ? next() : prev();
+      if (isRtl) next();
+      else prev();
     }
   };
 

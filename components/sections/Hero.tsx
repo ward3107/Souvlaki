@@ -15,10 +15,7 @@ export default function Hero({ lang }: HeroProps) {
       range={20}
       className="relative h-[90vh] flex items-center justify-center overflow-hidden"
     >
-      <section
-        id="home"
-        className="absolute inset-0 flex items-center justify-center"
-      >
+      <section id="home" className="absolute inset-0 flex items-center justify-center">
         <ParallaxLayer depth={0.08} className="absolute inset-0 z-0">
           <div
             className="absolute -inset-4 bg-center bg-cover md:bg-fixed"
@@ -27,10 +24,7 @@ export default function Hero({ lang }: HeroProps) {
           <div className="absolute inset-0 bg-gray-900/60" />
         </ParallaxLayer>
 
-        <ParallaxLayer
-          depth={0.5}
-          className="relative z-10 text-center px-4 max-w-4xl mx-auto"
-        >
+        <ParallaxLayer depth={0.5} className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-lift hover:bg-white/20 transition-all cursor-default">
             <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
             <div className="flex gap-0.5 text-yellow-400">

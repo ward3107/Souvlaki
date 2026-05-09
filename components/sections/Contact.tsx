@@ -31,7 +31,8 @@ export default function Contact({ lang }: Props) {
           <div className="space-y-8">
             <div className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-soft border border-gray-100 dark:border-slate-700">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                📞 {tx(lang, 'צור קשר', 'Contact Us', 'اتصل بنا', 'Свяжитесь с нами', 'Επικοινωνήστε')}
+                📞{' '}
+                {tx(lang, 'צור קשר', 'Contact Us', 'اتصل بنا', 'Свяжитесь с нами', 'Επικοινωνήστε')}
               </h3>
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
                 {tx(
@@ -53,7 +54,9 @@ export default function Contact({ lang }: Props) {
                     <Phone className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
-                    <div className="font-bold text-gray-900 dark:text-white text-lg">04-812-2980</div>
+                    <div className="font-bold text-gray-900 dark:text-white text-lg">
+                      04-812-2980
+                    </div>
                     <div className="text-brand-blue-500 dark:text-brand-blue-300 text-sm font-medium">
                       {tx(
                         lang,
@@ -126,7 +129,14 @@ export default function Contact({ lang }: Props) {
                   </div>
                   <div className="flex-1">
                     <div className="font-bold text-gray-900 dark:text-white text-lg">
-                      {tx(lang, 'ניווט Waze', 'Waze Navigation', 'تنقل Waze', 'Навигация Waze', 'Πλοήγηση Waze')}
+                      {tx(
+                        lang,
+                        'ניווט Waze',
+                        'Waze Navigation',
+                        'تنقل Waze',
+                        'Навигация Waze',
+                        'Πλοήγηση Waze'
+                      )}
                     </div>
                     <div className="text-brand-terracotta-500 dark:text-brand-terracotta-200 text-sm font-medium">
                       {tx(

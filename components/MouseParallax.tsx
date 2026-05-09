@@ -1,11 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from 'framer-motion';
 import type { ReactNode, CSSProperties } from 'react';
 
 interface ParallaxValues {

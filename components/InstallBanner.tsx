@@ -38,14 +38,17 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
 
   if (!showBanner) return null;
 
-  const installText: Record<Language, {
-    title: string;
-    message: string;
-    install: string;
-    dismiss: string;
-    ios: string;
-    android: string;
-  }> = {
+  const installText: Record<
+    Language,
+    {
+      title: string;
+      message: string;
+      install: string;
+      dismiss: string;
+      ios: string;
+      android: string;
+    }
+  > = {
     [Language.HE]: {
       title: 'התקן את האפליקציה שלנו',
       message: 'קבל גישה מהירה ישירות ממסך הבית שלך!',

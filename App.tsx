@@ -94,12 +94,11 @@ const App: React.FC = () => {
     document.documentElement.lang = lang;
   }, [lang, isRtl]);
 
-  // BFCache restoration → scroll to top
+  // BFCache restoration → jump to top instantly (smooth on bfcache restore
+  // is jarring because you didn't ask for it).
   useEffect(() => {
     const handlePageShow = (event: PageTransitionEvent) => {
-      if (event.persisted) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
+      if (event.persisted) window.scrollTo(0, 0);
     };
     window.addEventListener('pageshow', handlePageShow);
     return () => window.removeEventListener('pageshow', handlePageShow);
@@ -134,10 +133,7 @@ const App: React.FC = () => {
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
       const baseUrl = 'https://souvlaki.pages.dev/';
-      canonical.setAttribute(
-        'href',
-        lang === Language.EN ? baseUrl : `${baseUrl}?lang=${lang}`
-      );
+      canonical.setAttribute('href', lang === Language.EN ? baseUrl : `${baseUrl}?lang=${lang}`);
     }
   }, [lang]);
 
@@ -153,8 +149,7 @@ const App: React.FC = () => {
       setLegalDocument(customEvent.detail);
     };
     window.addEventListener('openLegalDocument', handler as EventListener);
-    return () =>
-      window.removeEventListener('openLegalDocument', handler as EventListener);
+    return () => window.removeEventListener('openLegalDocument', handler as EventListener);
   }, []);
 
   return (

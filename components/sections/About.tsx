@@ -8,10 +8,7 @@ interface Props {
 
 export default function About({ lang }: Props) {
   return (
-    <section
-      id="about"
-      className="py-20 bg-white dark:bg-slate-900 transition-colors duration-300"
-    >
+    <section id="about" className="py-20 bg-white dark:bg-slate-900 transition-colors duration-300">
       <div className="container mx-auto px-4">
         <Reveal>
           <div className="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
