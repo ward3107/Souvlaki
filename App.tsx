@@ -160,63 +160,67 @@ const App: React.FC = () => {
 
       <main id="main-content" role="main">
         <Hero lang={lang} />
-        <Menu language={lang} />
-        <MarqueeStrip lang={lang} />
-        <InstagramCTA lang={lang} />
-        <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
+        {/* Solid-bg layer covers the pinned Hero so translucent sections
+            below render against the page bg, not the hero video. */}
+        <div className="relative z-10 bg-slate-50 dark:bg-slate-900">
+          <Menu language={lang} />
+          <MarqueeStrip lang={lang} />
+          <InstagramCTA lang={lang} />
+          <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
 
-        <ParallaxStripe
-          image="/video/family-recipes-poster.jpg"
-          video="/video/family-recipes.mp4"
-          height="55vh"
-        >
-          <div className="text-center px-6 max-w-3xl">
-            <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
-              {tx(
-                lang,
-                'מתכונים משפחתיים. רגעים אמיתיים. מאז ומתמיד.',
-                'Family recipes. Real moments. Always.',
-                'وصفات عائلية. لحظات حقيقية. دائماً.',
-                'Семейные рецепты. Настоящие моменты. Всегда.',
-                'Οικογενιακές συνταγές. Πραγματικές στιγμές. Πάντα.'
-              )}
-            </p>
-            <div
-              className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
-              aria-hidden="true"
-            />
-          </div>
-        </ParallaxStripe>
+          <ParallaxStripe
+            image="/video/family-recipes-poster.jpg"
+            video="/video/family-recipes.mp4"
+            height="55vh"
+          >
+            <div className="text-center px-6 max-w-3xl">
+              <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
+                {tx(
+                  lang,
+                  'מתכונים משפחתיים. רגעים אמיתיים. מאז ומתמיד.',
+                  'Family recipes. Real moments. Always.',
+                  'وصفات عائلية. لحظات حقيقية. دائماً.',
+                  'Семейные рецепты. Настоящие моменты. Всегда.',
+                  'Οικογενιακές συνταγές. Πραγματικές στιγμές. Πάντα.'
+                )}
+              </p>
+              <div
+                className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
+                aria-hidden="true"
+              />
+            </div>
+          </ParallaxStripe>
 
-        <About lang={lang} />
-        <Reviews lang={lang} />
+          <About lang={lang} />
+          <Reviews lang={lang} />
 
-        <ParallaxStripe
-          image="/video/grill-poster.jpg"
-          video="/video/grill.mp4"
-          height="55vh"
-          overlay={0.5}
-        >
-          <div className="text-center px-6 max-w-3xl">
-            <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
-              {tx(
-                lang,
-                'מהאש שלנו, אל הצלחת שלך.',
-                'From our grill to your plate.',
-                'من شوائنا إلى طبقك.',
-                'С нашего гриля — на вашу тарелку.',
-                'Από τη σχάρα μας στο πιάτο σας.'
-              )}
-            </p>
-            <div
-              className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
-              aria-hidden="true"
-            />
-          </div>
-        </ParallaxStripe>
+          <ParallaxStripe
+            image="/video/grill-poster.jpg"
+            video="/video/grill.mp4"
+            height="55vh"
+            overlay={0.5}
+          >
+            <div className="text-center px-6 max-w-3xl">
+              <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
+                {tx(
+                  lang,
+                  'מהאש שלנו, אל הצלחת שלך.',
+                  'From our grill to your plate.',
+                  'من شوائنا إلى طبقك.',
+                  'С нашего гриля — на вашу тарелку.',
+                  'Από τη σχάρα μας στο πιάτο σας.'
+                )}
+              </p>
+              <div
+                className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
+                aria-hidden="true"
+              />
+            </div>
+          </ParallaxStripe>
 
-        <FAQ lang={lang} />
-        <Contact lang={lang} />
+          <FAQ lang={lang} />
+          <Contact lang={lang} />
+        </div>
       </main>
 
       <Footer lang={lang} onOpenLegal={setLegalDocument} />
