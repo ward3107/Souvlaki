@@ -359,21 +359,21 @@
         font-size-adjust: 0.5;
         /* Allow natural touch scrolling on mobile */
         touch-action: auto;
-        /* Prevent horizontal scroll only */
-        overflow-x: hidden;
+        /* clip (not hidden) — hidden silently kills position:sticky descendants */
+        overflow-x: clip;
         position: relative;
         -webkit-overflow-scrolling: touch;
       }
       html {
         /* Allow natural scrolling */
-        overflow-x: hidden;
+        overflow-x: clip;
         -webkit-overflow-scrolling: touch;
       }
       #root {
         min-height: 100vh;
         /* Ensure root doesn't move */
         position: relative;
-        overflow-x: hidden;
+        overflow-x: clip;
       }
       /* Loading indicator */
       #reading-guide {
