@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { ChevronDown, Star } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
@@ -9,6 +10,27 @@ interface HeroProps {
   lang: Language;
 }
 
+const EMBERS: Array<{
+  left: string;
+  size: number;
+  delay: string;
+  duration: string;
+  drift: string;
+}> = [
+  { left: '4%', size: 4, delay: '0s', duration: '15s', drift: '40px' },
+  { left: '11%', size: 6, delay: '3s', duration: '12s', drift: '-25px' },
+  { left: '18%', size: 3, delay: '6s', duration: '17s', drift: '60px' },
+  { left: '24%', size: 5, delay: '1.5s', duration: '13s', drift: '-50px' },
+  { left: '32%', size: 4, delay: '8s', duration: '16s', drift: '30px' },
+  { left: '41%', size: 7, delay: '4s', duration: '11s', drift: '-35px' },
+  { left: '49%', size: 3, delay: '10s', duration: '18s', drift: '50px' },
+  { left: '57%', size: 5, delay: '2.5s', duration: '14s', drift: '-20px' },
+  { left: '65%', size: 4, delay: '7s', duration: '15s', drift: '45px' },
+  { left: '73%', size: 6, delay: '5s', duration: '12s', drift: '-40px' },
+  { left: '82%', size: 3, delay: '9s', duration: '17s', drift: '25px' },
+  { left: '91%', size: 5, delay: '1s', duration: '13s', drift: '-55px' },
+];
+
 export default function Hero({ lang }: HeroProps) {
   return (
     <MouseParallax
@@ -16,12 +38,61 @@ export default function Hero({ lang }: HeroProps) {
       className="relative h-[90vh] flex items-center justify-center overflow-hidden"
     >
       <section id="home" className="absolute inset-0 flex items-center justify-center">
-        <ParallaxLayer depth={0.08} className="absolute inset-0 z-0">
+        <video
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          src="/gallery/hero-bg.mp4"
+          poster="/gallery/hero-bg.webp"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
+        <ParallaxLayer depth={0.6} className="absolute inset-0 z-0 pointer-events-none">
           <div
-            className="absolute -inset-4 bg-center bg-cover md:bg-fixed"
-            style={{ backgroundImage: 'url(/gallery/hero-bg.webp)' }}
+            className="absolute -inset-[10%] hero-fog pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(ellipse at 30% 40%, rgba(255,255,255,0.22), transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(11,95,165,0.20), transparent 55%)',
+              mixBlendMode: 'screen',
+              filter: 'blur(40px)',
+            }}
           />
-          <div className="absolute inset-0 bg-gray-900/60" />
+          <div
+            className="absolute -inset-[15%] hero-spotlight pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(ellipse 50% 40% at 50% 30%, rgba(255,210,140,0.45), rgba(255,180,90,0.15) 40%, transparent 70%)',
+              mixBlendMode: 'screen',
+              filter: 'blur(30px)',
+            }}
+          />
+          <div className="absolute inset-0 bg-gray-900/55" />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.55) 100%)',
+            }}
+          />
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {EMBERS.map((e, i) => (
+              <span
+                key={i}
+                className="hero-ember"
+                style={
+                  {
+                    left: e.left,
+                    '--ember-size': `${e.size}px`,
+                    '--ember-delay': e.delay,
+                    '--ember-duration': e.duration,
+                    '--ember-drift': e.drift,
+                  } as CSSProperties
+                }
+              />
+            ))}
+          </div>
         </ParallaxLayer>
 
         <ParallaxLayer depth={0.5} className="relative z-10 text-center px-4 max-w-4xl mx-auto">

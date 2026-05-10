@@ -43,9 +43,9 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm border-b border-gray-100 dark:border-slate-800 shadow-sm transition-colors duration-300">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-20 grid grid-cols-3 items-center">
         <button
-          className="flex items-center gap-2 bg-transparent border-0 p-0 cursor-pointer hover:opacity-80 transition-opacity"
+          className="justify-self-start flex items-center gap-2 bg-transparent border-0 p-0 cursor-pointer hover:opacity-80 transition-opacity"
           onClick={() => handleNav('home')}
           aria-label="Go to home"
         >
@@ -59,19 +59,19 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
           </span>
         </button>
 
-        <nav className="hidden md:flex items-center gap-6 rtl:space-x-reverse">
+        <nav className="hidden md:flex justify-self-center items-center gap-1 rtl:space-x-reverse">
           {NAV_LINKS.map((link) => (
             <button
               key={link.id}
               onClick={() => handleNav(link.id)}
-              className="text-gray-600 dark:text-gray-300 hover:text-brand-blue-500 dark:hover:text-brand-blue-300 font-medium transition-colors"
+              className="nav-3d text-gray-600 dark:text-gray-300 hover:text-brand-blue-500 dark:hover:text-brand-blue-300 font-medium"
             >
               {t(lang, link.labelKey)}
             </button>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="justify-self-end flex items-center gap-3">
           <div className="relative" ref={langDropdownRef}>
             <button
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
