@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from 'framer-motion';
 import { Heart, Instagram } from 'lucide-react';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
@@ -16,11 +17,18 @@ const DEPTHS = [0.25, 0.55, 0.4, 0.7, 0.5, 0.3, 0.65, 0.45];
 
 export default function InstagramGrid({ lang, galleryImages }: Props) {
   const photos = galleryImages.slice(0, 8);
+  const reduced = useReducedMotion();
 
   return (
     <section className="py-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] transition-colors duration-300">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
+        <motion.div
+          className="text-center mb-12"
+          initial={reduced ? false : { opacity: 0, scale: 0.85, y: 30, filter: 'blur(8px)' }}
+          whileInView={reduced ? undefined : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, margin: '-10%' }}
+          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
+        >
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-terracotta-400 rounded-2xl mb-4 shadow-soft">
             <Instagram className="w-8 h-8 text-white" />
           </div>
@@ -53,14 +61,29 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
             <Instagram className="w-5 h-5" />
             <span>@greek.souvlakii</span>
           </a>
-        </div>
+        </motion.div>
 
         {/* 3D depth wall: outer mouse-parallax, per-card tilt */}
         <MouseParallax range={28} className="max-w-5xl mx-auto" style={{ perspective: '1200px' }}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
             {photos.map((img, idx) => (
               <ParallaxLayer key={idx} depth={DEPTHS[idx % DEPTHS.length]}>
-                <DepthCard img={img} />
+                <motion.div
+                  initial={
+                    reduced ? false : { opacity: 0, scale: 0.7, y: 60, filter: 'blur(10px)' }
+                  }
+                  whileInView={
+                    reduced ? undefined : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }
+                  }
+                  viewport={{ once: true, margin: '-10%' }}
+                  transition={{
+                    duration: 1.6,
+                    delay: idx * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <DepthCard img={img} />
+                </motion.div>
               </ParallaxLayer>
             ))}
           </div>
