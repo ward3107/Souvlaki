@@ -17,10 +17,10 @@ export default function BackToTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-44 right-6 rtl:right-auto rtl:left-6 z-40 w-12 h-12 bg-white text-black rounded-full shadow-lift flex items-center justify-center transition-all transform hover:-translate-y-1 mix-blend-difference hover:scale-110"
+      className="fixed bottom-[9.5rem] sm:bottom-44 right-4 sm:right-6 rtl:right-auto rtl:left-4 sm:rtl:left-6 z-40 w-10 h-10 sm:w-12 sm:h-12 bg-white text-black rounded-full shadow-lift flex items-center justify-center transition-all transform hover:-translate-y-1 mix-blend-difference hover:scale-110"
       aria-label="Back to Top"
     >
-      <ArrowUp className="w-6 h-6" />
+      <ArrowUp className="w-5 h-5 sm:w-6 sm:h-6" />
     </button>
   );
 }

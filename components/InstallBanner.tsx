@@ -95,25 +95,29 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-4 md:w-96 z-40 animate-slide-up">
-      <div className="bg-brand-blue-500 rounded-2xl shadow-pop p-4 text-white">
-        <div className="flex items-start gap-4">
-          <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-soft overflow-hidden">
+    <div className="fixed bottom-16 sm:bottom-20 left-3 right-3 sm:left-4 sm:right-4 md:left-auto md:right-4 md:w-96 z-40 animate-slide-up">
+      <div className="bg-brand-blue-500 rounded-xl sm:rounded-2xl shadow-pop p-3 sm:p-4 text-white">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <div className="w-11 h-11 sm:w-16 sm:h-16 bg-white rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 shadow-soft overflow-hidden">
             <img src="/pwa-icon.png" alt="Greek Souvlaki" className="w-full h-full object-cover" />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg mb-1">{labels.title}</h3>
-            <p className="text-sm opacity-90 mb-3">{labels.message}</p>
+            <h3 className="font-semibold text-sm sm:text-lg mb-0.5 sm:mb-1 leading-tight">
+              {labels.title}
+            </h3>
+            <p className="text-xs sm:text-sm opacity-90 mb-2 sm:mb-3 leading-snug">
+              {labels.message}
+            </p>
             <div className="flex gap-2">
               <button
                 onClick={isIOS ? handleDismiss : handleInstall}
-                className="flex-1 bg-white text-brand-blue-500 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-opacity-90 transition-opacity"
+                className="flex-1 bg-white text-brand-blue-500 px-3 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm hover:bg-opacity-90 transition-opacity"
               >
                 {isIOS ? labels.ios : labels.install}
               </button>
               <button
                 onClick={handleDismiss}
-                className="px-4 py-2 rounded-lg font-semibold text-sm hover:bg-white/10 transition-colors"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm hover:bg-white/10 transition-colors"
               >
                 {labels.dismiss}
               </button>

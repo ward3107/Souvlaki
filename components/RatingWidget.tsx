@@ -228,20 +228,20 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
 
   if (hidden) return null;
 
-  const sideClass = isRtl ? 'right-6' : 'left-6';
+  const sideClass = isRtl ? 'right-4 sm:right-6' : 'left-4 sm:left-6';
 
   return (
     <>
       <button
         ref={fabRef}
         onClick={() => setOpen(true)}
-        className={`fixed bottom-6 ${sideClass} z-40 group flex items-center gap-2 bg-brand-blue-500 hover:bg-brand-blue-600 text-white rounded-full shadow-lift hover:shadow-pop transition-all duration-300 hover:scale-105 px-4 h-14 [body.cart-active_&]:hidden`}
+        className={`fixed bottom-4 sm:bottom-6 ${sideClass} z-40 group flex items-center gap-2 bg-brand-blue-500 hover:bg-brand-blue-600 text-white rounded-full shadow-lift hover:shadow-pop transition-all duration-300 hover:scale-105 px-3 sm:px-4 h-11 sm:h-14 [body.cart-active_&]:hidden`}
         aria-label={tt(language, 'fab')}
         aria-expanded={open}
         aria-haspopup="dialog"
         dir={isRtl ? 'rtl' : 'ltr'}
       >
-        <Star className="w-6 h-6 fill-current" aria-hidden="true" />
+        <Star className="w-5 h-5 sm:w-6 sm:h-6 fill-current" aria-hidden="true" />
         <span className="font-semibold text-sm hidden sm:inline whitespace-nowrap">
           {tt(language, 'fab')}
         </span>
@@ -260,7 +260,7 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
             aria-modal="true"
             aria-labelledby="rating-widget-title"
             dir={isRtl ? 'rtl' : 'ltr'}
-            className={`relative w-full sm:w-96 sm:max-w-[calc(100vw-3rem)] bg-white dark:bg-slate-800 rounded-3xl shadow-pop border border-gray-100 dark:border-slate-700 p-6 ${
+            className={`relative w-full sm:w-96 sm:max-w-[calc(100vw-3rem)] bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-pop border border-gray-100 dark:border-slate-700 p-4 sm:p-6 ${
               isRtl ? 'sm:mr-auto sm:ml-0' : 'sm:ml-auto sm:mr-0'
             } sm:fixed sm:bottom-24 ${isRtl ? 'sm:right-6' : 'sm:left-6'}`}
           >
@@ -276,27 +276,27 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
               <div>
                 <h3
                   id="rating-widget-title"
-                  className="font-display text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
+                  className="font-display text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
                 >
                   {tt(language, 'title')}
                 </h3>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   {tt(language, 'subtitle')}
                 </p>
-                <div className="mt-5 grid grid-cols-4 gap-2">
+                <div className="mt-4 sm:mt-5 grid grid-cols-4 gap-1.5 sm:gap-2">
                   {FACES.map(({ score: s, Icon, color, bg, labelKey }) => (
                     <button
                       key={s}
                       onClick={() => handleSelect(s)}
-                      className={`group flex flex-col items-center gap-1.5 p-3 rounded-2xl border border-gray-100 dark:border-slate-700 ${bg} transition-all hover:scale-105 hover:border-transparent active:scale-95`}
+                      className={`group flex flex-col items-center gap-1 sm:gap-1.5 p-2 sm:p-3 rounded-xl sm:rounded-2xl border border-gray-100 dark:border-slate-700 ${bg} transition-all hover:scale-105 hover:border-transparent active:scale-95`}
                       aria-label={tt(language, labelKey)}
                     >
                       <Icon
-                        className={`w-9 h-9 ${color} transition-transform group-hover:scale-110`}
+                        className={`w-7 h-7 sm:w-9 sm:h-9 ${color} transition-transform group-hover:scale-110`}
                         strokeWidth={1.75}
                         aria-hidden="true"
                       />
-                      <span className="text-[11px] font-medium text-gray-600 dark:text-gray-300">
+                      <span className="text-[10px] sm:text-[11px] font-medium text-gray-600 dark:text-gray-300">
                         {tt(language, labelKey)}
                       </span>
                     </button>
@@ -309,7 +309,7 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
               <div>
                 <h3
                   id="rating-widget-title"
-                  className="font-display text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
+                  className="font-display text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
                 >
                   {tt(language, 'low_title')}
                 </h3>
@@ -346,7 +346,7 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
               <div>
                 <h3
                   id="rating-widget-title"
-                  className="font-display text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
+                  className="font-display text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
                 >
                   {tt(language, 'high_title')}
                 </h3>
@@ -384,12 +384,15 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
 
             {step === 'done' && (
               <div className="text-center py-2">
-                <div className="mx-auto w-14 h-14 rounded-full bg-brand-blue-50 dark:bg-brand-blue-900/30 flex items-center justify-center mb-3">
-                  <Heart className="w-7 h-7 text-brand-blue-500 fill-current" aria-hidden="true" />
+                <div className="mx-auto w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-brand-blue-50 dark:bg-brand-blue-900/30 flex items-center justify-center mb-2 sm:mb-3">
+                  <Heart
+                    className="w-6 h-6 sm:w-7 sm:h-7 text-brand-blue-500 fill-current"
+                    aria-hidden="true"
+                  />
                 </div>
                 <h3
                   id="rating-widget-title"
-                  className="font-display text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
+                  className="font-display text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight"
                 >
                   {tt(language, 'done_title')}
                 </h3>

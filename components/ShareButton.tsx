@@ -131,11 +131,15 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
       <button
         ref={triggerButtonRef}
         onClick={() => setShowShareModal(!showShareModal)}
-        className={`fixed bottom-6 ${isRtl ? 'left-6' : 'right-6'} z-50 w-14 h-14 bg-brand-blue-500 hover:bg-brand-blue-600 text-white rounded-full shadow-lift hover:shadow-pop transition-all duration-300 flex items-center justify-center hover:scale-105 [body.cart-active_&]:hidden`}
+        className={`fixed bottom-4 sm:bottom-6 ${isRtl ? 'left-4 sm:left-6' : 'right-4 sm:right-6'} z-50 w-11 h-11 sm:w-14 sm:h-14 bg-brand-blue-500 hover:bg-brand-blue-600 text-white rounded-full shadow-lift hover:shadow-pop transition-all duration-300 flex items-center justify-center hover:scale-105 [body.cart-active_&]:hidden`}
         aria-label="Share"
         aria-expanded={showShareModal}
       >
-        {showShareModal ? <X className="w-6 h-6" /> : <Share2 className="w-6 h-6" />}
+        {showShareModal ? (
+          <X className="w-5 h-5 sm:w-6 sm:h-6" />
+        ) : (
+          <Share2 className="w-5 h-5 sm:w-6 sm:h-6" />
+        )}
       </button>
 
       {showShareModal && (
@@ -148,14 +152,14 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
         >
           <div
             ref={modalRef}
-            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-6 outline-none"
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-4 sm:p-6 outline-none max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             tabIndex={-1}
           >
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
               <h3
                 id="share-modal-title"
-                className="font-display text-xl font-semibold text-gray-900 dark:text-white"
+                className="font-display text-lg sm:text-xl font-semibold text-gray-900 dark:text-white"
               >
                 {tx(
                   lang,
@@ -175,16 +179,16 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
               </button>
             </div>
 
-            <div className="mb-6 p-4 bg-gray-50 dark:bg-slate-700 rounded-xl flex flex-col items-center">
+            <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-slate-700 rounded-xl flex flex-col items-center">
               <QRCodeIcon
-                size={180}
+                size={typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180}
                 value={shareUrl}
                 id="qr-code-canvas"
                 includeMargin={true}
                 bgColor="#FFFFFF"
                 fgColor="#0B5FA5"
               />
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-3 text-center">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 sm:mt-3 text-center">
                 {tx(
                   lang,
                   'סרקו את הקוד להורדה או להדפיסה',
@@ -203,38 +207,42 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
               <button
                 onClick={handleWhatsAppShare}
-                className="flex flex-col items-center gap-2 p-4 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-xl transition-colors border border-green-200 dark:border-green-800"
+                className="flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-xl transition-colors border border-green-200 dark:border-green-800"
               >
-                <MessageCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
-                <span className="text-sm font-medium text-gray-900 dark:text-white">WhatsApp</span>
+                <MessageCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-600 dark:text-green-400" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                  WhatsApp
+                </span>
               </button>
               <button
                 onClick={handleCopyLink}
-                className="flex flex-col items-center gap-2 p-4 bg-brand-blue-50 dark:bg-brand-blue-900/20 hover:bg-brand-blue-100 dark:hover:bg-brand-blue-900/30 rounded-xl transition-colors border border-brand-blue-200 dark:border-brand-blue-800"
+                className="flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 bg-brand-blue-50 dark:bg-brand-blue-900/20 hover:bg-brand-blue-100 dark:hover:bg-brand-blue-900/30 rounded-xl transition-colors border border-brand-blue-200 dark:border-brand-blue-800"
               >
-                <Copy className="w-8 h-8 text-brand-blue-500 dark:text-brand-blue-300" />
-                <span className="text-sm font-medium text-gray-900 dark:text-white">
+                <Copy className="w-6 h-6 sm:w-8 sm:h-8 text-brand-blue-500 dark:text-brand-blue-300" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                   {tx(lang, 'העתק קישור', 'Copy Link', 'نسخ الرابط', 'Копировать', 'Αντιγράφη')}
                 </span>
               </button>
               {navigator.share && (
                 <button
                   onClick={handleNativeShare}
-                  className="col-span-2 flex items-center justify-center gap-2 p-4 bg-brand-terracotta-50 dark:bg-brand-terracotta-400/15 hover:bg-brand-terracotta-100 rounded-xl transition-colors border border-brand-terracotta-200 dark:border-brand-terracotta-400/30"
+                  className="col-span-2 flex items-center justify-center gap-2 p-3 sm:p-4 bg-brand-terracotta-50 dark:bg-brand-terracotta-400/15 hover:bg-brand-terracotta-100 rounded-xl transition-colors border border-brand-terracotta-200 dark:border-brand-terracotta-400/30"
                 >
-                  <Share2 className="w-6 h-6 text-brand-terracotta-500 dark:text-brand-terracotta-200" />
-                  <span className="text-sm font-medium text-gray-900 dark:text-white">
+                  <Share2 className="w-5 h-5 sm:w-6 sm:h-6 text-brand-terracotta-500 dark:text-brand-terracotta-200" />
+                  <span className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                     {tx(lang, 'שתף...', 'Share...', 'مشاركة...', 'Поделиться...', 'Μοιραστείτε...')}
                   </span>
                 </button>
               )}
             </div>
 
-            <div className="mt-4 p-3 bg-gray-100 dark:bg-slate-700 rounded-lg">
-              <p className="text-xs text-gray-600 dark:text-gray-400 break-all">{shareUrl}</p>
+            <div className="mt-3 sm:mt-4 p-2 sm:p-3 bg-gray-100 dark:bg-slate-700 rounded-lg">
+              <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-400 break-all">
+                {shareUrl}
+              </p>
             </div>
           </div>
         </div>
