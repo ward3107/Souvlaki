@@ -77,28 +77,28 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-[9999] p-4 ${isRtl ? 'rtl' : 'ltr'}`}
+      className={`fixed bottom-0 left-0 right-0 z-[9999] p-3 sm:p-4 ${isRtl ? 'rtl' : 'ltr'}`}
       role="dialog"
       aria-label={t('הודעת עוגיות', 'Cookie notice', 'إشعار ملفات تعريف الارتباط')}
     >
       <div
-        className="max-w-2xl mx-auto rounded-2xl shadow-2xl overflow-hidden border border-[#F5A623]/30"
+        className="max-w-2xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden border border-[#F5A623]/30"
         style={{ backgroundColor: '#1a1a2e' }}
       >
         {/* Orange accent top */}
-        <div className="h-1" style={{ backgroundColor: '#F5A623' }} />
+        <div className="h-0.5 sm:h-1" style={{ backgroundColor: '#F5A623' }} />
 
-        <div className="p-5 md:p-6">
+        <div className="p-3 sm:p-5 md:p-6">
           {/* Text */}
-          <div className="mb-4">
+          <div className="mb-3 sm:mb-4">
             <h3
-              className="text-lg font-bold mb-2"
+              className="text-base sm:text-lg font-bold mb-1 sm:mb-2"
               style={{ color: '#F5A623', fontFamily: 'Heebo, sans-serif' }}
             >
               {t('פרטיות ועוגיות 🍪', 'Privacy & Cookies 🍪', 'الخصوصية وملفات تعريف الارتباط 🍪')}
             </h3>
             <p
-              className="text-sm leading-relaxed text-gray-300"
+              className="text-xs sm:text-sm leading-relaxed text-gray-300"
               style={{ fontFamily: 'Heebo, sans-serif' }}
             >
               {t(
@@ -110,10 +110,10 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               onClick={handleAcceptAll}
-              className="flex-1 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg"
+              className="flex-1 px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm text-white transition-all hover:brightness-110 active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg"
               style={{
                 backgroundColor: '#F5A623',
                 fontFamily: 'Heebo, sans-serif',
@@ -123,7 +123,7 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
             </button>
             <button
               onClick={handleEssentialOnly}
-              className="flex-1 px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:bg-white/10 active:scale-[0.98] flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm transition-all hover:bg-white/10 active:scale-[0.98] flex items-center justify-center gap-2"
               style={{
                 border: '2px solid #F5A623',
                 color: '#F5A623',
@@ -136,7 +136,7 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
           </div>
 
           {/* Privacy policy link */}
-          <div className="mt-3 text-center">
+          <div className="mt-2 sm:mt-3 text-center">
             <button
               onClick={() => {
                 window.dispatchEvent(
@@ -145,7 +145,7 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                   })
                 );
               }}
-              className="text-xs hover:underline transition-colors"
+              className="text-[11px] sm:text-xs hover:underline transition-colors"
               style={{ color: '#F5A623', fontFamily: 'Heebo, sans-serif' }}
             >
               {t('מדיניות פרטיות', 'Privacy Policy', 'سياسة الخصوصية')}
@@ -154,7 +154,7 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
         </div>
 
         {/* Orange accent bottom */}
-        <div className="h-1" style={{ backgroundColor: '#F5A623' }} />
+        <div className="h-0.5 sm:h-1" style={{ backgroundColor: '#F5A623' }} />
       </div>
     </div>
   );

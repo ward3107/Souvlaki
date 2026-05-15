@@ -143,16 +143,18 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
     <>
       {/* Normal state - show full widget */}
       {!isHidden && (
-        <div className={`fixed bottom-24 ${isRtl ? 'right-4' : 'left-4'} z-50`}>
+        <div
+          className={`fixed bottom-20 sm:bottom-24 ${isRtl ? 'right-3 sm:right-4' : 'left-3 sm:left-4'} z-50`}
+        >
           {/* Accessibility Badge with X button */}
           <div className="relative group">
             <button
               onClick={toggleOpen}
-              className="w-12 h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
+              className="w-10 h-10 sm:w-12 sm:h-12 bg-white text-black rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-blue-300 mix-blend-difference z-50"
               aria-label="Open Accessibility Menu"
               aria-expanded={isOpen}
             >
-              <Accessibility className="w-7 h-7" aria-hidden="true" />
+              <Accessibility className="w-5 h-5 sm:w-7 sm:h-7" aria-hidden="true" />
             </button>
             {/* X button to close the badge */}
             <button
@@ -167,7 +169,7 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
 
           {isOpen && (
             <div
-              className={`absolute bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-80 bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-4 space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin`}
+              className={`absolute bottom-14 sm:bottom-16 ${isRtl ? 'right-0' : 'left-0'} w-[calc(100vw-1.5rem)] max-w-xs sm:w-80 sm:max-w-none bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 p-3 sm:p-4 space-y-3 sm:space-y-4 max-h-[75vh] sm:max-h-[80vh] overflow-y-auto scrollbar-thin`}
             >
               <div className="flex justify-between items-center border-b pb-2 dark:border-slate-600 sticky top-0 bg-white dark:bg-slate-800 z-10">
                 <h3 className="font-bold text-lg dark:text-white flex items-center gap-2">
