@@ -17,7 +17,6 @@ import Footer from './components/sections/Footer';
 
 // Eagerly loaded
 import Menu from './components/Menu';
-import InstallBanner from './components/InstallBanner';
 import FloatingActions from './components/FloatingActions';
 import BackToTopButton from './components/BackToTopButton';
 import Lightbox from './components/Lightbox';
@@ -158,8 +157,6 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${isRtl ? 'font-heebo' : 'font-rubik'}`}>
-      {/* Thin install strip sits above the sticky header in normal flow. */}
-      <InstallBanner lang={lang} />
       <Header lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
 
       <main id="main-content" role="main">
