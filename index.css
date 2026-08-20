@@ -14,22 +14,52 @@
   }
 }
 
-/* Custom scrollbar for better aesthetics */
+/* Crisp rendering + premium base touches (iOS-leaning) */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+::selection {
+  background: rgba(11, 95, 165, 0.18);
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Frosted-glass surface — translucent, blurred, hairline edge (iOS feel) */
+.glass {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+.dark .glass {
+  background: rgba(15, 23, 42, 0.55);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Custom scrollbar — slim, brand-toned */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #0ea5e9; /* Sky-500 */
-  border-radius: 5px;
+  background: rgba(11, 95, 165, 0.35);
+  border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #0284c7; /* Sky-600 */
+  background: rgba(11, 95, 165, 0.6);
 }
-.dark ::-webkit-scrollbar-track {
-  background: #1e293b;
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(143, 185, 223, 0.3);
 }
 /* No scroll-behavior here — Lenis handles smooth scroll on desktop, and
    native scroll handles mobile (where Lenis is disabled). Setting both
