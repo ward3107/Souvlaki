@@ -25,6 +25,7 @@ import FirePlateJourney from './components/FirePlateJourney';
 import GreekKeyThread from './components/GreekKeyThread';
 import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
+import SignatureShowpiece from './components/SignatureShowpiece';
 
 // Lazy chunks
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
@@ -170,6 +171,9 @@ const App: React.FC = () => {
               made fresh -> meet the family -> our world -> proof -> visit. */}
           <MarqueeStrip lang={lang} />
           <Menu language={lang} />
+
+          {/* Dramatic full-screen signature showpiece */}
+          <SignatureShowpiece lang={lang} />
 
           {/* Cinematic "from fire to plate" scroll story */}
           <FirePlateJourney lang={lang} />
