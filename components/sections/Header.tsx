@@ -88,15 +88,25 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
         </button>
 
         <nav className="hidden md:flex justify-self-center items-center gap-1 rtl:space-x-reverse">
-          {NAV_LINKS.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => handleNav(link.id)}
-              className="nav-3d text-gray-600 dark:text-gray-300 hover:text-brand-blue-500 dark:hover:text-brand-blue-300 font-medium"
-            >
-              {t(lang, link.labelKey)}
-            </button>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.id === 'menu' ? (
+              <button
+                key={link.id}
+                onClick={() => handleNav(link.id)}
+                className="menu-heartbeat mx-1.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 px-6 py-2.5 text-base font-bold tracking-tight text-white transition-colors"
+              >
+                {t(lang, link.labelKey)}
+              </button>
+            ) : (
+              <button
+                key={link.id}
+                onClick={() => handleNav(link.id)}
+                className="nav-3d text-gray-600 dark:text-gray-300 hover:text-brand-blue-500 dark:hover:text-brand-blue-300 font-medium"
+              >
+                {t(lang, link.labelKey)}
+              </button>
+            )
+          )}
         </nav>
 
         <div className="justify-self-end flex items-center gap-3">
@@ -160,15 +170,25 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
       {isMenuOpen && (
         <div className="md:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
           <div className="container mx-auto px-4 py-4 space-y-2">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => handleNav(link.id)}
-                className="block w-full text-center py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium"
-              >
-                {t(lang, link.labelKey)}
-              </button>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.id === 'menu' ? (
+                <button
+                  key={link.id}
+                  onClick={() => handleNav(link.id)}
+                  className="menu-heartbeat block w-full text-center py-3.5 px-4 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-lg font-bold tracking-tight"
+                >
+                  {t(lang, link.labelKey)}
+                </button>
+              ) : (
+                <button
+                  key={link.id}
+                  onClick={() => handleNav(link.id)}
+                  className="block w-full text-center py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium"
+                >
+                  {t(lang, link.labelKey)}
+                </button>
+              )
+            )}
           </div>
         </div>
       )}

@@ -243,6 +243,45 @@ body.reading-guide-active #reading-guide {
     0 2px 4px rgba(143, 185, 223, 0.18);
 }
 
+/* Menu nav tab — heartbeat scale + terracotta glow ring, so the primary
+   action pulses for attention. Pauses on hover; reduced-motion & the
+   accessibility "stop animations" toggle both neutralise it via global rules. */
+@keyframes menu-heartbeat {
+  0%,
+  28%,
+  70%,
+  100% {
+    transform: scale(1);
+  }
+  14%,
+  42% {
+    transform: scale(1.11);
+  }
+}
+@keyframes menu-heartbeat-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(192, 85, 43, 0.55),
+      0 6px 18px rgba(192, 85, 43, 0.4);
+  }
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(192, 85, 43, 0),
+      0 10px 24px rgba(192, 85, 43, 0.5);
+  }
+}
+.menu-heartbeat {
+  animation:
+    menu-heartbeat 2s ease-in-out infinite,
+    menu-heartbeat-glow 2s ease-in-out infinite;
+  transform-origin: center;
+  will-change: transform, box-shadow;
+}
+.menu-heartbeat:hover {
+  animation-play-state: paused;
+}
+
 /* Hero ambient motion — Ken Burns + fog + drifting spotlight + embers */
 @keyframes hero-kenburns {
   0% {
