@@ -11,13 +11,16 @@ interface RevealProps {
 }
 
 const buildVariants = (y: number, x: number): Variants => ({
-  hidden: { opacity: 0, y, x, rotateX: x === 0 ? 6 : 0 },
+  // Gentle "camera moving closer" entrance: the piece scales up into place as it
+  // scrolls into view. One-time (whileInView), so it never costs anything on scroll.
+  hidden: { opacity: 0, y, x, scale: 0.94, rotateX: x === 0 ? 6 : 0 },
   visible: {
     opacity: 1,
     y: 0,
     x: 0,
+    scale: 1,
     rotateX: 0,
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
   },
 });
 

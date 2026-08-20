@@ -2,6 +2,7 @@ import { ChevronDown, MessageCircle } from 'lucide-react';
 import { Language } from '../../types';
 import { FAQS } from '../../constants';
 import { t } from '../../utils/i18n';
+import Reveal from '../Reveal';
 
 interface Props {
   lang: Language;
@@ -14,15 +15,17 @@ export default function FAQ({ lang }: Props) {
       className="py-20 bg-gradient-to-b from-white/50 to-gray-50/50 dark:from-slate-900/50 dark:to-slate-800/40 backdrop-blur-[2px] transition-colors duration-300"
     >
       <div className="container mx-auto px-4 max-w-3xl">
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-blue-500 rounded-2xl mb-6 shadow-soft">
-            <MessageCircle className="w-8 h-8 text-white" />
+        <Reveal>
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-blue-500 rounded-2xl mb-6 shadow-soft">
+              <MessageCircle className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="font-display text-5xl font-semibold text-gray-900 dark:text-white mb-4 tracking-tight">
+              {t(lang, 'faq_title')}
+            </h2>
+            <div className="w-16 h-1 bg-brand-terracotta-400 mx-auto rounded-full"></div>
           </div>
-          <h2 className="font-display text-5xl font-semibold text-gray-900 dark:text-white mb-4 tracking-tight">
-            {t(lang, 'faq_title')}
-          </h2>
-          <div className="w-16 h-1 bg-brand-terracotta-400 mx-auto rounded-full"></div>
-        </div>
+        </Reveal>
 
         <div className="space-y-4">
           {FAQS.map((faq, index) => (
