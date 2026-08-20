@@ -32,6 +32,9 @@ const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'
 const CookieBanner = lazy(() => import('./components/CookieBanner'));
 const LegalDocument = lazy(() => import('./components/LegalDocument'));
 const RatingWidget = lazy(() => import('./components/RatingWidget'));
+// Owner-only kitchen timer — its own unlinked /kitchen route, kept out of the
+// customer bundle since it lazy-loads only when that path is visited.
+const Kitchen = lazy(() => import('./components/Kitchen'));
 
 const GALLERY_IMAGES = [
   '/gallery/IMG-20251205-WA0032-400.webp',
@@ -93,6 +96,7 @@ const App: React.FC = () => {
 
   const isRtl = isRtlLang(lang);
   const isMenuPage = path === '/menu';
+  const isKitchenPage = path === '/kitchen';
 
   // Minimal routing: the menu lives on its own /menu page so browsing it stays
   // focused instead of scrolling on into the homepage story.
@@ -169,6 +173,18 @@ const App: React.FC = () => {
     window.addEventListener('openLegalDocument', handler as EventListener);
     return () => window.removeEventListener('openLegalDocument', handler as EventListener);
   }, []);
+
+  // The kitchen tool is a standalone owner screen — no marketing header, footer,
+  // or floating widgets around it.
+  if (isKitchenPage) {
+    return (
+      <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
+        <Suspense fallback={null}>
+          <Kitchen lang={lang} />
+        </Suspense>
+      </div>
+    );
+  }
 
   return (
     <div className={`min-h-screen ${isRtl ? 'font-heebo' : 'font-rubik'}`}>
