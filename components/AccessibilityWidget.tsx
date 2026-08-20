@@ -67,6 +67,13 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
     localStorage.setItem(STORAGE_KEY, 'true');
   };
 
+  // Bring the widget back. An accessibility control must never be permanently
+  // unreachable (IS 5568), so hiding leaves a small always-visible restore dot.
+  const restoreWidget = () => {
+    setIsHidden(false);
+    localStorage.removeItem(STORAGE_KEY);
+  };
+
   // Apply Classes to Body/HTML
   useEffect(() => {
     const html = document.documentElement;
@@ -269,6 +276,19 @@ const AccessibilityWidget: React.FC<AccessibilityWidgetProps> = ({ language }) =
             </div>
           )}
         </div>
+      )}
+
+      {/* Hidden state — keep a discreet, always-available restore control so the
+          accessibility menu can never be permanently dismissed. */}
+      {isHidden && (
+        <button
+          onClick={restoreWidget}
+          className={`fixed bottom-20 sm:bottom-24 ${isRtl ? 'right-3 sm:right-4' : 'left-3 sm:left-4'} z-50 w-9 h-9 bg-white/90 dark:bg-slate-800/90 text-black dark:text-white rounded-full shadow-lg flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity focus:outline-none focus:ring-4 focus:ring-blue-300`}
+          aria-label="Restore accessibility menu"
+          title="Accessibility"
+        >
+          <Accessibility className="w-5 h-5" aria-hidden="true" />
+        </button>
       )}
     </>
   );

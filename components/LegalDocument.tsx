@@ -273,11 +273,13 @@ const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, o
             {/* Content */}
             <ReactMarkdown
               components={{
-                h1: ({ node, ...props }) => (
+                h1: ({ node, children, ...props }) => (
                   <h1
                     className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 mb-8 pb-6 border-b-2 border-gray-200 dark:border-slate-700"
                     {...props}
-                  />
+                  >
+                    {children}
+                  </h1>
                 ),
                 h2: ({ node, children, ...props }) => (
                   <h2

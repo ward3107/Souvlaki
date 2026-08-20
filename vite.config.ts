@@ -5,27 +5,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { visualizer } from 'rollup-plugin-visualizer';
 import type { Plugin } from 'vite';
 
-// Vitest configuration
-const testConfig = {
-  globals: true,
-  environment: 'jsdom' as const,
-  setupFiles: ['./test/setup.ts'],
-  include: ['**/*.{test,spec}.{js,ts,jsx,tsx}'],
-  coverage: {
-    provider: 'v8' as const,
-    reporter: ['text', 'json', 'html', 'lcov'],
-    exclude: [
-      'node_modules/',
-      'test/',
-      '**/*.d.ts',
-      '**/*.config.*',
-      '**/mockData',
-      'e2e/',
-      'dist/',
-      '.vercel/',
-    ],
-  },
-};
+// Vitest config lives in vitest.config.ts (the file Vitest loads by default).
 
 // Plugin to inject preload hints for main JS and CSS bundles
 function injectPreloads(): Plugin {
@@ -107,9 +87,12 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,jpg,jpeg,webp,json,woff2}'],
+          // Precache only the app shell. Photos (png/jpg/webp) are NOT precached
+          // here — they're fetched on demand and cached by the runtimeCaching
+          // images rule below, so first install doesn't pull ~60 MB of gallery.
+          globPatterns: ['**/*.{js,css,html,ico,svg,json,woff2}'],
           navigateFallback: '/index.html',
-          maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50 MB
+          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
           runtimeCaching: [
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
@@ -177,6 +160,3 @@ export default defineConfig(({ mode }) => {
     },
   };
 });
-
-// Export for Vitest
-export { testConfig as test };

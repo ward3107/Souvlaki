@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import type { ReactNode } from 'react';
 
@@ -33,6 +33,7 @@ export default function FlowingBackground({
   opacity = 0.06,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const [inView, setInView] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start end', 'end start'],
@@ -41,6 +42,18 @@ export default function FlowingBackground({
   // through the viewport — this is the parallax depth.
   const y = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
 
+  // Only run the continuous flow animation while the section is on screen.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => setInView(entries.some((e) => e.isIntersecting)),
+      { rootMargin: '0px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   // Greek-key (meander) tile — clean, instantly recognizable. Encoded as a
   // tiny inline SVG so we don't ship an extra request.
   const encoded = encodeURIComponent(GREEK_KEY_SVG.replace('__COLOR__', color));
@@ -48,28 +61,37 @@ export default function FlowingBackground({
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className}`}>
+      {/* Outer layer owns the vertical scroll-parallax (framer sets transform). */}
       <motion.div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-y-[10%] inset-x-0 flow-bg"
-        style={{
-          y,
-          backgroundImage: bgImage,
-          backgroundRepeat: 'repeat',
-          backgroundSize: '120px 120px',
-          opacity,
-        }}
-      />
+        className="pointer-events-none absolute -inset-y-[10%] inset-x-0 overflow-hidden"
+        style={{ y, opacity }}
+      >
+        {/* Inner layer flows horizontally via a compositor-friendly transform
+            (translateX) instead of repainting background-position every frame.
+            It's 480px (4 tiles) wider than the section so the loop is seamless. */}
+        <div
+          className="flow-bg-inner absolute inset-y-0 left-0"
+          style={{
+            right: '-480px',
+            backgroundImage: bgImage,
+            backgroundRepeat: 'repeat',
+            backgroundSize: '120px 120px',
+            animationPlayState: inView ? 'running' : 'paused',
+          }}
+        />
+      </motion.div>
       <style>{`
-        .flow-bg {
+        .flow-bg-inner {
           animation: bg-flow 60s linear infinite;
-          will-change: background-position;
+          will-change: transform;
         }
         @keyframes bg-flow {
-          from { background-position: 0 0; }
-          to   { background-position: 480px 0; }
+          from { transform: translateX(0); }
+          to   { transform: translateX(-480px); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .flow-bg { animation: none !important; }
+          .flow-bg-inner { animation: none !important; }
         }
       `}</style>
       <div className="relative">{children}</div>

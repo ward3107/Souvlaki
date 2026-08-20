@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased] - Audit fixes (v1.1 hardening)
+
+### 🔒 Security & Deployment
+
+- Added `public/_headers` + `public/_redirects` so the **Cloudflare Pages** host
+  (the actual production host) ships the full CSP/HSTS/security header set and an
+  SPA fallback — previously these lived only in `vercel.json` and were never applied.
+- Hardened CSP: removed `script-src 'unsafe-inline'`/`'unsafe-eval'`; allow-listed
+  Google Analytics origins; set `X-XSS-Protection: 0` (per current guidance).
+- Removed the broken `vercel.json` redirect that collapsed every path to the
+  Cloudflare root.
+
+### 🐛 Fixes
+
+- Google Analytics now reads the real `VITE_GA_MEASUREMENT_ID` (was a hardcoded
+  `G-XXXXXXXXXX` placeholder) and initialises without an inline script.
+- Cookie consent banner now covers all 5 languages (was HE/AR/EN only).
+- Accessibility widget can no longer be permanently dismissed — a discreet
+  restore control remains (IS 5568).
+- Hero video respects `prefers-reduced-motion` / data-saver and pauses off-screen.
+- Removed dead code (`MenuRow`, `VariantChip`, `AddPill`, `ORDER_LABEL`, unused
+  helpers) and duplicate/conflicting meta tags + orphaned manifests.
+
+### ⚡ Performance
+
+- `useTilt3D` now writes transforms imperatively via rAF instead of `setState`
+  per mousemove — no more re-render thrashing on the Instagram/Menu card grids.
+- Cached bounding rects in the mouse-driven parallax/magnetic effects.
+- Greek-key background now animates a GPU-composited transform and pauses off-screen.
+- PWA precache trimmed from ~60 MB (115 entries) to ~2.3 MB (21 entries); photos
+  are runtime-cached on demand.
+
+### 🧰 Tooling
+
+- Enabled TypeScript `strict` (+ `noUnused*`) and added the missing
+  `@types/react` / `@types/react-dom`.
+- ESLint now runs the `react` + `jsx-a11y` recommended rule sets (previously
+  registered but inert) with real browser globals.
+- Fixed the Lighthouse CI job to actually start a preview server before auditing.
+- Test setup mocks `IntersectionObserver`; Vitest no longer collects Playwright specs.
+
+---
+
 ## [1.0.0] - 2026-01-17
 
 ### 🎉 Initial Release - Production Launch

@@ -49,6 +49,16 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, isRtl]);
 
+  // Lock background scroll while the fullscreen lightbox is open.
+  useEffect(() => {
+    if (index === null) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [index]);
+
   if (index === null) return null;
 
   const onTouchStart = (e: React.TouchEvent) => {
@@ -132,7 +142,7 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
 
       <img
         src={images[index]}
-        alt={`Restaurant photo ${index + 1} of ${images.length}`}
+        alt={`Greek Souvlaki gallery ${index + 1} of ${images.length}`}
         className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl z-1 transition-opacity duration-300"
       />
 

@@ -1,6 +1,7 @@
 import Lenis from 'lenis';
 
 let lenis: Lenis | null = null;
+let rafId: number | null = null;
 
 export function initSmoothScroll() {
   if (typeof window === 'undefined') return;
@@ -8,9 +9,9 @@ export function initSmoothScroll() {
 
   // Respect reduced-motion AND skip on touch devices — native scroll on
   // phones/tablets is already buttery and Lenis just fights it.
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const isTouch = matchMedia('(pointer: coarse)').matches || !matchMedia('(hover: hover)').matches;
-  if (reduce || isTouch) return null;
+  if (reduce.matches || isTouch) return null;
 
   lenis = new Lenis({
     // Snappier feel: lerp-driven (constant catch-up) instead of duration-based,
@@ -22,12 +23,27 @@ export function initSmoothScroll() {
   });
 
   function raf(time: number) {
-    lenis!.raf(time);
-    requestAnimationFrame(raf);
+    lenis?.raf(time);
+    rafId = requestAnimationFrame(raf);
   }
-  requestAnimationFrame(raf);
+  rafId = requestAnimationFrame(raf);
+
+  // If the user turns on reduced-motion at runtime, tear Lenis down so we stop
+  // hijacking native scroll instead of waiting for a reload.
+  reduce.addEventListener('change', (e) => {
+    if (e.matches) destroySmoothScroll();
+  });
 
   return lenis;
+}
+
+export function destroySmoothScroll() {
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+  lenis?.destroy();
+  lenis = null;
 }
 
 export function getLenis() {

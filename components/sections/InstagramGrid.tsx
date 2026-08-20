@@ -114,6 +114,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
 function DepthCard({ img }: { img: string }) {
   const {
     ref: tiltRef,
+    innerRef: tiltInnerRef,
     style: tiltOuterStyle,
     innerStyle: tiltInnerStyle,
     handlers: tiltHandlers,
@@ -129,7 +130,7 @@ function DepthCard({ img }: { img: string }) {
       {...tiltHandlers}
       className="relative aspect-square rounded-xl overflow-hidden group shadow-soft hover:shadow-pop transition-shadow duration-300 block"
     >
-      <div style={tiltInnerStyle} className="relative w-full h-full">
+      <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
         <img
           src={img}
           alt=""

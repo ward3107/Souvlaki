@@ -5,13 +5,6 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 // Each one drifts slowly via CSS keyframes, then offsets further with mouse
 // parallax on desktop. Disabled on touch + reduced-motion.
 
-interface Ingredient {
-  id: string;
-  svg: string;
-  className: string;
-  depth: number; // 0..1 — how much it follows the cursor
-}
-
 const OLIVE = (
   <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="16" cy="18" rx="10" ry="11" fill="#4A6B2D" />
@@ -126,9 +119,13 @@ export default function IngredientFloaters() {
 
   useEffect(() => {
     if (!enabled || !ref.current) return;
+    const el = ref.current;
+    // Cache the rect on enter/resize so mousemove doesn't force a reflow per event.
+    let rect = el.getBoundingClientRect();
+    const cacheRect = () => {
+      rect = el.getBoundingClientRect();
+    };
     const onMove = (e: MouseEvent) => {
-      if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
       const px = (e.clientX - rect.left) / rect.width - 0.5;
       const py = (e.clientY - rect.top) / rect.height - 0.5;
       mx.set(px * 30);
@@ -138,12 +135,15 @@ export default function IngredientFloaters() {
       mx.set(0);
       my.set(0);
     };
-    const el = ref.current;
+    el.addEventListener('mouseenter', cacheRect);
     el.addEventListener('mousemove', onMove);
     el.addEventListener('mouseleave', onLeave);
+    window.addEventListener('resize', cacheRect);
     return () => {
+      el.removeEventListener('mouseenter', cacheRect);
       el.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', onLeave);
+      window.removeEventListener('resize', cacheRect);
     };
   }, [enabled, mx, my]);
 

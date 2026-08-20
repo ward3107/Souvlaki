@@ -25,6 +25,7 @@ interface ParallaxProps {
 
 export function MouseParallax({ children, className, range = 24, style }: ParallaxProps) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   const [enabled, setEnabled] = useState(false);
 
   const mx = useMotionValue(0);
@@ -45,9 +46,22 @@ export function MouseParallax({ children, className, range = 24, style }: Parall
     };
   }, []);
 
+  // Cache the rect on enter (and refresh on resize) so mousemove never forces
+  // a synchronous layout read per event.
+  const cacheRect = () => {
+    rectRef.current = ref.current?.getBoundingClientRect() ?? null;
+  };
+
+  useEffect(() => {
+    if (!enabled) return;
+    window.addEventListener('resize', cacheRect);
+    return () => window.removeEventListener('resize', cacheRect);
+  }, [enabled]);
+
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!enabled || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!enabled) return;
+    const rect = rectRef.current ?? ref.current?.getBoundingClientRect() ?? null;
+    if (!rect) return;
     const px = (e.clientX - rect.left) / rect.width - 0.5;
     const py = (e.clientY - rect.top) / rect.height - 0.5;
     mx.set(px * range);
@@ -65,6 +79,7 @@ export function MouseParallax({ children, className, range = 24, style }: Parall
         ref={ref}
         className={className}
         style={style}
+        onMouseEnter={cacheRect}
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
       >

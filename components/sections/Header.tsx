@@ -24,6 +24,7 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const langDropdownRef = useRef<HTMLDivElement>(null);
+  const langButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!isLangDropdownOpen) return;
@@ -32,8 +33,19 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
         setIsLangDropdownOpen(false);
       }
     };
+    // Keyboard users need Escape to dismiss the dropdown and get focus back.
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsLangDropdownOpen(false);
+        langButtonRef.current?.focus();
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [isLangDropdownOpen]);
 
   const handleNav = (id: string) => {
@@ -74,10 +86,12 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
         <div className="justify-self-end flex items-center gap-3">
           <div className="relative" ref={langDropdownRef}>
             <button
+              ref={langButtonRef}
               onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300"
               aria-label="Select language"
               aria-expanded={isLangDropdownOpen}
+              aria-haspopup="true"
             >
               <Globe className="w-5 h-5" aria-hidden="true" />
             </button>

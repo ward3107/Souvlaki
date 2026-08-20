@@ -1,25 +1,34 @@
 import { useEffect, useRef, useState } from 'react';
 
-interface Tilt {
-  rx: number;
-  ry: number;
-  active: boolean;
-}
-
 interface Options {
   max?: number;
   scale?: number;
   perspective?: number;
 }
 
+/**
+ * 3D tilt-on-hover for a card. The tilt transform is written straight to the
+ * DOM inside a requestAnimationFrame — NOT via React state — so moving the
+ * cursor never triggers a re-render of the card and its children. This matters
+ * because these cards live in grids (Instagram, Menu) where a setState per
+ * mousemove (~120/s) would thrash the whole subtree.
+ *
+ * Usage: attach `ref` to the outer element (owns the perspective), spread
+ * `handlers` onto it, and attach `innerRef` + `innerStyle` to the inner element
+ * that actually tilts.
+ */
 export function useTilt3D<T extends HTMLElement>({
   max = 10,
   scale = 1.02,
   perspective = 1000,
 }: Options = {}) {
   const ref = useRef<T | null>(null);
-  const [tilt, setTilt] = useState<Tilt>({ rx: 0, ry: 0, active: false });
+  const innerRef = useRef<HTMLDivElement | null>(null);
   const [enabled, setEnabled] = useState(false);
+
+  const rectRef = useRef<DOMRect | null>(null);
+  const coordsRef = useRef({ rx: 0, ry: 0 });
+  const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(hover: hover)');
@@ -34,42 +43,72 @@ export function useTilt3D<T extends HTMLElement>({
     };
   }, []);
 
+  // Cancel any pending frame on unmount.
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  const writeTransform = (rx: number, ry: number, active: boolean) => {
+    const el = innerRef.current;
+    if (!el) return;
+    const s = active ? scale : 1;
+    el.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) scale3d(${s}, ${s}, 1)`;
+    el.style.transition = active ? 'transform 0.1s ease-out' : 'transform 0.4s ease-out';
+  };
+
+  const onMouseEnter = () => {
+    if (!enabled) return;
+    // Cache the rect once on enter so mousemove doesn't force a reflow per event.
+    rectRef.current = ref.current?.getBoundingClientRect() ?? null;
+  };
+
   const onMouseMove = (e: React.MouseEvent<T>) => {
-    if (!enabled || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!enabled) return;
+    const rect = rectRef.current ?? ref.current?.getBoundingClientRect() ?? null;
+    if (!rect) return;
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     const cx = rect.width / 2;
     const cy = rect.height / 2;
-    setTilt({
+    coordsRef.current = {
       rx: ((y - cy) / cy) * -max,
       ry: ((x - cx) / cx) * max,
-      active: true,
+    };
+    // Throttle to one DOM write per frame.
+    if (rafRef.current !== null) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = null;
+      writeTransform(coordsRef.current.rx, coordsRef.current.ry, true);
     });
   };
 
-  const onMouseEnter = () => enabled && setTilt((t) => ({ ...t, active: true }));
-  const onMouseLeave = () => setTilt({ rx: 0, ry: 0, active: false });
+  const onMouseLeave = () => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+    coordsRef.current = { rx: 0, ry: 0 };
+    writeTransform(0, 0, false);
+  };
 
-  const style: React.CSSProperties = enabled
-    ? {
-        perspective: `${perspective}px`,
-      }
-    : {};
+  const style: React.CSSProperties = enabled ? { perspective: `${perspective}px` } : {};
 
+  // Static base for the inner element; the dynamic transform is applied
+  // imperatively in writeTransform() above.
   const innerStyle: React.CSSProperties = enabled
     ? {
         transformStyle: 'preserve-3d',
-        transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale3d(${
-          tilt.active ? scale : 1
-        }, ${tilt.active ? scale : 1}, 1)`,
-        transition: tilt.active ? 'transform 0.1s ease-out' : 'transform 0.4s ease-out',
+        transform: 'rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+        transition: 'transform 0.4s ease-out',
         willChange: 'transform',
       }
     : {};
 
   return {
     ref,
+    innerRef,
     style,
     innerStyle,
     handlers: enabled ? { onMouseMove, onMouseEnter, onMouseLeave } : {},

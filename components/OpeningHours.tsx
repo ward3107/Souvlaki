@@ -5,9 +5,6 @@ interface OpeningHoursProps {
   language?: string;
 }
 
-// Israel timezone offset (UTC+2 standard, UTC+3 DST)
-const ISRAEL_TIMEZONE_OFFSET = 2; // Will be handled by Intl API
-
 type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=Sunday, 6=Saturday
 
 interface Schedule {
@@ -72,10 +69,6 @@ const isOpenNow = (): boolean => {
 
   // Normal case: open and close are on same day
   return israelHour >= schedule.open && israelHour < schedule.close;
-};
-
-const formatTime = (hour: number): string => {
-  return `${hour.toString().padStart(2, '0')}:00`;
 };
 
 const DAY_NAMES = {

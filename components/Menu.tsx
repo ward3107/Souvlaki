@@ -89,14 +89,6 @@ const CHOOSE_HINT: LocalizedString = {
   el: 'Πατήστε επιλογή για παραγγελία',
 };
 
-const ORDER_LABEL: LocalizedString = {
-  en: 'Order',
-  he: 'להזמין',
-  ar: 'اطلب',
-  ru: 'Заказать',
-  el: 'Παραγγελία',
-};
-
 const FROM_LABEL: LocalizedString = {
   en: 'from',
   he: 'מ-',
@@ -851,47 +843,6 @@ function Badge({ kind, lang }: { kind: BadgeKey; lang: Lang }) {
   );
 }
 
-function VariantChip({
-  variant,
-  basePrice,
-  lang,
-  onAdd,
-}: {
-  variant: Variant;
-  basePrice: number;
-  lang: Lang;
-  onAdd: () => void;
-}) {
-  const total = basePrice + (variant.extra ?? 0);
-
-  return (
-    <button
-      type="button"
-      onClick={onAdd}
-      className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-gray-800 dark:text-gray-100 hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors"
-    >
-      <Plus className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100" aria-hidden="true" />
-      <span className="font-medium">{variant.label[lang]}</span>
-      <span className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-white/80">
-        {variant.extra ? `+${variant.extra}` : formatPrice(total)}
-      </span>
-    </button>
-  );
-}
-
-function AddPill({ lang, onAdd }: { lang: Lang; onAdd: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onAdd}
-      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-xs font-semibold shadow-soft hover:shadow-lift transition-all"
-    >
-      <Plus className="w-3.5 h-3.5" aria-hidden="true" />
-      <span>{ADD_LABEL[lang]}</span>
-    </button>
-  );
-}
-
 function MenuCard({
   item,
   lang,
@@ -904,6 +855,7 @@ function MenuCard({
   const [isFlipped, setIsFlipped] = useState(false);
   const {
     ref: tiltRef,
+    innerRef: tiltInnerRef,
     style: tiltOuterStyle,
     innerStyle: tiltInnerStyle,
     handlers: tiltHandlers,
@@ -917,7 +869,7 @@ function MenuCard({
 
   return (
     <div ref={tiltRef} style={tiltOuterStyle} {...tiltHandlers} className="aspect-[4/5]">
-      <div style={tiltInnerStyle} className="relative w-full h-full">
+      <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
         <motion.div
           className="relative w-full h-full"
           animate={{ rotateY: isFlipped ? 180 : 0 }}
@@ -1044,76 +996,6 @@ function MenuCard({
           </div>
         </motion.div>
       </div>
-    </div>
-  );
-}
-
-function MenuRow({
-  item,
-  lang,
-  onAdd,
-}: {
-  item: MenuItem;
-  lang: Lang;
-  onAdd: (itemId: string, variantId?: string) => void;
-}) {
-  const name = getLocalized(item.name, lang);
-  const desc = getLocalized(item.description, lang);
-  const hasVariants = !!item.variants?.length;
-
-  return (
-    <div className="py-7 border-b border-gray-200/70 dark:border-slate-700/70 last:border-0">
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <h4 className="font-display text-xl md:text-2xl font-semibold text-gray-900 dark:text-white tracking-tight">
-              {name}
-            </h4>
-            {item.badges?.map((b) => (
-              <Badge key={b} kind={b} lang={lang} />
-            ))}
-          </div>
-          {desc && (
-            <p className="mt-1.5 text-sm md:text-base text-gray-600 dark:text-gray-300 italic leading-relaxed max-w-2xl">
-              {desc}
-            </p>
-          )}
-        </div>
-        <div className="text-right rtl:text-left whitespace-nowrap">
-          {hasVariants && (
-            <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-0.5">
-              {FROM_LABEL[lang]}
-            </div>
-          )}
-          <div className="font-display text-2xl md:text-3xl font-semibold text-brand-blue-500">
-            {formatPrice(item.price)}
-          </div>
-        </div>
-      </div>
-
-      {hasVariants ? (
-        <div className="mt-4">
-          <div className="text-xs text-gray-400 dark:text-gray-500 mb-2 inline-flex items-center gap-1">
-            <ChevronRight className="w-3 h-3 rtl:rotate-180" aria-hidden="true" />
-            {CHOOSE_HINT[lang]}
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {item.variants!.map((v) => (
-              <VariantChip
-                key={v.id}
-                variant={v}
-                basePrice={item.price}
-                lang={lang}
-                onAdd={() => onAdd(item.id, v.id)}
-              />
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="mt-3">
-          <AddPill lang={lang} onAdd={() => onAdd(item.id)} />
-        </div>
-      )}
     </div>
   );
 }

@@ -1,0 +1,4 @@
+# SPA fallback for Cloudflare Pages: serve the app shell for any deep link /
+# refresh so client-side state (e.g. ?lang=) resolves instead of 404ing.
+# Real files (assets, images, sw.js, manifest) are served before this rule.
+/*    /index.html    200

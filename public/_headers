@@ -1,0 +1,30 @@
+# Cloudflare Pages headers — the production host for souvlaki.pages.dev.
+# This mirrors vercel.json so BOTH hosts ship identical security + caching.
+# Cloudflare Pages ignores vercel.json, so without this file production had
+# no CSP / HSTS / clickjacking protection at all.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  # Legacy XSS filter is deprecated and can introduce side-channels; rely on CSP.
+  X-XSS-Protection: 0
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(self), payment=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://maps.google.com https://*.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-src 'self' https://www.google.com https://maps.google.com; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; upgrade-insecure-requests
+
+# Hashed, content-addressed build assets — safe to cache forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# App shell must always revalidate so new deploys are picked up.
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+
+# Service worker + manifest must never be stalely cached.
+/sw.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache

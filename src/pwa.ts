@@ -12,10 +12,10 @@ const updateSW = registerSW({
     }
   },
   onOfflineReady() {
-    console.log('✅ PWA ready to work offline');
+    if (import.meta.env.DEV) console.log('✅ PWA ready to work offline');
   },
   onRegistered(registration) {
-    console.log('✅ Service Worker registered:', registration);
+    if (import.meta.env.DEV) console.log('✅ Service Worker registered:', registration);
 
     // Check for updates every hour
     if (registration) {

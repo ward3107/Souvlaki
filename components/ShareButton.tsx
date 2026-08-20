@@ -49,8 +49,12 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const triggerButtonRef = useRef<HTMLButtonElement>(null);
 
+  // Share the canonical origin + path only — strip query/hash so a crafted URL
+  // a visitor arrived on can't ride along into what they share.
   const shareUrl =
-    typeof window !== 'undefined' ? window.location.href : 'https://souvlaki.pages.dev';
+    typeof window !== 'undefined'
+      ? window.location.origin + window.location.pathname
+      : 'https://souvlaki.pages.dev';
   const isRtl = isRtlLang(lang);
 
   const shareMessage = tx(
@@ -70,15 +74,15 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
           text: shareMessage,
           url: shareUrl,
         });
-      } catch (error) {
-        console.log('Share canceled:', error);
+      } catch {
+        // User dismissed the native share sheet — not an error worth logging.
       }
     }
   };
 
   const handleWhatsAppShare = () => {
     const url = `https://wa.me/?text=${encodeURIComponent(shareMessage + ' ' + shareUrl)}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
     setShowShareModal(false);
   };
 
@@ -226,7 +230,7 @@ const ShareButton: React.FC<{ lang: Language }> = ({ lang }) => {
                   {tx(lang, 'העתק קישור', 'Copy Link', 'نسخ الرابط', 'Копировать', 'Αντιγράφη')}
                 </span>
               </button>
-              {navigator.share && (
+              {typeof navigator.share === 'function' && (
                 <button
                   onClick={handleNativeShare}
                   className="col-span-2 flex items-center justify-center gap-2 p-3 sm:p-4 bg-brand-terracotta-50 dark:bg-brand-terracotta-400/15 hover:bg-brand-terracotta-100 rounded-xl transition-colors border border-brand-terracotta-200 dark:border-brand-terracotta-400/30"

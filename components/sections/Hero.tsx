@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ChevronDown, Star } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
@@ -32,19 +32,57 @@ const EMBERS: Array<{
 ];
 
 export default function Hero({ lang }: HeroProps) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [allowVideo, setAllowVideo] = useState(false);
+
+  // Skip the video on reduced-motion / data-saver — the poster carries the
+  // hero on its own, saving several MB on metered connections.
+  useEffect(() => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    type WithSaveData = Navigator & { connection?: { saveData?: boolean } };
+    const conn = (navigator as WithSaveData).connection;
+    const update = () => setAllowVideo(!reduce.matches && !conn?.saveData);
+    update();
+    reduce.addEventListener('change', update);
+    return () => reduce.removeEventListener('change', update);
+  }, []);
+
+  // Only decode frames while the hero is actually on screen — the hero is
+  // sticky, so it stays pinned behind scrolled content and would otherwise
+  // keep decoding off-view.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (!allowVideo) {
+      el.pause();
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) el.play().catch(() => {});
+          else el.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [allowVideo]);
+
   return (
     <div className="sticky top-0 z-0 h-screen overflow-hidden">
       <MouseParallax range={20} className="relative w-full h-full flex items-center justify-center">
         <section id="home" className="absolute inset-0 flex items-center justify-center">
           <video
+            ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover z-0"
             src="/gallery/hero-bg.mp4"
             poster="/gallery/hero-bg.webp"
-            autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             aria-hidden="true"
           />
           <ParallaxLayer depth={0.6} className="absolute inset-0 z-0 pointer-events-none">

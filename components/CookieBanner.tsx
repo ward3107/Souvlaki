@@ -1,31 +1,44 @@
 import React, { useState, useEffect } from 'react';
 import { Language } from '../types';
+import { tx, isRtlLang } from '../utils/i18n';
 
 interface CookieBannerProps {
   language: Language;
 }
 
+// Real GA4 measurement id, supplied via env (VITE_GA_MEASUREMENT_ID). When
+// unset, analytics is simply skipped instead of loading a broken placeholder.
+const GA_ID = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
+
+type GtagWindow = Window & {
+  dataLayer?: unknown[];
+  gtag?: (...args: unknown[]) => void;
+};
+
 const loadAnalytics = () => {
-  // Load Google Analytics
-  if (!document.getElementById('ga-script')) {
+  // Google Analytics — only when a real measurement id is configured.
+  if (GA_ID && !document.getElementById('ga-script')) {
     const gaScript = document.createElement('script');
     gaScript.id = 'ga-script';
     gaScript.async = true;
-    gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX';
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
     document.head.appendChild(gaScript);
 
-    const gaInit = document.createElement('script');
-    gaInit.id = 'ga-init';
-    gaInit.textContent = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX', { anonymize_ip: true });
-      `;
-    document.head.appendChild(gaInit);
+    // Initialise gtag in-bundle (no inline <script> element) so the CSP can
+    // forbid 'unsafe-inline'/'unsafe-eval' script execution.
+    const w = window as GtagWindow;
+    w.dataLayer = w.dataLayer || [];
+    // gtag must push the live `arguments` object, exactly per Google's snippet.
+    const gtag: (...args: unknown[]) => void = function () {
+      // eslint-disable-next-line prefer-rest-params
+      w.dataLayer!.push(arguments);
+    };
+    w.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID, { anonymize_ip: true });
   }
 
-  // Load Vercel Analytics
+  // Vercel Analytics (no-op off Vercel; harmless).
   if (!document.getElementById('vercel-analytics')) {
     const vaScript = document.createElement('script');
     vaScript.id = 'vercel-analytics';
@@ -65,13 +78,7 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
     setIsVisible(false);
   };
 
-  const isRtl = language === Language.HE || language === Language.AR;
-
-  const t = (he: string, en: string, ar: string): string => {
-    if (language === Language.HE) return he;
-    if (language === Language.AR) return ar;
-    return en;
-  };
+  const isRtl = isRtlLang(language);
 
   if (!isVisible) return null;
 
@@ -79,7 +86,14 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
     <div
       className={`fixed bottom-0 left-0 right-0 z-[9999] p-3 sm:p-4 ${isRtl ? 'rtl' : 'ltr'}`}
       role="dialog"
-      aria-label={t('הודעת עוגיות', 'Cookie notice', 'إشعار ملفات تعريف الارتباط')}
+      aria-label={tx(
+        language,
+        'הודעת עוגיות',
+        'Cookie notice',
+        'إشعار ملفات تعريف الارتباط',
+        'Уведомление о файлах cookie',
+        'Ειδοποίηση cookie'
+      )}
     >
       <div
         className="max-w-2xl mx-auto rounded-xl sm:rounded-2xl shadow-2xl overflow-hidden border border-[#F5A623]/30"
@@ -95,16 +109,26 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
               className="text-base sm:text-lg font-bold mb-1 sm:mb-2"
               style={{ color: '#F5A623', fontFamily: 'Heebo, sans-serif' }}
             >
-              {t('פרטיות ועוגיות 🍪', 'Privacy & Cookies 🍪', 'الخصوصية وملفات تعريف الارتباط 🍪')}
+              {tx(
+                language,
+                'פרטיות ועוגיות 🍪',
+                'Privacy & Cookies 🍪',
+                'الخصوصية وملفات تعريف الارتباط 🍪',
+                'Конфиденциальность и cookie 🍪',
+                'Απόρρητο & Cookies 🍪'
+              )}
             </h3>
             <p
               className="text-xs sm:text-sm leading-relaxed text-gray-300"
               style={{ fontFamily: 'Heebo, sans-serif' }}
             >
-              {t(
+              {tx(
+                language,
                 'אנו משתמשים בעוגיות הכרחיות לתפקוד האתר ובעוגיות ניתוח (Google Analytics, Vercel Analytics) לשיפור השירות. בהתאם לתיקון 13 לחוק הגנת הפרטיות, באפשרותך לבחור אילו עוגיות לאשר.',
                 'We use essential cookies for site functionality and analytics cookies (Google Analytics, Vercel Analytics) to improve our service. Per Israeli Amendment 13, you can choose which cookies to allow.',
-                'نستخدم ملفات تعريف الارتباط الأساسية لعمل الموقع وملفات تعريف الارتباط التحليلية (Google Analytics, Vercel Analytics) لتحسين الخدمة. وفقاً للتعديل 13، يمكنك اختيار ملفات تعريف الارتباط التي تسمح بها.'
+                'نستخدم ملفات تعريف الارتباط الأساسية لعمل الموقع وملفات تعريف الارتباط التحليلية (Google Analytics, Vercel Analytics) لتحسين الخدمة. وفقاً للتعديل 13، يمكنك اختيار ملفات تعريف الارتباط التي تسمح بها.',
+                'Мы используем необходимые файлы cookie для работы сайта и аналитические файлы cookie (Google Analytics, Vercel Analytics) для улучшения сервиса. Согласно поправке 13, вы можете выбрать, какие cookie разрешить.',
+                'Χρησιμοποιούμε απαραίτητα cookies για τη λειτουργία του ιστότοπου και αναλυτικά cookies (Google Analytics, Vercel Analytics) για τη βελτίωση της υπηρεσίας. Σύμφωνα με την Τροποποίηση 13, μπορείτε να επιλέξετε ποια cookies θα επιτρέψετε.'
               )}
             </p>
           </div>
@@ -119,7 +143,14 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                 fontFamily: 'Heebo, sans-serif',
               }}
             >
-              {t('אישור הכל ✓', 'Accept All ✓', 'قبول الكل ✓')}
+              {tx(
+                language,
+                'אישור הכל ✓',
+                'Accept All ✓',
+                'قبول الكل ✓',
+                'Принять все ✓',
+                'Αποδοχή όλων ✓'
+              )}
             </button>
             <button
               onClick={handleEssentialOnly}
@@ -131,7 +162,14 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
                 fontFamily: 'Heebo, sans-serif',
               }}
             >
-              {t('הכרחיות בלבד', 'Essential Only', 'الضرورية فقط')}
+              {tx(
+                language,
+                'הכרחיות בלבד',
+                'Essential Only',
+                'الضرورية فقط',
+                'Только необходимые',
+                'Μόνο απαραίτητα'
+              )}
             </button>
           </div>
 
@@ -148,7 +186,14 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ language }) => {
               className="text-[11px] sm:text-xs hover:underline transition-colors"
               style={{ color: '#F5A623', fontFamily: 'Heebo, sans-serif' }}
             >
-              {t('מדיניות פרטיות', 'Privacy Policy', 'سياسة الخصوصية')}
+              {tx(
+                language,
+                'מדיניות פרטיות',
+                'Privacy Policy',
+                'سياسة الخصوصية',
+                'Политика конфиденциальности',
+                'Πολιτική Απορρήτου'
+              )}
             </button>
           </div>
         </div>

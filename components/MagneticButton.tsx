@@ -26,6 +26,7 @@ export default function MagneticButton({
   rel,
 }: MagneticButtonProps) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
@@ -51,9 +52,15 @@ export default function MagneticButton({
   const childX = useTransform(springX, (v) => v * 0.55);
   const childY = useTransform(springY, (v) => v * 0.55);
 
+  // Cache the rect on enter so mousemove doesn't force a reflow per event.
+  const handleEnter = () => {
+    rectRef.current = ref.current?.getBoundingClientRect() ?? null;
+  };
+
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!enabled || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (!enabled) return;
+    const rect = rectRef.current ?? ref.current?.getBoundingClientRect() ?? null;
+    if (!rect) return;
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
     const dx = ((e.clientX - cx) / (rect.width / 2)) * strength;
@@ -70,6 +77,7 @@ export default function MagneticButton({
   const inner = (
     <motion.div
       ref={ref}
+      onMouseEnter={handleEnter}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       style={{ x: springX, y: springY, display: 'inline-block' }}

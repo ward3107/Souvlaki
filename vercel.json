@@ -15,36 +15,13 @@
       "*": true
     }
   },
-  "redirects": [
-    {
-      "source": "/((?!manifest\\.webmanifest|manifest\\.json|sw\\.js|workbox-.+\\.js|.*\\.(?:js|css|png|jpg|jpeg|svg|gif|webp|ico|woff2|woff|ttf|json|html|webmanifest)).*)",
-      "destination": "https://souvlaki.pages.dev/"
-    }
-  ],
   "rewrites": [
     {
-      "source": "/((?!manifest\\.webmanifest|manifest\\.json|sw\\.js|workbox-.+\\.js|.*\\.(?:js|css|png|jpg|jpeg|svg|gif|webp|ico|woff2|woff|ttf|json|html|webmanifest)).*)",
+      "source": "/((?!manifest\\.webmanifest|sw\\.js|workbox-.+\\.js|.*\\.(?:js|css|png|jpg|jpeg|svg|gif|webp|ico|woff2|woff|ttf|json|html|webmanifest)).*)",
       "destination": "/index.html"
     }
   ],
   "headers": [
-    {
-      "source": "/manifest.json",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        },
-        {
-          "key": "Content-Type",
-          "value": "application/manifest+json"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        }
-      ]
-    },
     {
       "source": "/sw.js",
       "headers": [
@@ -92,7 +69,7 @@
         },
         {
           "key": "X-XSS-Protection",
-          "value": "1; mode=block"
+          "value": "0"
         },
         {
           "key": "Strict-Transport-Security",
@@ -108,7 +85,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://maps.google.com https://*.googleapis.com; frame-src 'self' https://www.google.com https://maps.google.com; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; upgrade-insecure-requests; block-all-mixed-content"
+          "value": "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com https://maps.google.com https://*.googleapis.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; frame-src 'self' https://www.google.com https://maps.google.com; media-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; upgrade-insecure-requests"
         }
       ]
     },
