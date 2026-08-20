@@ -187,7 +187,6 @@ const App: React.FC = () => {
             {/* Story, top to bottom: welcome band -> menu prompt -> watch it made
                 -> made fresh -> meet the family -> our world -> proof -> visit. */}
             <MarqueeStrip lang={lang} />
-            <MenuCTA lang={lang} />
 
             {/* Dramatic full-screen signature showpiece */}
             <SignatureShowpiece lang={lang} />
@@ -196,6 +195,7 @@ const App: React.FC = () => {
             <FirePlateJourney lang={lang} />
 
             <FreshIngredients lang={lang} />
+            <MenuCTA lang={lang} />
             <About lang={lang} />
             <FamilyHeritage lang={lang} />
 
