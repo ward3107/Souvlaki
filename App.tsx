@@ -21,11 +21,10 @@ import InstallBanner from './components/InstallBanner';
 import FloatingActions from './components/FloatingActions';
 import BackToTopButton from './components/BackToTopButton';
 import Lightbox from './components/Lightbox';
-import ParallaxStripe from './components/ParallaxStripe';
 import FirePlateJourney from './components/FirePlateJourney';
 import GreekKeyThread from './components/GreekKeyThread';
 import FreshIngredients from './components/FreshIngredients';
-import { tx } from './utils/i18n';
+import FamilyHeritage from './components/FamilyHeritage';
 
 // Lazy chunks
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
@@ -176,31 +175,9 @@ const App: React.FC = () => {
           <InstagramCTA lang={lang} />
           <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
 
-          <ParallaxStripe
-            image="/video/family-recipes-poster.jpg"
-            video="/video/family-recipes.mp4"
-            height="55vh"
-          >
-            <div className="text-center px-6 max-w-3xl">
-              <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
-                {tx(
-                  lang,
-                  'מתכונים משפחתיים. רגעים אמיתיים. מאז ומתמיד.',
-                  'Family recipes. Real moments. Always.',
-                  'وصفات عائلية. لحظات حقيقية. دائماً.',
-                  'Семейные рецепты. Настоящие моменты. Всегда.',
-                  'Οικογενιακές συνταγές. Πραγματικές στιγμές. Πάντα.'
-                )}
-              </p>
-              <div
-                className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
-                aria-hidden="true"
-              />
-            </div>
-          </ParallaxStripe>
-
           <About lang={lang} />
           <FreshIngredients lang={lang} />
+          <FamilyHeritage lang={lang} />
           <Reviews lang={lang} />
 
           <FAQ lang={lang} />
