@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Plus, Check, Bell, ChefHat } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Plus, Check, Bell, BellRing, BellOff, ChefHat } from 'lucide-react';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
 
@@ -40,14 +40,15 @@ function saveOrders(orders: Order[]) {
   }
 }
 
-// Short "ready" chime via WebAudio — no asset needed.
-function chime() {
+// Short WebAudio tones — no asset needed. The owner's tap gestures (New order /
+// Start / enabling alerts) unlock the audio context so later cues can play.
+function tones(notes: Array<[number, number, number]>) {
   try {
     const Ctx =
       window.AudioContext ||
       (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     const ctx = new Ctx();
-    const play = (freq: number, start: number, dur: number) => {
+    for (const [freq, start, dur] of notes) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
@@ -59,14 +60,26 @@ function chime() {
       gain.connect(ctx.destination);
       osc.start(ctx.currentTime + start);
       osc.stop(ctx.currentTime + start + dur);
-    };
-    play(880, 0, 0.28);
-    play(1174, 0.22, 0.34);
-    setTimeout(() => ctx.close().catch(() => {}), 900);
+    }
+    const total = notes.reduce((m, [, s, d]) => Math.max(m, s + d), 0);
+    setTimeout(() => ctx.close().catch(() => {}), (total + 0.1) * 1000);
   } catch {
     // audio unavailable — the visual alert still fires
   }
 }
+
+// Rising two-note "a new order is on" cue.
+const startChime = () =>
+  tones([
+    [660, 0, 0.14],
+    [990, 0.12, 0.2],
+  ]);
+// Brighter two-note "order ready" cue.
+const readyChime = () =>
+  tones([
+    [880, 0, 0.28],
+    [1174, 0.22, 0.34],
+  ]);
 
 function fmt(totalSec: number): string {
   const sign = totalSec < 0 ? '+' : '';
@@ -83,35 +96,100 @@ export default function Kitchen({ lang }: { lang: Language }) {
   const [newName, setNewName] = useState('');
   const [newMin, setNewMin] = useState(DEFAULT_MIN);
   const seqRef = useRef(loadOrders().length + 1);
+  const [notifPerm, setNotifPerm] = useState<NotificationPermission | 'unsupported'>(() =>
+    typeof Notification !== 'undefined' ? Notification.permission : 'unsupported'
+  );
 
-  // One ticker drives every countdown, and fires the ready-alert exactly once
-  // per order as it crosses zero. Functional setState keeps this off the render
-  // path and avoids stale closures.
+  // Refs so the once-a-second ticker always sees the latest orders + language
+  // without being torn down and recreated each render.
+  const ordersRef = useRef(orders);
+  useEffect(() => {
+    ordersRef.current = orders;
+  }, [orders]);
+  const langRef = useRef(lang);
+  useEffect(() => {
+    langRef.current = lang;
+  }, [lang]);
+
+  // A system notification on the owner's phone/tablet (via the service worker so
+  // it also shows when the tab is backgrounded on that device). Requires the
+  // owner to have granted permission with the bell toggle.
+  const notify = useCallback((label: string) => {
+    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+    const title = tx(
+      langRef.current,
+      'הזמנה מוכנה!',
+      'Order ready!',
+      'الطلب جاهز!',
+      'Заказ готов!',
+      'Έτοιμη παραγγελία!'
+    );
+    const opts: NotificationOptions = {
+      body: label,
+      tag: `kitchen-${label}`,
+      icon: '/favicon.png',
+    };
+    navigator.serviceWorker
+      ?.getRegistration()
+      .then((reg) => {
+        if (reg && 'showNotification' in reg) reg.showNotification(title, opts);
+        else new Notification(title, opts);
+      })
+      .catch(() => {
+        try {
+          new Notification(title, opts);
+        } catch {
+          // notifications unavailable
+        }
+      });
+  }, []);
+
+  const enableNotifications = async () => {
+    if (typeof Notification === 'undefined') return;
+    if (Notification.permission === 'granted') {
+      notify(
+        tx(
+          langRef.current,
+          'התראות פעילות',
+          'Alerts on',
+          'التنبيهات مفعّلة',
+          'Уведомления включены',
+          'Ειδοποιήσεις ενεργές'
+        )
+      );
+      return;
+    }
+    try {
+      const p = await Notification.requestPermission();
+      setNotifPerm(p);
+    } catch {
+      // permission request failed
+    }
+  };
+
+  // One ticker drives every countdown. Ready-detection reads the live orders via
+  // ref, fires the cue + notification once, then marks the order alerted — side
+  // effects stay out of the setState updater so they never double-fire.
   useEffect(() => {
     const id = setInterval(() => {
       const t = Date.now();
       setNow(t);
-      setOrders((prev) => {
-        let changed = false;
-        const next = prev.map((o) => {
-          const remaining = o.durationSec - (t - o.startAt) / 1000;
-          if (remaining <= 0 && !o.alerted) {
-            changed = true;
-            chime();
-            try {
-              navigator.vibrate?.([300, 120, 300]);
-            } catch {
-              // vibration unsupported
-            }
-            return { ...o, alerted: true };
-          }
-          return o;
-        });
-        return changed ? next : prev;
-      });
+      const newlyReady = ordersRef.current.filter(
+        (o) => !o.alerted && o.durationSec - (t - o.startAt) / 1000 <= 0
+      );
+      if (newlyReady.length === 0) return;
+      readyChime();
+      try {
+        navigator.vibrate?.([300, 120, 300]);
+      } catch {
+        // vibration unsupported
+      }
+      newlyReady.forEach((o) => notify(o.label));
+      const readyIds = new Set(newlyReady.map((o) => o.id));
+      setOrders((prev) => prev.map((o) => (readyIds.has(o.id) ? { ...o, alerted: true } : o)));
     }, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [notify]);
 
   useEffect(() => {
     saveOrders(orders);
@@ -132,6 +210,7 @@ export default function Kitchen({ lang }: { lang: Language }) {
       },
       ...prev,
     ]);
+    startChime(); // audible "a new order is on" cue for the kitchen
     setNewName('');
     setNewMin(DEFAULT_MIN);
     setCreating(false);
@@ -182,14 +261,73 @@ export default function Kitchen({ lang }: { lang: Language }) {
               </p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setCreating((c) => !c)}
-            className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 px-4 py-2.5 text-sm font-bold shadow-lift transition-colors active:scale-95"
-          >
-            <Plus className="w-4 h-4" aria-hidden="true" />
-            {tx(lang, 'הזמנה חדשה', 'New order', 'طلب جديد', 'Новый заказ', 'Νέα παραγγελία')}
-          </button>
+          <div className="flex items-center gap-2">
+            {notifPerm !== 'unsupported' && (
+              <button
+                type="button"
+                onClick={enableNotifications}
+                aria-label={tx(
+                  lang,
+                  'הפעל התראות',
+                  'Enable alerts',
+                  'تفعيل التنبيهات',
+                  'Включить уведомления',
+                  'Ενεργοποίηση ειδοποιήσεων'
+                )}
+                title={
+                  notifPerm === 'granted'
+                    ? tx(
+                        lang,
+                        'התראות פעילות',
+                        'Alerts on',
+                        'التنبيهات مفعّلة',
+                        'Уведомления включены',
+                        'Ειδοποιήσεις ενεργές'
+                      )
+                    : notifPerm === 'denied'
+                      ? tx(
+                          lang,
+                          'התראות חסומות',
+                          'Alerts blocked',
+                          'التنبيهات محظورة',
+                          'Уведомления заблокированы',
+                          'Ειδοποιήσεις αποκλεισμένες'
+                        )
+                      : tx(
+                          lang,
+                          'הפעל התראות',
+                          'Enable alerts',
+                          'تفعيل التنبيهات',
+                          'Включить уведомления',
+                          'Ενεργοποίηση ειδοποιήσεων'
+                        )
+                }
+                className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors active:scale-95 ${
+                  notifPerm === 'granted'
+                    ? 'bg-emerald-500/20 text-emerald-300'
+                    : notifPerm === 'denied'
+                      ? 'bg-white/5 text-white/40'
+                      : 'bg-white/10 text-white/80 hover:bg-white/15'
+                }`}
+              >
+                {notifPerm === 'granted' ? (
+                  <BellRing className="w-5 h-5" aria-hidden="true" />
+                ) : notifPerm === 'denied' ? (
+                  <BellOff className="w-5 h-5" aria-hidden="true" />
+                ) : (
+                  <Bell className="w-5 h-5" aria-hidden="true" />
+                )}
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setCreating((c) => !c)}
+              className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 px-4 py-2.5 text-sm font-bold shadow-lift transition-colors active:scale-95"
+            >
+              <Plus className="w-4 h-4" aria-hidden="true" />
+              {tx(lang, 'הזמנה חדשה', 'New order', 'طلب جديد', 'Новый заказ', 'Νέα παραγγελία')}
+            </button>
+          </div>
         </div>
       </header>
 
