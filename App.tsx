@@ -22,6 +22,7 @@ import FloatingActions from './components/FloatingActions';
 import BackToTopButton from './components/BackToTopButton';
 import Lightbox from './components/Lightbox';
 import ParallaxStripe from './components/ParallaxStripe';
+import FirePlateJourney from './components/FirePlateJourney';
 import { tx } from './utils/i18n';
 
 // Lazy chunks
@@ -165,6 +166,10 @@ const App: React.FC = () => {
             below render against the page bg, not the hero video. */}
         <div className="relative z-10 bg-slate-50 dark:bg-slate-900">
           <Menu language={lang} />
+
+          {/* Cinematic "from fire to plate" scroll story */}
+          <FirePlateJourney lang={lang} />
+
           <MarqueeStrip lang={lang} />
           <InstagramCTA lang={lang} />
           <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
@@ -194,30 +199,6 @@ const App: React.FC = () => {
 
           <About lang={lang} />
           <Reviews lang={lang} />
-
-          <ParallaxStripe
-            image="/video/grill-poster.jpg"
-            video="/video/grill.mp4"
-            height="55vh"
-            overlay={0.5}
-          >
-            <div className="text-center px-6 max-w-3xl">
-              <p className="font-display text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight drop-shadow-lg">
-                {tx(
-                  lang,
-                  'מהאש שלנו, אל הצלחת שלך.',
-                  'From our grill to your plate.',
-                  'من شوائنا إلى طبقك.',
-                  'С нашего гриля — на вашу тарелку.',
-                  'Από τη σχάρα μας στο πιάτο σας.'
-                )}
-              </p>
-              <div
-                className="mt-4 inline-block w-12 h-[2px] bg-brand-terracotta-200"
-                aria-hidden="true"
-              />
-            </div>
-          </ParallaxStripe>
 
           <FAQ lang={lang} />
           <Contact lang={lang} />
