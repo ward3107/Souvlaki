@@ -126,17 +126,13 @@ function Caption({
 }) {
   const start = i / N;
   const end = (i + 1) / N;
-  const opacity = useTransform(
-    progress,
-    [
-      Math.max(0, start - FADE),
-      start + FADE * 0.5,
-      end - FADE * 0.5,
-      i === N - 1 ? 1 : Math.min(1, end + FADE),
-    ],
-    [0, 1, 1, i === N - 1 ? 1 : 0]
-  );
-  const y = useTransform(progress, [start, start + FADE], [28, 0]);
+  // Fade each caption fully in and out WITHIN its own beat window so adjacent
+  // captions never overlap (they sit at the same spot). The last one stays.
+  const w = 1 / (N * 4);
+  const input = i === N - 1 ? [start, start + w, 1] : [start, start + w, end - w, end];
+  const output = i === N - 1 ? [0, 1, 1] : [0, 1, 1, 0];
+  const opacity = useTransform(progress, input, output);
+  const y = useTransform(progress, [start, start + w], [28, 0]);
 
   return (
     <motion.p
@@ -181,7 +177,7 @@ export default function FirePlateJourney({ lang }: Props) {
         'От огня до тарелки',
         'Από τη φωτιά στο πιάτο'
       )}
-      style={{ height: `${N * 50}vh` }}
+      style={{ height: `${N * 64}vh` }}
       className="relative bg-black"
     >
       <div className="sticky top-0 h-screen overflow-hidden">
