@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Globe, Menu as MenuIcon, Moon, Sun, X } from 'lucide-react';
 import { Language, type TranslationKey } from '../../types';
 import { t } from '../../utils/i18n';
-import { scrollToSection } from '../../utils/scroll';
+import { scrollToSection, scrollToSectionWhenReady } from '../../utils/scroll';
 import { navigate } from '../../utils/router';
 
 interface HeaderProps {
@@ -62,7 +62,8 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
     // Section links: make sure we're on the homepage, then scroll to the section.
     if (window.location.pathname !== '/') {
       navigate('/');
-      setTimeout(() => scrollToSection(id), 60);
+      // The homepage tree needs a few frames to mount before the target exists.
+      scrollToSectionWhenReady(id);
     } else {
       scrollToSection(id);
     }

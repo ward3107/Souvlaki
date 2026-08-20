@@ -1299,6 +1299,11 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     if (!customerName.trim()) return;
     const url = buildCartUrl(lang, resolvedLines, customerName.trim());
     window.open(url, '_blank', 'noopener,noreferrer');
+    // The order handed off to WhatsApp — reset so returning to the tab doesn't
+    // show a stale cart the customer might re-send as a duplicate.
+    setCart([]);
+    setCustomerName('');
+    setCartOpen(false);
   };
 
   useEffect(() => {
@@ -1344,7 +1349,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
         </Reveal>
 
         {/* Category tabs (sticky) */}
-        <div className="mb-2 sticky top-16 z-20 -mx-4 px-4 py-3 bg-brand-cream-100/90 dark:bg-slate-900/90 backdrop-blur-sm">
+        <div className="mb-2 sticky top-20 z-20 -mx-4 px-4 py-3 bg-brand-cream-100/90 dark:bg-slate-900/90 backdrop-blur-sm">
           <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-hide">
             {MENU_CATEGORIES.map((cat) => {
               const Icon = cat.Icon;

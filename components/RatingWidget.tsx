@@ -195,6 +195,9 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
     }
 
     const onMouseLeave = (e: MouseEvent) => {
+      // On the dedicated /menu page the cursor heading to the top is almost
+      // always someone reaching for the back button — don't ambush them.
+      if (window.location.pathname === '/menu') return;
       if (e.clientY <= 0) {
         try {
           sessionStorage.setItem('rating-shown', '1');

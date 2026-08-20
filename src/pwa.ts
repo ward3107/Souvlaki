@@ -5,7 +5,7 @@ const updateSW = registerSW({
     // Show update prompt to user
     if (
       confirm(
-        'גרסה חדשה זמינה! לרענן עכשיו?\n\nNew version available! Refresh now?\n\nНовая версия доступна! Обновить?\n\nНueva versión disponible! ¿Actualizar?'
+        'גרסה חדשה זמינה! לרענן עכשיו?\n\nNew version available! Refresh now?\n\nإصدار جديد متاح! تحديث الآن؟\n\nНовая версия доступна! Обновить?\n\nΝέα έκδοση διαθέσιμη! Ανανέωση τώρα;'
       )
     ) {
       updateSW(true);
