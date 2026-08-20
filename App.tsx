@@ -24,6 +24,7 @@ import Lightbox from './components/Lightbox';
 import ParallaxStripe from './components/ParallaxStripe';
 import FirePlateJourney from './components/FirePlateJourney';
 import GreekKeyThread from './components/GreekKeyThread';
+import FreshIngredients from './components/FreshIngredients';
 import { tx } from './utils/i18n';
 
 // Lazy chunks
@@ -199,6 +200,7 @@ const App: React.FC = () => {
           </ParallaxStripe>
 
           <About lang={lang} />
+          <FreshIngredients lang={lang} />
           <Reviews lang={lang} />
 
           <FAQ lang={lang} />
