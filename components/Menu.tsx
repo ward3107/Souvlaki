@@ -15,6 +15,7 @@ import {
   ShoppingBag,
   X,
   Trash2,
+  RotateCcw,
   type LucideIcon,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -881,11 +882,23 @@ function MenuCard({
   const desc = getLocalized(item.description, lang);
   const hasVariants = !!item.variants?.length;
 
-  const flipBack = () => setIsFlipped(false);
-  const handleAdd = (variantId?: string) => onAdd(item.id, variantId);
+  // Adding also flips the card back to its front — a clean "added" confirmation
+  // and it returns the deck to a tidy state.
+  const handleAdd = (variantId?: string) => {
+    onAdd(item.id, variantId);
+    setIsFlipped(false);
+  };
 
   return (
-    <div ref={tiltRef} style={tiltOuterStyle} {...tiltHandlers} className="aspect-[4/5]">
+    <div
+      ref={tiltRef}
+      style={tiltOuterStyle}
+      {...tiltHandlers}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' && isFlipped) setIsFlipped(false);
+      }}
+      className="aspect-[4/5]"
+    >
       <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
         <motion.div
           className="relative w-full h-full"
@@ -893,15 +906,15 @@ function MenuCard({
           transition={{ type: 'spring', stiffness: 90, damping: 18 }}
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {/* FRONT */}
+          {/* FRONT — tap to flip to details */}
           <button
             type="button"
             onClick={() => setIsFlipped(true)}
             aria-label={`${name} — ${getLocalized(DETAILS_HINT, lang)}`}
-            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 shadow-soft hover:shadow-pop overflow-hidden text-start transition-shadow group"
+            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-soft hover:shadow-pop overflow-hidden text-start transition-shadow group"
             style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' as const }}
           >
-            <div className="relative h-3/5 overflow-hidden bg-brand-cream-200 dark:bg-slate-700">
+            <div className="relative h-[62%] overflow-hidden bg-brand-cream-200 dark:bg-slate-700">
               {item.image ? (
                 <img
                   src={item.image}
@@ -913,70 +926,77 @@ function MenuCard({
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <Sandwich
-                    className="w-16 h-16 text-brand-blue-200 dark:text-slate-500"
+                    className="w-12 h-12 text-brand-blue-200 dark:text-slate-500"
                     aria-hidden="true"
                   />
                 </div>
               )}
+              {/* Legibility scrim so the price pill always reads on busy photos */}
+              <div
+                className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/45 to-transparent pointer-events-none"
+                aria-hidden="true"
+              />
               <div className="absolute top-2 end-2 flex flex-col items-end gap-1">
                 {item.badges?.map((b) => (
                   <Badge key={b} kind={b} lang={lang} />
                 ))}
               </div>
               <div className="absolute bottom-2 end-2">
-                <span className="bg-brand-terracotta-400 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-soft whitespace-nowrap">
+                <span className="bg-brand-terracotta-400 text-white px-2.5 py-1 rounded-full text-xs sm:text-sm font-bold shadow-soft whitespace-nowrap">
                   {hasVariants
                     ? `${getLocalized(FROM_LABEL, lang)} ${formatPrice(item.price)}`
                     : formatPrice(item.price)}
                 </span>
               </div>
             </div>
-            <div className="p-4 h-2/5 flex flex-col justify-between">
-              <h4 className="font-display text-lg md:text-xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
+            <div className="p-2.5 sm:p-4 h-[38%] flex flex-col justify-between">
+              <h4 className="font-display text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
                 {name}
               </h4>
-              <div className="text-[11px] text-gray-500 dark:text-gray-400 inline-flex items-center gap-1">
+              <div className="text-[10px] sm:text-[11px] font-medium text-brand-terracotta-500 inline-flex items-center gap-1">
                 <ChevronRight className="w-3 h-3 rtl:rotate-180" aria-hidden="true" />
                 {getLocalized(DETAILS_HINT, lang)}
               </div>
             </div>
           </button>
 
-          {/* BACK */}
+          {/* BACK — tap anywhere (outside the add controls) to flip back */}
           <div
-            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 shadow-pop p-5 flex flex-col"
+            role="button"
+            tabIndex={-1}
+            onClick={() => setIsFlipped(false)}
+            aria-label={getLocalized(BACK_LABEL, lang)}
+            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-pop p-3 sm:p-5 flex flex-col cursor-pointer"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden' as const,
               transform: 'rotateY(180deg)',
             }}
           >
-            <button
-              type="button"
-              onClick={flipBack}
-              className="self-start mb-2 inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 hover:text-brand-blue-500 transition-colors"
-              aria-label={getLocalized(BACK_LABEL, lang)}
+            <div
+              className="absolute top-2 end-2 text-gray-300 dark:text-slate-600"
+              aria-hidden="true"
             >
-              <ChevronRight className="w-3 h-3 rotate-180 rtl:rotate-0" aria-hidden="true" />
-              <span>{getLocalized(BACK_LABEL, lang)}</span>
-            </button>
+              <RotateCcw className="w-4 h-4" />
+            </div>
 
-            <div className="flex items-baseline justify-between gap-2 mb-2">
-              <h4 className="font-display text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
+            <div className="flex items-baseline justify-between gap-2 mb-1.5 pe-6">
+              <h4 className="font-display text-sm sm:text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
                 {name}
               </h4>
-              <span className="font-display text-lg font-semibold text-brand-blue-500 whitespace-nowrap">
+              <span className="font-display text-sm sm:text-lg font-semibold text-brand-blue-500 whitespace-nowrap">
                 {formatPrice(item.price)}
               </span>
             </div>
 
             {desc && (
-              <p className="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed mb-3 line-clamp-5">
+              <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed mb-3 line-clamp-4 sm:line-clamp-5">
                 {desc}
               </p>
             )}
 
-            <div className="mt-auto">
+            {/* Actions don't flip the card — only add to cart */}
+            <div className="mt-auto" onClick={(e) => e.stopPropagation()}>
               {hasVariants ? (
                 <>
                   <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">
@@ -987,8 +1007,11 @@ function MenuCard({
                       <button
                         key={v.id}
                         type="button"
-                        onClick={() => handleAdd(v.id)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-xs hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAdd(v.id);
+                        }}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-xs hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors active:scale-95"
                       >
                         <Plus className="w-3 h-3" aria-hidden="true" />
                         <span>{v.label[lang]}</span>
@@ -1002,8 +1025,11 @@ function MenuCard({
               ) : (
                 <button
                   type="button"
-                  onClick={() => handleAdd()}
-                  className="w-full inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all active:scale-[0.97]"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAdd();
+                  }}
+                  className="w-full inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-xs sm:text-sm font-semibold shadow-soft transition-all active:scale-[0.97]"
                 >
                   <Plus className="w-4 h-4" aria-hidden="true" />
                   <span>{getLocalized(ADD_LABEL, lang)}</span>
@@ -1381,7 +1407,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
 
         {/* Items grid — 3D flip cards */}
         <div className="mt-6 pb-24">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
             {active.items.map((item, idx) => (
               <Reveal key={`${active.id}-${item.id}`} delay={idx * 0.05} y={20}>
                 <MenuCard item={item} lang={lang} onAdd={handleAdd} />
