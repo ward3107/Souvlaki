@@ -148,7 +148,7 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
               <button
                 key={link.id}
                 onClick={() => handleNav(link.id)}
-                className="block w-full text-start py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium"
+                className="block w-full text-center py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-200 font-medium"
               >
                 {t(lang, link.labelKey)}
               </button>
