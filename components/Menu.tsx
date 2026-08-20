@@ -897,7 +897,7 @@ function MenuCard({
       onKeyDown={(e) => {
         if (e.key === 'Escape' && isFlipped) setIsFlipped(false);
       }}
-      className="aspect-[4/5]"
+      className="aspect-[7/8]"
     >
       <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
         <motion.div
@@ -980,7 +980,7 @@ function MenuCard({
               <RotateCcw className="w-4 h-4" />
             </div>
 
-            <div className="flex items-baseline justify-between gap-2 mb-1.5 pe-6">
+            <div className="flex items-baseline justify-between gap-2 pe-6 pb-1.5 mb-1.5 border-b border-black/5 dark:border-white/10">
               <h4 className="font-display text-sm sm:text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
                 {name}
               </h4>
@@ -990,7 +990,7 @@ function MenuCard({
             </div>
 
             {desc && (
-              <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed mb-3 line-clamp-4 sm:line-clamp-5">
+              <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 italic leading-snug mb-2.5 line-clamp-3 sm:line-clamp-4">
                 {desc}
               </p>
             )}
