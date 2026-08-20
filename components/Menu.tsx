@@ -786,8 +786,25 @@ function resolveLine(line: CartLine, lang: Lang): ResolvedLine | null {
   return null;
 }
 
-function buildCartUrl(lang: Lang, lines: ResolvedLine[]): string {
+const NAME_LABEL: LocalizedString = {
+  he: 'שם',
+  en: 'Name',
+  ar: 'الاسم',
+  ru: 'Имя',
+  el: 'Όνομα',
+};
+
+const NAME_PLACEHOLDER: LocalizedString = {
+  he: 'השם שלך (חובה)',
+  en: 'Your name (required)',
+  ar: 'اسمك (مطلوب)',
+  ru: 'Ваше имя (обязательно)',
+  el: 'Το όνομά σας (απαιτείται)',
+};
+
+function buildCartUrl(lang: Lang, lines: ResolvedLine[], name: string): string {
   const header = ORDER_INTRO[lang];
+  const nameLine = `${NAME_LABEL[lang]}: ${name}`;
   const body = lines
     .map((l) => {
       const variant = l.variantLabel ? ` — ${l.variantLabel}` : '';
@@ -796,7 +813,7 @@ function buildCartUrl(lang: Lang, lines: ResolvedLine[]): string {
     .join('\n');
   const total = lines.reduce((sum, l) => sum + l.lineTotal, 0);
   const footer = `${TOTAL_LABEL[lang]}: ${formatPrice(total)}`;
-  const text = `${header}\n\n${body}\n\n${footer}`;
+  const text = `${header}\n\n${nameLine}\n\n${body}\n\n${footer}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
@@ -1050,6 +1067,8 @@ function CartSheet({
   onRemove,
   onClear,
   onSend,
+  customerName,
+  onNameChange,
 }: {
   lines: ResolvedLine[];
   total: number;
@@ -1061,6 +1080,8 @@ function CartSheet({
   onRemove: (key: string) => void;
   onClear: () => void;
   onSend: () => void;
+  customerName: string;
+  onNameChange: (v: string) => void;
 }) {
   return (
     <div
@@ -1160,6 +1181,16 @@ function CartSheet({
                 {formatPrice(total)}
               </span>
             </div>
+            <input
+              type="text"
+              value={customerName}
+              onChange={(e) => onNameChange(e.target.value)}
+              placeholder={NAME_PLACEHOLDER[lang]}
+              aria-label={NAME_LABEL[lang]}
+              autoComplete="name"
+              required
+              className="w-full px-4 py-2.5 rounded-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-terracotta-300"
+            />
             <div className="flex items-center gap-2">
               <button
                 type="button"
@@ -1171,7 +1202,8 @@ function CartSheet({
               <button
                 type="button"
                 onClick={onSend}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all active:scale-[0.97]"
+                disabled={!customerName.trim()}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
               >
                 <WhatsAppGlyph className="w-4 h-4" />
                 <span>{SEND_ORDER_LABEL[lang]}</span>
@@ -1220,6 +1252,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [activeId, setActiveId] = useState<string>(MENU_CATEGORIES[0].id);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [customerName, setCustomerName] = useState('');
   const lang = language as Lang;
   const isRtl = lang === 'he' || lang === 'ar';
   const titles = SECTION_TITLES[lang] ?? SECTION_TITLES.en;
@@ -1263,7 +1296,8 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
 
   const sendOrder = () => {
     if (resolvedLines.length === 0) return;
-    const url = buildCartUrl(lang, resolvedLines);
+    if (!customerName.trim()) return;
+    const url = buildCartUrl(lang, resolvedLines, customerName.trim());
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
@@ -1379,6 +1413,8 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
           onRemove={removeLine}
           onClear={clearCart}
           onSend={sendOrder}
+          customerName={customerName}
+          onNameChange={setCustomerName}
         />
       )}
     </section>

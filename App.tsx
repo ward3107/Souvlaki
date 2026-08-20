@@ -26,7 +26,6 @@ import GreekKeyThread from './components/GreekKeyThread';
 import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
 import SignatureShowpiece from './components/SignatureShowpiece';
-import OrderCTA from './components/OrderCTA';
 
 // Lazy chunks
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
@@ -188,9 +187,6 @@ const App: React.FC = () => {
 
           <Reviews lang={lang} />
           <FAQ lang={lang} />
-
-          {/* Strong conversion nudge before the visit details */}
-          <OrderCTA lang={lang} />
           <Contact lang={lang} />
         </div>
       </main>
