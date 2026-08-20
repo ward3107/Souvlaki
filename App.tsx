@@ -166,20 +166,22 @@ const App: React.FC = () => {
         {/* Solid-bg layer covers the pinned Hero so translucent sections
             below render against the page bg, not the hero video. */}
         <div className="relative z-10 bg-slate-50 dark:bg-slate-900">
+          {/* Story, top to bottom: welcome band -> menu -> watch it made ->
+              made fresh -> meet the family -> our world -> proof -> visit. */}
+          <MarqueeStrip lang={lang} />
           <Menu language={lang} />
 
           {/* Cinematic "from fire to plate" scroll story */}
           <FirePlateJourney lang={lang} />
 
-          <MarqueeStrip lang={lang} />
+          <FreshIngredients lang={lang} />
+          <About lang={lang} />
+          <FamilyHeritage lang={lang} />
+
           <InstagramCTA lang={lang} />
           <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
 
-          <About lang={lang} />
-          <FreshIngredients lang={lang} />
-          <FamilyHeritage lang={lang} />
           <Reviews lang={lang} />
-
           <FAQ lang={lang} />
           <Contact lang={lang} />
         </div>
