@@ -25,6 +25,7 @@ import GreekKeyThread from './components/GreekKeyThread';
 import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
 import SignatureShowpiece from './components/SignatureShowpiece';
+import MenuCTA from './components/MenuCTA';
 
 // Lazy chunks
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
@@ -88,8 +89,22 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [legalDocument, setLegalDocument] = useState<string | null>(null);
+  const [path, setPath] = useState(() => window.location.pathname);
 
   const isRtl = isRtlLang(lang);
+  const isMenuPage = path === '/menu';
+
+  // Minimal routing: the menu lives on its own /menu page so browsing it stays
+  // focused instead of scrolling on into the homepage story.
+  useEffect(() => {
+    const update = () => setPath(window.location.pathname);
+    window.addEventListener('locationchange', update);
+    window.addEventListener('popstate', update);
+    return () => {
+      window.removeEventListener('locationchange', update);
+      window.removeEventListener('popstate', update);
+    };
+  }, []);
 
   // Document direction & language
   useEffect(() => {
@@ -159,34 +174,40 @@ const App: React.FC = () => {
     <div className={`min-h-screen ${isRtl ? 'font-heebo' : 'font-rubik'}`}>
       <Header lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
 
-      <main id="main-content" role="main">
-        <Hero lang={lang} />
-        {/* Solid-bg layer covers the pinned Hero so translucent sections
-            below render against the page bg, not the hero video. */}
-        <div className="relative z-10 bg-slate-50 dark:bg-slate-900">
-          {/* Story, top to bottom: welcome band -> menu -> watch it made ->
-              made fresh -> meet the family -> our world -> proof -> visit. */}
-          <MarqueeStrip lang={lang} />
+      {isMenuPage ? (
+        <main id="main-content" role="main" className="bg-brand-cream-100 dark:bg-slate-900">
           <Menu language={lang} />
+        </main>
+      ) : (
+        <main id="main-content" role="main">
+          <Hero lang={lang} />
+          {/* Solid-bg layer covers the pinned Hero so translucent sections
+              below render against the page bg, not the hero video. */}
+          <div className="relative z-10 bg-slate-50 dark:bg-slate-900">
+            {/* Story, top to bottom: welcome band -> menu prompt -> watch it made
+                -> made fresh -> meet the family -> our world -> proof -> visit. */}
+            <MarqueeStrip lang={lang} />
+            <MenuCTA lang={lang} />
 
-          {/* Dramatic full-screen signature showpiece */}
-          <SignatureShowpiece lang={lang} />
+            {/* Dramatic full-screen signature showpiece */}
+            <SignatureShowpiece lang={lang} />
 
-          {/* Cinematic "from fire to plate" scroll story */}
-          <FirePlateJourney lang={lang} />
+            {/* Cinematic "from fire to plate" scroll story */}
+            <FirePlateJourney lang={lang} />
 
-          <FreshIngredients lang={lang} />
-          <About lang={lang} />
-          <FamilyHeritage lang={lang} />
+            <FreshIngredients lang={lang} />
+            <About lang={lang} />
+            <FamilyHeritage lang={lang} />
 
-          <InstagramCTA lang={lang} />
-          <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
+            <InstagramCTA lang={lang} />
+            <InstagramGrid lang={lang} galleryImages={GALLERY_IMAGES} />
 
-          <Reviews lang={lang} />
-          <FAQ lang={lang} />
-          <Contact lang={lang} />
-        </div>
-      </main>
+            <Reviews lang={lang} />
+            <FAQ lang={lang} />
+            <Contact lang={lang} />
+          </div>
+        </main>
+      )}
 
       <Footer lang={lang} onOpenLegal={setLegalDocument} />
 

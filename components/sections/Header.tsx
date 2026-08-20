@@ -3,6 +3,7 @@ import { Globe, Menu as MenuIcon, Moon, Sun, X } from 'lucide-react';
 import { Language, type TranslationKey } from '../../types';
 import { t } from '../../utils/i18n';
 import { scrollToSection } from '../../utils/scroll';
+import { navigate } from '../../utils/router';
 
 interface HeaderProps {
   lang: Language;
@@ -50,7 +51,21 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
 
   const handleNav = (id: string) => {
     setIsMenuOpen(false);
-    scrollToSection(id);
+    if (id === 'menu') {
+      navigate('/menu');
+      return;
+    }
+    if (id === 'home') {
+      navigate('/');
+      return;
+    }
+    // Section links: make sure we're on the homepage, then scroll to the section.
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => scrollToSection(id), 60);
+    } else {
+      scrollToSection(id);
+    }
   };
 
   return (
