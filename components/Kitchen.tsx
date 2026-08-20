@@ -19,8 +19,13 @@ type Order = {
 };
 
 const STORAGE_KEY = 'kitchen-orders-v1';
-const PRESETS = [10, 15, 20, 25, 30];
-const DEFAULT_MIN = 20;
+const STATS_KEY = 'kitchen-stats-v1';
+const PRESETS = [10, 12, 15, 20, 25];
+const DEFAULT_MIN = 12;
+
+// A completed order's actual start-to-served time — the raw material for the
+// "average handoff time" the owner uses to find their real ideal.
+type Completion = { at: number; elapsedSec: number };
 
 function loadOrders(): Order[] {
   try {
@@ -38,6 +43,30 @@ function saveOrders(orders: Order[]) {
   } catch {
     // ignore quota / private-mode failures
   }
+}
+
+function loadStats(): Completion[] {
+  try {
+    const raw = localStorage.getItem(STATS_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveStats(stats: Completion[]) {
+  try {
+    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+  } catch {
+    // ignore
+  }
+}
+
+function startOfToday(): number {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
 }
 
 // Short WebAudio tones — no asset needed. The owner's tap gestures (New order /
@@ -96,6 +125,7 @@ export default function Kitchen({ lang }: { lang: Language }) {
   const [newName, setNewName] = useState('');
   const [newMin, setNewMin] = useState(DEFAULT_MIN);
   const seqRef = useRef(loadOrders().length + 1);
+  const [stats, setStats] = useState<Completion[]>(() => loadStats());
   const [notifPerm, setNotifPerm] = useState<NotificationPermission | 'unsupported'>(() =>
     typeof Notification !== 'undefined' ? Notification.permission : 'unsupported'
   );
@@ -195,6 +225,10 @@ export default function Kitchen({ lang }: { lang: Language }) {
     saveOrders(orders);
   }, [orders]);
 
+  useEffect(() => {
+    saveStats(stats);
+  }, [stats]);
+
   const startOrder = () => {
     const label =
       newName.trim() ||
@@ -226,7 +260,24 @@ export default function Kitchen({ lang }: { lang: Language }) {
       })
     );
 
-  const removeOrder = (id: string) => setOrders((prev) => prev.filter((o) => o.id !== id));
+  // Marking Done records the order's actual start-to-served time, then removes
+  // it. That history powers the average below.
+  const completeOrder = (id: string) => {
+    const done = ordersRef.current.find((o) => o.id === id);
+    if (done) {
+      const elapsedSec = Math.max(0, (Date.now() - done.startAt) / 1000);
+      setStats((s) => [...s, { at: Date.now(), elapsedSec }]);
+    }
+    setOrders((prev) => prev.filter((o) => o.id !== id));
+  };
+
+  const todayStats = useMemo(() => {
+    const since = startOfToday();
+    const today = stats.filter((c) => c.at >= since);
+    if (today.length === 0) return { count: 0, avgSec: 0 };
+    const avgSec = today.reduce((sum, c) => sum + c.elapsedSec, 0) / today.length;
+    return { count: today.length, avgSec };
+  }, [stats]);
 
   const activeCount = orders.length;
   const readyCount = useMemo(
@@ -332,6 +383,24 @@ export default function Kitchen({ lang }: { lang: Language }) {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-5">
+        {/* Today's handoff average — the owner's real "ideal time" signal */}
+        {todayStats.count > 0 && (
+          <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl bg-slate-900 border border-white/10 px-4 py-2.5 text-sm">
+            <span className="text-white/50">
+              {tx(lang, 'היום', 'Today', 'اليوم', 'Сегодня', 'Σήμερα')}
+            </span>
+            <span className="font-semibold">
+              {todayStats.count}{' '}
+              {tx(lang, 'הושלמו', 'served', 'قُدِّمت', 'подано', 'σερβιρίστηκαν')}
+            </span>
+            <span className="text-white/25">·</span>
+            <span className="text-white/50">
+              {tx(lang, 'זמן ממוצע', 'avg handoff', 'متوسط الوقت', 'ср. время', 'μέσος χρόνος')}
+            </span>
+            <span className="font-mono font-bold text-emerald-300">{fmt(todayStats.avgSec)}</span>
+          </div>
+        )}
+
         {/* New-order form */}
         {creating && (
           <div className="mb-5 rounded-2xl bg-slate-900 border border-white/10 p-4">
@@ -479,7 +548,7 @@ export default function Kitchen({ lang }: { lang: Language }) {
                     </button>
                     <button
                       type="button"
-                      onClick={() => removeOrder(o.id)}
+                      onClick={() => completeOrder(o.id)}
                       aria-label={tx(lang, 'הושלם', 'Done', 'تم', 'Готово', 'Έτοιμο')}
                       className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-emerald-500/90 hover:bg-emerald-500 px-3 py-2 text-sm font-bold transition-colors active:scale-95"
                     >
