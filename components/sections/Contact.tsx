@@ -2,6 +2,7 @@ import { Navigation, Phone } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
 import OpeningHours from '../OpeningHours';
+import Reveal from '../Reveal';
 
 interface Props {
   lang: Language;
@@ -20,12 +21,24 @@ export default function Contact({ lang }: Props) {
       className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300"
     >
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4 tracking-tight">
-            {t(lang, 'contact_title')}
-          </h2>
-          <div className="w-16 h-1 bg-brand-terracotta-400 mx-auto rounded-full"></div>
-        </div>
+        <Reveal>
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4 tracking-tight">
+              {t(lang, 'contact_title')}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              {tx(
+                lang,
+                'בואו לבקר אותנו, נשמח לארח אתכם.',
+                "Come visit us, we'd love to host you.",
+                'تعالوا لزيارتنا، يسعدنا استضافتكم.',
+                'Приходите к нам в гости, будем рады вас принять.',
+                'Ελάτε να μας επισκεφθείτε, θα χαρούμε να σας φιλοξενήσουμε.'
+              )}
+            </p>
+            <div className="w-16 h-1 bg-brand-terracotta-400 mx-auto rounded-full mt-4"></div>
+          </div>
+        </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
           <div className="space-y-8">
