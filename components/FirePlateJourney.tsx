@@ -181,7 +181,7 @@ export default function FirePlateJourney({ lang }: Props) {
         'От огня до тарелки',
         'Από τη φωτιά στο πιάτο'
       )}
-      style={{ height: `${N * 72}vh` }}
+      style={{ height: `${N * 50}vh` }}
       className="relative bg-black"
     >
       <div className="sticky top-0 h-screen overflow-hidden">
