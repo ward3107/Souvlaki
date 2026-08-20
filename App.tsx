@@ -35,6 +35,9 @@ const RatingWidget = lazy(() => import('./components/RatingWidget'));
 // Owner-only kitchen timer — its own unlinked /kitchen route, kept out of the
 // customer bundle since it lazy-loads only when that path is visited.
 const Kitchen = lazy(() => import('./components/Kitchen'));
+// Printable itemized kitchen ticket — opened from the link inside a WhatsApp
+// order. Standalone route, lazy so it never ships in the customer bundle.
+const Ticket = lazy(() => import('./components/Ticket'));
 
 const GALLERY_IMAGES = [
   '/gallery/IMG-20251205-WA0032-400.webp',
@@ -97,6 +100,7 @@ const App: React.FC = () => {
   const isRtl = isRtlLang(lang);
   const isMenuPage = path === '/menu';
   const isKitchenPage = path === '/kitchen';
+  const isTicketPage = path === '/ticket';
 
   // Minimal routing: the menu lives on its own /menu page so browsing it stays
   // focused instead of scrolling on into the homepage story.
@@ -174,13 +178,23 @@ const App: React.FC = () => {
     return () => window.removeEventListener('openLegalDocument', handler as EventListener);
   }, []);
 
-  // The kitchen tool is a standalone owner screen — no marketing header, footer,
-  // or floating widgets around it.
+  // The kitchen tool and the printable ticket are standalone owner screens — no
+  // marketing header, footer, or floating widgets around them.
   if (isKitchenPage) {
     return (
       <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
         <Suspense fallback={null}>
           <Kitchen lang={lang} />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (isTicketPage) {
+    return (
+      <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
+        <Suspense fallback={null}>
+          <Ticket lang={lang} />
         </Suspense>
       </div>
     );

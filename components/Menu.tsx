@@ -23,6 +23,7 @@ import { Language } from '../types';
 import Reveal from './Reveal';
 import { useTilt3D } from './hooks/useTilt3D';
 import IngredientFloaters from './IngredientFloaters';
+import { encodeTicket } from '../utils/ticket';
 
 // ============================================================================
 // Types
@@ -803,6 +804,28 @@ const NAME_PLACEHOLDER: LocalizedString = {
   el: 'Το όνομά σας (απαιτείται)',
 };
 
+const TICKET_HINT: LocalizedString = {
+  he: '🖨️ כרטיס מטבח (הקש להדפסה):',
+  en: '🖨️ Kitchen ticket (tap to print):',
+  ar: '🖨️ تذكرة المطبخ (اضغط للطباعة):',
+  ru: '🖨️ Кухонный чек (нажмите, чтобы напечатать):',
+  el: '🖨️ Δελτίο κουζίνας (πατήστε για εκτύπωση):',
+};
+
+// A no-backend /ticket link carrying the whole order in its hash, appended to
+// the WhatsApp message so the owner can open + print an itemized kitchen ticket.
+function buildTicketUrl(lines: ResolvedLine[], name: string): string {
+  const order = {
+    n: name,
+    t: lines.reduce((sum, l) => sum + l.lineTotal, 0),
+    at: Date.now(),
+    items: lines.map((l) => ({ q: l.qty, n: l.name, v: l.variantLabel, p: l.lineTotal })),
+  };
+  const origin =
+    typeof window !== 'undefined' ? window.location.origin : 'https://souvlaki.pages.dev';
+  return `${origin}/ticket#${encodeTicket(order)}`;
+}
+
 function buildCartUrl(lang: Lang, lines: ResolvedLine[], name: string): string {
   const header = ORDER_INTRO[lang];
   const nameLine = `${NAME_LABEL[lang]}: ${name}`;
@@ -814,7 +837,8 @@ function buildCartUrl(lang: Lang, lines: ResolvedLine[], name: string): string {
     .join('\n');
   const total = lines.reduce((sum, l) => sum + l.lineTotal, 0);
   const footer = `${TOTAL_LABEL[lang]}: ${formatPrice(total)}`;
-  const text = `${header}\n\n${nameLine}\n\n${body}\n\n${footer}`;
+  const ticket = `${TICKET_HINT[lang]}\n${buildTicketUrl(lines, name)}`;
+  const text = `${header}\n\n${nameLine}\n\n${body}\n\n${footer}\n\n${ticket}`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 

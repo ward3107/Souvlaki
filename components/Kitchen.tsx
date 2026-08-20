@@ -16,6 +16,8 @@ type Order = {
   startAt: number; // epoch ms
   durationSec: number;
   alerted: boolean;
+  items?: string[]; // optional dish lines, when started from a WhatsApp ticket
+  total?: number; // optional order total in shekels
 };
 
 const STORAGE_KEY = 'kitchen-orders-v1';
@@ -71,19 +73,24 @@ function startOfToday(): number {
 
 // Short WebAudio tones — no asset needed. The owner's tap gestures (New order /
 // Start / enabling alerts) unlock the audio context so later cues can play.
-function tones(notes: Array<[number, number, number]>) {
+function tones(
+  notes: Array<[number, number, number]>,
+  opts?: { type?: OscillatorType; gain?: number }
+) {
   try {
     const Ctx =
       window.AudioContext ||
       (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     const ctx = new Ctx();
+    const type = opts?.type ?? 'sine';
+    const peak = opts?.gain ?? 0.25;
     for (const [freq, start, dur] of notes) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sine';
+      osc.type = type;
       osc.frequency.value = freq;
       gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
-      gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + start + 0.02);
+      gain.gain.exponentialRampToValueAtTime(peak, ctx.currentTime + start + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
       osc.connect(gain);
       gain.connect(ctx.destination);
@@ -97,18 +104,31 @@ function tones(notes: Array<[number, number, number]>) {
   }
 }
 
-// Rising two-note "a new order is on" cue.
+// Gentle rising two-note "a new order is on" cue.
 const startChime = () =>
   tones([
     [660, 0, 0.14],
     [990, 0.12, 0.2],
   ]);
-// Brighter two-note "order ready" cue.
-const readyChime = () =>
-  tones([
-    [880, 0, 0.28],
-    [1174, 0.22, 0.34],
-  ]);
+
+// Loud, urgent, repeating siren-style alarm when an order is ready — square
+// wave at high gain so it carries across a busy kitchen.
+const readyAlarm = () =>
+  tones(
+    [
+      [988, 0.0, 0.16],
+      [740, 0.2, 0.16],
+      [988, 0.4, 0.16],
+      [740, 0.6, 0.16],
+      [988, 0.8, 0.16],
+      [740, 1.0, 0.16],
+      [988, 1.2, 0.16],
+      [740, 1.4, 0.16],
+      [988, 1.6, 0.16],
+      [740, 1.8, 0.16],
+    ],
+    { type: 'square', gain: 0.6 }
+  );
 
 function fmt(totalSec: number): string {
   const sign = totalSec < 0 ? '+' : '';
@@ -208,9 +228,9 @@ export default function Kitchen({ lang }: { lang: Language }) {
         (o) => !o.alerted && o.durationSec - (t - o.startAt) / 1000 <= 0
       );
       if (newlyReady.length === 0) return;
-      readyChime();
+      readyAlarm();
       try {
-        navigator.vibrate?.([300, 120, 300]);
+        navigator.vibrate?.([400, 150, 400, 150, 400]);
       } catch {
         // vibration unsupported
       }
@@ -228,6 +248,16 @@ export default function Kitchen({ lang }: { lang: Language }) {
   useEffect(() => {
     saveStats(stats);
   }, [stats]);
+
+  // Cross-tab sync: if a WhatsApp ticket adds an order from another tab, pick it
+  // up here without a manual refresh.
+  useEffect(() => {
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY) setOrders(loadOrders());
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   const startOrder = () => {
     const label =
@@ -522,10 +552,24 @@ export default function Kitchen({ lang }: { lang: Language }) {
                             )
                           : `${Math.round(o.durationSec / 60)} ${tx(lang, 'דקות הכנה', 'min prep', 'دقيقة تحضير', 'мин', 'λεπτά')}`}
                       </p>
+                      {o.items && o.items.length > 0 && (
+                        <ul className="mt-1.5 space-y-0.5">
+                          {o.items.map((line, i) => (
+                            <li key={i} className="text-xs text-white/70 leading-snug">
+                              {line}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                    {overdue && (
-                      <Bell className="w-5 h-5 text-red-400 shrink-0" aria-hidden="true" />
-                    )}
+                    <div className="flex flex-col items-end gap-1 shrink-0">
+                      {o.total != null && (
+                        <span className="text-sm font-bold text-emerald-300 tabular-nums whitespace-nowrap">
+                          {o.total} ₪
+                        </span>
+                      )}
+                      {overdue && <Bell className="w-5 h-5 text-red-400" aria-hidden="true" />}
+                    </div>
                   </div>
 
                   <div

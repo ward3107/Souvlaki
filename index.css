@@ -282,6 +282,38 @@ body.reading-guide-active #reading-guide {
   animation-play-state: paused;
 }
 
+/* Kitchen ticket printing — isolate #kitchen-ticket and size for 58/80mm
+   thermal receipt paper. Everything else is hidden so only the chit prints. */
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+  body {
+    background: #fff !important;
+  }
+  body * {
+    visibility: hidden;
+  }
+  #kitchen-ticket,
+  #kitchen-ticket * {
+    visibility: visible;
+  }
+  #kitchen-ticket {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm !important;
+    max-width: 80mm !important;
+    margin: 0 !important;
+    padding: 4mm !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #000 !important;
+    background: #fff !important;
+  }
+}
+
 /* Hero ambient motion — Ken Burns + fog + drifting spotlight + embers */
 @keyframes hero-kenburns {
   0% {
