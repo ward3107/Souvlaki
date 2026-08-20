@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from 'framer-motion';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
@@ -67,11 +67,15 @@ function StageLayer({
   i,
   progress,
   reduce,
+  allowVideo,
+  videoRef,
 }: {
   stage: Stage;
   i: number;
   progress: MotionValue<number>;
   reduce: boolean;
+  allowVideo: boolean;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
 }) {
   const start = i / N;
   // Stage 0 is the always-visible base; each later stage reveals over the previous.
@@ -85,16 +89,16 @@ function StageLayer({
       style={{ opacity: i === 0 ? 1 : opacity, zIndex: i }}
       aria-hidden="true"
     >
-      <motion.div className="absolute inset-0" style={{ scale }}>
-        {stage.kind === 'video' && !reduce ? (
+      <motion.div className="absolute inset-0" style={{ scale, willChange: 'transform' }}>
+        {stage.kind === 'video' && allowVideo ? (
           <video
+            ref={videoRef}
             className="w-full h-full object-cover"
             src={stage.src}
             poster={stage.poster}
             muted
             loop
             playsInline
-            autoPlay
             preload="metadata"
           />
         ) : (
@@ -163,8 +167,33 @@ function Dot({ i, progress }: { i: number; progress: MotionValue<number> }) {
 
 export default function FirePlateJourney({ lang }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const reduce = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
+
+  // Skip the grill video on reduced-motion / data-saver — the poster carries it.
+  // Derived during render (no effect) so it never triggers a cascading re-render.
+  const saveData = !!(navigator as Navigator & { connection?: { saveData?: boolean } }).connection
+    ?.saveData;
+  const allowVideo = !reduce && !saveData;
+
+  // Only decode/play the grill video while the section is on screen — otherwise
+  // it keeps burning GPU behind the rest of the page and causes scroll jank.
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || !allowVideo) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) el.play().catch(() => {});
+          else el.pause();
+        }
+      },
+      { threshold: 0.05 }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [allowVideo]);
 
   return (
     <section
@@ -182,7 +211,15 @@ export default function FirePlateJourney({ lang }: Props) {
     >
       <div className="sticky top-0 h-screen overflow-hidden">
         {STAGES.map((s, i) => (
-          <StageLayer key={i} stage={s} i={i} progress={scrollYProgress} reduce={reduce} />
+          <StageLayer
+            key={i}
+            stage={s}
+            i={i}
+            progress={scrollYProgress}
+            reduce={reduce}
+            allowVideo={allowVideo}
+            videoRef={videoRef}
+          />
         ))}
 
         {/* Stage progress ticks */}
