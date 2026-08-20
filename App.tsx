@@ -23,6 +23,7 @@ import BackToTopButton from './components/BackToTopButton';
 import Lightbox from './components/Lightbox';
 import ParallaxStripe from './components/ParallaxStripe';
 import FirePlateJourney from './components/FirePlateJourney';
+import GreekKeyThread from './components/GreekKeyThread';
 import { tx } from './utils/i18n';
 
 // Lazy chunks
@@ -213,6 +214,7 @@ const App: React.FC = () => {
         <CookieBanner language={lang} />
         <RatingWidget language={lang} isRtl={isRtl} />
       </Suspense>
+      <GreekKeyThread />
       <FloatingActions lang={lang} />
       <BackToTopButton />
 
