@@ -12,31 +12,12 @@ function injectPreloads(): Plugin {
   return {
     name: 'inject-preloads',
     transformIndexHtml(html: string) {
-      // Inject preload for the main JS module
+      // Inject modulepreload for the main JS bundle.
       html = html.replace(
         /(<script type="module" crossorigin src="([^"]+)"><\/script>)/,
         '<link rel="modulepreload" crossorigin href="$2" as="script" fetchpriority="high" />\n  $1'
       );
-      // Inject preload for CSS (before the async CSS link)
-      html = html.replace(
-        /(<link rel="stylesheet" crossorigin href="([^"]+)" media="print" onload)/,
-        '<link rel="preload" crossorigin href="$2" as="style" />\n    <link rel="stylesheet" crossorigin href="$2" media="print" onload'
-      );
       return html;
-    },
-  };
-}
-
-// Plugin to make CSS load asynchronously (non-blocking)
-function asyncCss(): Plugin {
-  return {
-    name: 'async-css',
-    transformIndexHtml(html: string) {
-      // Replace Vite's CSS link to load asynchronously
-      return html.replace(
-        /<link rel="stylesheet" crossorigin href="([^"]+)">/g,
-        '<link rel="stylesheet" crossorigin href="$1" media="print" onload="this.media=\'all\'"><noscript><link rel="stylesheet" crossorigin href="$1"></noscript>'
-      );
     },
   };
 }
@@ -53,7 +34,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      asyncCss(),
       injectPreloads(),
       VitePWA({
         registerType: 'prompt',
