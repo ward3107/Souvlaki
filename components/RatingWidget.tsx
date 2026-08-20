@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Star, X, Send, Frown, Meh, Smile, Heart } from 'lucide-react';
+import { X, Send, Frown, Meh, Smile, Heart } from 'lucide-react';
 
 const PLACE_ID = 'ChIJwc9vQ-nNHRUROUo1ZqQ-z_k';
 const WRITE_REVIEW_URL = `https://search.google.com/local/writereview?placeid=${PLACE_ID}`;
@@ -166,7 +166,6 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
     }
   });
   const panelRef = useRef<HTMLDivElement>(null);
-  const fabRef = useRef<HTMLButtonElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const closePanel = () => {
@@ -176,8 +175,44 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
       setScore(null);
       setComment('');
     }, 200);
-    fabRef.current?.focus();
   };
+
+  // Open the panel smartly instead of parking a permanent FAB on screen:
+  //  • exit-intent — mouse leaves the top of the viewport, once per session
+  //  • manual — a `openRatingWidget` CustomEvent (e.g. the footer "Rate us" link)
+  // If the visitor already rated, `hidden` is true and this never runs.
+  useEffect(() => {
+    if (hidden) return;
+
+    const openPanel = () => setOpen(true);
+    window.addEventListener('openRatingWidget', openPanel);
+
+    let alreadyShown = false;
+    try {
+      alreadyShown = !!sessionStorage.getItem('rating-shown');
+    } catch {
+      alreadyShown = false;
+    }
+
+    const onMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) {
+        try {
+          sessionStorage.setItem('rating-shown', '1');
+        } catch {
+          // ignore storage failures (private mode etc.)
+        }
+        setOpen(true);
+        document.removeEventListener('mouseleave', onMouseLeave);
+      }
+    };
+
+    if (!alreadyShown) document.addEventListener('mouseleave', onMouseLeave);
+
+    return () => {
+      window.removeEventListener('openRatingWidget', openPanel);
+      document.removeEventListener('mouseleave', onMouseLeave);
+    };
+  }, [hidden]);
 
   useEffect(() => {
     if (!open) return;
@@ -228,25 +263,8 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
 
   if (hidden) return null;
 
-  const sideClass = isRtl ? 'right-4 sm:right-6' : 'left-4 sm:left-6';
-
   return (
     <>
-      <button
-        ref={fabRef}
-        onClick={() => setOpen(true)}
-        className={`fixed bottom-4 sm:bottom-6 ${sideClass} z-40 group flex items-center gap-2 bg-brand-blue-500 hover:bg-brand-blue-600 text-white rounded-full shadow-lift hover:shadow-pop transition-all duration-300 hover:scale-105 px-3 sm:px-4 h-11 sm:h-14 [body.cart-active_&]:hidden`}
-        aria-label={tt(language, 'fab')}
-        aria-expanded={open}
-        aria-haspopup="dialog"
-        dir={isRtl ? 'rtl' : 'ltr'}
-      >
-        <Star className="w-5 h-5 sm:w-6 sm:h-6 fill-current" aria-hidden="true" />
-        <span className="font-semibold text-sm hidden sm:inline whitespace-nowrap">
-          {tt(language, 'fab')}
-        </span>
-      </button>
-
       {open && (
         <div
           className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-start p-4 sm:p-6 bg-black/30 backdrop-blur-sm animate-fade-in"

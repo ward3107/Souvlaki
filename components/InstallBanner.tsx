@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import { Language } from '../types';
 
 const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
@@ -94,35 +95,33 @@ const InstallBanner: React.FC<{ lang: Language }> = ({ lang }) => {
   const labels = installText[lang] || installText[Language.EN];
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
+  // Thin, dismissible strip pinned at the very top of the page — it sits ABOVE
+  // the sticky header in normal document flow, so both stay visible and the
+  // page content is simply pushed down while the strip is shown.
   return (
-    <div className="fixed bottom-16 sm:bottom-20 left-3 right-3 sm:left-4 sm:right-4 md:left-auto md:right-4 md:w-96 z-40 animate-slide-up">
-      <div className="bg-brand-blue-500 rounded-xl sm:rounded-2xl shadow-pop p-3 sm:p-4 text-white">
-        <div className="flex items-start gap-3 sm:gap-4">
-          <div className="w-11 h-11 sm:w-16 sm:h-16 bg-white rounded-lg sm:rounded-xl flex items-center justify-center flex-shrink-0 shadow-soft overflow-hidden">
-            <img src="/pwa-icon.png" alt="Greek Souvlaki" className="w-full h-full object-cover" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-sm sm:text-lg mb-0.5 sm:mb-1 leading-tight">
-              {labels.title}
-            </h3>
-            <p className="text-xs sm:text-sm opacity-90 mb-2 sm:mb-3 leading-snug">
-              {labels.message}
-            </p>
-            <div className="flex gap-2">
-              <button
-                onClick={isIOS ? handleDismiss : handleInstall}
-                className="flex-1 bg-white text-brand-blue-500 px-3 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm hover:bg-opacity-90 transition-opacity"
-              >
-                {isIOS ? labels.ios : labels.install}
-              </button>
-              <button
-                onClick={handleDismiss}
-                className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-md sm:rounded-lg font-semibold text-xs sm:text-sm hover:bg-white/10 transition-colors"
-              >
-                {labels.dismiss}
-              </button>
-            </div>
-          </div>
+    <div className="w-full bg-slate-900 text-white">
+      <div className="container mx-auto flex items-center gap-2 sm:gap-3 px-3 sm:px-4 h-9 sm:h-11">
+        <img
+          src="/pwa-icon.png"
+          alt=""
+          aria-hidden="true"
+          className="w-5 h-5 sm:w-6 sm:h-6 rounded-md object-cover flex-shrink-0"
+        />
+        <p className="flex-1 min-w-0 text-xs sm:text-sm text-center truncate">{labels.message}</p>
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+          <button
+            onClick={isIOS ? handleDismiss : handleInstall}
+            className="bg-white text-slate-900 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full font-semibold text-xs sm:text-sm hover:bg-opacity-90 transition-opacity"
+          >
+            {isIOS ? labels.ios : labels.install}
+          </button>
+          <button
+            onClick={handleDismiss}
+            className="w-7 h-7 flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label={labels.dismiss}
+          >
+            <X className="w-4 h-4" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </div>
