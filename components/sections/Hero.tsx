@@ -169,7 +169,7 @@ export default function Hero({ lang }: HeroProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <MagneticButton
                 onClick={() => scrollToSection('menu')}
-                className="px-8 py-4 bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white rounded-full font-semibold text-lg shadow-lift hover:shadow-pop transition-all inline-block"
+                className="px-8 py-4 bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white rounded-full font-semibold text-lg shadow-lift hover:shadow-pop transition-all active:scale-[0.97] inline-block"
                 ariaLabel={t(lang, 'hero_cta_menu')}
               >
                 {t(lang, 'hero_cta_menu')}

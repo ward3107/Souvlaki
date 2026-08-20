@@ -986,7 +986,7 @@ function MenuCard({
                 <button
                   type="button"
                   onClick={() => handleAdd()}
-                  className="w-full inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all"
+                  className="w-full inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all active:scale-[0.97]"
                 >
                   <Plus className="w-4 h-4" aria-hidden="true" />
                   <span>{getLocalized(ADD_LABEL, lang)}</span>
@@ -1022,7 +1022,7 @@ function CartBar({
       <button
         type="button"
         onClick={onOpen}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white shadow-lift transition-all"
+        className="w-full flex items-center justify-between gap-3 px-5 py-3 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white shadow-lift transition-all active:scale-[0.98]"
       >
         <span className="inline-flex items-center gap-2">
           <ShoppingBag className="w-5 h-5" aria-hidden="true" />
@@ -1171,7 +1171,7 @@ function CartSheet({
               <button
                 type="button"
                 onClick={onSend}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white text-sm font-semibold shadow-soft transition-all active:scale-[0.97]"
               >
                 <WhatsAppGlyph className="w-4 h-4" />
                 <span>{SEND_ORDER_LABEL[lang]}</span>
@@ -1321,7 +1321,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
                   onClick={() => setActiveId(cat.id)}
                   aria-pressed={activeTab}
                   className={`
-                    flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all
+                    flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all active:scale-95
                     ${
                       activeTab
                         ? 'bg-brand-blue-500 text-white shadow-soft'
