@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Plus, Check, Bell, BellRing, BellOff, ChefHat } from 'lucide-react';
+import { Plus, Check, Bell, BellRing, BellOff, ChefHat, Zap } from 'lucide-react';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
+import { getAutoPrint, setStoredAutoPrint } from '../utils/autoprint';
 
 // ── Owner-only kitchen timer ────────────────────────────────────────────────
 // A private, unlinked page (/kitchen) for the restaurant. When a WhatsApp order
@@ -149,6 +150,16 @@ export default function Kitchen({ lang }: { lang: Language }) {
   const [notifPerm, setNotifPerm] = useState<NotificationPermission | 'unsupported'>(() =>
     typeof Notification !== 'undefined' ? Notification.permission : 'unsupported'
   );
+
+  // Whether this device auto-prints order tickets (shared with the /ticket page
+  // via localStorage) — the owner can arm the kitchen tablet right from here.
+  const [autoPrint, setAutoPrint] = useState(getAutoPrint);
+  const toggleAutoPrint = () =>
+    setAutoPrint((prev) => {
+      const next = !prev;
+      setStoredAutoPrint(next);
+      return next;
+    });
 
   // Refs so the once-a-second ticker always sees the latest orders + language
   // without being torn down and recreated each render.
@@ -343,6 +354,45 @@ export default function Kitchen({ lang }: { lang: Language }) {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={toggleAutoPrint}
+              aria-pressed={autoPrint}
+              aria-label={tx(
+                lang,
+                'הדפסה אוטומטית',
+                'Auto-print',
+                'طباعة تلقائية',
+                'Автопечать',
+                'Αυτόματη εκτύπωση'
+              )}
+              title={
+                autoPrint
+                  ? tx(
+                      lang,
+                      'הדפסה אוטומטית פועלת במכשיר הזה',
+                      'Auto-print ON for this device',
+                      'الطباعة التلقائية مفعّلة على هذا الجهاز',
+                      'Автопечать вкл. на этом устройстве',
+                      'Αυτόματη εκτύπωση ενεργή σε αυτή τη συσκευή'
+                    )
+                  : tx(
+                      lang,
+                      'הדפסה אוטומטית כבויה',
+                      'Auto-print off',
+                      'الطباعة التلقائية متوقفة',
+                      'Автопечать выкл.',
+                      'Αυτόματη εκτύπωση ανενεργή'
+                    )
+              }
+              className={`inline-flex h-11 w-11 items-center justify-center rounded-full transition-colors active:scale-95 ${
+                autoPrint
+                  ? 'bg-brand-blue-500/25 text-brand-blue-200'
+                  : 'bg-white/10 text-white/80 hover:bg-white/15'
+              }`}
+            >
+              <Zap className="w-5 h-5" aria-hidden="true" />
+            </button>
             {notifPerm !== 'unsupported' && (
               <button
                 type="button"
