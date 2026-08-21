@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
-import { Printer, ChefHat } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Printer, ChefHat, Zap } from 'lucide-react';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
 import { decodeTicket } from '../utils/ticket';
 import { navigate } from '../utils/router';
+import { getAutoPrint, setStoredAutoPrint } from '../utils/autoprint';
 
 const KITCHEN_KEY = 'kitchen-orders-v1';
 const DEFAULT_PREP_MIN = 12;
@@ -21,6 +22,45 @@ export default function Ticket({ lang }: { lang: Language }) {
     () => decodeTicket(typeof window !== 'undefined' ? window.location.hash : ''),
     []
   );
+
+  const [autoPrint, setAutoPrint] = useState(() => {
+    // A ?autoprint=on|off link overrides the stored flag (handy when setting up
+    // the kitchen tablet); otherwise use whatever this device was last set to.
+    try {
+      const p = new URLSearchParams(window.location.search).get('autoprint');
+      if (p === 'on' || p === '1') return true;
+      if (p === 'off' || p === '0') return false;
+    } catch {
+      // no window/search available — fall through to the stored flag
+    }
+    return getAutoPrint();
+  });
+  const printedRef = useRef(false);
+
+  // Persist a ?autoprint= override so it sticks for future tickets on this device.
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search).get('autoprint');
+    if (p === 'on' || p === '1') setStoredAutoPrint(true);
+    else if (p === 'off' || p === '0') setStoredAutoPrint(false);
+  }, []);
+
+  // On an armed kitchen device, print the ticket by itself once it's rendered.
+  // Fires once per opened ticket; the small delay lets fonts/layout settle so
+  // the chit isn't printed blank.
+  useEffect(() => {
+    if (!order || !autoPrint || printedRef.current) return;
+    printedRef.current = true;
+    const t = window.setTimeout(() => window.print(), 500);
+    return () => window.clearTimeout(t);
+  }, [order, autoPrint]);
+
+  const toggleAutoPrint = () => {
+    setAutoPrint((prev) => {
+      const next = !prev;
+      setStoredAutoPrint(next);
+      return next;
+    });
+  };
 
   if (!order) {
     return (
@@ -72,23 +112,82 @@ export default function Ticket({ lang }: { lang: Language }) {
   return (
     <div className="min-h-screen bg-slate-100 dark:bg-slate-900 flex flex-col items-center py-6 px-4">
       {/* Actions — never printed */}
-      <div className="print:hidden w-full max-w-[80mm] flex gap-2 mb-4">
+      <div className="print:hidden w-full max-w-[80mm] mb-4">
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white px-4 py-3 text-sm font-bold shadow-lift active:scale-95 transition-transform"
+          >
+            <Printer className="w-4 h-4" aria-hidden="true" />
+            {tx(lang, 'הדפס', 'Print', 'طباعة', 'Печать', 'Εκτύπωση')}
+          </button>
+          <button
+            type="button"
+            onClick={startInKitchen}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-3 text-sm font-bold shadow-lift active:scale-95 transition-transform"
+          >
+            <ChefHat className="w-4 h-4" aria-hidden="true" />
+            {tx(
+              lang,
+              'התחל במטבח',
+              'Start in kitchen',
+              'ابدأ في المطبخ',
+              'В кухню',
+              'Στην κουζίνα'
+            )}
+          </button>
+        </div>
+
+        {/* Per-device auto-print switch — arm the kitchen tablet once. */}
         <button
           type="button"
-          onClick={() => window.print()}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white px-4 py-3 text-sm font-bold shadow-lift active:scale-95 transition-transform"
+          onClick={toggleAutoPrint}
+          aria-pressed={autoPrint}
+          className={`mt-2 w-full inline-flex items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-colors ${
+            autoPrint
+              ? 'bg-brand-blue-500 text-white'
+              : 'bg-white text-slate-700 ring-1 ring-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-600'
+          }`}
         >
-          <Printer className="w-4 h-4" aria-hidden="true" />
-          {tx(lang, 'הדפס', 'Print', 'طباعة', 'Печать', 'Εκτύπωση')}
+          <Zap className="w-4 h-4" aria-hidden="true" />
+          {autoPrint
+            ? tx(
+                lang,
+                'הדפסה אוטומטית: פועלת',
+                'Auto-print: ON',
+                'الطباعة التلقائية: مفعّلة',
+                'Автопечать: вкл.',
+                'Αυτόματη εκτύπωση: ΝΑΙ'
+              )
+            : tx(
+                lang,
+                'הדפסה אוטומטית: כבויה',
+                'Auto-print: OFF',
+                'الطباعة التلقائية: متوقفة',
+                'Автопечать: выкл.',
+                'Αυτόματη εκτύπωση: ΟΧΙ'
+              )}
         </button>
-        <button
-          type="button"
-          onClick={startInKitchen}
-          className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-3 text-sm font-bold shadow-lift active:scale-95 transition-transform"
-        >
-          <ChefHat className="w-4 h-4" aria-hidden="true" />
-          {tx(lang, 'התחל במטבח', 'Start in kitchen', 'ابدأ في المطبخ', 'В кухню', 'Στην κουζίνα')}
-        </button>
+        <p className="mt-1.5 text-center text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+          {autoPrint
+            ? tx(
+                lang,
+                'כרטיסים יודפסו לבד במכשיר הזה.',
+                'Tickets print by themselves on this device.',
+                'ستُطبع التذاكر تلقائيًا على هذا الجهاز.',
+                'Чеки печатаются сами на этом устройстве.',
+                'Τα δελτία εκτυπώνονται μόνα τους σε αυτή τη συσκευή.'
+              )
+            : tx(
+                lang,
+                'הפעילו במכשיר המטבח כדי להדפיס הזמנות אוטומטית.',
+                'Turn on for the kitchen device to auto-print orders.',
+                'فعّلها على جهاز المطبخ لطباعة الطلبات تلقائيًا.',
+                'Включите на кухонном устройстве для автопечати заказов.',
+                'Ενεργοποιήστε στη συσκευή κουζίνας για αυτόματη εκτύπωση.'
+              )}
+        </p>
       </div>
 
       {/* The ticket — the only thing that prints (see @media print in index.css) */}
