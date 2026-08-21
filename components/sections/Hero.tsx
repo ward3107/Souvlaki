@@ -71,12 +71,12 @@ export default function Hero({ lang }: HeroProps) {
   }, [allowVideo]);
 
   return (
-    <div className="sticky top-0 z-0 h-screen overflow-hidden">
+    <div className="gpu-stable sticky top-0 z-0 h-screen overflow-hidden">
       <MouseParallax range={20} className="relative w-full h-full flex items-center justify-center">
         <section id="home" className="absolute inset-0 flex items-center justify-center">
           <video
             ref={videoRef}
-            className="absolute inset-0 w-full h-full object-cover z-0"
+            className="gpu-stable absolute inset-0 w-full h-full object-cover z-0"
             src="/gallery/hero-bg.mp4"
             poster="/gallery/hero-bg.webp"
             muted

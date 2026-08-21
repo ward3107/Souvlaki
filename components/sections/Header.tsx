@@ -70,7 +70,7 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-black/5 dark:border-white/10 transition-colors duration-300">
+    <header className="gpu-stable sticky top-0 z-40 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border-b border-black/5 dark:border-white/10 transition-colors duration-300">
       <div className="container mx-auto px-4 h-20 grid grid-cols-3 items-center">
         <button
           className="justify-self-start flex items-center gap-2 bg-transparent border-0 p-0 cursor-pointer hover:opacity-80 transition-opacity"

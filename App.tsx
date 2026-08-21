@@ -38,6 +38,10 @@ const Kitchen = lazy(() => import('./components/Kitchen'));
 // Printable itemized kitchen ticket — opened from the link inside a WhatsApp
 // order. Standalone route, lazy so it never ships in the customer bundle.
 const Ticket = lazy(() => import('./components/Ticket'));
+// Printable table QR-code stickers — owner opens /qr, prints a sheet, cuts and
+// sticks them on the tables so guests scan straight to the menu. Standalone,
+// lazy, and unlinked from the customer site.
+const QrStickers = lazy(() => import('./components/QrStickers'));
 
 const GALLERY_IMAGES = [
   '/gallery/IMG-20251205-WA0032-400.webp',
@@ -101,6 +105,7 @@ const App: React.FC = () => {
   const isMenuPage = path === '/menu';
   const isKitchenPage = path === '/kitchen';
   const isTicketPage = path === '/ticket';
+  const isQrPage = path === '/qr';
 
   // Minimal routing: the menu lives on its own /menu page so browsing it stays
   // focused instead of scrolling on into the homepage story.
@@ -195,6 +200,16 @@ const App: React.FC = () => {
       <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
         <Suspense fallback={null}>
           <Ticket lang={lang} />
+        </Suspense>
+      </div>
+    );
+  }
+
+  if (isQrPage) {
+    return (
+      <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
+        <Suspense fallback={null}>
+          <QrStickers lang={lang} />
         </Suspense>
       </div>
     );
