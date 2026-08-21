@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
+import { useBackClose } from './hooks/useBackClose';
 
 interface WhatsAppModalProps {
   lang: Language;
@@ -11,6 +12,9 @@ interface WhatsAppModalProps {
 export default function WhatsAppModal({ lang, open, onClose }: WhatsAppModalProps) {
   const isRtl = isRtlLang(lang);
   const dialogRef = useRef<HTMLDivElement>(null);
+
+  // Mobile Back button closes the modal instead of navigating away.
+  useBackClose(open, onClose);
 
   // Move focus into the dialog when it opens so keyboard/AT users land inside.
   useEffect(() => {

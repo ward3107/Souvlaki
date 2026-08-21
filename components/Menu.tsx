@@ -22,6 +22,7 @@ import { motion } from 'framer-motion';
 import { Language } from '../types';
 import Reveal from './Reveal';
 import { useTilt3D } from './hooks/useTilt3D';
+import { useBackClose } from './hooks/useBackClose';
 import IngredientFloaters from './IngredientFloaters';
 import { encodeTicket } from '../utils/ticket';
 
@@ -1133,6 +1134,9 @@ function CartSheet({
   customerName: string;
   onNameChange: (v: string) => void;
 }) {
+  // Mobile Back button closes the cart instead of navigating away.
+  useBackClose(true, onClose);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-end md:items-center justify-center"

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useBackClose } from './hooks/useBackClose';
 import { X, Send, Frown, Meh, Smile, Heart } from 'lucide-react';
 
 const PLACE_ID = 'ChIJwc9vQ-nNHRUROUo1ZqQ-z_k';
@@ -156,6 +157,9 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
   const [step, setStep] = useState<Step>('select');
   const [score, setScore] = useState<number | null>(null);
   const [comment, setComment] = useState('');
+
+  // Mobile Back button closes the rating panel instead of navigating away.
+  useBackClose(open, () => setOpen(false));
   // Lazy initial state — read localStorage once at mount instead of in an
   // effect, so we don't cascade-render on first paint.
   const [hidden, setHidden] = useState<boolean>(() => {

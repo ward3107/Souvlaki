@@ -4,6 +4,7 @@ import { Language, type TranslationKey } from '../../types';
 import { t } from '../../utils/i18n';
 import { scrollToSection, scrollToSectionWhenReady } from '../../utils/scroll';
 import { navigate } from '../../utils/router';
+import { useBackClose } from '../hooks/useBackClose';
 
 interface HeaderProps {
   lang: Language;
@@ -26,6 +27,9 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const langDropdownRef = useRef<HTMLDivElement>(null);
   const langButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Mobile Back button closes the open nav menu instead of navigating away.
+  useBackClose(isMenuOpen, () => setIsMenuOpen(false));
 
   useEffect(() => {
     if (!isLangDropdownOpen) return;

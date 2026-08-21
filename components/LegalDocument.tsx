@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { ArrowLeft, X, FileText, Shield, Cookie, User, AlertCircle } from 'lucide-react';
 import { Language } from '../types';
+import { useBackClose } from './hooks/useBackClose';
 
 interface LegalDocumentProps {
   language: Language;
@@ -12,6 +13,9 @@ interface LegalDocumentProps {
 const LegalDocument: React.FC<LegalDocumentProps> = ({ language, documentPath, onClose }) => {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(true);
+
+  // Mobile Back button closes the legal page instead of navigating away.
+  useBackClose(true, onClose);
 
   useEffect(() => {
     const loadDocument = async () => {

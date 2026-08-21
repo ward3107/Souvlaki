@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ChevronDown, X } from 'lucide-react';
 import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
+import { useBackClose } from './hooks/useBackClose';
 
 interface Props {
   lang: Language;
@@ -17,6 +18,9 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
   const isRtl = isRtlLang(lang);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Mobile Back button closes the lightbox instead of leaving the page.
+  useBackClose(index !== null, onClose);
 
   const next = () => {
     if (index === null) return;
