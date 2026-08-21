@@ -93,7 +93,7 @@ function StageLayer({
         {stage.kind === 'video' && allowVideo ? (
           <video
             ref={videoRef}
-            className="w-full h-full object-cover"
+            className="gpu-stable w-full h-full object-cover"
             src={stage.src}
             poster={stage.poster}
             muted
@@ -209,7 +209,7 @@ export default function FirePlateJourney({ lang }: Props) {
       style={{ height: `${N * 64}vh` }}
       className="relative bg-black"
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="gpu-stable sticky top-0 h-screen overflow-hidden">
         {STAGES.map((s, i) => (
           <StageLayer
             key={i}

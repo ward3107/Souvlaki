@@ -142,6 +142,17 @@ body.reading-guide-active #reading-guide {
   z-index: 45;
 }
 
+/* GPU-stable compositor layer. Pins an element to its own stable layer so it
+   stops flickering during scroll — the classic fix for videos inside a
+   position:sticky ancestor and for always-on backdrop-filter bars, both of
+   which otherwise tear/strobe during momentum (mobile) and smooth (Lenis)
+   scroll. Purely a rendering hint: no visual change. */
+.gpu-stable {
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 /* Snap & Share button — double pulse ring + breathing scale + continuous camera tilt */
 @keyframes snap-share-pulse {
   0% {

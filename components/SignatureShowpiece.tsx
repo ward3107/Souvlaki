@@ -40,7 +40,11 @@ export default function SignatureShowpiece({ lang }: { lang: Language }) {
       className="relative h-screen min-h-[560px] overflow-hidden bg-black flex items-center justify-center"
     >
       {/* Parallax background */}
-      <motion.div className="absolute inset-0" style={{ scale, y }} aria-hidden="true">
+      <motion.div
+        className="absolute inset-0"
+        style={{ scale, y, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+        aria-hidden="true"
+      >
         <img src={SHOWPIECE_IMAGE} alt="" className="w-full h-full object-cover" loading="lazy" />
       </motion.div>
 
