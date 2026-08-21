@@ -323,6 +323,30 @@ body.reading-guide-active #reading-guide {
     color: #000 !important;
     background: #fff !important;
   }
+
+  /* Table QR stickers (/qr): print the sheet on A4. Reveal only the sheet
+     (same isolation approach as the ticket) and give it its own named page so
+     the 80mm thermal @page above can't shrink it. The ticket rules stay as-is;
+     on the ticket route #qr-sheet simply doesn't exist. */
+  @page stickers {
+    size: A4;
+    margin: 8mm;
+  }
+  #qr-sheet,
+  #qr-sheet * {
+    visibility: visible !important;
+  }
+  #qr-sheet {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    page: stickers;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
 
 /* Hero ambient motion — Ken Burns + fog + drifting spotlight + embers */
