@@ -921,7 +921,7 @@ function MenuCard({
       onKeyDown={(e) => {
         if (e.key === 'Escape' && isFlipped) setIsFlipped(false);
       }}
-      className="aspect-[7/8]"
+      className="aspect-[3/4]"
     >
       <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
         <motion.div
@@ -990,7 +990,7 @@ function MenuCard({
             tabIndex={-1}
             onClick={() => setIsFlipped(false)}
             aria-label={getLocalized(BACK_LABEL, lang)}
-            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-pop p-3 sm:p-5 flex flex-col cursor-pointer"
+            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-pop p-3 sm:p-5 flex flex-col cursor-pointer overflow-y-auto overscroll-contain"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden' as const,
@@ -1026,7 +1026,7 @@ function MenuCard({
                   <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">
                     {getLocalized(CHOOSE_HINT, lang)}
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
+                  <div className="grid grid-cols-2 gap-1.5">
                     {item.variants!.map((v) => (
                       <button
                         key={v.id}
@@ -1035,9 +1035,9 @@ function MenuCard({
                           e.stopPropagation();
                           handleAdd(v.id);
                         }}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-gray-300 dark:border-slate-600 text-xs hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors active:scale-95"
+                        className="inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-slate-600 text-[11px] leading-tight text-center hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors active:scale-95"
                       >
-                        <Plus className="w-3 h-3" aria-hidden="true" />
+                        <Plus className="w-3 h-3 shrink-0" aria-hidden="true" />
                         <span>{v.label[lang]}</span>
                         {v.extra ? (
                           <span className="text-[10px] opacity-70">+{v.extra}</span>

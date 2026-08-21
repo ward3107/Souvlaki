@@ -57,12 +57,14 @@ export default function SignatureShowpiece({ lang }: { lang: Language }) {
         }}
         aria-hidden="true"
       />
+      {/* Warm ember glow. Normal blend (not mix-blend screen): blending a
+          layer against the scaling parallax image every frame flickered as
+          "flashing lights" while scrolling through this section. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 60% 55% at 50% 62%, rgba(216,90,48,0.28), transparent 70%)',
-          mixBlendMode: 'screen',
+            'radial-gradient(ellipse 60% 55% at 50% 62%, rgba(255,150,90,0.22), transparent 70%)',
         }}
         aria-hidden="true"
       />
