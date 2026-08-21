@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { X, Share2, Copy, Download, MessageCircle } from 'lucide-react';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
+import { useBackClose } from './hooks/useBackClose';
 
 const QRCodeIcon: React.FC<{
   value: string;
@@ -115,6 +116,9 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
       link.click();
     }
   };
+
+  // Mobile Back button closes the modal instead of navigating away.
+  useBackClose(open, onClose);
 
   // Move focus into the dialog when it opens so keyboard/AT users land inside.
   useEffect(() => {

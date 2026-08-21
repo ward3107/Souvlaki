@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Camera, Instagram, X } from 'lucide-react';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
+import { useBackClose } from '../hooks/useBackClose';
 
 interface Props {
   lang: Language;
@@ -150,6 +151,9 @@ function CameraModal({ lang, onClose, onCapture }: CameraModalProps) {
   const streamRef = useRef<MediaStream | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [ready, setReady] = useState(false);
+
+  // Mobile Back button closes the camera instead of navigating the page away.
+  useBackClose(true, onClose);
 
   const errorMsg = tx(
     lang,
