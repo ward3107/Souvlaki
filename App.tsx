@@ -16,7 +16,6 @@ import Contact from './components/sections/Contact';
 import Footer from './components/sections/Footer';
 
 // Eagerly loaded
-import Menu from './components/Menu';
 import FloatingActions from './components/FloatingActions';
 import BackToTopButton from './components/BackToTopButton';
 import Lightbox from './components/Lightbox';
@@ -28,6 +27,9 @@ import SignatureShowpiece from './components/SignatureShowpiece';
 import MenuCTA from './components/MenuCTA';
 
 // Lazy chunks
+// The full menu lives on its own /menu route, so keep it out of the homepage
+// bundle — it loads only when a visitor actually opens the menu.
+const Menu = lazy(() => import('./components/Menu'));
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
 const CookieBanner = lazy(() => import('./components/CookieBanner'));
 const LegalDocument = lazy(() => import('./components/LegalDocument'));
@@ -221,7 +223,9 @@ const App: React.FC = () => {
 
       {isMenuPage ? (
         <main id="main-content" role="main" className="bg-brand-cream-100 dark:bg-slate-900">
-          <Menu language={lang} />
+          <Suspense fallback={null}>
+            <Menu language={lang} />
+          </Suspense>
         </main>
       ) : (
         <main id="main-content" role="main">
