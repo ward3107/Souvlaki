@@ -25,7 +25,6 @@ import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
 import SignatureShowpiece from './components/SignatureShowpiece';
 import MenuCTA from './components/MenuCTA';
-import Newsletter from './components/Newsletter';
 import InstallPrompt from './components/InstallPrompt';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -50,8 +49,6 @@ const QrStickers = lazy(() => import('./components/QrStickers'));
 // Owner-only menu console (/admin) — toggle sold-out + edit prices. Lazy so it
 // never ships in the customer bundle.
 const Admin = lazy(() => import('./components/Admin'));
-// Customer loyalty punch card (/loyalty). Lazy, its own screen.
-const Loyalty = lazy(() => import('./components/Loyalty'));
 
 const GALLERY_IMAGES = [
   '/gallery/IMG-20251205-WA0032-400.webp',
@@ -124,7 +121,6 @@ const App: React.FC = () => {
   const isTicketPage = path === '/ticket';
   const isQrPage = path === '/qr';
   const isAdminPage = path === '/admin';
-  const isLoyaltyPage = path === '/loyalty';
 
   // Minimal routing: the menu lives on its own /menu page so browsing it stays
   // focused instead of scrolling on into the homepage story.
@@ -182,7 +178,7 @@ const App: React.FC = () => {
 
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      const baseUrl = 'https://souvlaki.pages.dev/';
+      const baseUrl = 'https://greeksouflaki.com/';
       canonical.setAttribute('href', lang === Language.EN ? baseUrl : `${baseUrl}?lang=${lang}`);
     }
   }, [lang]);
@@ -246,18 +242,6 @@ const App: React.FC = () => {
     );
   }
 
-  if (isLoyaltyPage) {
-    return (
-      <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
-        <ErrorBoundary region="loyalty">
-          <Suspense fallback={null}>
-            <Loyalty lang={lang} />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
-    );
-  }
-
   return (
     <div className={`min-h-screen ${isRtl ? 'font-heebo' : 'font-rubik'}`}>
       <Header lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
@@ -296,7 +280,6 @@ const App: React.FC = () => {
 
             <Reviews lang={lang} />
             <FAQ lang={lang} />
-            <Newsletter lang={lang} />
             <Contact lang={lang} />
           </div>
         </main>

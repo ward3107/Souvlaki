@@ -242,7 +242,7 @@ export default function Ticket({ lang }: { lang: Language }) {
           <span className="tabular-nums">{order.t} ₪</span>
         </div>
 
-        <div className="text-center text-[10px] text-black/50 mt-4">souvlaki.pages.dev</div>
+        <div className="text-center text-[10px] text-black/50 mt-4">greeksouflaki.com</div>
       </div>
     </div>
   );
