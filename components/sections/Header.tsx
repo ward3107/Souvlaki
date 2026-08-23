@@ -5,6 +5,7 @@ import { t } from '../../utils/i18n';
 import { scrollToSection, scrollToSectionWhenReady } from '../../utils/scroll';
 import { navigate } from '../../utils/router';
 import { useBackClose } from '../hooks/useBackClose';
+import OpenStatusPill from '../OpenStatusPill';
 
 interface HeaderProps {
   lang: Language;
@@ -113,7 +114,10 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
           )}
         </nav>
 
-        <div className="justify-self-end flex items-center gap-3">
+        <div className="justify-self-end flex items-center gap-2 sm:gap-3">
+          {/* Live open/closed status — the #1 thing visitors want to know */}
+          <OpenStatusPill lang={lang} className="hidden sm:inline-flex" />
+
           <div className="relative" ref={langDropdownRef}>
             <button
               ref={langButtonRef}

@@ -10,6 +10,10 @@ interface ImportMetaEnv {
   readonly VITE_FEEDBACK_EMAIL?: string;
   readonly VITE_APP_ENV?: string;
   readonly VITE_API_BASE_URL?: string;
+  readonly VITE_NEWSLETTER_ENDPOINT?: string;
+  readonly VITE_INSTAGRAM_FEED_URL?: string;
+  readonly VITE_ADMIN_PIN?: string;
+  readonly VITE_STAFF_PIN?: string;
 }
 
 interface ImportMeta {

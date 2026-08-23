@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Plus, Check, Bell, BellRing, BellOff, ChefHat, Zap } from 'lucide-react';
+import { Plus, Check, Bell, BellRing, BellOff, ChefHat, Zap, Printer, X } from 'lucide-react';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
 import { getAutoPrint, setStoredAutoPrint } from '../utils/autoprint';
@@ -26,9 +26,9 @@ const STATS_KEY = 'kitchen-stats-v1';
 const PRESETS = [10, 12, 15, 20, 25];
 const DEFAULT_MIN = 12;
 
-// A completed order's actual start-to-served time — the raw material for the
-// "average handoff time" the owner uses to find their real ideal.
-type Completion = { at: number; elapsedSec: number };
+// A completed order's actual start-to-served time (and money, when known) — the
+// raw material for the "average handoff time" and the daily sales summary.
+type Completion = { at: number; elapsedSec: number; total?: number };
 
 function loadOrders(): Order[] {
   try {
@@ -307,18 +307,34 @@ export default function Kitchen({ lang }: { lang: Language }) {
     const done = ordersRef.current.find((o) => o.id === id);
     if (done) {
       const elapsedSec = Math.max(0, (Date.now() - done.startAt) / 1000);
-      setStats((s) => [...s, { at: Date.now(), elapsedSec }]);
+      setStats((s) => [...s, { at: Date.now(), elapsedSec, total: done.total }]);
     }
     setOrders((prev) => prev.filter((o) => o.id !== id));
   };
 
+  const [showEod, setShowEod] = useState(false);
+
   const todayStats = useMemo(() => {
     const since = startOfToday();
     const today = stats.filter((c) => c.at >= since);
-    if (today.length === 0) return { count: 0, avgSec: 0 };
+    if (today.length === 0) return { count: 0, avgSec: 0, revenue: 0 };
     const avgSec = today.reduce((sum, c) => sum + c.elapsedSec, 0) / today.length;
-    return { count: today.length, avgSec };
+    const revenue = today.reduce((sum, c) => sum + (c.total ?? 0), 0);
+    return { count: today.length, avgSec, revenue };
   }, [stats]);
+
+  const eodDate = useMemo(
+    () =>
+      new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jerusalem',
+        weekday: 'long',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+      }).format(new Date()),
+    // Recompute only when the summary is opened.
+    [showEod] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   const activeCount = orders.length;
   const readyCount = useMemo(
@@ -463,7 +479,7 @@ export default function Kitchen({ lang }: { lang: Language }) {
       </header>
 
       <main className="max-w-4xl mx-auto px-4 py-5">
-        {/* Today's handoff average — the owner's real "ideal time" signal */}
+        {/* Today's handoff average + sales — the owner's daily signal */}
         {todayStats.count > 0 && (
           <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl bg-slate-900 border border-white/10 px-4 py-2.5 text-sm">
             <span className="text-white/50">
@@ -478,6 +494,23 @@ export default function Kitchen({ lang }: { lang: Language }) {
               {tx(lang, 'זמן ממוצע', 'avg handoff', 'متوسط الوقت', 'ср. время', 'μέσος χρόνος')}
             </span>
             <span className="font-mono font-bold text-emerald-300">{fmt(todayStats.avgSec)}</span>
+            {todayStats.revenue > 0 && (
+              <>
+                <span className="text-white/25">·</span>
+                <span className="text-white/50">
+                  {tx(lang, 'מכירות', 'sales', 'المبيعات', 'продажи', 'πωλήσεις')}
+                </span>
+                <span className="font-mono font-bold text-emerald-300">{todayStats.revenue} ₪</span>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() => setShowEod(true)}
+              className="ms-auto inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold hover:bg-white/15"
+            >
+              <Printer className="h-3.5 w-3.5" aria-hidden="true" />
+              {tx(lang, 'סיכום יום', 'End of day', 'ملخص اليوم', 'Итог дня', 'Σύνοψη ημέρας')}
+            </button>
           </div>
         )}
 
@@ -667,6 +700,93 @@ export default function Kitchen({ lang }: { lang: Language }) {
           )}
         </p>
       </main>
+
+      {/* End-of-day summary — printable receipt for the owner's records */}
+      {showEod && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 print:static print:bg-white print:p-0">
+          <div
+            id="eod-print"
+            className="w-full max-w-sm rounded-2xl bg-white p-6 text-slate-900 shadow-lift print:max-w-none print:rounded-none print:shadow-none"
+          >
+            <div className="mb-4 flex items-center justify-between print:hidden">
+              <h2 className="font-display text-lg font-semibold">
+                {tx(lang, 'סיכום יום', 'End of day', 'ملخص اليوم', 'Итог дня', 'Σύνοψη ημέρας')}
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowEod(false)}
+                aria-label={tx(lang, 'סגור', 'Close', 'إغلاق', 'Закрыть', 'Κλείσιμο')}
+                className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100"
+              >
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className="text-center">
+              <h3 className="font-display text-xl font-bold">Greek Souvlaki Kfar Yasif</h3>
+              <p className="mb-4 text-sm text-slate-500">{eodDate}</p>
+            </div>
+
+            <dl className="space-y-2 border-y border-slate-200 py-4 text-sm">
+              <div className="flex justify-between">
+                <dt className="text-slate-500">
+                  {tx(lang, 'הזמנות', 'Orders served', 'الطلبات', 'Заказов', 'Παραγγελίες')}
+                </dt>
+                <dd className="font-semibold tabular-nums">{todayStats.count}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">
+                  {tx(
+                    lang,
+                    'זמן הכנה ממוצע',
+                    'Avg handoff',
+                    'متوسط الوقت',
+                    'Ср. время',
+                    'Μέσος χρόνος'
+                  )}
+                </dt>
+                <dd className="font-mono font-semibold">{fmt(todayStats.avgSec)}</dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-500">
+                  {tx(
+                    lang,
+                    'סך מכירות',
+                    'Total sales',
+                    'إجمالي المبيعات',
+                    'Всего продаж',
+                    'Σύνολο πωλήσεων'
+                  )}
+                </dt>
+                <dd className="font-semibold tabular-nums">{todayStats.revenue} ₪</dd>
+              </div>
+            </dl>
+
+            <p className="mt-3 text-center text-[11px] text-slate-400">
+              {tx(
+                lang,
+                'מבוסס על הזמנות שסומנו "הושלם" עם סכום ידוע.',
+                'Based on orders marked "Done" with a known total.',
+                'استنادًا إلى الطلبات المكتملة ذات المبلغ المعروف.',
+                'На основе завершённых заказов с известной суммой.',
+                'Βάσει ολοκληρωμένων παραγγελιών με γνωστό σύνολο.'
+              )}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-terracotta-400 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-terracotta-500 active:scale-95 print:hidden"
+            >
+              <Printer className="h-4 w-4" aria-hidden="true" />
+              {tx(lang, 'הדפסה', 'Print', 'طباعة', 'Печать', 'Εκτύπωση')}
+            </button>
+          </div>
+
+          {/* Only the summary card should appear on paper. */}
+          <style>{`@media print { body * { visibility: hidden !important; } #eod-print, #eod-print * { visibility: visible !important; } #eod-print { position: absolute; inset: 0; margin: 0 auto; } }`}</style>
+        </div>
+      )}
     </div>
   );
 }

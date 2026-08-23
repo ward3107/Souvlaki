@@ -1,6 +1,8 @@
-import { Facebook, Instagram } from 'lucide-react';
+import { Facebook, Instagram, Stamp } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
+import { navigate } from '../../utils/router';
+import { track } from '../../utils/analytics';
 
 interface Props {
   lang: Language;
@@ -43,6 +45,7 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               href="https://wa.me/972542001235"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track('click_whatsapp', { location: 'footer' })}
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group"
               aria-label="Chat with us on WhatsApp"
             >
@@ -104,6 +107,21 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               className="text-gray-400 dark:text-gray-500 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
             >
               {tx(lang, 'דרגו אותנו', 'Rate us', 'قيّمنا', 'Оценить', 'Αξιολογήστε')}
+            </button>
+            <span className="text-gray-600">•</span>
+            <button
+              onClick={() => navigate('/loyalty')}
+              className="inline-flex items-center gap-1 text-gray-400 dark:text-gray-500 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+            >
+              <Stamp className="w-3.5 h-3.5" aria-hidden="true" />
+              {tx(
+                lang,
+                'כרטיס נאמנות',
+                'Loyalty card',
+                'بطاقة الولاء',
+                'Карта лояльности',
+                'Κάρτα πιστότητας'
+              )}
             </button>
           </div>
 

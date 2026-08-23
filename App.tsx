@@ -25,6 +25,9 @@ import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
 import SignatureShowpiece from './components/SignatureShowpiece';
 import MenuCTA from './components/MenuCTA';
+import Newsletter from './components/Newsletter';
+import InstallPrompt from './components/InstallPrompt';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Lazy chunks
 // The full menu lives on its own /menu route, so keep it out of the homepage
@@ -44,6 +47,11 @@ const Ticket = lazy(() => import('./components/Ticket'));
 // sticks them on the tables so guests scan straight to the menu. Standalone,
 // lazy, and unlinked from the customer site.
 const QrStickers = lazy(() => import('./components/QrStickers'));
+// Owner-only menu console (/admin) — toggle sold-out + edit prices. Lazy so it
+// never ships in the customer bundle.
+const Admin = lazy(() => import('./components/Admin'));
+// Customer loyalty punch card (/loyalty). Lazy, its own screen.
+const Loyalty = lazy(() => import('./components/Loyalty'));
 
 const GALLERY_IMAGES = [
   '/gallery/IMG-20251205-WA0032-400.webp',
@@ -84,6 +92,13 @@ const GALLERY_IMAGES = [
 ];
 
 function getInitialLanguage(): Language {
+  // An explicit ?lang= wins (matches our hreflang alternates and lets links
+  // deep-link a specific language).
+  const params = new URLSearchParams(window.location.search);
+  const fromQuery = params.get('lang');
+  if (fromQuery && Object.values(Language).includes(fromQuery as Language)) {
+    return fromQuery as Language;
+  }
   const saved = localStorage.getItem('language');
   if (saved && Object.values(Language).includes(saved as Language)) {
     return saved as Language;
@@ -108,6 +123,8 @@ const App: React.FC = () => {
   const isKitchenPage = path === '/kitchen';
   const isTicketPage = path === '/ticket';
   const isQrPage = path === '/qr';
+  const isAdminPage = path === '/admin';
+  const isLoyaltyPage = path === '/loyalty';
 
   // Minimal routing: the menu lives on its own /menu page so browsing it stays
   // focused instead of scrolling on into the homepage story.
@@ -217,15 +234,41 @@ const App: React.FC = () => {
     );
   }
 
+  if (isAdminPage) {
+    return (
+      <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
+        <ErrorBoundary region="admin">
+          <Suspense fallback={null}>
+            <Admin lang={lang} />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
+    );
+  }
+
+  if (isLoyaltyPage) {
+    return (
+      <div className={isRtl ? 'font-heebo' : 'font-rubik'}>
+        <ErrorBoundary region="loyalty">
+          <Suspense fallback={null}>
+            <Loyalty lang={lang} />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
+    );
+  }
+
   return (
     <div className={`min-h-screen ${isRtl ? 'font-heebo' : 'font-rubik'}`}>
       <Header lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
 
       {isMenuPage ? (
         <main id="main-content" role="main" className="bg-brand-cream-100 dark:bg-slate-900">
-          <Suspense fallback={null}>
-            <Menu language={lang} />
-          </Suspense>
+          <ErrorBoundary region="menu">
+            <Suspense fallback={null}>
+              <Menu language={lang} />
+            </Suspense>
+          </ErrorBoundary>
         </main>
       ) : (
         <main id="main-content" role="main">
@@ -253,6 +296,7 @@ const App: React.FC = () => {
 
             <Reviews lang={lang} />
             <FAQ lang={lang} />
+            <Newsletter lang={lang} />
             <Contact lang={lang} />
           </div>
         </main>
@@ -269,6 +313,7 @@ const App: React.FC = () => {
       <GreekKeyThread />
       <FloatingActions lang={lang} />
       <BackToTopButton />
+      <InstallPrompt lang={lang} />
 
       <Lightbox
         lang={lang}

@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { MessageCircle, Plus, Share2 } from 'lucide-react';
 import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
+import { track } from '../utils/analytics';
 import ShareModal from './ShareModal';
 import WhatsAppModal from './WhatsAppModal';
 
@@ -39,6 +40,7 @@ const FloatingActions: React.FC<{ lang: Language }> = ({ lang }) => {
   }, [expanded]);
 
   const openModal = (modal: ActiveModal) => {
+    if (modal !== 'none') track(modal === 'whatsapp' ? 'open_whatsapp' : 'open_share');
     setActiveModal(modal);
     setExpanded(false);
   };
