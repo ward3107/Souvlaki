@@ -178,7 +178,7 @@ const App: React.FC = () => {
 
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      const baseUrl = 'https://souvlaki.pages.dev/';
+      const baseUrl = 'https://greeksouflaki.com/';
       canonical.setAttribute('href', lang === Language.EN ? baseUrl : `${baseUrl}?lang=${lang}`);
     }
   }, [lang]);

@@ -1,4 +1,4 @@
-# Cloudflare Pages headers — the production host for souvlaki.pages.dev.
+# Cloudflare Pages headers — the production host for greeksouflaki.com.
 # This mirrors vercel.json so BOTH hosts ship identical security + caching.
 # Cloudflare Pages ignores vercel.json, so without this file production had
 # no CSP / HSTS / clickjacking protection at all.

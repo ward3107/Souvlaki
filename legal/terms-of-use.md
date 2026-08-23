@@ -132,7 +132,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 **צור קשר:**
 
 - אימייל: **privacy@greeksouvlaki.co.il**
-- אתר: https://souvlaki.pages.dev
+- אתר: https://greeksouflaki.com
 - טלפון: 04-812-2980
 - כתובת: כפר יאסיף, כביש 70, ישראל
 
