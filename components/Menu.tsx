@@ -1,13 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import {
   Sandwich,
-  UtensilsCrossed,
-  Beef,
-  Pizza,
-  Salad,
-  Cookie,
-  CupSoda,
-  Wine,
   Star,
   ChevronRight,
   Plus,
@@ -16,7 +9,7 @@ import {
   X,
   Trash2,
   RotateCcw,
-  type LucideIcon,
+  Search,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Language } from '../types';
@@ -25,44 +18,21 @@ import { useTilt3D } from './hooks/useTilt3D';
 import { useBackClose } from './hooks/useBackClose';
 import IngredientFloaters from './IngredientFloaters';
 import { encodeTicket } from '../utils/ticket';
-
-// ============================================================================
-// Types
-// ============================================================================
-
-type Lang = 'en' | 'he' | 'ar' | 'ru' | 'el';
-type LocalizedString = Record<Lang, string>;
-type BadgeKey = 'popular' | 'gf' | 'vegan' | 'spicy' | 'new';
-
-interface Variant {
-  id: string;
-  label: LocalizedString;
-  extra?: number; // additional shekels on top of base price
-}
-
-interface MenuItem {
-  id: string;
-  name: LocalizedString;
-  description?: LocalizedString;
-  price: number; // shekels
-  image?: string; // optional dish photo (front face of 3D card)
-  variants?: Variant[];
-  badges?: BadgeKey[];
-}
-
-interface MenuAddon {
-  id: string;
-  name: LocalizedString;
-  price: string;
-}
-
-interface MenuCategory {
-  id: string;
-  name: LocalizedString;
-  Icon: LucideIcon;
-  items: MenuItem[];
-  addons?: MenuAddon[];
-}
+import { track } from '../utils/analytics';
+import {
+  MENU_CATEGORIES,
+  BADGE_LABELS,
+  FILTERABLE_BADGES,
+  WHATSAPP_NUMBER,
+  getLocalized,
+  formatPrice,
+  type Lang,
+  type LocalizedString,
+  type BadgeKey,
+  type MenuItem,
+  type MenuAddon,
+} from '../utils/menuData';
+import { loadOverrides, MENU_OVERRIDES_EVENT, type MenuOverrides } from '../utils/menuOverrides';
 
 // ============================================================================
 // Static i18n
@@ -236,517 +206,51 @@ const DECREASE_ARIA: LocalizedString = {
   el: 'Μείωση ποσότητας',
 };
 
-const BADGE_LABELS: Record<BadgeKey, LocalizedString> = {
-  popular: {
-    en: 'Popular',
-    he: 'פופולרי',
-    ar: 'الأكثر طلباً',
-    ru: 'Популярно',
-    el: 'Δημοφιλές',
-  },
-  gf: {
-    en: 'Gluten-free',
-    he: 'ללא גלוטן',
-    ar: 'بدون غلوتين',
-    ru: 'Без глютена',
-    el: 'Χωρίς γλουτένη',
-  },
-  vegan: { en: 'Vegan', he: 'טבעוני', ar: 'نباتي', ru: 'Веган', el: 'Vegan' },
-  spicy: { en: 'Spicy', he: 'חריף', ar: 'حار', ru: 'Острый', el: 'Καυτερό' },
-  new: { en: 'New', he: 'חדש', ar: 'جديد', ru: 'Новинка', el: 'Νέο' },
+const SEARCH_PLACEHOLDER: LocalizedString = {
+  en: 'Search the menu…',
+  he: 'חיפוש בתפריט…',
+  ar: 'ابحث في القائمة…',
+  ru: 'Поиск по меню…',
+  el: 'Αναζήτηση στο μενού…',
+};
+
+const NO_RESULTS: LocalizedString = {
+  en: 'No dishes match your search.',
+  he: 'לא נמצאו מנות התואמות לחיפוש.',
+  ar: 'لا توجد أطباق تطابق بحثك.',
+  ru: 'Ничего не найдено.',
+  el: 'Δεν βρέθηκαν πιάτα.',
+};
+
+const RESULTS_LABEL: LocalizedString = {
+  en: 'results',
+  he: 'תוצאות',
+  ar: 'نتائج',
+  ru: 'результатов',
+  el: 'αποτελέσματα',
+};
+
+const CLEAR_FILTERS_LABEL: LocalizedString = {
+  en: 'Clear',
+  he: 'נקה',
+  ar: 'مسح',
+  ru: 'Сбросить',
+  el: 'Καθαρισμός',
+};
+
+const SOLD_OUT_LABEL: LocalizedString = {
+  en: 'Sold out',
+  he: 'אזל מהמלאי',
+  ar: 'نفد',
+  ru: 'Нет в наличии',
+  el: 'Εξαντλήθηκε',
 };
 
 // ============================================================================
-// Variant builder helpers (used by Pita category)
+// Cart helpers
 // ============================================================================
 
-const PITA_VARIANTS: Variant[] = [
-  {
-    id: 'chicken',
-    label: {
-      en: 'Chicken',
-      he: 'עוף',
-      ar: 'دجاج',
-      ru: 'Курица',
-      el: 'Κοτόπουλο',
-    },
-  },
-  {
-    id: 'white-meat',
-    label: {
-      en: 'White meat',
-      he: 'בשר לבן',
-      ar: 'لحم أبيض',
-      ru: 'Белое мясо',
-      el: 'Λευκό κρέας',
-    },
-  },
-  {
-    id: 'kebab',
-    label: {
-      en: 'Lamb kebab',
-      he: 'קבב טלה',
-      ar: 'كباب حمل',
-      ru: 'Кебаб из ягнёнка',
-      el: 'Κεμπάπ αρνί',
-    },
-  },
-  {
-    id: 'sausage',
-    label: {
-      en: 'Sausage',
-      he: 'נקניקיות',
-      ar: 'سجق',
-      ru: 'Сосиски',
-      el: 'Λουκάνικα',
-    },
-  },
-  {
-    id: 'vegan',
-    label: { en: 'Vegan', he: 'טבעוני', ar: 'نباتي', ru: 'Веган', el: 'Vegan' },
-  },
-  {
-    id: 'gyros',
-    label: { en: 'Gyros', he: 'גירוס', ar: 'غيروس', ru: 'Гирос', el: 'Γύρος' },
-    extra: 5,
-  },
-  {
-    id: 'steak',
-    label: { en: 'Steak', he: 'סטייק', ar: 'ستيك', ru: 'Стейк', el: 'Μπριζόλα' },
-    extra: 5,
-  },
-];
-
-// ============================================================================
-// Menu data
-// ============================================================================
-
-const MENU_CATEGORIES: MenuCategory[] = [
-  {
-    id: 'pita',
-    name: { en: 'Pita', he: 'פיתה', ar: 'بيتا', ru: 'Пита', el: 'Πίτα' },
-    Icon: Sandwich,
-    items: [
-      {
-        id: 'pita-souvlaki',
-        image: '/gallery/IMG-20251205-WA0032-400.webp',
-        name: {
-          en: 'Souvlaki Pita',
-          he: 'פיתה סובלקי',
-          ar: 'بيتا سوفلاكي',
-          ru: 'Пита сувлаки',
-          el: 'Πίτα σουβλάκι',
-        },
-        description: {
-          en: 'Charcoal-grilled skewer in fresh Greek pita, our house tzatziki or spicy sauce, ripe tomato, crisp lettuce, onion, golden chips.',
-          he: 'שיפוד צלוי על האש בפיתה יוונית טרייה, צזיקי הבית או רוטב חריף, עגבנייה, חסה, בצל, צ׳יפס זהוב.',
-          ar: 'سيخ مشوي على الفحم في بيتا يونانية طازجة، تزاتزيكي البيت أو الصلصة الحارة، طماطم، خس، بصل، بطاطس مقرمشة.',
-          ru: 'Шашлык на углях в свежей греческой пите, наш домашний дзадзики или острый соус, помидор, салат, лук, золотистые чипсы.',
-          el: 'Σουβλάκι ψημένο στα κάρβουνα σε φρέσκια ελληνική πίτα, τζατζίκι σπιτικό ή καυτερή σάλτσα, ντομάτα, μαρούλι, κρεμμύδι, χρυσές πατάτες.',
-        },
-        price: 30,
-        badges: ['popular'],
-        variants: PITA_VARIANTS,
-      },
-      {
-        id: 'pita-gf',
-        image: '/gallery/IMG-20251205-WA0033-400.webp',
-        name: {
-          en: 'Souvlaki Pita — Gluten-Free',
-          he: 'פיתה סובלקי ללא גלוטן',
-          ar: 'بيتا سوفلاكي خالية من الغلوتين',
-          ru: 'Пита сувлаки без глютена',
-          el: 'Πίτα σουβλάκι χωρίς γλουτένη',
-        },
-        description: {
-          en: 'Gluten-free pita with skewer of choice, house tzatziki or spicy, fresh vegetables and chips.',
-          he: 'פיתה ללא גלוטן עם שיפוד לבחירה, צזיקי או חריף, ירקות טריים וצ׳יפס.',
-          ar: 'بيتا خالية من الغلوتين مع سيخ حسب الاختيار، تزاتزيكي أو حار، خضروات طازجة وبطاطس.',
-          ru: 'Пита без глютена с шашлыком на выбор, дзадзики или острый соус, свежие овощи и чипсы.',
-          el: 'Πίτα χωρίς γλουτένη με σουβλάκι επιλογής, τζατζίκι ή καυτερό, φρέσκα λαχανικά και πατάτες.',
-        },
-        price: 40,
-        badges: ['gf'],
-      },
-    ],
-    addons: [
-      {
-        id: 'double-skewer',
-        name: {
-          en: 'Add an extra skewer',
-          he: 'תוספת שיפוד נוסף',
-          ar: 'سيخ إضافي',
-          ru: 'Дополнительный шашлык',
-          el: 'Επιπλέον σουβλάκι',
-        },
-        price: '+15 ₪',
-      },
-    ],
-  },
-  {
-    id: 'plates',
-    name: { en: 'Plates', he: 'צלחות', ar: 'أطباق', ru: 'Тарелки', el: 'Πιάτα' },
-    Icon: UtensilsCrossed,
-    items: [
-      {
-        id: 'plate-souvlaki',
-        image: '/gallery/IMG-20251205-WA0034-400.webp',
-        name: {
-          en: 'Souvlaki Plate',
-          he: 'צלחת סובלקי',
-          ar: 'طبق سوفلاكي',
-          ru: 'Тарелка сувлаки',
-          el: 'Πιάτο σουβλάκι',
-        },
-        description: {
-          en: 'Skewers of your choice, house tzatziki and spicy sauce, fresh tomato, onion, lettuce, golden chips.',
-          he: 'שיפודים לבחירתכם, צזיקי וחריף הבית, עגבנייה, בצל, חסה, צ׳יפס זהוב.',
-          ar: 'أسياخ من اختيارك، تزاتزيكي وصلصة حارة، طماطم، بصل، خس، بطاطس مقرمشة.',
-          ru: 'Шашлык на выбор, домашний дзадзики и острый соус, помидор, лук, салат, золотистые чипсы.',
-          el: 'Σουβλάκια της επιλογής σας, τζατζίκι και καυτερή σάλτσα, ντομάτα, κρεμμύδι, μαρούλι, χρυσές πατάτες.',
-        },
-        price: 40,
-      },
-      {
-        id: 'plate-gyros',
-        image: '/gallery/IMG-20251205-WA0035-400.webp',
-        name: {
-          en: 'Gyros Plate',
-          he: 'צלחת גירוס',
-          ar: 'طبق غيروس',
-          ru: 'Тарелка гирос',
-          el: 'Πιάτο γύρος',
-        },
-        description: {
-          en: 'Slow-roasted white-meat gyros, house tzatziki or spicy, fresh tomato, onion, lettuce, chips.',
-          he: 'גירוס בשר לבן צלוי לאט, צזיקי או חריף, עגבנייה, בצל, חסה, צ׳יפס.',
-          ar: 'غيروس لحم أبيض مشوي ببطء، تزاتزيكي أو حار، طماطم، بصل، خس، بطاطس.',
-          ru: 'Гирос из белого мяса медленного приготовления, дзадзики или острый, помидор, лук, салат, чипсы.',
-          el: 'Γύρος λευκού κρέατος αργής ψήσης, τζατζίκι ή καυτερό, ντομάτα, κρεμμύδι, μαρούλι, πατάτες.',
-        },
-        price: 50,
-      },
-    ],
-  },
-  {
-    id: 'platters',
-    name: { en: 'Platters', he: 'מגשים', ar: 'صواني', ru: 'Подносы', el: 'Μερίδες' },
-    Icon: Beef,
-    items: [
-      {
-        id: 'platter-personal',
-        image: '/gallery/IMG-20251205-WA0036-400.webp',
-        name: {
-          en: 'Personal Platter',
-          he: 'מגש אישי',
-          ar: 'صينية فردية',
-          ru: 'Индивидуальный поднос',
-          el: 'Μερίδα ατόμου',
-        },
-        description: {
-          en: 'Generous serving of white-meat gyros, golden chips, house tzatziki, fresh vegetables, traditional Greek salad. Serves 1-2.',
-          he: 'מנה נדיבה של גירוס בשר לבן, צ׳יפס זהוב, צזיקי הבית, ירקות טריים וסלט יווני. ל-1-2 סועדים.',
-          ar: 'حصة سخية من غيروس اللحم الأبيض، بطاطس مقرمشة، تزاتزيكي البيت، خضروات طازجة وسلطة يونانية تقليدية. لـ 1-2.',
-          ru: 'Щедрая порция гироса из белого мяса, золотистые чипсы, домашний дзадзики, свежие овощи и греческий салат. На 1-2 человек.',
-          el: 'Γενναιόδωρη μερίδα γύρου λευκού κρέατος, χρυσές πατάτες, τζατζίκι, φρέσκα λαχανικά και ελληνική σαλάτα. Για 1-2.',
-        },
-        price: 50,
-      },
-      {
-        id: 'platter-couple',
-        image: '/gallery/IMG-20251205-WA0037-400.webp',
-        name: {
-          en: 'Couple Platter',
-          he: 'מגש זוגי',
-          ar: 'صينية زوجية',
-          ru: 'Парный поднос',
-          el: 'Μερίδα ζευγαριού',
-        },
-        description: {
-          en: 'White-meat gyros + 2 skewers of your choice, chips, sauces, fresh vegetables and salads. Perfect for two.',
-          he: 'גירוס בשר לבן + 2 שיפודים לבחירה, צ׳יפס, רטבים, ירקות טריים וסלטים. מושלם לזוג.',
-          ar: 'غيروس لحم أبيض + سيخان من اختيارك، بطاطس، صلصات، خضروات وسلطات. مثالي لشخصين.',
-          ru: 'Гирос из белого мяса + 2 шашлыка на выбор, чипсы, соусы, свежие овощи и салаты. Идеально для двоих.',
-          el: 'Γύρος λευκού κρέατος + 2 σουβλάκια της επιλογής σας, πατάτες, σάλτσες, φρέσκα λαχανικά και σαλάτες. Τέλειο για δύο.',
-        },
-        price: 120,
-        badges: ['popular'],
-      },
-      {
-        id: 'platter-family',
-        image: '/gallery/IMG-20251205-WA0038-400.webp',
-        name: {
-          en: 'Family Platter',
-          he: 'מגש משפחתי',
-          ar: 'صينية عائلية',
-          ru: 'Семейный поднос',
-          el: 'Μερίδα οικογένειας',
-        },
-        description: {
-          en: 'White-meat gyros + 3 skewers, chips, sauces, fresh vegetables, salads, warm pitas. Feeds 4-5.',
-          he: 'גירוס בשר לבן + 3 שיפודים, צ׳יפס, רטבים, ירקות, סלטים ופיתות חמות. ל-4-5 סועדים.',
-          ar: 'غيروس لحم أبيض + 3 أسياخ، بطاطس، صلصات، خضروات، سلطات وبيتا دافئة. لـ 4-5 أشخاص.',
-          ru: 'Гирос из белого мяса + 3 шашлыка, чипсы, соусы, овощи, салаты и тёплые питы. На 4-5 человек.',
-          el: 'Γύρος λευκού κρέατος + 3 σουβλάκια, πατάτες, σάλτσες, λαχανικά, σαλάτες και ζεστές πίτες. Για 4-5.',
-        },
-        price: 170,
-      },
-    ],
-  },
-  {
-    id: 'pizza',
-    name: {
-      en: 'Pizza Gyros',
-      he: 'פיצה גירוס',
-      ar: 'بيتزا غيروس',
-      ru: 'Пицца гирос',
-      el: 'Πίτσα γύρος',
-    },
-    Icon: Pizza,
-    items: [
-      {
-        id: 'pizza-small',
-        image: '/gallery/IMG-20251205-WA0039-400.webp',
-        name: {
-          en: 'Pizza Gyros — Small',
-          he: 'פיצה גירוס קטנה',
-          ar: 'بيتزا غيروس صغيرة',
-          ru: 'Пицца гирос (маленькая)',
-          el: 'Πίτσα γύρος (μικρή)',
-        },
-        description: {
-          en: 'Personal pizza topped with white-meat gyros and golden chips.',
-          he: 'פיצה אישית בתוספת גירוס בשר לבן וצ׳יפס זהוב.',
-          ar: 'بيتزا فردية مع غيروس لحم أبيض وبطاطس مقرمشة.',
-          ru: 'Личная пицца с гиросом из белого мяса и золотистыми чипсами.',
-          el: 'Ατομική πίτσα με γύρο λευκού κρέατος και χρυσές πατάτες.',
-        },
-        price: 40,
-      },
-      {
-        id: 'pizza-large',
-        image: '/gallery/IMG-20251205-WA0040-400.webp',
-        name: {
-          en: 'Pizza Gyros — Large',
-          he: 'פיצה גירוס גדולה',
-          ar: 'بيتزا غيروس كبيرة',
-          ru: 'Пицца гирос (большая)',
-          el: 'Πίτσα γύρος (μεγάλη)',
-        },
-        description: {
-          en: 'Sharing-size pizza topped with white-meat gyros and golden chips.',
-          he: 'פיצה גדולה לשיתוף בתוספת גירוס בשר לבן וצ׳יפס זהוב.',
-          ar: 'بيتزا كبيرة للمشاركة مع غيروس لحم أبيض وبطاطس مقرمشة.',
-          ru: 'Большая пицца для компании с гиросом из белого мяса и золотистыми чипсами.',
-          el: 'Μεγάλη πίτσα για μοίρασμα με γύρο λευκού κρέατος και χρυσές πατάτες.',
-        },
-        price: 70,
-      },
-    ],
-  },
-  {
-    id: 'salads',
-    name: { en: 'Salads', he: 'סלטים', ar: 'سلطات', ru: 'Салаты', el: 'Σαλάτες' },
-    Icon: Salad,
-    items: [
-      {
-        id: 'greek-salad',
-        image: '/gallery/IMG-20251205-WA0041-400.webp',
-        name: {
-          en: 'Greek Salad',
-          he: 'סלט יווני',
-          ar: 'سلطة يونانية',
-          ru: 'Греческий салат',
-          el: 'Ελληνική σαλάτα',
-        },
-        description: {
-          en: 'Tomato, cucumber, bell pepper, onion, Kalamata olives, creamy feta — drizzled with olive oil.',
-          he: 'עגבנייה, מלפפון, פלפל, בצל, זיתי קלמטה ופטה קרמית — בלימון ושמן זית.',
-          ar: 'طماطم، خيار، فلفل، بصل، زيتون كالاماتا وجبنة فيتا كريمية — مع زيت زيتون.',
-          ru: 'Помидоры, огурец, перец, лук, оливки каламата и сливочная фета — с оливковым маслом.',
-          el: 'Ντομάτα, αγγούρι, πιπεριά, κρεμμύδι, ελιές Καλαμών και κρεμώδης φέτα — με ελαιόλαδο.',
-        },
-        price: 40,
-      },
-    ],
-  },
-  {
-    id: 'sides',
-    name: {
-      en: 'Sides',
-      he: 'תוספות',
-      ar: 'إضافات',
-      ru: 'Гарниры',
-      el: 'Συνοδευτικά',
-    },
-    Icon: Cookie,
-    items: [
-      {
-        id: 'fries',
-        image: '/gallery/IMG-20251205-WA0042-400.webp',
-        name: {
-          en: 'Greek Chips',
-          he: 'צ׳יפס',
-          ar: 'بطاطس',
-          ru: 'Картофель фри',
-          el: 'Πατάτες',
-        },
-        description: {
-          en: 'Hand-cut, crispy, salted just right.',
-          he: 'פרוס ביד, פריך ומלוח בדיוק כמו שצריך.',
-          ar: 'مقطعة باليد، مقرمشة ومملحة بالقدر المناسب.',
-          ru: 'Нарезанные вручную, хрустящие, идеально посоленные.',
-          el: 'Κομμένες στο χέρι, τραγανές, αλατισμένες στην εντέλεια.',
-        },
-        price: 15,
-      },
-    ],
-  },
-  {
-    id: 'drinks',
-    name: {
-      en: 'Drinks',
-      he: 'משקאות',
-      ar: 'مشروبات',
-      ru: 'Напитки',
-      el: 'Αναψυκτικά',
-    },
-    Icon: CupSoda,
-    items: [
-      {
-        id: 'soft-drinks',
-        name: {
-          en: 'Soft Drinks',
-          he: 'משקאות קלים',
-          ar: 'مشروبات غازية',
-          ru: 'Безалкогольные',
-          el: 'Αναψυκτικά',
-        },
-        description: {
-          en: 'Coca-Cola, Cola Zero, Fanta, Sprite, Grape.',
-          he: 'קוקה קולה, קולה זירו, פנטה, ספרייט, ענבים.',
-          ar: 'كوكا كولا، كولا زيرو، فانتا، سبرايت، عنب.',
-          ru: 'Кока-Кола, Кола Зеро, Фанта, Спрайт, Виноградный.',
-          el: 'Coca-Cola, Cola Zero, Fanta, Sprite, Σταφύλι.',
-        },
-        price: 7,
-      },
-      {
-        id: 'water',
-        name: {
-          en: 'Mineral Water',
-          he: 'מים מינרליים',
-          ar: 'مياه معدنية',
-          ru: 'Минеральная вода',
-          el: 'Μεταλλικό νερό',
-        },
-        price: 5,
-      },
-    ],
-  },
-  {
-    id: 'alcohol',
-    name: {
-      en: 'Alcohol',
-      he: 'אלכוהול',
-      ar: 'كحول',
-      ru: 'Алкоголь',
-      el: 'Αλκοόλ',
-    },
-    Icon: Wine,
-    items: [
-      {
-        id: 'beer',
-        name: {
-          en: 'Drift Draft Beer',
-          he: 'בירה דריפט מהחבית',
-          ar: 'بيرة دريفت من البرميل',
-          ru: 'Разливное пиво Drift',
-          el: 'Μπύρα Drift από βαρέλι',
-        },
-        description: {
-          en: 'Our house draft, light and refreshing.',
-          he: 'הבירה של הבית, קלה ומרעננת.',
-          ar: 'بيرة البيت، خفيفة ومنعشة.',
-          ru: 'Наше домашнее пиво — лёгкое и освежающее.',
-          el: 'Η μπύρα του σπιτιού, ελαφριά και δροσιστική.',
-        },
-        price: 15,
-      },
-      {
-        id: 'wine-glass',
-        name: {
-          en: 'Wine — Glass',
-          he: 'יין בכוס',
-          ar: 'نبيذ بالكأس',
-          ru: 'Вино — бокал',
-          el: 'Κρασί — ποτήρι',
-        },
-        description: {
-          en: 'Red, white, or rosé.',
-          he: 'אדום, לבן או רוזה.',
-          ar: 'أحمر، أبيض، أو وردي.',
-          ru: 'Красное, белое или розовое.',
-          el: 'Κόκκινο, λευκό, ή ροζέ.',
-        },
-        price: 15,
-      },
-      {
-        id: 'wine-bottle',
-        name: {
-          en: 'Wine — Bottle',
-          he: 'בקבוק יין',
-          ar: 'زجاجة نبيذ',
-          ru: 'Бутылка вина',
-          el: 'Μπουκάλι κρασιού',
-        },
-        description: {
-          en: 'House selection — ask your server.',
-          he: 'בחירת הבית — שאלו את המלצר.',
-          ar: 'اختيار البيت — اسأل النادل.',
-          ru: 'Выбор шефа — спросите официанта.',
-          el: 'Επιλογή σπιτιού — ρωτήστε τον σερβιτόρο.',
-        },
-        price: 100,
-      },
-      {
-        id: 'whiskey',
-        name: {
-          en: 'Whiskey',
-          he: 'וויסקי',
-          ar: 'ويسكي',
-          ru: 'Виски',
-          el: 'Ουίσκι',
-        },
-        price: 30,
-      },
-      {
-        id: 'ouzo',
-        name: {
-          en: 'Ouzo Plomari',
-          he: 'אוזו פלומרי',
-          ar: 'أوزو بلوماري',
-          ru: 'Узо Пломари',
-          el: 'Ούζο Πλωμαρίου',
-        },
-        description: {
-          en: 'Traditional anise-flavoured Greek spirit. 200 ml bottle.',
-          he: 'משקה יווני מסורתי בטעם אניס. בקבוק 200 מ״ל.',
-          ar: 'مشروب يوناني تقليدي بنكهة اليانسون. زجاجة 200 مل.',
-          ru: 'Традиционный греческий напиток с анисом. Бутылка 200 мл.',
-          el: 'Παραδοσιακό ελληνικό ποτό γλυκάνισου. Μπουκάλι 200 ml.',
-        },
-        price: 70,
-      },
-    ],
-  },
-];
-
-// ============================================================================
-// Helpers
-// ============================================================================
-
-const WHATSAPP_NUMBER = '972542001235';
+const CART_STORAGE_KEY = 'souvlaki-cart-v1';
 
 interface CartLine {
   itemId: string;
@@ -767,14 +271,25 @@ interface ResolvedLine {
 
 const lineKey = (itemId: string, variantId?: string) => `${itemId}::${variantId ?? ''}`;
 
-function resolveLine(line: CartLine, lang: Lang): ResolvedLine | null {
+function loadCart(): CartLine[] {
+  try {
+    const raw = localStorage.getItem(CART_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function resolveLine(line: CartLine, lang: Lang, overrides: MenuOverrides): ResolvedLine | null {
   for (const cat of MENU_CATEGORIES) {
     const item = cat.items.find((i) => i.id === line.itemId);
     if (!item) continue;
     const variant = line.variantId
       ? item.variants?.find((v) => v.id === line.variantId)
       : undefined;
-    const unitPrice = item.price + (variant?.extra ?? 0);
+    const basePrice = overrides[item.id]?.price ?? item.price;
+    const unitPrice = basePrice + (variant?.extra ?? 0);
     return {
       key: lineKey(line.itemId, line.variantId),
       itemId: line.itemId,
@@ -843,15 +358,6 @@ function buildCartUrl(lang: Lang, lines: ResolvedLine[], name: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
-function formatPrice(shekels: number): string {
-  return `${shekels} ₪`;
-}
-
-function getLocalized(s: LocalizedString | undefined, lang: Lang): string {
-  if (!s) return '';
-  return s[lang] ?? s.en;
-}
-
 // Inline WhatsApp glyph (Lucide doesn't ship one)
 function WhatsAppGlyph({ className }: { className?: string }) {
   return (
@@ -859,6 +365,47 @@ function WhatsAppGlyph({ className }: { className?: string }) {
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
     </svg>
   );
+}
+
+// ============================================================================
+// Menu/MenuItem schema.org JSON-LD (SEO / AI answer engines)
+// ============================================================================
+
+function buildMenuSchema(overrides: MenuOverrides) {
+  const origin =
+    typeof window !== 'undefined' ? window.location.origin : 'https://souvlaki.pages.dev';
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Menu',
+    name: 'Greek Souvlaki Kfar Yasif — Menu',
+    url: `${origin}/menu`,
+    inLanguage: ['en', 'he', 'ar', 'ru', 'el'],
+    hasMenuSection: MENU_CATEGORIES.map((cat) => ({
+      '@type': 'MenuSection',
+      name: getLocalized(cat.name, 'en'),
+      hasMenuItem: cat.items.map((item) => {
+        const ov = overrides[item.id] ?? {};
+        const price = ov.price ?? item.price;
+        return {
+          '@type': 'MenuItem',
+          name: getLocalized(item.name, 'en'),
+          ...(item.description ? { description: getLocalized(item.description, 'en') } : {}),
+          offers: {
+            '@type': 'Offer',
+            price: String(price),
+            priceCurrency: 'ILS',
+            availability: ov.soldOut ? 'https://schema.org/SoldOut' : 'https://schema.org/InStock',
+          },
+          ...(item.badges?.includes('vegan')
+            ? { suitableForDiet: 'https://schema.org/VeganDiet' }
+            : {}),
+          ...(item.badges?.includes('gf')
+            ? { suitableForDiet: 'https://schema.org/GlutenFreeDiet' }
+            : {}),
+        };
+      }),
+    })),
+  };
 }
 
 // ============================================================================
@@ -890,10 +437,14 @@ function MenuCard({
   item,
   lang,
   onAdd,
+  soldOut,
+  priceOverride,
 }: {
   item: MenuItem;
   lang: Lang;
   onAdd: (itemId: string, variantId?: string) => void;
+  soldOut: boolean;
+  priceOverride?: number;
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const {
@@ -906,10 +457,12 @@ function MenuCard({
   const name = getLocalized(item.name, lang);
   const desc = getLocalized(item.description, lang);
   const hasVariants = !!item.variants?.length;
+  const basePrice = priceOverride ?? item.price;
 
   // Adding also flips the card back to its front — a clean "added" confirmation
   // and it returns the deck to a tidy state.
   const handleAdd = (variantId?: string) => {
+    if (soldOut) return;
     onAdd(item.id, variantId);
     setIsFlipped(false);
   };
@@ -946,7 +499,9 @@ function MenuCard({
                   alt=""
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                    soldOut ? 'grayscale opacity-60' : ''
+                  }`}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
@@ -961,6 +516,13 @@ function MenuCard({
                 className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/45 to-transparent pointer-events-none"
                 aria-hidden="true"
               />
+              {soldOut && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <span className="rounded-full bg-slate-900/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                    {SOLD_OUT_LABEL[lang]}
+                  </span>
+                </div>
+              )}
               <div className="absolute top-2 end-2 flex flex-col items-end gap-1">
                 {item.badges?.map((b) => (
                   <Badge key={b} kind={b} lang={lang} />
@@ -969,8 +531,8 @@ function MenuCard({
               <div className="absolute bottom-2 end-2">
                 <span className="bg-brand-terracotta-400 text-white px-2.5 py-1 rounded-full text-xs sm:text-sm font-bold shadow-soft whitespace-nowrap">
                   {hasVariants
-                    ? `${getLocalized(FROM_LABEL, lang)} ${formatPrice(item.price)}`
-                    : formatPrice(item.price)}
+                    ? `${getLocalized(FROM_LABEL, lang)} ${formatPrice(basePrice)}`
+                    : formatPrice(basePrice)}
                 </span>
               </div>
             </div>
@@ -1010,7 +572,7 @@ function MenuCard({
                 {name}
               </h4>
               <span className="font-display text-sm sm:text-lg font-semibold text-brand-blue-500 whitespace-nowrap">
-                {formatPrice(item.price)}
+                {formatPrice(basePrice)}
               </span>
             </div>
 
@@ -1022,7 +584,11 @@ function MenuCard({
 
             {/* Actions don't flip the card — only add to cart */}
             <div className="mt-auto" onClick={(e) => e.stopPropagation()}>
-              {hasVariants ? (
+              {soldOut ? (
+                <div className="w-full rounded-full bg-gray-100 dark:bg-slate-700 px-3.5 py-2 text-center text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400">
+                  {SOLD_OUT_LABEL[lang]}
+                </div>
+              ) : hasVariants ? (
                 <>
                   <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">
                     {getLocalized(CHOOSE_HINT, lang)}
@@ -1304,22 +870,94 @@ interface MenuProps {
 
 export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [activeId, setActiveId] = useState<string>(MENU_CATEGORIES[0].id);
-  const [cart, setCart] = useState<CartLine[]>([]);
+  const [cart, setCart] = useState<CartLine[]>(() => loadCart());
   const [cartOpen, setCartOpen] = useState(false);
   const [customerName, setCustomerName] = useState('');
+  const [query, setQuery] = useState('');
+  const [activeBadges, setActiveBadges] = useState<BadgeKey[]>([]);
+  const [overrides, setOverrides] = useState<MenuOverrides>(() => loadOverrides());
   const lang = language as Lang;
   const isRtl = lang === 'he' || lang === 'ar';
   const titles = SECTION_TITLES[lang] ?? SECTION_TITLES.en;
   const active = MENU_CATEGORIES.find((c) => c.id === activeId) ?? MENU_CATEGORIES[0];
 
+  // Keep menu availability/prices in sync with the /admin editor (this tab and
+  // other tabs / devices).
+  useEffect(() => {
+    const refresh = () => setOverrides(loadOverrides());
+    window.addEventListener(MENU_OVERRIDES_EVENT, refresh);
+    window.addEventListener('storage', refresh);
+    return () => {
+      window.removeEventListener(MENU_OVERRIDES_EVENT, refresh);
+      window.removeEventListener('storage', refresh);
+    };
+  }, []);
+
+  // Persist the cart so a refresh (or accidental navigation) never loses an
+  // order in progress.
+  useEffect(() => {
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    } catch {
+      // ignore quota / private-mode failures
+    }
+  }, [cart]);
+
+  // Inject Menu/MenuItem JSON-LD for SEO while the menu page is mounted.
+  useEffect(() => {
+    const el = document.createElement('script');
+    el.type = 'application/ld+json';
+    el.id = 'menu-schema';
+    el.textContent = JSON.stringify(buildMenuSchema(overrides));
+    document.head.appendChild(el);
+    return () => {
+      el.remove();
+    };
+  }, [overrides]);
+
   const resolvedLines = useMemo(
-    () => cart.map((l) => resolveLine(l, lang)).filter((l): l is ResolvedLine => l !== null),
-    [cart, lang]
+    () =>
+      cart.map((l) => resolveLine(l, lang, overrides)).filter((l): l is ResolvedLine => l !== null),
+    [cart, lang, overrides]
   );
   const itemCount = resolvedLines.reduce((sum, l) => sum + l.qty, 0);
   const cartTotal = resolvedLines.reduce((sum, l) => sum + l.lineTotal, 0);
 
+  const isFiltering = query.trim().length > 0 || activeBadges.length > 0;
+
+  // Flat, cross-category result set when the visitor is searching or filtering.
+  const filteredItems = useMemo(() => {
+    if (!isFiltering) return [];
+    const q = query.trim().toLowerCase();
+    const results: MenuItem[] = [];
+    for (const cat of MENU_CATEGORIES) {
+      for (const item of cat.items) {
+        if (activeBadges.length > 0 && !activeBadges.every((b) => item.badges?.includes(b))) {
+          continue;
+        }
+        if (q) {
+          const haystack = `${getLocalized(item.name, lang)} ${getLocalized(
+            item.description,
+            lang
+          )} ${getLocalized(item.name, 'en')}`.toLowerCase();
+          if (!haystack.includes(q)) continue;
+        }
+        results.push(item);
+      }
+    }
+    return results;
+  }, [isFiltering, query, activeBadges, lang]);
+
+  const toggleBadge = (b: BadgeKey) =>
+    setActiveBadges((prev) => (prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b]));
+
+  const clearFilters = () => {
+    setQuery('');
+    setActiveBadges([]);
+  };
+
   const handleAdd = (itemId: string, variantId?: string) => {
+    track('menu_add_to_cart', { item_id: itemId, variant: variantId ?? '' });
     setCart((prev) => {
       const idx = prev.findIndex((l) => l.itemId === itemId && l.variantId === variantId);
       if (idx >= 0) {
@@ -1351,6 +989,11 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const sendOrder = () => {
     if (resolvedLines.length === 0) return;
     if (!customerName.trim()) return;
+    track('order_whatsapp', {
+      value: cartTotal,
+      currency: 'ILS',
+      items: itemCount,
+    });
     const url = buildCartUrl(lang, resolvedLines, customerName.trim());
     window.open(url, '_blank', 'noopener,noreferrer');
     // The order handed off to WhatsApp — reset so returning to the tab doesn't
@@ -1382,6 +1025,21 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     return () => document.body.classList.remove('cart-active');
   }, [itemCount]);
 
+  const renderCard = (item: MenuItem, key: string, delay: number) => {
+    const ov = overrides[item.id] ?? {};
+    return (
+      <Reveal key={key} delay={delay} y={20}>
+        <MenuCard
+          item={item}
+          lang={lang}
+          onAdd={handleAdd}
+          soldOut={!!ov.soldOut}
+          priceOverride={ov.price}
+        />
+      </Reveal>
+    );
+  };
+
   return (
     <section
       id={id}
@@ -1392,7 +1050,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <Reveal>
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <h2 className="font-display text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-3 tracking-tight">
               {titles.title}
             </h2>
@@ -1402,52 +1060,119 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
           </div>
         </Reveal>
 
-        {/* Category tabs (sticky) */}
-        <div className="mb-2 sticky top-20 z-20 -mx-4 px-4 py-3 bg-brand-cream-100/90 dark:bg-slate-900/90 backdrop-blur-sm">
-          <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-hide">
-            {MENU_CATEGORIES.map((cat) => {
-              const Icon = cat.Icon;
-              const activeTab = activeId === cat.id;
+        {/* Search + dietary filters */}
+        <div className="mb-4 max-w-2xl mx-auto">
+          <div className="relative">
+            <Search
+              className="absolute top-1/2 -translate-y-1/2 start-4 w-4 h-4 text-gray-400"
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={SEARCH_PLACEHOLDER[lang]}
+              aria-label={SEARCH_PLACEHOLDER[lang]}
+              className="w-full ps-11 pe-4 py-2.5 rounded-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-terracotta-300"
+            />
+          </div>
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+            {FILTERABLE_BADGES.map((b) => {
+              const on = activeBadges.includes(b);
               return (
                 <button
-                  key={cat.id}
-                  onClick={() => setActiveId(cat.id)}
-                  aria-pressed={activeTab}
-                  className={`
-                    flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all active:scale-95
-                    ${
-                      activeTab
-                        ? 'bg-brand-blue-500 text-white shadow-soft'
-                        : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-brand-blue-50 dark:hover:bg-slate-700'
-                    }
-                  `}
+                  key={b}
+                  type="button"
+                  onClick={() => toggleBadge(b)}
+                  aria-pressed={on}
+                  className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+                    on
+                      ? 'bg-brand-blue-500 text-white'
+                      : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-slate-700 hover:bg-brand-blue-50 dark:hover:bg-slate-700'
+                  }`}
                 >
-                  <Icon className="w-4 h-4" aria-hidden="true" />
-                  <span>{getLocalized(cat.name, lang)}</span>
+                  {BADGE_LABELS[b][lang]}
                 </button>
               );
             })}
-          </div>
-          <div className="md:hidden text-center text-[11px] text-gray-400 dark:text-gray-500 mt-1.5">
-            {SCROLL_HINT[lang]}
+            {isFiltering && (
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="px-3 py-1.5 rounded-full text-xs font-medium text-brand-terracotta-500 hover:underline"
+              >
+                {CLEAR_FILTERS_LABEL[lang]} ✕
+              </button>
+            )}
           </div>
         </div>
 
-        {/* Items grid — 3D flip cards */}
-        <div className="mt-6 pb-24">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
-            {active.items.map((item, idx) => (
-              <Reveal key={`${active.id}-${item.id}`} delay={idx * 0.05} y={20}>
-                <MenuCard item={item} lang={lang} onAdd={handleAdd} />
-              </Reveal>
-            ))}
+        {isFiltering ? (
+          /* Flat, cross-category results */
+          <div className="mt-4 pb-24">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mb-5">
+              {filteredItems.length} {RESULTS_LABEL[lang]}
+            </p>
+            {filteredItems.length === 0 ? (
+              <p className="text-center text-gray-500 dark:text-gray-400 py-16">
+                {NO_RESULTS[lang]}
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+                {filteredItems.map((item, idx) =>
+                  renderCard(item, `search-${item.id}`, idx * 0.03)
+                )}
+              </div>
+            )}
           </div>
-          {active.addons && active.addons.length > 0 && (
-            <div className="mt-6 bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-gray-200/60 dark:border-slate-700/60 px-6 md:px-8 py-2">
-              <AddOnsList addons={active.addons} lang={lang} />
+        ) : (
+          <>
+            {/* Category tabs (sticky) */}
+            <div className="mb-2 sticky top-20 z-20 -mx-4 px-4 py-3 bg-brand-cream-100/90 dark:bg-slate-900/90 backdrop-blur-sm">
+              <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-hide">
+                {MENU_CATEGORIES.map((cat) => {
+                  const Icon = cat.Icon;
+                  const activeTab = activeId === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setActiveId(cat.id)}
+                      aria-pressed={activeTab}
+                      className={`
+                        flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all active:scale-95
+                        ${
+                          activeTab
+                            ? 'bg-brand-blue-500 text-white shadow-soft'
+                            : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-brand-blue-50 dark:hover:bg-slate-700'
+                        }
+                      `}
+                    >
+                      <Icon className="w-4 h-4" aria-hidden="true" />
+                      <span>{getLocalized(cat.name, lang)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="md:hidden text-center text-[11px] text-gray-400 dark:text-gray-500 mt-1.5">
+                {SCROLL_HINT[lang]}
+              </div>
             </div>
-          )}
-        </div>
+
+            {/* Items grid — 3D flip cards */}
+            <div className="mt-6 pb-24">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+                {active.items.map((item, idx) =>
+                  renderCard(item, `${active.id}-${item.id}`, idx * 0.05)
+                )}
+              </div>
+              {active.addons && active.addons.length > 0 && (
+                <div className="mt-6 bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-gray-200/60 dark:border-slate-700/60 px-6 md:px-8 py-2">
+                  <AddOnsList addons={active.addons} lang={lang} />
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
 
       {itemCount > 0 && !cartOpen && (

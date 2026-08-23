@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Heart, Instagram } from 'lucide-react';
 import { Language } from '../../types';
@@ -10,14 +11,108 @@ interface Props {
   galleryImages: string[];
 }
 
+const PROFILE_URL = 'https://www.instagram.com/greek.souvlakii';
+
+// Optional live-feed endpoint (e.g. Behold.so, EmbedSocial, or a small
+// serverless proxy to the Instagram Graph API). Must return JSON that is either
+// an array of post objects ({ media_url|mediaUrl|thumbnail, permalink }) or a
+// plain array of image URLs. When unset or unreachable, we fall back to the
+// bundled gallery so the section always renders.
+const FEED_URL = import.meta.env.VITE_INSTAGRAM_FEED_URL as string | undefined;
+const CACHE_KEY = 'ig-feed-cache-v1';
+const CACHE_TTL = 6 * 60 * 60 * 1000; // 6h — refresh a few times a day at most
+
+interface Photo {
+  src: string;
+  link: string;
+}
+
+interface CacheShape {
+  at: number;
+  photos: Photo[];
+}
+
+// Normalise assorted feed shapes into our {src, link} photos.
+function parseFeed(data: unknown): Photo[] {
+  const arr = Array.isArray(data)
+    ? data
+    : Array.isArray((data as { data?: unknown[] })?.data)
+      ? (data as { data: unknown[] }).data
+      : [];
+  const photos: Photo[] = [];
+  for (const entry of arr) {
+    if (typeof entry === 'string') {
+      photos.push({ src: entry, link: PROFILE_URL });
+      continue;
+    }
+    const o = entry as Record<string, unknown>;
+    const src = (o.media_url || o.mediaUrl || o.thumbnail || o.thumbnailUrl || o.src) as
+      | string
+      | undefined;
+    if (src) {
+      photos.push({ src, link: (o.permalink as string) || PROFILE_URL });
+    }
+  }
+  return photos.slice(0, 8);
+}
+
 // Each card sits at a slightly different z-depth so the parallax layer
 // translates them independently — the grid feels like a window onto a
 // shallow 3D space, not a flat wall of pictures.
 const DEPTHS = [0.25, 0.55, 0.4, 0.7, 0.5, 0.3, 0.65, 0.45];
 
+function freshCache(): Photo[] | null {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const cached = JSON.parse(raw) as CacheShape;
+    if (cached?.photos?.length && Date.now() - cached.at < CACHE_TTL) {
+      return cached.photos;
+    }
+  } catch {
+    // ignore parse/storage errors
+  }
+  return null;
+}
+
 export default function InstagramGrid({ lang, galleryImages }: Props) {
-  const photos = galleryImages.slice(0, 8);
   const reduced = useReducedMotion();
+  // Serve a fresh-enough cache immediately (no flash / refetch); otherwise the
+  // bundled gallery is the initial and fallback state.
+  const [photos, setPhotos] = useState<Photo[]>(() => {
+    if (FEED_URL) {
+      const cached = freshCache();
+      if (cached) return cached;
+    }
+    return galleryImages.slice(0, 8).map((src) => ({ src, link: PROFILE_URL }));
+  });
+
+  useEffect(() => {
+    if (!FEED_URL) return;
+    // A fresh cache already seeded state — no fetch needed this visit.
+    if (freshCache()) return;
+
+    let cancelled = false;
+    fetch(FEED_URL)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((json) => {
+        const parsed = parseFeed(json);
+        if (!cancelled && parsed.length) {
+          setPhotos(parsed);
+          try {
+            localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), photos: parsed }));
+          } catch {
+            // ignore storage failures
+          }
+        }
+      })
+      .catch(() => {
+        // keep the bundled fallback on any failure
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="py-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] transition-colors duration-300">
@@ -66,8 +161,8 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
         {/* 3D depth wall: outer mouse-parallax, per-card tilt */}
         <MouseParallax range={28} className="max-w-5xl mx-auto" style={{ perspective: '1200px' }}>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
-            {photos.map((img, idx) => (
-              <ParallaxLayer key={idx} depth={DEPTHS[idx % DEPTHS.length]}>
+            {photos.map((photo, idx) => (
+              <ParallaxLayer key={`${photo.src}-${idx}`} depth={DEPTHS[idx % DEPTHS.length]}>
                 <motion.div
                   initial={
                     reduced ? false : { opacity: 0, scale: 0.7, y: 60, filter: 'blur(10px)' }
@@ -82,7 +177,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
                     ease: [0.16, 1, 0.3, 1],
                   }}
                 >
-                  <DepthCard img={img} />
+                  <DepthCard img={photo.src} link={photo.link} />
                 </motion.div>
               </ParallaxLayer>
             ))}
@@ -111,7 +206,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
   );
 }
 
-function DepthCard({ img }: { img: string }) {
+function DepthCard({ img, link }: { img: string; link: string }) {
   const {
     ref: tiltRef,
     innerRef: tiltInnerRef,
@@ -123,7 +218,7 @@ function DepthCard({ img }: { img: string }) {
   return (
     <a
       ref={tiltRef}
-      href="https://www.instagram.com/greek.souvlakii"
+      href={link}
       target="_blank"
       rel="noopener noreferrer"
       style={tiltOuterStyle}

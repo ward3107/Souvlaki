@@ -1,6 +1,7 @@
 import { Navigation, Phone } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
+import { track } from '../../utils/analytics';
 import OpeningHours from '../OpeningHours';
 import Reveal from '../Reveal';
 
@@ -61,6 +62,7 @@ export default function Contact({ lang }: Props) {
               <div className="grid grid-cols-1 gap-3">
                 <a
                   href="tel:048122980"
+                  onClick={() => track('click_call', { location: 'contact' })}
                   className="group flex items-center gap-3 p-4 bg-gradient-to-r from-brand-blue-50 to-brand-blue-100 dark:from-brand-blue-900/20 dark:to-brand-blue-800/20 rounded-xl border-2 border-brand-blue-200 dark:border-brand-blue-800 hover:border-brand-blue-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
                 >
                   <div className="w-12 h-12 bg-brand-blue-500 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
@@ -87,6 +89,9 @@ export default function Contact({ lang }: Props) {
                   href="https://wa.me/972542001235"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    track('click_whatsapp', { location: 'contact', contact: 'jennje' })
+                  }
                   className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
                 >
                   <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
@@ -111,6 +116,9 @@ export default function Contact({ lang }: Props) {
                   href="https://wa.me/972528921454"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    track('click_whatsapp', { location: 'contact', contact: 'andreia' })
+                  }
                   className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
                 >
                   <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
@@ -135,6 +143,7 @@ export default function Contact({ lang }: Props) {
                   href="https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => track('click_directions', { provider: 'waze' })}
                   className="group flex items-center gap-3 p-4 bg-gradient-to-r from-brand-terracotta-50 to-brand-terracotta-100 dark:from-brand-terracotta-400/15 dark:to-brand-terracotta-400/20 rounded-xl border-2 border-brand-terracotta-200 dark:border-brand-terracotta-400/40 hover:border-brand-terracotta-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
                 >
                   <div className="w-12 h-12 bg-brand-terracotta-400 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">

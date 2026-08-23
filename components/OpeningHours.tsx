@@ -1,75 +1,11 @@
-import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
+import { Language } from '../types';
+import { useOpenStatus } from '../utils/openStatus';
+import OpenStatusPill from './OpenStatusPill';
 
 interface OpeningHoursProps {
   language?: string;
 }
-
-type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0=Sunday, 6=Saturday
-
-interface Schedule {
-  open: number; // Hour in 24h format (13 = 1 PM)
-  close: number; // Hour in 24h format (1 = 1 AM next day)
-}
-
-// Opening schedule: Wednesday - Saturday 13:00 - 01:00
-// Sunday - Tuesday: Closed
-const OPENING_SCHEDULE: Record<DayOfWeek, Schedule | null> = {
-  0: null, // Sunday - Closed
-  1: null, // Monday - Closed
-  2: null, // Tuesday - Closed
-  3: { open: 13, close: 1 }, // Wednesday 13:00 - 01:00 (Thursday)
-  4: { open: 13, close: 1 }, // Thursday 13:00 - 01:00 (Friday)
-  5: { open: 13, close: 1 }, // Friday 13:00 - 01:00 (Saturday)
-  6: { open: 13, close: 1 }, // Saturday 13:00 - 01:00 (Sunday)
-};
-
-const isOpenNow = (): boolean => {
-  const now = new Date();
-
-  // Get current time in Israel timezone
-  const hourOptions: Intl.DateTimeFormatOptions = {
-    timeZone: 'Asia/Jerusalem',
-    hour: 'numeric',
-    hour12: false,
-  };
-
-  const israelHour = parseInt(new Intl.DateTimeFormat('en-US', hourOptions).format(now), 10);
-
-  // Get day of week in Israel timezone (0=Sunday, 6=Saturday)
-  // Use Intl.DateTimeFormat with weekday and map to number
-  const dayOptions: Intl.DateTimeFormatOptions = {
-    timeZone: 'Asia/Jerusalem',
-    weekday: 'long',
-  };
-
-  const dayName = new Intl.DateTimeFormat('en-US', dayOptions).format(now);
-  const dayMap: Record<string, DayOfWeek> = {
-    Sunday: 0,
-    Monday: 1,
-    Tuesday: 2,
-    Wednesday: 3,
-    Thursday: 4,
-    Friday: 5,
-    Saturday: 6,
-  };
-
-  const dayOfWeek = dayMap[dayName];
-
-  const schedule = OPENING_SCHEDULE[dayOfWeek];
-
-  // If no schedule for this day, it's closed
-  if (!schedule) return false;
-
-  // Special case: If close time is 1 (1 AM), it means the next day
-  // So we're open if current hour is >= open time (13) OR < close time (1)
-  if (schedule.close === 1) {
-    return israelHour >= schedule.open || israelHour < schedule.close;
-  }
-
-  // Normal case: open and close are on same day
-  return israelHour >= schedule.open && israelHour < schedule.close;
-};
 
 const DAY_NAMES = {
   en: {
@@ -144,16 +80,7 @@ const STATUS_TEXT = {
 };
 
 export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
-  const [isOpen, setIsOpen] = useState(isOpenNow());
-
-  // Update status every minute
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsOpen(isOpenNow());
-    }, 60000); // Check every minute
-
-    return () => clearInterval(interval);
-  }, []);
+  const { isOpen } = useOpenStatus();
 
   const lang = language as keyof typeof DAY_NAMES;
   const dayNames = DAY_NAMES[lang] || DAY_NAMES.en;
@@ -200,6 +127,11 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Live next-change hint: "Open until 01:00" / "Opens Wed 13:00" */}
+      <div className="flex justify-center mb-6">
+        <OpenStatusPill lang={language as Language} />
       </div>
 
       {/* Hours List */}
