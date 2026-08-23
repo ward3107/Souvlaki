@@ -1,0 +1,15 @@
+{
+  "ci": {
+    "collect": {
+      "url": ["http://127.0.0.1:3000/"],
+      "startServerCommand": "npm run preview",
+      "startServerReadyPattern": "Local:",
+      "settings": {
+        "chromeFlags": "--no-sandbox --disable-gpu --disable-dev-shm-usage --disable-features=HttpsUpgrades,HttpsFirstBalancedModeAutoEnable,HttpsFirstModeV2,HttpsFirstModeIncognito,HttpsFirstModeForTypicallySecureUsers"
+      }
+    },
+    "assert": {
+      "budgetsFile": "./lighthouse-budget.json"
+    }
+  }
+}
