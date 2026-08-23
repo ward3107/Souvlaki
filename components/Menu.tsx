@@ -32,7 +32,8 @@ import {
   type MenuItem,
   type MenuAddon,
 } from '../utils/menuData';
-import { loadOverrides, MENU_OVERRIDES_EVENT, type MenuOverrides } from '../utils/menuOverrides';
+import { getOverrides, MENU_OVERRIDES_EVENT, type MenuOverrides } from '../utils/menuOverrides';
+import { recordOrder } from '../utils/orders';
 
 // ============================================================================
 // Static i18n
@@ -875,21 +876,32 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [customerName, setCustomerName] = useState('');
   const [query, setQuery] = useState('');
   const [activeBadges, setActiveBadges] = useState<BadgeKey[]>([]);
-  const [overrides, setOverrides] = useState<MenuOverrides>(() => loadOverrides());
+  const [overrides, setOverrides] = useState<MenuOverrides>({});
   const lang = language as Lang;
   const isRtl = lang === 'he' || lang === 'ar';
   const titles = SECTION_TITLES[lang] ?? SECTION_TITLES.en;
   const active = MENU_CATEGORIES.find((c) => c.id === activeId) ?? MENU_CATEGORIES[0];
 
-  // Keep menu availability/prices in sync with the /admin editor (this tab and
-  // other tabs / devices).
+  // Keep menu availability/prices in sync with the /admin editor. With Supabase
+  // that means all visitors; the localStorage fallback syncs across tabs. We
+  // refresh on mount, when the tab regains focus (so a returning customer sees
+  // current availability), and on the local change events.
   useEffect(() => {
-    const refresh = () => setOverrides(loadOverrides());
+    let cancelled = false;
+    const refresh = () => {
+      getOverrides().then((o) => {
+        if (!cancelled) setOverrides(o);
+      });
+    };
+    refresh();
     window.addEventListener(MENU_OVERRIDES_EVENT, refresh);
     window.addEventListener('storage', refresh);
+    window.addEventListener('focus', refresh);
     return () => {
+      cancelled = true;
       window.removeEventListener(MENU_OVERRIDES_EVENT, refresh);
       window.removeEventListener('storage', refresh);
+      window.removeEventListener('focus', refresh);
     };
   }, []);
 
@@ -989,12 +1001,26 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const sendOrder = () => {
     if (resolvedLines.length === 0) return;
     if (!customerName.trim()) return;
+    const name = customerName.trim();
     track('order_whatsapp', {
       value: cartTotal,
       currency: 'ILS',
       items: itemCount,
     });
-    const url = buildCartUrl(lang, resolvedLines, customerName.trim());
+    // Persist to order history (no-op unless Supabase is configured); never let
+    // it block or delay the WhatsApp handoff.
+    void recordOrder({
+      customerName: name,
+      total: cartTotal,
+      items: resolvedLines.map((l) => ({
+        q: l.qty,
+        n: l.name,
+        v: l.variantLabel,
+        p: l.lineTotal,
+      })),
+      lang,
+    });
+    const url = buildCartUrl(lang, resolvedLines, name);
     window.open(url, '_blank', 'noopener,noreferrer');
     // The order handed off to WhatsApp — reset so returning to the tab doesn't
     // show a stale cart the customer might re-send as a duplicate.

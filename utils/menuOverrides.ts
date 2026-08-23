@@ -1,10 +1,16 @@
-// Owner-managed, device-local menu overrides.
+// Owner-managed menu overrides (sold-out + price).
 //
 // The base menu lives in code (utils/menuData.ts). This lets the owner mark an
-// item "sold out" or tweak its price from the /admin page without a redeploy —
-// stored in localStorage. It is intentionally per-device (no backend): perfect
-// for the counter tablet during a shift. Cross-tab updates propagate via the
-// 'storage' event, and same-tab updates via a custom event.
+// item "sold out" or tweak its price from /admin without a redeploy.
+//
+// Two backends, chosen automatically:
+//   • Supabase (when configured) — shared across ALL visitors and devices.
+//   • localStorage (fallback)    — device-local, works with no backend.
+// The async helpers (getOverrides / applyItemOverride / resetAllOverrides) pick
+// the right one; the localStorage functions remain for the fallback path and
+// cross-tab sync.
+
+import { supabase, isSupabaseConfigured } from './supabase';
 
 export interface ItemOverride {
   soldOut?: boolean;
@@ -15,6 +21,12 @@ export type MenuOverrides = Record<string, ItemOverride>;
 
 const STORAGE_KEY = 'menu-overrides-v1';
 export const MENU_OVERRIDES_EVENT = 'menuOverridesChanged';
+
+interface OverrideRow {
+  item_id: string;
+  sold_out: boolean;
+  price: number | null;
+}
 
 export function loadOverrides(): MenuOverrides {
   try {
@@ -55,4 +67,74 @@ export function clearOverrides(): void {
   } catch {
     // ignore
   }
+}
+
+// ── Backend-aware helpers ────────────────────────────────────────────────────
+
+function rowsToOverrides(rows: OverrideRow[]): MenuOverrides {
+  const out: MenuOverrides = {};
+  for (const r of rows) {
+    const o: ItemOverride = {};
+    if (r.sold_out) o.soldOut = true;
+    if (r.price != null) o.price = r.price;
+    if (o.soldOut || o.price != null) out[r.item_id] = o;
+  }
+  return out;
+}
+
+/** Read current overrides from Supabase when configured, else localStorage. */
+export async function getOverrides(): Promise<MenuOverrides> {
+  if (isSupabaseConfigured && supabase) {
+    const { data, error } = await supabase
+      .from('menu_overrides')
+      .select('item_id, sold_out, price');
+    if (error) {
+      // Network/permission hiccup — degrade to whatever is cached locally.
+      return loadOverrides();
+    }
+    return rowsToOverrides((data ?? []) as OverrideRow[]);
+  }
+  return loadOverrides();
+}
+
+/**
+ * Apply a single item's override. With Supabase this upserts (or deletes when
+ * cleared) and requires the owner to be signed in; otherwise it writes
+ * localStorage. Returns the full, refreshed override map.
+ */
+export async function applyItemOverride(
+  itemId: string,
+  patch: ItemOverride
+): Promise<MenuOverrides> {
+  if (isSupabaseConfigured && supabase) {
+    // Merge against the current remote value for this item.
+    const current = (await getOverrides())[itemId] ?? {};
+    const merged: ItemOverride = { ...current, ...patch };
+    if (!merged.soldOut && merged.price == null) {
+      await supabase.from('menu_overrides').delete().eq('item_id', itemId);
+    } else {
+      await supabase.from('menu_overrides').upsert(
+        {
+          item_id: itemId,
+          sold_out: !!merged.soldOut,
+          price: merged.price ?? null,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'item_id' }
+      );
+    }
+    return getOverrides();
+  }
+  return setItemOverride(itemId, patch);
+}
+
+/** Clear every override (owner-only under Supabase). */
+export async function resetAllOverrides(): Promise<MenuOverrides> {
+  if (isSupabaseConfigured && supabase) {
+    // Delete all rows (neq on a never-empty PK matches everything).
+    await supabase.from('menu_overrides').delete().neq('item_id', '');
+    return {};
+  }
+  clearOverrides();
+  return {};
 }
