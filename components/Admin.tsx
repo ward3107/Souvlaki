@@ -7,12 +7,29 @@ import {
   LogOut,
   UtensilsCrossed,
   ClipboardList,
+  LayoutDashboard,
   Loader2,
+  Plus,
+  Pencil,
+  Trash2,
+  X,
+  ImagePlus,
 } from 'lucide-react';
 import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
 import { navigate } from '../utils/router';
-import { MENU_CATEGORIES, getLocalized, formatPrice, type Lang } from '../utils/menuData';
+import {
+  MENU_CATEGORIES,
+  CATEGORIES,
+  BADGE_LABELS,
+  FILTERABLE_BADGES,
+  getLocalized,
+  formatPrice,
+  flattenItems,
+  type Lang,
+  type LocalizedString,
+  type BadgeKey,
+} from '../utils/menuData';
 import {
   loadOverrides,
   setItemOverride,
@@ -24,114 +41,39 @@ import {
 } from '../utils/menuOverrides';
 import { supabase, isSupabaseConfigured } from '../utils/supabase';
 import { fetchRecentOrders, type OrderRow } from '../utils/orders';
+import {
+  fetchMenuItems,
+  createMenuItem,
+  updateMenuItem,
+  deleteMenuItem,
+  uploadMenuImage,
+  type MenuItemRecord,
+} from '../utils/menuStore';
 
 // Owner console at /admin — unlinked from the customer site.
-//   • With Supabase configured: proper email+password login; changes are shared
-//     across all visitors, and order history is available.
+//   • With Supabase configured: an owner dashboard (overview, full menu manager,
+//     order history), behind an email+password login.
 //   • Without it: a device-local PIN + localStorage editor (fallback).
 const ADMIN_PIN = (import.meta.env.VITE_ADMIN_PIN as string | undefined) || '1234';
+
+const LANGS: Lang[] = ['en', 'he', 'ar', 'ru', 'el'];
+const emptyLoc = (): LocalizedString => ({ en: '', he: '', ar: '', ru: '', el: '' });
 
 export default function Admin({ lang }: { lang: Language }) {
   return isSupabaseConfigured ? <SupabaseAdmin lang={lang} /> : <LocalAdmin lang={lang} />;
 }
 
 // ============================================================================
-// Shared presentational menu editor
+// Shared shell
 // ============================================================================
-
-function MenuEditor({
-  lang,
-  overrides,
-  onToggleSoldOut,
-  onChangePrice,
-}: {
-  lang: Language;
-  overrides: MenuOverrides;
-  onToggleSoldOut: (itemId: string, current: boolean) => void;
-  onChangePrice: (itemId: string, value: string, basePrice: number) => void;
-}) {
-  const l = lang as Lang;
-  return (
-    <>
-      <p className="mb-4 text-xs text-white/40">
-        {tx(
-          lang,
-          'שינויים משפיעים על התפריט מיד. "אזל מהמלאי" מסתיר את כפתור ההוספה.',
-          'Changes update the menu instantly. "Sold out" hides the add button.',
-          'تُحدّث التغييرات القائمة فورًا. "نفد" يخفي زر الإضافة.',
-          'Изменения сразу применяются к меню. «Нет в наличии» скрывает кнопку добавления.',
-          'Οι αλλαγές ενημερώνουν το μενού αμέσως. Το «Εξαντλήθηκε» κρύβει το κουμπί προσθήκης.'
-        )}
-      </p>
-      {MENU_CATEGORIES.map((cat) => (
-        <section key={cat.id} className="mb-6">
-          <h2 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/50">
-            {getLocalized(cat.name, l)}
-          </h2>
-          <ul className="space-y-2">
-            {cat.items.map((item) => {
-              const ov = overrides[item.id] ?? {};
-              const soldOut = !!ov.soldOut;
-              return (
-                <li
-                  key={item.id}
-                  className={`flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-slate-900 p-3 ${
-                    soldOut ? 'opacity-60' : ''
-                  }`}
-                >
-                  <span className="min-w-0 flex-1 truncate text-sm font-medium">
-                    {getLocalized(item.name, l)}
-                    <span className="ms-2 text-xs text-white/40">
-                      {tx(lang, 'בסיס', 'base', 'أساسي', 'база', 'βάση')} {formatPrice(item.price)}
-                    </span>
-                  </span>
-
-                  <label className="flex items-center gap-1.5 text-xs text-white/60">
-                    ₪
-                    <input
-                      type="number"
-                      min={0}
-                      defaultValue={ov.price ?? ''}
-                      onBlur={(e) => onChangePrice(item.id, e.target.value, item.price)}
-                      placeholder={String(item.price)}
-                      aria-label={tx(lang, 'מחיר', 'Price', 'السعر', 'Цена', 'Τιμή')}
-                      className="w-20 rounded-lg border border-white/10 bg-slate-800 px-2 py-1.5 text-center text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-blue-400"
-                    />
-                  </label>
-
-                  <button
-                    type="button"
-                    onClick={() => onToggleSoldOut(item.id, soldOut)}
-                    aria-pressed={soldOut}
-                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                      soldOut
-                        ? 'bg-red-500/90 text-white hover:bg-red-500'
-                        : 'bg-white/10 text-white/80 hover:bg-white/15'
-                    }`}
-                  >
-                    {soldOut
-                      ? tx(lang, 'אזל מהמלאי', 'Sold out', 'نفد', 'Нет в наличии', 'Εξαντλήθηκε')
-                      : tx(lang, 'זמין', 'Available', 'متوفر', 'В наличии', 'Διαθέσιμο')}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-      ))}
-    </>
-  );
-}
 
 function AdminShell({
   lang,
   children,
-  onReset,
   right,
 }: {
   lang: Language;
   children: React.ReactNode;
-  onReset?: () => void;
   right?: React.ReactNode;
 }) {
   const isRtl = isRtlLang(lang);
@@ -159,19 +101,7 @@ function AdminShell({
               {tx(lang, 'ניהול', 'Admin', 'إدارة', 'Управление', 'Διαχείριση')}
             </h1>
           </div>
-          <div className="flex items-center gap-2">
-            {onReset && (
-              <button
-                type="button"
-                onClick={onReset}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/15"
-              >
-                <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-                {tx(lang, 'איפוס הכל', 'Reset all', 'إعادة الكل', 'Сбросить', 'Επαναφορά')}
-              </button>
-            )}
-            {right}
-          </div>
+          <div className="flex items-center gap-2">{right}</div>
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-4 py-5">{children}</main>
@@ -179,8 +109,725 @@ function AdminShell({
   );
 }
 
+function TabButton({
+  active,
+  onClick,
+  icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+        active ? 'bg-brand-blue-500 text-white' : 'bg-white/10 text-white/70 hover:bg-white/15'
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
+  );
+}
+
 // ============================================================================
-// Supabase-backed admin (shared, authenticated)
+// Built-in dish editor (price + sold-out overrides on the coded menu)
+// ============================================================================
+
+function BuiltInEditor({
+  lang,
+  overrides,
+  onToggleSoldOut,
+  onChangePrice,
+}: {
+  lang: Language;
+  overrides: MenuOverrides;
+  onToggleSoldOut: (itemId: string, current: boolean) => void;
+  onChangePrice: (itemId: string, value: string, basePrice: number) => void;
+}) {
+  const l = lang as Lang;
+  return (
+    <>
+      {MENU_CATEGORIES.map((cat) => (
+        <section key={cat.id} className="mb-6">
+          <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-white/50">
+            {getLocalized(cat.name, l)}
+          </h3>
+          <ul className="space-y-2">
+            {cat.items.map((item) => {
+              const ov = overrides[item.id] ?? {};
+              const soldOut = !!ov.soldOut;
+              return (
+                <li
+                  key={item.id}
+                  className={`flex flex-wrap items-center gap-3 rounded-xl border border-white/10 bg-slate-900 p-3 ${
+                    soldOut ? 'opacity-60' : ''
+                  }`}
+                >
+                  <span className="min-w-0 flex-1 truncate text-sm font-medium">
+                    {getLocalized(item.name, l)}
+                    <span className="ms-2 text-xs text-white/40">
+                      {tx(lang, 'בסיס', 'base', 'أساسي', 'база', 'βάση')} {formatPrice(item.price)}
+                    </span>
+                  </span>
+                  <label className="flex items-center gap-1.5 text-xs text-white/60">
+                    ₪
+                    <input
+                      type="number"
+                      min={0}
+                      defaultValue={ov.price ?? ''}
+                      onBlur={(e) => onChangePrice(item.id, e.target.value, item.price)}
+                      placeholder={String(item.price)}
+                      aria-label={tx(lang, 'מחיר', 'Price', 'السعر', 'Цена', 'Τιμή')}
+                      className="w-20 rounded-lg border border-white/10 bg-slate-800 px-2 py-1.5 text-center text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-blue-400"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => onToggleSoldOut(item.id, soldOut)}
+                    aria-pressed={soldOut}
+                    className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      soldOut
+                        ? 'bg-red-500/90 text-white hover:bg-red-500'
+                        : 'bg-white/10 text-white/80 hover:bg-white/15'
+                    }`}
+                  >
+                    {soldOut
+                      ? tx(lang, 'אזל', 'Sold out', 'نفد', 'Нет', 'Εξαντλήθηκε')
+                      : tx(lang, 'זמין', 'Available', 'متوفر', 'В наличии', 'Διαθέσιμο')}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+    </>
+  );
+}
+
+// ============================================================================
+// Owner-added dish manager (full CRUD, Supabase)
+// ============================================================================
+
+interface DraftDish {
+  id?: string;
+  category: string;
+  name: LocalizedString;
+  description: LocalizedString;
+  price: string;
+  image_url: string | null;
+  badges: BadgeKey[];
+  available: boolean;
+}
+
+function recordToDraft(r: MenuItemRecord): DraftDish {
+  return {
+    id: r.id,
+    category: r.category,
+    name: { ...emptyLoc(), ...r.name },
+    description: { ...emptyLoc(), ...(r.description ?? {}) },
+    price: String(r.price),
+    image_url: r.image_url,
+    badges: r.badges ?? [],
+    available: r.available,
+  };
+}
+
+function DishForm({
+  lang,
+  draft,
+  onSave,
+  onCancel,
+}: {
+  lang: Language;
+  draft: DraftDish;
+  onSave: (d: DraftDish) => Promise<void>;
+  onCancel: () => void;
+}) {
+  const [d, setD] = useState<DraftDish>(draft);
+  const [editLang, setEditLang] = useState<Lang>('en');
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const setName = (v: string) => setD((p) => ({ ...p, name: { ...p.name, [editLang]: v } }));
+  const setDesc = (v: string) =>
+    setD((p) => ({ ...p, description: { ...p.description, [editLang]: v } }));
+  const toggleBadge = (b: BadgeKey) =>
+    setD((p) => ({
+      ...p,
+      badges: p.badges.includes(b) ? p.badges.filter((x) => x !== b) : [...p.badges, b],
+    }));
+
+  const onFile = async (file: File | undefined) => {
+    if (!file) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const url = await uploadMenuImage(file);
+      setD((p) => ({ ...p, image_url: url }));
+    } catch {
+      setError(
+        tx(
+          lang,
+          'העלאת התמונה נכשלה',
+          'Image upload failed',
+          'فشل رفع الصورة',
+          'Ошибка загрузки',
+          'Αποτυχία μεταφόρτωσης'
+        )
+      );
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const save = async () => {
+    if (!d.name.en.trim()) {
+      setEditLang('en');
+      setError(
+        tx(
+          lang,
+          'נדרש שם באנגלית',
+          'English name is required',
+          'الاسم بالإنجليزية مطلوب',
+          'Нужно название на англ.',
+          'Απαιτείται αγγλικό όνομα'
+        )
+      );
+      return;
+    }
+    if (!(Number(d.price) > 0)) {
+      setError(
+        tx(lang, 'נדרש מחיר', 'A price is required', 'السعر مطلوب', 'Нужна цена', 'Απαιτείται τιμή')
+      );
+      return;
+    }
+    setSaving(true);
+    setError(null);
+    try {
+      await onSave(d);
+    } catch {
+      setError(
+        tx(
+          lang,
+          'השמירה נכשלה',
+          'Save failed',
+          'فشل الحفظ',
+          'Ошибка сохранения',
+          'Αποτυχία αποθήκευσης'
+        )
+      );
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 sm:items-center sm:p-4">
+      <div className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-slate-900 p-5 shadow-lift sm:rounded-2xl">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-base font-semibold">
+            {d.id
+              ? tx(
+                  lang,
+                  'עריכת מנה',
+                  'Edit dish',
+                  'تعديل طبق',
+                  'Изменить блюдо',
+                  'Επεξεργασία πιάτου'
+                )
+              : tx(lang, 'מנה חדשה', 'New dish', 'طبق جديد', 'Новое блюдо', 'Νέο πιάτο')}
+          </h3>
+          <button
+            type="button"
+            onClick={onCancel}
+            aria-label="Close"
+            className="rounded-full p-1.5 text-white/60 hover:bg-white/10"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
+
+        {/* Category */}
+        <label className="mb-1 block text-xs text-white/50">
+          {tx(lang, 'קטגוריה', 'Category', 'الفئة', 'Категория', 'Κατηγορία')}
+        </label>
+        <select
+          value={d.category}
+          onChange={(e) => setD((p) => ({ ...p, category: e.target.value }))}
+          className="mb-3 w-full rounded-lg border border-white/10 bg-slate-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-blue-400"
+        >
+          {CATEGORIES.map((c) => (
+            <option key={c.id} value={c.id}>
+              {getLocalized(c.name, lang as Lang)}
+            </option>
+          ))}
+        </select>
+
+        {/* Language switch for name/description */}
+        <div className="mb-2 flex gap-1">
+          {LANGS.map((lc) => (
+            <button
+              key={lc}
+              type="button"
+              onClick={() => setEditLang(lc)}
+              className={`rounded-md px-2 py-1 text-xs font-semibold uppercase ${
+                editLang === lc ? 'bg-brand-blue-500 text-white' : 'bg-white/10 text-white/60'
+              }`}
+            >
+              {lc}
+            </button>
+          ))}
+        </div>
+        <input
+          value={d.name[editLang]}
+          onChange={(e) => setName(e.target.value)}
+          placeholder={
+            tx(lang, 'שם המנה', 'Dish name', 'اسم الطبق', 'Название', 'Όνομα') + ` (${editLang})`
+          }
+          className="mb-2 w-full rounded-lg border border-white/10 bg-slate-800 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-brand-blue-400"
+        />
+        <textarea
+          value={d.description[editLang]}
+          onChange={(e) => setDesc(e.target.value)}
+          rows={2}
+          placeholder={
+            tx(lang, 'תיאור', 'Description', 'الوصف', 'Описание', 'Περιγραφή') + ` (${editLang})`
+          }
+          className="mb-3 w-full rounded-lg border border-white/10 bg-slate-800 px-3 py-2 text-sm text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-brand-blue-400"
+        />
+
+        {/* Price */}
+        <label className="mb-1 block text-xs text-white/50">
+          {tx(lang, 'מחיר (₪)', 'Price (₪)', 'السعر (₪)', 'Цена (₪)', 'Τιμή (₪)')}
+        </label>
+        <input
+          type="number"
+          min={0}
+          value={d.price}
+          onChange={(e) => setD((p) => ({ ...p, price: e.target.value }))}
+          className="mb-3 w-32 rounded-lg border border-white/10 bg-slate-800 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-blue-400"
+        />
+
+        {/* Badges */}
+        <div className="mb-3 flex flex-wrap gap-1.5">
+          {FILTERABLE_BADGES.map((b) => {
+            const on = d.badges.includes(b);
+            return (
+              <button
+                key={b}
+                type="button"
+                onClick={() => toggleBadge(b)}
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  on ? 'bg-brand-terracotta-400 text-white' : 'bg-white/10 text-white/60'
+                }`}
+              >
+                {BADGE_LABELS[b][lang as Lang]}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Image */}
+        <div className="mb-3 flex items-center gap-3">
+          {d.image_url ? (
+            <img src={d.image_url} alt="" className="h-16 w-16 rounded-lg object-cover" />
+          ) : (
+            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-white/5 text-white/30">
+              <ImagePlus className="h-6 w-6" aria-hidden="true" />
+            </div>
+          )}
+          <label className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/15">
+            {uploading ? (
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <ImagePlus className="h-4 w-4" aria-hidden="true" />
+            )}
+            {tx(lang, 'תמונה', 'Photo', 'صورة', 'Фото', 'Φωτό')}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => onFile(e.target.files?.[0])}
+            />
+          </label>
+        </div>
+
+        {/* Availability */}
+        <label className="mb-4 flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={d.available}
+            onChange={(e) => setD((p) => ({ ...p, available: e.target.checked }))}
+            className="h-4 w-4"
+          />
+          {tx(lang, 'זמין להזמנה', 'Available to order', 'متاح للطلب', 'Доступно', 'Διαθέσιμο')}
+        </label>
+
+        {error && <p className="mb-3 text-sm text-red-400">{error}</p>}
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={save}
+            disabled={saving || uploading}
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-brand-terracotta-400 py-2.5 text-sm font-bold text-white transition-colors hover:bg-brand-terracotta-500 active:scale-95 disabled:opacity-60"
+          >
+            {saving && <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />}
+            {tx(lang, 'שמירה', 'Save', 'حفظ', 'Сохранить', 'Αποθήκευση')}
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold hover:bg-white/15"
+          >
+            {tx(lang, 'ביטול', 'Cancel', 'إلغاء', 'Отмена', 'Άκυρο')}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DishManager({ lang }: { lang: Language }) {
+  const [items, setItems] = useState<MenuItemRecord[] | null>(null);
+  const [editing, setEditing] = useState<DraftDish | null>(null);
+
+  const load = () => fetchMenuItems().then(setItems);
+  useEffect(() => {
+    load();
+  }, []);
+
+  const newDish = (): DraftDish => ({
+    category: CATEGORIES[0].id,
+    name: emptyLoc(),
+    description: emptyLoc(),
+    price: '',
+    image_url: null,
+    badges: [],
+    available: true,
+  });
+
+  const save = async (d: DraftDish) => {
+    const rec = {
+      category: d.category,
+      name: d.name,
+      description: Object.values(d.description).some((v) => v.trim()) ? d.description : null,
+      price: Number(d.price),
+      image_url: d.image_url,
+      badges: d.badges,
+      available: d.available,
+      sort_order: 0,
+    };
+    if (d.id) await updateMenuItem(d.id, rec);
+    else await createMenuItem(rec);
+    setEditing(null);
+    await load();
+  };
+
+  const remove = async (id: string) => {
+    await deleteMenuItem(id);
+    await load();
+  };
+
+  return (
+    <div className="mb-8">
+      <div className="mb-3 flex items-center justify-between">
+        <h3 className="text-sm font-bold uppercase tracking-wider text-white/50">
+          {tx(lang, 'המנות שלך', 'Your dishes', 'أطباقك', 'Ваши блюда', 'Τα πιάτα σας')}
+        </h3>
+        <button
+          type="button"
+          onClick={() => setEditing(newDish())}
+          className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta-400 px-3 py-2 text-xs font-bold text-white hover:bg-brand-terracotta-500"
+        >
+          <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+          {tx(lang, 'הוספת מנה', 'Add dish', 'إضافة طبق', 'Добавить', 'Προσθήκη')}
+        </button>
+      </div>
+
+      {items === null ? (
+        <div className="flex justify-center py-8 text-white/40">
+          <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />
+        </div>
+      ) : items.length === 0 ? (
+        <p className="rounded-xl border border-dashed border-white/15 py-6 text-center text-sm text-white/40">
+          {tx(
+            lang,
+            'עדיין לא הוספת מנות. הקש "הוספת מנה".',
+            'No added dishes yet. Tap "Add dish".',
+            'لا أطباق مضافة بعد. اضغط "إضافة طبق".',
+            'Пока нет добавленных блюд.',
+            'Δεν έχετε προσθέσει πιάτα ακόμη.'
+          )}
+        </p>
+      ) : (
+        <ul className="space-y-2">
+          {items.map((it) => (
+            <li
+              key={it.id}
+              className={`flex items-center gap-3 rounded-xl border border-white/10 bg-slate-900 p-3 ${
+                it.available ? '' : 'opacity-60'
+              }`}
+            >
+              {it.image_url ? (
+                <img
+                  src={it.image_url}
+                  alt=""
+                  className="h-10 w-10 shrink-0 rounded-lg object-cover"
+                />
+              ) : (
+                <div className="h-10 w-10 shrink-0 rounded-lg bg-white/5" />
+              )}
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-sm font-medium">
+                  {getLocalized(it.name, lang as Lang)}
+                </div>
+                <div className="text-xs text-white/40">
+                  {getLocalized(CATEGORIES.find((c) => c.id === it.category)?.name, lang as Lang)} ·{' '}
+                  {formatPrice(it.price)}
+                  {!it.available &&
+                    ` · ${tx(lang, 'אזל', 'sold out', 'نفد', 'нет', 'εξαντλήθηκε')}`}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditing(recordToDraft(it))}
+                aria-label={tx(lang, 'עריכה', 'Edit', 'تعديل', 'Изменить', 'Επεξεργασία')}
+                className="rounded-full p-2 text-white/60 hover:bg-white/10"
+              >
+                <Pencil className="h-4 w-4" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => remove(it.id)}
+                aria-label={tx(lang, 'מחיקה', 'Delete', 'حذف', 'Удалить', 'Διαγραφή')}
+                className="rounded-full p-2 text-white/60 hover:bg-red-500/20 hover:text-red-300"
+              >
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {editing && (
+        <DishForm lang={lang} draft={editing} onSave={save} onCancel={() => setEditing(null)} />
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// Overview (KPIs)
+// ============================================================================
+
+function startOfToday(): number {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  return d.getTime();
+}
+
+function daysAgo(n: number): number {
+  return new Date().getTime() - n * 24 * 60 * 60 * 1000;
+}
+
+function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-slate-900 p-4">
+      <div
+        className={`font-display text-2xl font-bold ${accent ? 'text-emerald-300' : 'text-white'}`}
+      >
+        {value}
+      </div>
+      <div className="mt-0.5 text-xs text-white/50">{label}</div>
+    </div>
+  );
+}
+
+function Overview({ lang }: { lang: Language }) {
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [dbItems, setDbItems] = useState<MenuItemRecord[]>([]);
+  const [overrides, setOverrides] = useState<MenuOverrides>({});
+
+  useEffect(() => {
+    Promise.all([fetchRecentOrders(200), fetchMenuItems(), getOverrides()]).then(([o, d, ov]) => {
+      setOrders(o);
+      setDbItems(d);
+      setOverrides(ov);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-16 text-white/40">
+        <Loader2 className="h-6 w-6 animate-spin" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  const since = startOfToday();
+  const week = daysAgo(7);
+  const today = orders.filter((o) => new Date(o.created_at).getTime() >= since);
+  const todayRevenue = today.reduce((s, o) => s + (o.total ?? 0), 0);
+  const weekRevenue = orders
+    .filter((o) => new Date(o.created_at).getTime() >= week)
+    .reduce((s, o) => s + (o.total ?? 0), 0);
+  const dishCount = flattenItems().length + dbItems.length;
+  const soldOut =
+    Object.values(overrides).filter((o) => o.soldOut).length +
+    dbItems.filter((d) => !d.available).length;
+
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      <Stat
+        label={tx(
+          lang,
+          'הזמנות היום',
+          "Today's orders",
+          'طلبات اليوم',
+          'Заказы сегодня',
+          'Παραγγελίες σήμερα'
+        )}
+        value={String(today.length)}
+      />
+      <Stat
+        label={tx(
+          lang,
+          'מכירות היום',
+          "Today's sales",
+          'مبيعات اليوم',
+          'Продажи сегодня',
+          'Πωλήσεις σήμερα'
+        )}
+        value={`${todayRevenue} ₪`}
+        accent
+      />
+      <Stat
+        label={tx(
+          lang,
+          'מכירות (7 ימים)',
+          'Sales (7 days)',
+          'مبيعات (7 أيام)',
+          'Продажи (7 дней)',
+          'Πωλήσεις (7 ημέρες)'
+        )}
+        value={`${weekRevenue} ₪`}
+        accent
+      />
+      <Stat
+        label={tx(
+          lang,
+          'מנות בתפריט',
+          'Dishes on menu',
+          'أطباق القائمة',
+          'Блюд в меню',
+          'Πιάτα στο μενού'
+        )}
+        value={String(dishCount)}
+      />
+      <Stat
+        label={tx(lang, 'אזלו מהמלאי', 'Sold out', 'نفدت', 'Нет в наличии', 'Εξαντλημένα')}
+        value={String(soldOut)}
+      />
+    </div>
+  );
+}
+
+// ============================================================================
+// Orders report
+// ============================================================================
+
+function OrdersReport({ lang }: { lang: Language }) {
+  const [orders, setOrders] = useState<OrderRow[] | null>(null);
+
+  useEffect(() => {
+    fetchRecentOrders(50).then(setOrders);
+  }, []);
+
+  if (orders === null) {
+    return (
+      <div className="flex justify-center py-16 text-white/40">
+        <Loader2 className="h-6 w-6 animate-spin" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  const since = startOfToday();
+  const today = orders.filter((o) => new Date(o.created_at).getTime() >= since);
+  const todayRevenue = today.reduce((sum, o) => sum + (o.total ?? 0), 0);
+
+  return (
+    <div>
+      <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-slate-900 px-4 py-2.5 text-sm">
+        <span className="text-white/50">
+          {tx(lang, 'היום', 'Today', 'اليوم', 'Сегодня', 'Σήμερα')}
+        </span>
+        <span className="font-semibold">
+          {today.length} {tx(lang, 'הזמנות', 'orders', 'طلبات', 'заказов', 'παραγγελίες')}
+        </span>
+        <span className="text-white/25">·</span>
+        <span className="text-white/50">
+          {tx(lang, 'מכירות', 'sales', 'المبيعات', 'продажи', 'πωλήσεις')}
+        </span>
+        <span className="font-mono font-bold text-emerald-300">{todayRevenue} ₪</span>
+      </div>
+
+      {orders.length === 0 ? (
+        <p className="py-16 text-center text-white/40">
+          {tx(
+            lang,
+            'עדיין אין הזמנות.',
+            'No orders yet.',
+            'لا طلبات بعد.',
+            'Пока нет заказов.',
+            'Καμία παραγγελία ακόμη.'
+          )}
+        </p>
+      ) : (
+        <ul className="space-y-2">
+          {orders.map((o) => (
+            <li key={o.id} className="rounded-xl border border-white/10 bg-slate-900 p-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="truncate text-sm font-semibold">
+                  {o.customer_name ||
+                    tx(lang, 'ללא שם', 'No name', 'بدون اسم', 'Без имени', 'Χωρίς όνομα')}
+                </span>
+                <span className="shrink-0 text-sm font-bold text-emerald-300 tabular-nums">
+                  {o.total ?? 0} ₪
+                </span>
+              </div>
+              <div className="mt-0.5 text-[11px] text-white/40">
+                {new Date(o.created_at).toLocaleString()}
+              </div>
+              {o.items && o.items.length > 0 && (
+                <ul className="mt-1.5 space-y-0.5">
+                  {o.items.map((it, i) => (
+                    <li key={i} className="text-xs text-white/70">
+                      {it.q}× {it.n}
+                      {it.v ? ` — ${it.v}` : ''}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// Supabase-backed dashboard
 // ============================================================================
 
 function SupabaseAdmin({ lang }: { lang: Language }) {
@@ -191,7 +838,7 @@ function SupabaseAdmin({ lang }: { lang: Language }) {
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
-  const [tab, setTab] = useState<'menu' | 'orders'>('menu');
+  const [tab, setTab] = useState<'overview' | 'menu' | 'orders'>('overview');
   const [overrides, setOverrides] = useState<MenuOverrides>({});
 
   useEffect(() => {
@@ -215,18 +862,14 @@ function SupabaseAdmin({ lang }: { lang: Language }) {
   const signIn = async () => {
     setSigningIn(true);
     setAuthError(false);
-    const { error } = await supabase!.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
+    const { error } = await supabase!.auth.signInWithPassword({ email: email.trim(), password });
     setSigningIn(false);
     if (error) setAuthError(true);
     else setPassword('');
   };
 
-  const toggleSoldOut = async (itemId: string, current: boolean) => {
+  const toggleSoldOut = async (itemId: string, current: boolean) =>
     setOverrides(await applyItemOverride(itemId, { soldOut: !current }));
-  };
 
   const changePrice = async (itemId: string, value: string, basePrice: number) => {
     const num = value === '' ? undefined : Number(value);
@@ -235,10 +878,6 @@ function SupabaseAdmin({ lang }: { lang: Language }) {
         price: num == null || Number.isNaN(num) || num === basePrice ? undefined : num,
       })
     );
-  };
-
-  const resetAll = async () => {
-    setOverrides(await resetAllOverrides());
   };
 
   if (checking) {
@@ -322,12 +961,10 @@ function SupabaseAdmin({ lang }: { lang: Language }) {
   return (
     <AdminShell
       lang={lang}
-      onReset={tab === 'menu' ? resetAll : undefined}
       right={
         <button
           type="button"
           onClick={() => supabase!.auth.signOut()}
-          aria-label={tx(lang, 'התנתקות', 'Sign out', 'خروج', 'Выйти', 'Έξοδος')}
           className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/15"
         >
           <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
@@ -335,8 +972,13 @@ function SupabaseAdmin({ lang }: { lang: Language }) {
         </button>
       }
     >
-      {/* Tabs */}
       <div className="mb-5 flex gap-2">
+        <TabButton
+          active={tab === 'overview'}
+          onClick={() => setTab('overview')}
+          icon={<LayoutDashboard className="h-4 w-4" aria-hidden="true" />}
+          label={tx(lang, 'סקירה', 'Overview', 'نظرة', 'Обзор', 'Επισκόπηση')}
+        />
         <TabButton
           active={tab === 'menu'}
           onClick={() => setTab('menu')}
@@ -351,129 +993,50 @@ function SupabaseAdmin({ lang }: { lang: Language }) {
         />
       </div>
 
-      {tab === 'menu' ? (
-        <MenuEditor
-          lang={lang}
-          overrides={overrides}
-          onToggleSoldOut={toggleSoldOut}
-          onChangePrice={changePrice}
-        />
-      ) : (
-        <OrdersReport lang={lang} />
+      {tab === 'overview' && <Overview lang={lang} />}
+      {tab === 'orders' && <OrdersReport lang={lang} />}
+      {tab === 'menu' && (
+        <>
+          <DishManager lang={lang} />
+          <div className="mb-3 flex items-center justify-between border-t border-white/10 pt-5">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-white/50">
+              {tx(
+                lang,
+                'מנות הבית',
+                'Built-in dishes',
+                'أطباق البيت',
+                'Основное меню',
+                'Βασικό μενού'
+              )}
+            </h3>
+            <button
+              type="button"
+              onClick={async () => setOverrides(await resetAllOverrides())}
+              className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/15"
+            >
+              <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+              {tx(lang, 'איפוס', 'Reset', 'إعادة', 'Сброс', 'Επαναφορά')}
+            </button>
+          </div>
+          <p className="mb-3 text-xs text-white/40">
+            {tx(
+              lang,
+              'למנות הבית ניתן לשנות מחיר וזמינות. מנות שהוספת ניתנות לעריכה מלאה למעלה.',
+              'Built-in dishes: change price & availability. Dishes you add (above) are fully editable.',
+              'أطباق البيت: غيّر السعر والتوفر. الأطباق التي تضيفها (بالأعلى) قابلة للتعديل الكامل.',
+              'Основное меню: цена и наличие. Добавленные вами блюда — полностью редактируемы.',
+              'Βασικό μενού: τιμή & διαθεσιμότητα. Τα πιάτα που προσθέτετε είναι πλήρως επεξεργάσιμα.'
+            )}
+          </p>
+          <BuiltInEditor
+            lang={lang}
+            overrides={overrides}
+            onToggleSoldOut={toggleSoldOut}
+            onChangePrice={changePrice}
+          />
+        </>
       )}
     </AdminShell>
-  );
-}
-
-function TabButton({
-  active,
-  onClick,
-  icon,
-  label,
-}: {
-  active: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-        active ? 'bg-brand-blue-500 text-white' : 'bg-white/10 text-white/70 hover:bg-white/15'
-      }`}
-    >
-      {icon}
-      {label}
-    </button>
-  );
-}
-
-function startOfToday(): number {
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  return d.getTime();
-}
-
-function OrdersReport({ lang }: { lang: Language }) {
-  const [orders, setOrders] = useState<OrderRow[] | null>(null);
-
-  useEffect(() => {
-    fetchRecentOrders(50).then(setOrders);
-  }, []);
-
-  if (orders === null) {
-    return (
-      <div className="flex justify-center py-16 text-white/40">
-        <Loader2 className="h-6 w-6 animate-spin" aria-hidden="true" />
-      </div>
-    );
-  }
-
-  const since = startOfToday();
-  const today = orders.filter((o) => new Date(o.created_at).getTime() >= since);
-  const todayRevenue = today.reduce((sum, o) => sum + (o.total ?? 0), 0);
-
-  return (
-    <div>
-      <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/10 bg-slate-900 px-4 py-2.5 text-sm">
-        <span className="text-white/50">
-          {tx(lang, 'היום', 'Today', 'اليوم', 'Сегодня', 'Σήμερα')}
-        </span>
-        <span className="font-semibold">
-          {today.length} {tx(lang, 'הזמנות', 'orders', 'طلبات', 'заказов', 'παραγγελίες')}
-        </span>
-        <span className="text-white/25">·</span>
-        <span className="text-white/50">
-          {tx(lang, 'מכירות', 'sales', 'المبيعات', 'продажи', 'πωλήσεις')}
-        </span>
-        <span className="font-mono font-bold text-emerald-300">{todayRevenue} ₪</span>
-      </div>
-
-      {orders.length === 0 ? (
-        <p className="py-16 text-center text-white/40">
-          {tx(
-            lang,
-            'עדיין אין הזמנות.',
-            'No orders yet.',
-            'لا طلبات بعد.',
-            'Пока нет заказов.',
-            'Καμία παραγγελία ακόμη.'
-          )}
-        </p>
-      ) : (
-        <ul className="space-y-2">
-          {orders.map((o) => (
-            <li key={o.id} className="rounded-xl border border-white/10 bg-slate-900 p-3">
-              <div className="flex items-center justify-between gap-2">
-                <span className="truncate text-sm font-semibold">
-                  {o.customer_name ||
-                    tx(lang, 'ללא שם', 'No name', 'بدون اسم', 'Без имени', 'Χωρίς όνομα')}
-                </span>
-                <span className="shrink-0 text-sm font-bold text-emerald-300 tabular-nums">
-                  {o.total ?? 0} ₪
-                </span>
-              </div>
-              <div className="mt-0.5 text-[11px] text-white/40">
-                {new Date(o.created_at).toLocaleString()}
-              </div>
-              {o.items && o.items.length > 0 && (
-                <ul className="mt-1.5 space-y-0.5">
-                  {o.items.map((it, i) => (
-                    <li key={i} className="text-xs text-white/70">
-                      {it.q}× {it.n}
-                      {it.v ? ` — ${it.v}` : ''}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
   );
 }
 
@@ -497,9 +1060,8 @@ function LocalAdmin({ lang }: { lang: Language }) {
     }
   };
 
-  const toggleSoldOut = (itemId: string, current: boolean) => {
+  const toggleSoldOut = (itemId: string, current: boolean) =>
     setOverrides(setItemOverride(itemId, { soldOut: !current }));
-  };
 
   const changePrice = (itemId: string, value: string, basePrice: number) => {
     const num = value === '' ? undefined : Number(value);
@@ -508,11 +1070,6 @@ function LocalAdmin({ lang }: { lang: Language }) {
         price: num == null || Number.isNaN(num) || num === basePrice ? undefined : num,
       })
     );
-  };
-
-  const resetAll = () => {
-    clearOverrides();
-    setOverrides({});
   };
 
   if (!authed) {
@@ -572,8 +1129,33 @@ function LocalAdmin({ lang }: { lang: Language }) {
   }
 
   return (
-    <AdminShell lang={lang} onReset={resetAll}>
-      <MenuEditor
+    <AdminShell
+      lang={lang}
+      right={
+        <button
+          type="button"
+          onClick={() => {
+            clearOverrides();
+            setOverrides({});
+          }}
+          className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold hover:bg-white/15"
+        >
+          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+          {tx(lang, 'איפוס הכל', 'Reset all', 'إعادة الكل', 'Сбросить', 'Επαναφορά')}
+        </button>
+      }
+    >
+      <p className="mb-4 text-xs text-white/40">
+        {tx(
+          lang,
+          'ללא Supabase — עריכת מחיר/זמינות נשמרת במכשיר זה בלבד.',
+          'No Supabase — price/availability edits are saved on this device only.',
+          'بدون Supabase — تُحفظ التعديلات على هذا الجهاز فقط.',
+          'Без Supabase — изменения сохраняются только на этом устройстве.',
+          'Χωρίς Supabase — οι αλλαγές αποθηκεύονται μόνο σε αυτή τη συσκευή.'
+        )}
+      </p>
+      <BuiltInEditor
         lang={lang}
         overrides={overrides}
         onToggleSoldOut={toggleSoldOut}
