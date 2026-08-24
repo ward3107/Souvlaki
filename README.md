@@ -41,29 +41,30 @@
 
 ## 📸 Screenshots
 
-### Desktop View
+### Desktop
 
 <table>
   <tr>
-    <td align="center"><img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-1280w.webp" width="400" alt="Desktop Hero Section"></td>
-    <td align="center"><img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-1280w.webp" width="400" alt="Desktop Menu"></td>
+    <td align="center"><img src="docs/screenshots/home.png" width="420" alt="Homepage hero"></td>
+    <td align="center"><img src="docs/screenshots/menu.png" width="420" alt="Interactive menu page"></td>
   </tr>
   <tr>
-    <td align="center">Hero Section</td>
+    <td align="center">Homepage</td>
     <td align="center">Interactive Menu</td>
   </tr>
 </table>
 
-### Mobile View
+### QR table stickers (Greek-key medallion)
 
-<table>
-  <tr>
-    <td align="center"><img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-640w.webp" width="200" alt="Mobile View"></td>
-  </tr>
-  <tr>
-    <td align="center">Responsive Mobile Design</td>
-  </tr>
-</table>
+<p align="center">
+  <img src="docs/screenshots/qr-stickers.png" width="520" alt="Printable QR table stickers with a Greek-key medallion frame">
+</p>
+
+### Mobile
+
+<p align="center">
+  <img src="docs/screenshots/mobile-home.png" width="260" alt="Responsive mobile homepage">
+</p>
 
 ---
 
