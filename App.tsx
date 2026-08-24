@@ -188,7 +188,9 @@ const App: React.FC = () => {
     // Canonical + og/twitter URL point at the language's own pre-rendered page
     // (/he/, /ar/, …), English at the root — matching the hreflang set.
     const langUrl =
-      lang === Language.EN ? 'https://greeksouflaki.com/' : `https://greeksouflaki.com/${lang}/`;
+      lang === Language.EN
+        ? 'https://www.greeksouflaki.com/'
+        : `https://www.greeksouflaki.com/${lang}/`;
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute('href', langUrl);
     setMeta('meta[property="og:url"]', langUrl);

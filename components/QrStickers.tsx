@@ -6,7 +6,7 @@ import { navigate } from '../utils/router';
 
 // The public site the QR points at. Table stickers default to the menu so a
 // guest who scans lands straight on the food (and the WhatsApp order flow).
-const SITE = 'https://greeksouflaki.com';
+const SITE = 'https://www.greeksouflaki.com';
 
 type Dest = 'menu' | 'home';
 type Layout = 'grid' | 'single';

@@ -1,12 +1,12 @@
 # Greek Souvlaki Kfar Yasif - robots.txt
-# https://greeksouflaki.com/
+# https://www.greeksouflaki.com/
 
 # Allow all search engines to crawl the site
 User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://greeksouflaki.com/sitemap.xml
+Sitemap: https://www.greeksouflaki.com/sitemap.xml
 
 # Crawl-delay - be nice to our server (1 second between requests)
 Crawl-delay: 1
