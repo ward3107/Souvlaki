@@ -71,30 +71,9 @@ export default defineConfig(({ mode }) => {
           // here — they're fetched on demand and cached by the runtimeCaching
           // images rule below, so first install doesn't pull ~60 MB of gallery.
           globPatterns: ['**/*.{js,css,html,ico,svg,json,woff2}'],
-          // The three.js stack (~1.1 MB) powers only the optional 3D "Board of
-          // the week". Keep it out of the install-time precache so visitors who
-          // never see the board don't pay for it; the runtimeCaching rule below
-          // caches it on first use for offline.
-          globIgnores: ['**/three-vendor-*.js'],
           navigateFallback: '/index.html',
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
           runtimeCaching: [
-            {
-              // The 3D plate's three.js chunk — cached the first time the board
-              // actually loads it, then served from cache (incl. offline).
-              urlPattern: /three-vendor-.*\.js$/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'three-vendor-cache',
-                expiration: {
-                  maxEntries: 3,
-                  maxAgeSeconds: 60 * 60 * 24 * 90, // 90 days
-                },
-                cacheableResponse: {
-                  statuses: [0, 200],
-                },
-              },
-            },
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
               handler: 'CacheFirst',
@@ -153,10 +132,6 @@ export default defineConfig(({ mode }) => {
             'react-vendor': ['react', 'react-dom', 'react-dom/client'],
             // Lucide icons chunk
             icons: ['lucide-react'],
-            // WebGL stack for the Board of the Week 3D plate. Its own chunk so
-            // it downloads only when that section's lazy component is loaded,
-            // never on the homepage's critical path.
-            'three-vendor': ['three', '@react-three/fiber', '@react-three/drei'],
           },
         },
       },
