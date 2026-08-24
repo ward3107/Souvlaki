@@ -44,7 +44,7 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^5.0.0",
     "@vitest/coverage-v8": "^4.1.2",
-    "@vitest/ui": "^4.1.2",
+    "@vitest/ui": "^4.1.11",
     "autoprefixer": "^10.5.4",
     "eslint": "^9.39.2",
     "eslint-plugin-jsx-a11y": "^6.10.2",
