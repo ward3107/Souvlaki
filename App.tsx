@@ -92,7 +92,13 @@ const GALLERY_IMAGES = [
 ];
 
 function getInitialLanguage(): Language {
-  // An explicit ?lang= wins (matches our hreflang alternates and lets links
+  // A language path prefix (/he/, /ar/, /ru/, /el/) wins — these are the
+  // pre-rendered, separately-indexed pages Google crawls, so a visitor landing
+  // on one must see that language. English lives at the root (no prefix).
+  const prefix = window.location.pathname.match(/^\/(he|ar|ru|el)(?:\/|$)/);
+  if (prefix) return prefix[1] as Language;
+
+  // An explicit ?lang= wins next (matches our hreflang alternates and lets links
   // deep-link a specific language).
   const params = new URLSearchParams(window.location.search);
   const fromQuery = params.get('lang');
@@ -179,11 +185,14 @@ const App: React.FC = () => {
     setMeta('meta[name="twitter:title"]', seo.ogTitle);
     setMeta('meta[name="twitter:description"]', seo.ogDescription);
 
+    // Canonical + og/twitter URL point at the language's own pre-rendered page
+    // (/he/, /ar/, …), English at the root — matching the hreflang set.
+    const langUrl =
+      lang === Language.EN ? 'https://greeksouflaki.com/' : `https://greeksouflaki.com/${lang}/`;
     const canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      const baseUrl = 'https://greeksouflaki.com/';
-      canonical.setAttribute('href', lang === Language.EN ? baseUrl : `${baseUrl}?lang=${lang}`);
-    }
+    if (canonical) canonical.setAttribute('href', langUrl);
+    setMeta('meta[property="og:url"]', langUrl);
+    setMeta('meta[name="twitter:url"]', langUrl);
   }, [lang]);
 
   // Theme class
