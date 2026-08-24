@@ -32,6 +32,9 @@ import ErrorBoundary from './components/ErrorBoundary';
 // The full menu lives on its own /menu route, so keep it out of the homepage
 // bundle — it loads only when a visitor actually opens the menu.
 const Menu = lazy(() => import('./components/Menu'));
+// "Board of the week" — the owner's weekly special on a WebGL 3D plate. Lazy so
+// its three.js chunk loads only if a special is published and scrolled to.
+const BoardOfTheWeek = lazy(() => import('./components/BoardOfTheWeek'));
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
 const CookieBanner = lazy(() => import('./components/CookieBanner'));
 const LegalDocument = lazy(() => import('./components/LegalDocument'));
@@ -263,6 +266,12 @@ const App: React.FC = () => {
             {/* Story, top to bottom: welcome band -> menu prompt -> watch it made
                 -> made fresh -> meet the family -> our world -> proof -> visit. */}
             <MarqueeStrip lang={lang} />
+
+            {/* Owner's weekly special on an interactive 3D plate. Renders
+                nothing until a special is published, so no layout shift. */}
+            <Suspense fallback={null}>
+              <BoardOfTheWeek lang={lang} />
+            </Suspense>
 
             {/* Dramatic full-screen signature showpiece */}
             <SignatureShowpiece lang={lang} />
