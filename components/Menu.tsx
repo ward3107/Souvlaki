@@ -346,7 +346,7 @@ function buildTicketUrl(lines: ResolvedLine[], name: string): string {
     items: lines.map((l) => ({ q: l.qty, n: l.name, v: l.variantLabel, p: l.lineTotal })),
   };
   const origin =
-    typeof window !== 'undefined' ? window.location.origin : 'https://greeksouflaki.com';
+    typeof window !== 'undefined' ? window.location.origin : 'https://www.greeksouflaki.com';
   return `${origin}/ticket#${encodeTicket(order)}`;
 }
 
@@ -381,7 +381,7 @@ function WhatsAppGlyph({ className }: { className?: string }) {
 
 function buildMenuSchema(categories: MenuCategory[], overrides: MenuOverrides) {
   const origin =
-    typeof window !== 'undefined' ? window.location.origin : 'https://greeksouflaki.com';
+    typeof window !== 'undefined' ? window.location.origin : 'https://www.greeksouflaki.com';
   return {
     '@context': 'https://schema.org',
     '@type': 'Menu',

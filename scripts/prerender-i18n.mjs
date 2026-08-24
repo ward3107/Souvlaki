@@ -26,7 +26,7 @@ import { dirname, resolve } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DIST = resolve(__dirname, '..', 'dist');
-const ORIGIN = 'https://greeksouflaki.com';
+const ORIGIN = 'https://www.greeksouflaki.com';
 
 // Language code → its own path segment (English lives at the root).
 const LANGS = ['en', 'he', 'ar', 'ru', 'el'];

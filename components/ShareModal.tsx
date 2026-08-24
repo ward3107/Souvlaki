@@ -59,7 +59,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
   const shareUrl =
     typeof window !== 'undefined'
       ? window.location.origin + window.location.pathname
-      : 'https://greeksouflaki.com';
+      : 'https://www.greeksouflaki.com';
 
   const shareMessage = tx(
     lang,

@@ -6,7 +6,7 @@ import { tx, isRtlLang } from '../utils/i18n';
 import { getLocalized, formatPrice, type Lang } from '../utils/menuData';
 import { fetchActiveSpecial, type WeeklySpecial } from '../utils/weeklySpecial';
 
-const SITE_URL = 'https://greeksouflaki.com';
+const SITE_URL = 'https://www.greeksouflaki.com';
 
 export default function BoardOfTheWeek({ lang }: { lang: Language }) {
   const [special, setSpecial] = useState<WeeklySpecial | null>(null);

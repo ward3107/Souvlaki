@@ -27,7 +27,7 @@ The Website is owned and operated by **Greek Souvlaki** ("we", "us", "our").
 **Contact Us:**
 
 - Email: **[INSERT EMAIL]**
-  Website: https://greeksouflaki.com/
+  Website: https://www.greeksouflaki.com/
 - Phone: 04-812-2980
 - Address: Kafr Yasif, Route 70, Israel
 
@@ -132,7 +132,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 **צור קשר:**
 
 - אימייל: **privacy@greeksouvlaki.co.il**
-- אתר: https://greeksouflaki.com
+- אתר: https://www.greeksouflaki.com
 - טלפון: 04-812-2980
 - כתובת: כפר יאסיף, כביש 70, ישראל
 
@@ -250,7 +250,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 - البريد الإلكتروني: **[INSERT EMAIL]**
 - الهاتف: 04-812-2980
 - العنوان: كفر ياسيف، طريق 70، إسرائيل
-- الموقع: https://greeksouflaki.com/
+- الموقع: https://www.greeksouflaki.com/
 
 ---
 
@@ -352,7 +352,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 
 - Электронная почта: **[INSERT EMAIL]**
 - Телефон: 04-812-2980
-- Веб-сайт: https://greeksouflaki.com/
+- Веб-сайт: https://www.greeksouflaki.com/
 - Адрес: Кафр Ясиф, шоссе 70, Израиль
 
 ---
@@ -454,7 +454,7 @@ These terms are governed by the laws of the State of Israel. Any disputes shall 
 **Επικοινωνήστε μαζί μας:**
 
 - Email: **[INSERT EMAIL]**
-  Website: https://greeksouflaki.com/
+  Website: https://www.greeksouflaki.com/
 - Τηλέφωνο: 04-812-2980
 - Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
 

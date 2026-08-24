@@ -9,7 +9,7 @@
 
 **A modern, high-performance multi-language responsive website for an authentic Greek restaurant in Kfar Yasif, Israel**
 
-[![Live Demo](https://img.shields.io/badge/🚀-Live_Site-success?style=for-the-badge&logo=vercel&logoColor=white)](https://greeksouflaki.com/)
+[![Live Demo](https://img.shields.io/badge/🚀-Live_Site-success?style=for-the-badge&logo=vercel&logoColor=white)](https://www.greeksouflaki.com/)
 [![GitHub Stars](https://img.shields.io/github/stars/ward3107/Souvlaki?style=for-the-badge&logo=github&color=yellow)](https://github.com/ward3107/Souvlaki/stargazers)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
@@ -521,7 +521,7 @@ in the Software without restriction...
 ### Project Links
 
 - **GitHub**: [github.com/ward3107/Souvlaki](https://github.com/ward3107/Souvlaki)
-- **Live Site**: [greeksouflaki.com](https://greeksouflaki.com/)
+- **Live Site**: [greeksouflaki.com](https://www.greeksouflaki.com/)
 - **Issues**: [GitHub Issues](https://github.com/ward3107/Souvlaki/issues)
 
 ---
