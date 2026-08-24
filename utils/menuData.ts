@@ -545,3 +545,8 @@ export function formatPrice(shekels: number): string {
 export function flattenItems(): Array<{ categoryId: string; item: MenuItem }> {
   return MENU_CATEGORIES.flatMap((cat) => cat.items.map((item) => ({ categoryId: cat.id, item })));
 }
+
+/** Category meta (id + localized name + icon) — the fixed set owner-added
+ *  dishes slot into. Derived from the built-in menu so it stays in sync. */
+export const CATEGORIES: Array<{ id: string; name: LocalizedString; Icon: LucideIcon }> =
+  MENU_CATEGORIES.map((c) => ({ id: c.id, name: c.name, Icon: c.Icon }));

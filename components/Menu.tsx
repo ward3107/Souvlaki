@@ -31,9 +31,11 @@ import {
   type BadgeKey,
   type MenuItem,
   type MenuAddon,
+  type MenuCategory,
 } from '../utils/menuData';
 import { getOverrides, MENU_OVERRIDES_EVENT, type MenuOverrides } from '../utils/menuOverrides';
 import { recordOrder } from '../utils/orders';
+import { fetchMenuItems, buildMergedCategories, dbAvailabilityOverrides } from '../utils/menuStore';
 
 // ============================================================================
 // Static i18n
@@ -282,8 +284,13 @@ function loadCart(): CartLine[] {
   }
 }
 
-function resolveLine(line: CartLine, lang: Lang, overrides: MenuOverrides): ResolvedLine | null {
-  for (const cat of MENU_CATEGORIES) {
+function resolveLine(
+  line: CartLine,
+  lang: Lang,
+  overrides: MenuOverrides,
+  categories: MenuCategory[]
+): ResolvedLine | null {
+  for (const cat of categories) {
     const item = cat.items.find((i) => i.id === line.itemId);
     if (!item) continue;
     const variant = line.variantId
@@ -372,7 +379,7 @@ function WhatsAppGlyph({ className }: { className?: string }) {
 // Menu/MenuItem schema.org JSON-LD (SEO / AI answer engines)
 // ============================================================================
 
-function buildMenuSchema(overrides: MenuOverrides) {
+function buildMenuSchema(categories: MenuCategory[], overrides: MenuOverrides) {
   const origin =
     typeof window !== 'undefined' ? window.location.origin : 'https://greeksouflaki.com';
   return {
@@ -381,7 +388,7 @@ function buildMenuSchema(overrides: MenuOverrides) {
     name: 'Greek Souvlaki Kfar Yasif — Menu',
     url: `${origin}/menu`,
     inLanguage: ['en', 'he', 'ar', 'ru', 'el'],
-    hasMenuSection: MENU_CATEGORIES.map((cat) => ({
+    hasMenuSection: categories.map((cat) => ({
       '@type': 'MenuSection',
       name: getLocalized(cat.name, 'en'),
       hasMenuItem: cat.items.map((item) => {
@@ -877,20 +884,24 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [query, setQuery] = useState('');
   const [activeBadges, setActiveBadges] = useState<BadgeKey[]>([]);
   const [overrides, setOverrides] = useState<MenuOverrides>({});
+  const [categories, setCategories] = useState<MenuCategory[]>(MENU_CATEGORIES);
   const lang = language as Lang;
   const isRtl = lang === 'he' || lang === 'ar';
   const titles = SECTION_TITLES[lang] ?? SECTION_TITLES.en;
-  const active = MENU_CATEGORIES.find((c) => c.id === activeId) ?? MENU_CATEGORIES[0];
+  const active = categories.find((c) => c.id === activeId) ?? categories[0];
 
-  // Keep menu availability/prices in sync with the /admin editor. With Supabase
-  // that means all visitors; the localStorage fallback syncs across tabs. We
-  // refresh on mount, when the tab regains focus (so a returning customer sees
-  // current availability), and on the local change events.
+  // Keep the menu in sync with the /admin editor: built-in dish
+  // availability/prices (overrides) AND owner-added dishes (from Supabase),
+  // merged together. With Supabase that means all visitors see changes; the
+  // localStorage fallback syncs across tabs. Refresh on mount, on tab focus,
+  // and on the local change events.
   useEffect(() => {
     let cancelled = false;
     const refresh = () => {
-      getOverrides().then((o) => {
-        if (!cancelled) setOverrides(o);
+      Promise.all([getOverrides(), fetchMenuItems()]).then(([codeOverrides, dbItems]) => {
+        if (cancelled) return;
+        setCategories(buildMergedCategories(dbItems));
+        setOverrides({ ...codeOverrides, ...dbAvailabilityOverrides(dbItems) });
       });
     };
     refresh();
@@ -920,17 +931,19 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     const el = document.createElement('script');
     el.type = 'application/ld+json';
     el.id = 'menu-schema';
-    el.textContent = JSON.stringify(buildMenuSchema(overrides));
+    el.textContent = JSON.stringify(buildMenuSchema(categories, overrides));
     document.head.appendChild(el);
     return () => {
       el.remove();
     };
-  }, [overrides]);
+  }, [overrides, categories]);
 
   const resolvedLines = useMemo(
     () =>
-      cart.map((l) => resolveLine(l, lang, overrides)).filter((l): l is ResolvedLine => l !== null),
-    [cart, lang, overrides]
+      cart
+        .map((l) => resolveLine(l, lang, overrides, categories))
+        .filter((l): l is ResolvedLine => l !== null),
+    [cart, lang, overrides, categories]
   );
   const itemCount = resolvedLines.reduce((sum, l) => sum + l.qty, 0);
   const cartTotal = resolvedLines.reduce((sum, l) => sum + l.lineTotal, 0);
@@ -942,7 +955,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     if (!isFiltering) return [];
     const q = query.trim().toLowerCase();
     const results: MenuItem[] = [];
-    for (const cat of MENU_CATEGORIES) {
+    for (const cat of categories) {
       for (const item of cat.items) {
         if (activeBadges.length > 0 && !activeBadges.every((b) => item.badges?.includes(b))) {
           continue;
@@ -958,7 +971,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
       }
     }
     return results;
-  }, [isFiltering, query, activeBadges, lang]);
+  }, [isFiltering, query, activeBadges, lang, categories]);
 
   const toggleBadge = (b: BadgeKey) =>
     setActiveBadges((prev) => (prev.includes(b) ? prev.filter((x) => x !== b) : [...prev, b]));
@@ -1156,7 +1169,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
             {/* Category tabs (sticky) */}
             <div className="mb-2 sticky top-20 z-20 -mx-4 px-4 py-3 bg-brand-cream-100/90 dark:bg-slate-900/90 backdrop-blur-sm">
               <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-hide">
-                {MENU_CATEGORIES.map((cat) => {
+                {categories.map((cat) => {
                   const Icon = cat.Icon;
                   const activeTab = activeId === cat.id;
                   return (
