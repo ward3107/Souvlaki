@@ -406,6 +406,7 @@ Update the constants in `constants.ts`:
 - `MENU_ITEMS` - Menu items, prices, descriptions
 - `OPENING_HOURS` - Business hours
 - `CONTACT_INFO` - Phone, WhatsApp, address
+
 </details>
 
 <details>
@@ -433,6 +434,7 @@ Add to `MENU_ITEMS` array in `constants.ts`:
 2. Check image paths are correct (case-sensitive)
 3. Verify Vercel deployment includes `public/` folder
 4. Clear browser cache
+
 </details>
 
 <details>
@@ -442,6 +444,7 @@ Add to `MENU_ITEMS` array in `constants.ts`:
 2. Verify CSS uses logical properties (e.g., `margin-inline-start`)
 3. Test in actual RTL language (Hebrew/Arabic)
 4. Check flex/grid direction properties
+
 </details>
 
 ---

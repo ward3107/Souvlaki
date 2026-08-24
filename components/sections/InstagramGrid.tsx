@@ -47,8 +47,7 @@ function parseFeed(data: unknown): Photo[] {
     }
     const o = entry as Record<string, unknown>;
     const src = (o.media_url || o.mediaUrl || o.thumbnail || o.thumbnailUrl || o.src) as
-      | string
-      | undefined;
+      string | undefined;
     if (src) {
       photos.push({ src, link: (o.permalink as string) || PROFILE_URL });
     }
