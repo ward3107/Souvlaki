@@ -367,6 +367,21 @@
         position: relative;
         overflow-x: clip;
       }
+      /* Per-language SEO fallback text lives in #root for crawlers. It's still
+         in the HTML source (so non-JS crawlers read it), but visually hidden so
+         users don't see a flash of unstyled text before React mounts and
+         replaces #root. Inlined here to take effect before any stylesheet loads. */
+      #seo-prerender {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
       /* Loading indicator */
       #reading-guide {
         display: none;
