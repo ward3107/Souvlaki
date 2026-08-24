@@ -32,8 +32,8 @@ import ErrorBoundary from './components/ErrorBoundary';
 // The full menu lives on its own /menu route, so keep it out of the homepage
 // bundle — it loads only when a visitor actually opens the menu.
 const Menu = lazy(() => import('./components/Menu'));
-// "Board of the week" — the owner's weekly special on a WebGL 3D plate. Lazy so
-// its three.js chunk loads only if a special is published and scrolled to.
+// "Board of the week" — the owner's weekly special (photo + details). Lazy, and
+// it renders nothing until a special is published.
 const BoardOfTheWeek = lazy(() => import('./components/BoardOfTheWeek'));
 const AccessibilityWidget = lazy(() => import('./components/AccessibilityWidget'));
 const CookieBanner = lazy(() => import('./components/CookieBanner'));

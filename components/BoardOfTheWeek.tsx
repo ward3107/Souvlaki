@@ -1,48 +1,16 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Share2, Sparkles, Hand } from 'lucide-react';
+import { Share2, Sparkles } from 'lucide-react';
 import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
 import { getLocalized, formatPrice, type Lang } from '../utils/menuData';
 import { fetchActiveSpecial, type WeeklySpecial } from '../utils/weeklySpecial';
 
-// Loaded only when the board is actually shown and scrolled near — keeps the
-// three.js bundle off the homepage's critical path entirely.
-const PlateScene = lazy(() => import('./PlateScene'));
-
 const SITE_URL = 'https://greeksouflaki.com';
-
-function hasWebGL(): boolean {
-  try {
-    const canvas = document.createElement('canvas');
-    return !!(
-      window.WebGLRenderingContext &&
-      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
-    );
-  } catch {
-    return false;
-  }
-}
-
-/** Static, CSS-only plate — the fallback when WebGL is off or motion is reduced. */
-function FlatPlate({ imageUrl, alt }: { imageUrl: string | null; alt: string }) {
-  return (
-    <div className="relative mx-auto aspect-square w-[78%] max-w-[420px]">
-      <div className="absolute inset-0 rounded-full bg-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)] ring-1 ring-black/5" />
-      <div className="absolute inset-[7%] rounded-full ring-2 ring-brand-terracotta-400/70" />
-      <div className="absolute inset-[11%] overflow-hidden rounded-full bg-brand-cream-100">
-        {imageUrl ? (
-          <img src={imageUrl} alt={alt} className="h-full w-full object-cover" loading="lazy" />
-        ) : null}
-      </div>
-    </div>
-  );
-}
 
 export default function BoardOfTheWeek({ lang }: { lang: Language }) {
   const [special, setSpecial] = useState<WeeklySpecial | null>(null);
   const [loaded, setLoaded] = useState(false);
-  const [inView, setInView] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
   const reduce = useReducedMotion();
   const l = lang as Lang;
@@ -61,30 +29,12 @@ export default function BoardOfTheWeek({ lang }: { lang: Language }) {
     };
   }, []);
 
-  // Mount the WebGL canvas only once the section approaches the viewport.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !special) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [special]);
-
   // Nothing published (or no Supabase) → the section simply doesn't exist.
   if (!loaded || !special) return null;
 
   const title = getLocalized(special.title, l);
   const description = special.description ? getLocalized(special.description, l) : '';
   const badge = special.badge ? getLocalized(special.badge, l) : '';
-  const use3D = !reduce && hasWebGL();
 
   const share = async () => {
     const priceText = special.price ? ` — ${formatPrice(special.price)}` : '';
@@ -126,53 +76,58 @@ export default function BoardOfTheWeek({ lang }: { lang: Language }) {
       )}
       className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-20 md:py-28"
     >
-      {/* Warm ambient glow behind the plate */}
+      {/* Warm ambient glow */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(ellipse 55% 50% at 30% 45%, rgba(255,150,90,0.18), transparent 70%)',
+            'radial-gradient(ellipse 55% 50% at 30% 45%, rgba(255,150,90,0.16), transparent 70%)',
         }}
         aria-hidden="true"
       />
 
-      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-6 px-6 md:grid-cols-2 md:gap-10">
-        {/* The plate */}
-        <div className="relative h-[360px] w-full md:h-[520px]">
-          {use3D ? (
-            <Suspense fallback={<FlatPlate imageUrl={special.image_url} alt={title} />}>
-              {inView ? (
-                <PlateScene imageUrl={special.image_url} />
-              ) : (
-                <FlatPlate imageUrl={special.image_url} alt={title} />
+      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-8 px-6 md:grid-cols-2 md:gap-12">
+        {/* The photo, shown as-is in a clean frame */}
+        <motion.div
+          initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: reduce ? 0.4 : 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mx-auto w-full max-w-md"
+        >
+          {special.image_url ? (
+            <div className="relative overflow-hidden rounded-3xl shadow-[0_30px_70px_-20px_rgba(0,0,0,0.7)] ring-1 ring-white/10">
+              <img
+                src={special.image_url}
+                alt={title}
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+              />
+              {/* subtle inner sheen */}
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{ boxShadow: 'inset 0 0 60px rgba(0,0,0,0.25)' }}
+                aria-hidden="true"
+              />
+              {badge && (
+                <span className="absolute start-4 top-4 rounded-full bg-emerald-500/95 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                  {badge}
+                </span>
               )}
-            </Suspense>
+            </div>
           ) : (
-            <div className="flex h-full items-center justify-center">
-              <FlatPlate imageUrl={special.image_url} alt={title} />
+            <div className="flex aspect-[4/3] w-full items-center justify-center rounded-3xl bg-white/5 text-white/30 ring-1 ring-white/10">
+              <Sparkles className="h-10 w-10" aria-hidden="true" />
             </div>
           )}
-          {use3D && inView && (
-            <p className="pointer-events-none absolute bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-1.5 text-xs text-white/40">
-              <Hand className="h-3.5 w-3.5" aria-hidden="true" />
-              {tx(
-                lang,
-                'גררו לסיבוב',
-                'Drag to spin',
-                'اسحب للتدوير',
-                'Тяните, чтобы вращать',
-                'Σύρετε για περιστροφή'
-              )}
-            </p>
-          )}
-        </div>
+        </motion.div>
 
         {/* The copy */}
         <motion.div
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: reduce ? 0.4 : 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: reduce ? 0.4 : 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-center md:text-start"
         >
           <p className="mb-4 inline-flex items-center gap-2 rounded-full bg-brand-terracotta-400/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-brand-terracotta-200">
@@ -186,12 +141,6 @@ export default function BoardOfTheWeek({ lang }: { lang: Language }) {
               'Το πιάτο της εβδομάδας'
             )}
           </p>
-
-          {badge && (
-            <span className="mb-3 inline-block rounded-md bg-emerald-500/90 px-2.5 py-1 text-xs font-bold text-white">
-              {badge}
-            </span>
-          )}
 
           <h2 className="font-display text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
             {title}
