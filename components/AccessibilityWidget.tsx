@@ -20,7 +20,7 @@ interface AccessibilityWidgetProps {
 interface FeatureButtonProps {
   active: boolean;
   onClick: () => void;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   label: string;
 }
 
