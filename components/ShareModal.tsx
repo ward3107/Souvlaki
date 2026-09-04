@@ -22,13 +22,23 @@ function roundRect(
   ctx.closePath();
 }
 
+function loadImage(src: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
 /**
  * Render a "round-style" QR: data modules as circular dots and the three
  * corner finder patterns as rounded squares. The overall grid stays square
  * (the finder eyes must survive for scanners to lock on), but the dot styling
- * reads as round. Error correction is set to High so the styling stays
- * reliably scannable. Draws onto the given canvas at devicePixelRatio (or a
- * caller-supplied scale) for crisp output on screen and in print.
+ * reads as round. Error correction is set to High so the styling — and an
+ * optional centered logo — stay reliably scannable. Draws onto the given
+ * canvas at devicePixelRatio (or a caller-supplied scale) for crisp output on
+ * screen and in print.
  */
 async function drawRoundQR(
   canvas: HTMLCanvasElement,
@@ -37,7 +47,8 @@ async function drawRoundQR(
   fgColor: string,
   bgColor: string,
   margin = 2,
-  scaleOverride?: number
+  scaleOverride?: number,
+  logoSrc?: string
 ) {
   const { default: QRCode } = await import('qrcode');
   const qr = QRCode.create(value, { errorCorrectionLevel: 'H' });
@@ -96,7 +107,34 @@ async function drawRoundQR(
   drawEye(0, 0);
   drawEye(0, count - 7);
   drawEye(count - 7, 0);
+
+  // Optional centered logo. High error correction (above) tolerates the
+  // covered modules. A white disc backs the logo so it reads cleanly.
+  if (logoSrc) {
+    try {
+      const img = await loadImage(logoSrc);
+      const d = size * 0.26;
+      const cx = size / 2;
+      const cy = size / 2;
+      ctx.fillStyle = bgColor;
+      ctx.beginPath();
+      ctx.arc(cx, cy, d / 2 + cell * 0.7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, d / 2, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(img, cx - d / 2, cy - d / 2, d, d);
+      ctx.restore();
+    } catch {
+      // Logo failed to load — the QR without it still scans; don't throw.
+    }
+  }
 }
+
+// Souvlaki emblem centered in the QR. Absolute-from-base path so it resolves
+// correctly under the localized route prefixes (/he/, /ar/, …).
+const QR_LOGO = `${import.meta.env.BASE_URL}icons/qr-logo.png`;
 
 const QRCodeIcon: React.FC<{
   value: string;
@@ -105,6 +143,7 @@ const QRCodeIcon: React.FC<{
   includeMargin?: boolean;
   bgColor?: string;
   fgColor?: string;
+  logoSrc?: string;
 }> = ({
   value,
   size = 180,
@@ -112,6 +151,7 @@ const QRCodeIcon: React.FC<{
   includeMargin = true,
   bgColor = '#FFFFFF',
   fgColor = '#0B5FA5',
+  logoSrc,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -119,16 +159,23 @@ const QRCodeIcon: React.FC<{
     if (!canvasRef.current) return;
     let cancelled = false;
 
-    drawRoundQR(canvasRef.current, value, size, fgColor, bgColor, includeMargin ? 2 : 0).catch(
-      (err) => {
-        if (!cancelled) console.error('QR generation failed:', err);
-      }
-    );
+    drawRoundQR(
+      canvasRef.current,
+      value,
+      size,
+      fgColor,
+      bgColor,
+      includeMargin ? 2 : 0,
+      undefined,
+      logoSrc
+    ).catch((err) => {
+      if (!cancelled) console.error('QR generation failed:', err);
+    });
 
     return () => {
       cancelled = true;
     };
-  }, [value, size, includeMargin, bgColor, fgColor]);
+  }, [value, size, includeMargin, bgColor, fgColor, logoSrc]);
 
   return <canvas ref={canvasRef} id={id} style={{ display: 'block' }} />;
 };
@@ -229,7 +276,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
     const qrY = 150;
     const qrX = (W - qrPx) / 2;
     const qrCanvas = document.createElement('canvas');
-    await drawRoundQR(qrCanvas, shareUrl, qrPx, brand, '#FFFFFF', 2, scale);
+    await drawRoundQR(qrCanvas, shareUrl, qrPx, brand, '#FFFFFF', 2, scale, QR_LOGO);
     ctx.drawImage(qrCanvas, qrX, qrY, qrPx, qrPx);
 
     // Call to action — English as the headline, then the other four languages.
@@ -340,6 +387,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
                   includeMargin={true}
                   bgColor="#FFFFFF"
                   fgColor="#0B5FA5"
+                  logoSrc={QR_LOGO}
                 />
               </div>
             );
