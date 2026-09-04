@@ -4,6 +4,100 @@ import { Language } from '../types';
 import { tx } from '../utils/i18n';
 import { useBackClose } from './hooks/useBackClose';
 
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + w, y, x + w, y + h, radius);
+  ctx.arcTo(x + w, y + h, x, y + h, radius);
+  ctx.arcTo(x, y + h, x, y, radius);
+  ctx.arcTo(x, y, x + w, y, radius);
+  ctx.closePath();
+}
+
+/**
+ * Render a "round-style" QR: data modules as circular dots and the three
+ * corner finder patterns as rounded squares. The overall grid stays square
+ * (the finder eyes must survive for scanners to lock on), but the dot styling
+ * reads as round. Error correction is set to High so the styling stays
+ * reliably scannable. Draws onto the given canvas at devicePixelRatio (or a
+ * caller-supplied scale) for crisp output on screen and in print.
+ */
+async function drawRoundQR(
+  canvas: HTMLCanvasElement,
+  value: string,
+  size: number,
+  fgColor: string,
+  bgColor: string,
+  margin = 2,
+  scaleOverride?: number
+) {
+  const { default: QRCode } = await import('qrcode');
+  const qr = QRCode.create(value, { errorCorrectionLevel: 'H' });
+  const count = qr.modules.size;
+  const total = count + margin * 2;
+
+  const scale = scaleOverride ?? (typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1);
+  canvas.width = Math.round(size * scale);
+  canvas.height = Math.round(size * scale);
+  canvas.style.width = `${size}px`;
+  canvas.style.height = `${size}px`;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
+
+  const cell = size / total;
+  const off = margin * cell;
+
+  // Background.
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, size, size);
+
+  const inFinder = (r: number, c: number) =>
+    (r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7);
+
+  // Data modules as circular dots.
+  ctx.fillStyle = fgColor;
+  for (let r = 0; r < count; r++) {
+    for (let c = 0; c < count; c++) {
+      if (inFinder(r, c)) continue;
+      if (!qr.modules.get(r, c)) continue;
+      const cx = off + (c + 0.5) * cell;
+      const cy = off + (r + 0.5) * cell;
+      ctx.beginPath();
+      ctx.arc(cx, cy, cell * 0.45, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Finder eyes as rounded squares (outer ring + inner dot).
+  const drawEye = (r0: number, c0: number) => {
+    const x = off + c0 * cell;
+    const y = off + r0 * cell;
+    const s = 7 * cell;
+    ctx.fillStyle = fgColor;
+    roundRect(ctx, x, y, s, s, cell * 1.8);
+    ctx.fill();
+    ctx.fillStyle = bgColor;
+    roundRect(ctx, x + cell, y + cell, s - 2 * cell, s - 2 * cell, cell * 1.2);
+    ctx.fill();
+    ctx.fillStyle = fgColor;
+    roundRect(ctx, x + 2 * cell, y + 2 * cell, s - 4 * cell, s - 4 * cell, cell * 0.8);
+    ctx.fill();
+  };
+  drawEye(0, 0);
+  drawEye(0, count - 7);
+  drawEye(count - 7, 0);
+}
+
 const QRCodeIcon: React.FC<{
   value: string;
   size?: number;
@@ -25,26 +119,18 @@ const QRCodeIcon: React.FC<{
     if (!canvasRef.current) return;
     let cancelled = false;
 
-    import('qrcode').then(({ default: QRCode }) => {
-      if (cancelled || !canvasRef.current) return;
-      QRCode.toCanvas(canvasRef.current, value, {
-        width: size,
-        margin: includeMargin ? 2 : 0,
-        errorCorrectionLevel: 'M',
-        color: { dark: fgColor, light: bgColor },
-      }).catch((err) => {
-        console.error('QR generation failed:', err);
-      });
-    });
+    drawRoundQR(canvasRef.current, value, size, fgColor, bgColor, includeMargin ? 2 : 0).catch(
+      (err) => {
+        if (!cancelled) console.error('QR generation failed:', err);
+      }
+    );
 
     return () => {
       cancelled = true;
     };
   }, [value, size, includeMargin, bgColor, fgColor]);
 
-  return (
-    <canvas ref={canvasRef} id={id} style={{ display: 'block', borderRadius: 8 }} />
-  );
+  return <canvas ref={canvasRef} id={id} style={{ display: 'block' }} />;
 };
 
 interface ShareModalProps {
@@ -143,13 +229,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
     const qrY = 150;
     const qrX = (W - qrPx) / 2;
     const qrCanvas = document.createElement('canvas');
-    const { default: QRCode } = await import('qrcode');
-    await QRCode.toCanvas(qrCanvas, shareUrl, {
-      width: qrPx * scale,
-      margin: 2,
-      errorCorrectionLevel: 'M',
-      color: { dark: brand, light: '#FFFFFF' },
-    });
+    await drawRoundQR(qrCanvas, shareUrl, qrPx, brand, '#FFFFFF', 2, scale);
     ctx.drawImage(qrCanvas, qrX, qrY, qrPx, qrPx);
 
     // Call to action — English as the headline, then the other four languages.
@@ -246,8 +326,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
               the whole thing reads as round. Padding = size*(√2-1)/2 so the
               square's corners never poke past the circle's edge. */}
           {(() => {
-            const qrSize =
-              typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180;
+            const qrSize = typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180;
             const pad = Math.ceil((qrSize * (Math.SQRT2 - 1)) / 2);
             return (
               <div
