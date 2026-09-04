@@ -42,7 +42,9 @@ const QRCodeIcon: React.FC<{
     };
   }, [value, size, includeMargin, bgColor, fgColor]);
 
-  return <canvas ref={canvasRef} id={id} style={{ display: 'block' }} />;
+  return (
+    <canvas ref={canvasRef} id={id} style={{ display: 'block', borderRadius: 8 }} />
+  );
 };
 
 interface ShareModalProps {
@@ -105,16 +107,81 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
     onClose();
   };
 
-  const handleDownloadQR = () => {
-    const qrElement = document.getElementById('qr-code-canvas');
-    if (qrElement) {
-      const canvas = qrElement as HTMLCanvasElement;
-      const url = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = 'greek-souvlaki-qr-code.png';
-      link.href = url;
-      link.click();
+  // Build a print-ready tabletop sign: headline + QR + a "scan for our menu"
+  // line in all five site languages + the URL. Rendered at 3x for crisp print.
+  const handleDownloadQR = async () => {
+    const scale = 3;
+    const W = 700;
+    const H = 860;
+    const brand = '#0B5FA5';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = W * scale;
+    canvas.height = H * scale;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(scale, scale);
+    ctx.textAlign = 'center';
+
+    // Background + brand frame.
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = brand;
+    ctx.lineWidth = 6;
+    ctx.strokeRect(14, 14, W - 28, H - 28);
+
+    // Header.
+    ctx.fillStyle = brand;
+    ctx.font = '700 46px system-ui, -apple-system, sans-serif';
+    ctx.fillText('Greek Souvlaki', W / 2, 84);
+    ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#334155';
+    ctx.fillText('כפר יאסיף · كفر ياسيف · Kfar Yasif', W / 2, 120);
+
+    // QR (kept square with a quiet zone for reliable scanning).
+    const qrPx = 340;
+    const qrY = 150;
+    const qrX = (W - qrPx) / 2;
+    const qrCanvas = document.createElement('canvas');
+    const { default: QRCode } = await import('qrcode');
+    await QRCode.toCanvas(qrCanvas, shareUrl, {
+      width: qrPx * scale,
+      margin: 2,
+      errorCorrectionLevel: 'M',
+      color: { dark: brand, light: '#FFFFFF' },
+    });
+    ctx.drawImage(qrCanvas, qrX, qrY, qrPx, qrPx);
+
+    // Call to action — English as the headline, then the other four languages.
+    let y = qrY + qrPx + 56;
+    ctx.fillStyle = brand;
+    ctx.font = '700 34px system-ui, -apple-system, sans-serif';
+    ctx.fillText('Scan to see our menu', W / 2, y);
+
+    const menuLines = [
+      'סרקו לצפייה בתפריט',
+      'امسحوا لرؤية القائمة',
+      'Сканируйте, чтобы увидеть меню',
+      'Σαρώστε για το μενού',
+    ];
+    ctx.font = '400 25px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#334155';
+    y += 46;
+    for (const line of menuLines) {
+      ctx.fillText(line, W / 2, y);
+      y += 38;
     }
+
+    // Footer URL.
+    ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = brand;
+    ctx.fillText('greeksouflaki.com', W / 2, H - 40);
+
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'greek-souvlaki-menu-qr.png';
+    link.href = url;
+    link.click();
   };
 
   // Mobile Back button closes the modal instead of navigating away.
@@ -174,14 +241,30 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
         </div>
 
         <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-slate-700 rounded-xl flex flex-col items-center">
-          <QRCodeIcon
-            size={typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180}
-            value={shareUrl}
-            id="qr-code-canvas"
-            includeMargin={true}
-            bgColor="#FFFFFF"
-            fgColor="#0B5FA5"
-          />
+          {/* Round white badge: the QR itself stays square (its corner finder
+              patterns must not be clipped), but the circle circumscribes it so
+              the whole thing reads as round. Padding = size*(√2-1)/2 so the
+              square's corners never poke past the circle's edge. */}
+          {(() => {
+            const qrSize =
+              typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180;
+            const pad = Math.ceil((qrSize * (Math.SQRT2 - 1)) / 2);
+            return (
+              <div
+                className="rounded-full bg-white shadow-inner flex items-center justify-center"
+                style={{ padding: pad }}
+              >
+                <QRCodeIcon
+                  size={qrSize}
+                  value={shareUrl}
+                  id="qr-code-canvas"
+                  includeMargin={true}
+                  bgColor="#FFFFFF"
+                  fgColor="#0B5FA5"
+                />
+              </div>
+            );
+          })()}
           <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 sm:mt-3 text-center">
             {tx(
               lang,
