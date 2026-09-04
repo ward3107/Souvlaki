@@ -1,0 +1,29 @@
+name: Dependabot auto-merge
+
+# Automatically merges Dependabot pull requests once all required status checks
+# pass. Requires "Allow auto-merge" to be enabled in the repository settings
+# (Settings → General → Pull Requests) and branch protection on the target
+# branch with the CI checks marked as required — that is what makes the merge
+# wait for green instead of merging immediately.
+
+on: pull_request_target
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+
+      # Merge every Dependabot update (patch, minor and major) once CI is green.
+      - name: Enable auto-merge
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

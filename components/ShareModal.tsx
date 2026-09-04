@@ -4,6 +4,100 @@ import { Language } from '../types';
 import { tx } from '../utils/i18n';
 import { useBackClose } from './hooks/useBackClose';
 
+function roundRect(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+  r: number
+) {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + w, y, x + w, y + h, radius);
+  ctx.arcTo(x + w, y + h, x, y + h, radius);
+  ctx.arcTo(x, y + h, x, y, radius);
+  ctx.arcTo(x, y, x + w, y, radius);
+  ctx.closePath();
+}
+
+/**
+ * Render a "round-style" QR: data modules as circular dots and the three
+ * corner finder patterns as rounded squares. The overall grid stays square
+ * (the finder eyes must survive for scanners to lock on), but the dot styling
+ * reads as round. Error correction is set to High so the styling stays
+ * reliably scannable. Draws onto the given canvas at devicePixelRatio (or a
+ * caller-supplied scale) for crisp output on screen and in print.
+ */
+async function drawRoundQR(
+  canvas: HTMLCanvasElement,
+  value: string,
+  size: number,
+  fgColor: string,
+  bgColor: string,
+  margin = 2,
+  scaleOverride?: number
+) {
+  const { default: QRCode } = await import('qrcode');
+  const qr = QRCode.create(value, { errorCorrectionLevel: 'H' });
+  const count = qr.modules.size;
+  const total = count + margin * 2;
+
+  const scale = scaleOverride ?? (typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1);
+  canvas.width = Math.round(size * scale);
+  canvas.height = Math.round(size * scale);
+  canvas.style.width = `${size}px`;
+  canvas.style.height = `${size}px`;
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  ctx.setTransform(scale, 0, 0, scale, 0, 0);
+
+  const cell = size / total;
+  const off = margin * cell;
+
+  // Background.
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, size, size);
+
+  const inFinder = (r: number, c: number) =>
+    (r < 7 && c < 7) || (r < 7 && c >= count - 7) || (r >= count - 7 && c < 7);
+
+  // Data modules as circular dots.
+  ctx.fillStyle = fgColor;
+  for (let r = 0; r < count; r++) {
+    for (let c = 0; c < count; c++) {
+      if (inFinder(r, c)) continue;
+      if (!qr.modules.get(r, c)) continue;
+      const cx = off + (c + 0.5) * cell;
+      const cy = off + (r + 0.5) * cell;
+      ctx.beginPath();
+      ctx.arc(cx, cy, cell * 0.45, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // Finder eyes as rounded squares (outer ring + inner dot).
+  const drawEye = (r0: number, c0: number) => {
+    const x = off + c0 * cell;
+    const y = off + r0 * cell;
+    const s = 7 * cell;
+    ctx.fillStyle = fgColor;
+    roundRect(ctx, x, y, s, s, cell * 1.8);
+    ctx.fill();
+    ctx.fillStyle = bgColor;
+    roundRect(ctx, x + cell, y + cell, s - 2 * cell, s - 2 * cell, cell * 1.2);
+    ctx.fill();
+    ctx.fillStyle = fgColor;
+    roundRect(ctx, x + 2 * cell, y + 2 * cell, s - 4 * cell, s - 4 * cell, cell * 0.8);
+    ctx.fill();
+  };
+  drawEye(0, 0);
+  drawEye(0, count - 7);
+  drawEye(count - 7, 0);
+}
+
 const QRCodeIcon: React.FC<{
   value: string;
   size?: number;
@@ -25,17 +119,11 @@ const QRCodeIcon: React.FC<{
     if (!canvasRef.current) return;
     let cancelled = false;
 
-    import('qrcode').then(({ default: QRCode }) => {
-      if (cancelled || !canvasRef.current) return;
-      QRCode.toCanvas(canvasRef.current, value, {
-        width: size,
-        margin: includeMargin ? 2 : 0,
-        errorCorrectionLevel: 'M',
-        color: { dark: fgColor, light: bgColor },
-      }).catch((err) => {
-        console.error('QR generation failed:', err);
-      });
-    });
+    drawRoundQR(canvasRef.current, value, size, fgColor, bgColor, includeMargin ? 2 : 0).catch(
+      (err) => {
+        if (!cancelled) console.error('QR generation failed:', err);
+      }
+    );
 
     return () => {
       cancelled = true;
@@ -105,16 +193,75 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
     onClose();
   };
 
-  const handleDownloadQR = () => {
-    const qrElement = document.getElementById('qr-code-canvas');
-    if (qrElement) {
-      const canvas = qrElement as HTMLCanvasElement;
-      const url = canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.download = 'greek-souvlaki-qr-code.png';
-      link.href = url;
-      link.click();
+  // Build a print-ready tabletop sign: headline + QR + a "scan for our menu"
+  // line in all five site languages + the URL. Rendered at 3x for crisp print.
+  const handleDownloadQR = async () => {
+    const scale = 3;
+    const W = 700;
+    const H = 860;
+    const brand = '#0B5FA5';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = W * scale;
+    canvas.height = H * scale;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.scale(scale, scale);
+    ctx.textAlign = 'center';
+
+    // Background + brand frame.
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = brand;
+    ctx.lineWidth = 6;
+    ctx.strokeRect(14, 14, W - 28, H - 28);
+
+    // Header.
+    ctx.fillStyle = brand;
+    ctx.font = '700 46px system-ui, -apple-system, sans-serif';
+    ctx.fillText('Greek Souvlaki', W / 2, 84);
+    ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#334155';
+    ctx.fillText('כפר יאסיף · كفر ياسيف · Kfar Yasif', W / 2, 120);
+
+    // QR (kept square with a quiet zone for reliable scanning).
+    const qrPx = 340;
+    const qrY = 150;
+    const qrX = (W - qrPx) / 2;
+    const qrCanvas = document.createElement('canvas');
+    await drawRoundQR(qrCanvas, shareUrl, qrPx, brand, '#FFFFFF', 2, scale);
+    ctx.drawImage(qrCanvas, qrX, qrY, qrPx, qrPx);
+
+    // Call to action — English as the headline, then the other four languages.
+    let y = qrY + qrPx + 56;
+    ctx.fillStyle = brand;
+    ctx.font = '700 34px system-ui, -apple-system, sans-serif';
+    ctx.fillText('Scan to see our menu', W / 2, y);
+
+    const menuLines = [
+      'סרקו לצפייה בתפריט',
+      'امسحوا لرؤية القائمة',
+      'Сканируйте, чтобы увидеть меню',
+      'Σαρώστε για το μενού',
+    ];
+    ctx.font = '400 25px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#334155';
+    y += 46;
+    for (const line of menuLines) {
+      ctx.fillText(line, W / 2, y);
+      y += 38;
     }
+
+    // Footer URL.
+    ctx.font = '600 24px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = brand;
+    ctx.fillText('greeksouflaki.com', W / 2, H - 40);
+
+    const url = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'greek-souvlaki-menu-qr.png';
+    link.href = url;
+    link.click();
   };
 
   // Mobile Back button closes the modal instead of navigating away.
@@ -174,14 +321,29 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
         </div>
 
         <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-50 dark:bg-slate-700 rounded-xl flex flex-col items-center">
-          <QRCodeIcon
-            size={typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180}
-            value={shareUrl}
-            id="qr-code-canvas"
-            includeMargin={true}
-            bgColor="#FFFFFF"
-            fgColor="#0B5FA5"
-          />
+          {/* Round white badge: the QR itself stays square (its corner finder
+              patterns must not be clipped), but the circle circumscribes it so
+              the whole thing reads as round. Padding = size*(√2-1)/2 so the
+              square's corners never poke past the circle's edge. */}
+          {(() => {
+            const qrSize = typeof window !== 'undefined' && window.innerWidth < 640 ? 140 : 180;
+            const pad = Math.ceil((qrSize * (Math.SQRT2 - 1)) / 2);
+            return (
+              <div
+                className="rounded-full bg-white shadow-inner flex items-center justify-center"
+                style={{ padding: pad }}
+              >
+                <QRCodeIcon
+                  size={qrSize}
+                  value={shareUrl}
+                  id="qr-code-canvas"
+                  includeMargin={true}
+                  bgColor="#FFFFFF"
+                  fgColor="#0B5FA5"
+                />
+              </div>
+            );
+          })()}
           <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 sm:mt-3 text-center">
             {tx(
               lang,
