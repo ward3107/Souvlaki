@@ -5,6 +5,12 @@
 User-agent: *
 Allow: /
 
+# Keep owner-only / internal pages out of search results
+Disallow: /admin
+Disallow: /kitchen
+Disallow: /ticket
+Disallow: /qr
+
 # Sitemap location
 Sitemap: https://www.greeksouflaki.com/sitemap.xml
 
