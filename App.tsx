@@ -149,6 +149,25 @@ const App: React.FC = () => {
     document.documentElement.lang = lang;
   }, [lang, isRtl]);
 
+  // Keep owner-only / internal pages out of search indexes (belt-and-braces
+  // with robots.txt): add a noindex meta while on one, remove it otherwise.
+  const isInternalPage = isAdminPage || isKitchenPage || isTicketPage || isQrPage;
+  useEffect(() => {
+    const META_ID = 'robots-noindex';
+    const existing = document.getElementById(META_ID);
+    if (isInternalPage) {
+      if (!existing) {
+        const meta = document.createElement('meta');
+        meta.id = META_ID;
+        meta.name = 'robots';
+        meta.content = 'noindex, nofollow';
+        document.head.appendChild(meta);
+      }
+    } else {
+      existing?.remove();
+    }
+  }, [isInternalPage]);
+
   // BFCache restoration → jump to top instantly (smooth on bfcache restore
   // is jarring because you didn't ask for it).
   useEffect(() => {

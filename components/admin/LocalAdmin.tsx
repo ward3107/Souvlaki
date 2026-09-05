@@ -61,6 +61,18 @@ export default function LocalAdmin({ lang }: { lang: Language }) {
               'Διαχείριση μενού'
             )}
           </h1>
+          {ADMIN_PIN === '1234' && (
+            <p className="mb-4 rounded-lg bg-amber-400/10 px-3 py-2 text-xs text-amber-300">
+              {tx(
+                lang,
+                'אבטחה: מוגדר קוד ברירת מחדל. הגדירו VITE_ADMIN_PIN ב-Vercel.',
+                'Security: default PIN in use. Set VITE_ADMIN_PIN in Vercel.',
+                'الأمان: يُستخدم رمز افتراضي. عيّن VITE_ADMIN_PIN في Vercel.',
+                'Безопасность: используется PIN по умолчанию. Задайте VITE_ADMIN_PIN в Vercel.',
+                'Ασφάλεια: χρησιμοποιείται προεπιλεγμένο PIN. Ορίστε το VITE_ADMIN_PIN στο Vercel.'
+              )}
+            </p>
+          )}
           <input
             type="password"
             inputMode="numeric"
