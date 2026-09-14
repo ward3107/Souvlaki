@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
+import { BUSINESS_INFO } from './businessInfo';
 
 // Single source of truth for the restaurant's opening hours, in Israel local
 // time. Used by the header live pill and the Contact "Opening Hours" card so
 // they can never disagree.
 //
-// Schedule: Wednesday–Saturday 13:00–01:00 (closes at 01:00 the next morning).
+// Schedule: Wednesday–Saturday 13:00–00:00.
 // Sunday–Tuesday: closed.
 
 type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Sunday
@@ -18,21 +19,21 @@ export const OPENING_SCHEDULE: Record<DayOfWeek, Schedule | null> = {
   0: null,
   1: null,
   2: null,
-  3: { open: 13, close: 1 },
-  4: { open: 13, close: 1 },
-  5: { open: 13, close: 1 },
-  6: { open: 13, close: 1 },
+  3: { open: BUSINESS_INFO.hours.opensAtHour, close: BUSINESS_INFO.hours.closesAtHour },
+  4: { open: BUSINESS_INFO.hours.opensAtHour, close: BUSINESS_INFO.hours.closesAtHour },
+  5: { open: BUSINESS_INFO.hours.opensAtHour, close: BUSINESS_INFO.hours.closesAtHour },
+  6: { open: BUSINESS_INFO.hours.opensAtHour, close: BUSINESS_INFO.hours.closesAtHour },
 };
 
 // The days the restaurant serves, as a compact range for the schedule card.
-export const OPEN_DAYS: DayOfWeek[] = [3, 4, 5, 6];
-export const OPEN_TIME_LABEL = '13:00 - 01:00';
+export const OPEN_DAYS: DayOfWeek[] = [...BUSINESS_INFO.hours.openDays];
+export const OPEN_TIME_LABEL = BUSINESS_INFO.hours.displaySpaced;
 
 export interface OpenStatus {
   isOpen: boolean;
   /** Minutes until the next open→closed or closed→open transition. */
   minutesUntilChange: number;
-  /** Closing time label ("01:00") when open; else undefined. */
+  /** Closing time label ("00:00") when open; else undefined. */
   closesAt?: string;
   /** Day index of the next opening when closed; else undefined. */
   nextOpenDay?: DayOfWeek;
@@ -83,8 +84,8 @@ export function getOpenStatus(): OpenStatus {
   const today = OPENING_SCHEDULE[day];
   const yesterday = OPENING_SCHEDULE[((day + 6) % 7) as DayOfWeek];
 
-  // Case A: inside yesterday's after-midnight tail (e.g. 00:30 on Sunday from
-  // Saturday's 13:00–01:00 window).
+  // Case A: inside yesterday's after-midnight tail, for schedules that close
+  // after midnight. The current 00:00 closing time has no spill-over tail.
   if (yesterday && yesterday.close <= yesterday.open && nowMin < yesterday.close * 60) {
     return {
       isOpen: true,

@@ -2,7 +2,7 @@
 
   <!-- Logo/Title -->
   <h1 align="center">
-    <img src="https://ward3107.github.io/GREEK_SOVLAKI_WEBSITE/gallery/hero-bg-1280w.webp" alt="Greek Souvlaki" width="1200" height="400">
+    <img src="https://www.greeksouflaki.com/gallery/hero-bg-1280w.webp" alt="Greek Souvlaki" width="1200" height="400">
   </h1>
 
 # 🇬🇷 Greek Souvlaki Kfar Yasif
@@ -511,8 +511,8 @@ in the Software without restriction...
 | **Name**     | Greek Souvlaki Kfar Yasif                       |
 | **Location** | Route 70, Kafr Yasif, Northern District, Israel |
 | **Phone**    | +972-4-812-2980                                 |
-| **WhatsApp** | +972-54-200-1235                                |
-| **Hours**    | Wed-Sat: 13:00 - 01:00                          |
+| **WhatsApp** | +972-52-892-1454                                |
+| **Hours**    | Wed-Sat: 13:00 - 00:00                          |
 
 ### Social Media
 
@@ -595,7 +595,7 @@ npm run dev
 ## יצירת קשר
 
 - **טלפון**: 04-812-2980
-- **וואטסאפ**: 054-200-1235
+- **וואטסאפ**: 052-892-1454
 - **כתובת**: כביש 70, כפר יאסיף
 
 </div>
@@ -624,7 +624,7 @@ npm run dev
 ## للتواصل
 
 - **هاتف**: 04-812-2980
-- **واتساب**: 054-200-1235
+- **واتساب**: 052-892-1454
 - **العنوان**: طريق 70، كفر ياسيف
 
 </div>
@@ -651,7 +651,7 @@ npm run dev
 ## Контакты
 
 - **Телефон**: 04-812-2980
-- **WhatsApp**: 054-200-1235
+- **WhatsApp**: 052-892-1454
 - **Адрес**: Трасса 70, Кафр Ясиф
 
 ---
@@ -676,7 +676,7 @@ npm run dev
 ## Επικοινωνία
 
 - **Τηλέφωνο**: 04-812-2980
-- **WhatsApp**: 054-200-1235
+- **WhatsApp**: 052-892-1454
 - **Διεύθυνση**: Λεωφόρος 70, Καρ Γιουσίφ
 
 ---

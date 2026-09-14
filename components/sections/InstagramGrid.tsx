@@ -3,13 +3,14 @@ import { Heart } from 'lucide-react';
 import { InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
+import { BUSINESS_INFO } from '../../utils/businessInfo';
 
 interface Props {
   lang: Language;
   galleryImages: string[];
 }
 
-const PROFILE_URL = 'https://www.instagram.com/greek.souvlakii';
+const PROFILE_URL = BUSINESS_INFO.social.instagramUrl;
 
 // Optional live-feed endpoint (e.g. Behold.so, EmbedSocial, or a small
 // serverless proxy to the Instagram Graph API). Must return JSON that is either
@@ -133,13 +134,13 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
             )}
           </p>
           <a
-            href="https://www.instagram.com/greek.souvlakii"
+            href={BUSINESS_INFO.social.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white rounded-full font-semibold shadow-soft hover:shadow-lift transition-all duration-300"
           >
             <InstagramIcon className="w-5 h-5" />
-            <span>@greek.souvlakii</span>
+            <span>{BUSINESS_INFO.social.instagramHandle}</span>
           </a>
         </div>
 
@@ -153,7 +154,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
 
         <div className="text-center mt-10">
           <a
-            href="https://www.instagram.com/greek.souvlakii"
+            href={BUSINESS_INFO.social.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 border-2 border-brand-terracotta-400 text-brand-terracotta-400 rounded-full font-semibold hover:bg-brand-terracotta-400 hover:text-white transition-all duration-300"

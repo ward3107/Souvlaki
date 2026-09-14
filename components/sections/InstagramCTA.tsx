@@ -3,6 +3,7 @@ import { Camera, X } from 'lucide-react';
 import { InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
+import { BUSINESS_INFO } from '../../utils/businessInfo';
 import { useBackClose } from '../hooks/useBackClose';
 
 interface Props {
@@ -50,13 +51,13 @@ export default function InstagramCTA({ lang }: Props) {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <CameraShareButton lang={lang} />
             <a
-              href="https://www.instagram.com/greek.souvlakii"
+              href={BUSINESS_INFO.social.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 backdrop-blur-sm text-white rounded-full font-medium border border-white/30 hover:bg-white/25 transition-all duration-300"
             >
               <InstagramIcon className="w-5 h-5" />
-              <span>@greek.souvlakii</span>
+              <span>{BUSINESS_INFO.social.instagramHandle}</span>
             </a>
           </div>
         </div>
@@ -92,8 +93,8 @@ function CameraShareButton({ lang }: { lang: Language }) {
     const nav = navigator as ShareCheck;
     const shareData: ShareData = {
       files: [file],
-      text: '@greek.souvlakii',
-      url: 'https://instagram.com/greek.souvlakii',
+      text: BUSINESS_INFO.social.instagramHandle,
+      url: BUSINESS_INFO.social.instagramUrl,
     };
     if (nav.canShare?.(shareData)) {
       try {

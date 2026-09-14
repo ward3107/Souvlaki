@@ -3,6 +3,7 @@ import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
 import { track } from '../utils/analytics';
 import { navigate } from '../utils/router';
+import { BUSINESS_INFO } from '../utils/businessInfo';
 
 export default function QuickVisitStrip({ lang }: { lang: Language }) {
   const isRtl = isRtlLang(lang);
@@ -37,15 +38,15 @@ export default function QuickVisitStrip({ lang }: { lang: Language }) {
           </strong>
         </a>
         <a
-          href="tel:048122980"
+          href={BUSINESS_INFO.phone.href}
           onClick={() => track('click_call', { location: 'quick_strip' })}
           className={actionClass}
         >
           <Phone className="h-5 w-5 text-brand-terracotta-500" aria-hidden="true" />
-          <strong className="text-sm">04-812-2980</strong>
+          <strong className="text-sm">{BUSINESS_INFO.phone.display}</strong>
         </a>
         <a
-          href="https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
+          href={BUSINESS_INFO.location.wazeUrl}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => track('click_directions', { provider: 'waze', location: 'quick_strip' })}
@@ -59,14 +60,8 @@ export default function QuickVisitStrip({ lang }: { lang: Language }) {
         <div className={actionClass}>
           <Clock3 className="h-5 w-5 text-brand-terracotta-500" aria-hidden="true" />
           <strong className="text-sm">
-            {tx(
-              lang,
-              'ד׳–ש׳ 13:00–01:00',
-              'Wed–Sat 13:00–01:00',
-              'الأربعاء–السبت 13:00–01:00',
-              'Ср–Сб 13:00–01:00',
-              'Τετ–Σαβ 13:00–01:00'
-            )}
+            {tx(lang, 'ד׳–ש׳', 'Wed–Sat', 'الأربعاء–السبت', 'Ср–Сб', 'Τετ–Σαβ')}{' '}
+            {BUSINESS_INFO.hours.display}
           </strong>
         </div>
       </div>

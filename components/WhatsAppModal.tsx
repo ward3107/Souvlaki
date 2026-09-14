@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { Language } from '../types';
 import { tx, isRtlLang } from '../utils/i18n';
 import { useBackClose } from './hooks/useBackClose';
+import { BUSINESS_INFO } from '../utils/businessInfo';
 
 interface WhatsAppModalProps {
   lang: Language;
@@ -71,7 +72,7 @@ export default function WhatsAppModal({ lang, open, onClose }: WhatsAppModalProp
         </p>
         <div className="flex gap-3">
           <a
-            href="https://wa.me/972542001235"
+            href={BUSINESS_INFO.whatsapp.href}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-1 px-4 py-2.5 rounded-xl font-semibold text-sm text-white text-center transition-all hover:brightness-110"

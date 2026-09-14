@@ -9,6 +9,7 @@ import {
   Wine,
   type LucideIcon,
 } from 'lucide-react';
+import { BUSINESS_INFO } from './businessInfo';
 
 // ============================================================================
 // Single source of truth for the menu.
@@ -52,7 +53,7 @@ export interface MenuCategory {
   addons?: MenuAddon[];
 }
 
-export const WHATSAPP_NUMBER = '972542001235';
+export const WHATSAPP_NUMBER = BUSINESS_INFO.whatsapp.international;
 
 export const BADGE_LABELS: Record<BadgeKey, LocalizedString> = {
   popular: {

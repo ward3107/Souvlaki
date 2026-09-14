@@ -273,7 +273,7 @@ _No rejected requests_
 
 Send your request via:
 
-- **WhatsApp**: +972-54-200-1235
+- **WhatsApp**: +972-52-892-1454
 - **Email**: [Your email]
 
 Please include:
