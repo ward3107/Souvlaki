@@ -1,4 +1,4 @@
-import { useRef, type ComponentType, type MouseEvent } from 'react';
+import { useRef, type ComponentType } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Citrus, Leaf, Cherry, Grape } from 'lucide-react';
 import { Language } from '../types';
@@ -75,16 +75,21 @@ export default function FreshIngredients({ lang }: { lang: Language }) {
   // (each tap on a card further right than the last, within 5s) opens /admin.
   // Position-based so it works the same in LTR and RTL layouts. There is no
   // visible admin link anywhere on the site.
-  const tapsRef = useRef<{ left: number; t: number }[]>([]);
-  const handleSecretTap = (e: MouseEvent<HTMLDivElement>) => {
-    const left = e.currentTarget.getBoundingClientRect().left;
+  const secretRef = useRef<{ startedAt: number; tapped: Set<number> }>({
+    startedAt: 0,
+    tapped: new Set(),
+  });
+  const handleSecretTap = (index: number) => {
     const now = Date.now();
-    const recent = tapsRef.current.filter((x) => now - x.t < 5000);
-    const last = recent[recent.length - 1];
-    const next = !last || left > last.left + 5 ? [...recent, { left, t: now }] : [{ left, t: now }];
-    tapsRef.current = next;
-    if (next.length === 4) {
-      tapsRef.current = [];
+    const current = secretRef.current;
+    if (!current.startedAt || now - current.startedAt > 5000) {
+      secretRef.current = { startedAt: now, tapped: new Set([index]) };
+    } else {
+      current.tapped.add(index);
+    }
+
+    if (secretRef.current.tapped.size === ITEMS.length) {
+      secretRef.current = { startedAt: 0, tapped: new Set() };
       navigate('/admin');
     }
   };
@@ -153,7 +158,7 @@ export default function FreshIngredients({ lang }: { lang: Language }) {
             <motion.div
               key={it.name.en}
               {...reveal(0.3 + i * 0.08)}
-              onClick={handleSecretTap}
+              onClick={() => handleSecretTap(i)}
               className="group flex flex-col items-center rounded-2xl border border-brand-blue-500/10 bg-white/80 px-5 py-8 shadow-soft backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 dark:border-white/10 dark:bg-slate-800/60"
             >
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream-200 text-brand-terracotta-400 ring-1 ring-brand-terracotta-300/40 transition-colors duration-300 group-hover:bg-brand-terracotta-400 group-hover:text-white dark:bg-slate-700 dark:text-brand-terracotta-200">
