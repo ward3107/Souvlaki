@@ -79,8 +79,7 @@ export default function FreshIngredients({ lang }: { lang: Language }) {
     startedAt: 0,
     tapped: new Set(),
   });
-  const handleSecretTap = (index: number) => {
-    const now = Date.now();
+  const handleSecretTap = (index: number, now: number) => {
     const current = secretRef.current;
     if (!current.startedAt || now - current.startedAt > 5000) {
       secretRef.current = { startedAt: now, tapped: new Set([index]) };
@@ -158,7 +157,7 @@ export default function FreshIngredients({ lang }: { lang: Language }) {
             <motion.div
               key={it.name.en}
               {...reveal(0.3 + i * 0.08)}
-              onClick={() => handleSecretTap(i)}
+              onClick={(event) => handleSecretTap(i, event.timeStamp)}
               className="group flex flex-col items-center rounded-2xl border border-brand-blue-500/10 bg-white/80 px-5 py-8 shadow-soft backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 dark:border-white/10 dark:bg-slate-800/60"
             >
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-cream-200 text-brand-terracotta-400 ring-1 ring-brand-terracotta-300/40 transition-colors duration-300 group-hover:bg-brand-terracotta-400 group-hover:text-white dark:bg-slate-700 dark:text-brand-terracotta-200">

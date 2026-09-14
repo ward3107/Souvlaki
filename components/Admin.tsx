@@ -17,7 +17,14 @@ export default function Admin({ lang }: { lang: Language }) {
       <section className="w-full max-w-md rounded-2xl border border-amber-400/20 bg-slate-900 p-6 text-center shadow-2xl">
         <AlertTriangle className="mx-auto mb-4 h-10 w-10 text-amber-400" aria-hidden="true" />
         <h1 className="font-display text-xl font-semibold">
-          {tx(lang, 'האדמין עדיין לא הוגדר', 'Admin is not configured', 'لم يتم إعداد الإدارة', 'Панель не настроена', 'Η διαχείριση δεν έχει ρυθμιστεί')}
+          {tx(
+            lang,
+            'האדמין עדיין לא הוגדר',
+            'Admin is not configured',
+            'لم يتم إعداد الإدارة',
+            'Панель не настроена',
+            'Η διαχείριση δεν έχει ρυθμιστεί'
+          )}
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-white/65">
           {tx(
