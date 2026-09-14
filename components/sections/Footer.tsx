@@ -1,4 +1,4 @@
-import { Facebook, Instagram } from 'lucide-react';
+import { FacebookIcon, InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
 import { track } from '../../utils/analytics';
@@ -57,7 +57,7 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group"
               aria-label="Visit our Facebook page"
             >
-              <Facebook
+              <FacebookIcon
                 className="w-6 h-6 group-hover:scale-110 transition-transform"
                 aria-hidden="true"
               />
@@ -69,7 +69,7 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group"
               aria-label="Visit our Instagram page"
             >
-              <Instagram
+              <InstagramIcon
                 className="w-6 h-6 group-hover:scale-110 transition-transform"
                 aria-hidden="true"
               />
