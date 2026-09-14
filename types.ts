@@ -6,19 +6,6 @@ export enum Language {
   EL = 'el',
 }
 
-export interface MenuItem {
-  id: string;
-  category: string;
-  price: number;
-  image: string;
-  name: {
-    [key in Language]: string;
-  };
-  description: {
-    [key in Language]: string;
-  };
-}
-
 export interface Review {
   id: string;
   author: string;

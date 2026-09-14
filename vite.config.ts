@@ -40,10 +40,10 @@ export default defineConfig(({ mode }) => {
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icons/*.png'],
         strategies: 'generateSW',
         manifest: {
-          name: 'Greek Souvlaki Kfar Yasif | סובלקי יווני כפר יאסיף',
+          name: 'Greek Souvlaki Kfar Yasif | סובלאקי יווני כפר יאסיף',
           short_name: 'Greek Souvlaki',
           description:
-            'Authentic Greek souvlaki in Kfar Yasif. Fresh pita, gyros, skewers & more. | סובלקי יווני אותנטי בכפר יאסיף',
+            'Authentic Greek souvlaki in Kfar Yasif. Fresh pita, gyros, skewers & more. | סובלאקי יווני אותנטי בכפר יאסיף',
           theme_color: '#0f172a',
           background_color: '#0f172a',
           display: 'standalone',

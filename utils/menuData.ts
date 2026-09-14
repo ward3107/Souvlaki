@@ -70,7 +70,7 @@ export const BADGE_LABELS: Record<BadgeKey, LocalizedString> = {
     ru: 'Без глютена',
     el: 'Χωρίς γλουτένη',
   },
-  vegan: { en: 'Vegan', he: 'טבעוני', ar: 'نباتي', ru: 'Веган', el: 'Vegan' },
+  vegan: { en: 'Vegan', he: 'טבעוני', ar: 'نباتي بالكامل', ru: 'Веган', el: 'Βίγκαν' },
   spicy: { en: 'Spicy', he: 'חריף', ar: 'حار', ru: 'Острый', el: 'Καυτερό' },
   new: { en: 'New', he: 'חדש', ar: 'جديد', ru: 'Новинка', el: 'Νέο' },
 };
@@ -93,7 +93,7 @@ const PITA_VARIANTS: Variant[] = [
     label: {
       en: 'Lamb kebab',
       he: 'קבב טלה',
-      ar: 'كباب حمل',
+      ar: 'كباب لحم ضأن',
       ru: 'Кебаб из ягнёнка',
       el: 'Κεμπάπ αρνί',
     },
@@ -104,7 +104,7 @@ const PITA_VARIANTS: Variant[] = [
   },
   {
     id: 'vegan',
-    label: { en: 'Vegan', he: 'טבעוני', ar: 'نباتي', ru: 'Веган', el: 'Vegan' },
+    label: { en: 'Vegan', he: 'טבעוני', ar: 'نباتي بالكامل', ru: 'Веган', el: 'Βίγκαν' },
   },
   {
     id: 'gyros',
@@ -129,7 +129,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         image: '/gallery/IMG-20251205-WA0032-400.webp',
         name: {
           en: 'Souvlaki Pita',
-          he: 'פיתה סובלקי',
+          he: 'פיתה סובלאקי',
           ar: 'بيتا سوفلاكي',
           ru: 'Пита сувлаки',
           el: 'Πίτα σουβλάκι',
@@ -147,10 +147,9 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'pita-gf',
-        image: '/gallery/IMG-20251205-WA0033-400.webp',
         name: {
           en: 'Souvlaki Pita — Gluten-Free',
-          he: 'פיתה סובלקי ללא גלוטן',
+          he: 'פיתה סובלאקי ללא גלוטן',
           ar: 'بيتا سوفلاكي خالية من الغلوتين',
           ru: 'Пита сувлаки без глютена',
           el: 'Πίτα σουβλάκι χωρίς γλουτένη',
@@ -164,6 +163,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         },
         price: 40,
         badges: ['gf'],
+        variants: PITA_VARIANTS,
       },
     ],
     addons: [
@@ -190,7 +190,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         image: '/gallery/IMG-20251205-WA0034-400.webp',
         name: {
           en: 'Souvlaki Plate',
-          he: 'צלחת סובלקי',
+          he: 'צלחת סובלאקי',
           ar: 'طبق سوفلاكي',
           ru: 'Тарелка сувлаки',
           el: 'Πιάτο σουβλάκι',
@@ -238,7 +238,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
           he: 'מגש אישי',
           ar: 'صينية فردية',
           ru: 'Индивидуальный поднос',
-          el: 'Μερίδα ατόμου',
+          el: 'Ατομική μερίδα',
         },
         description: {
           en: 'Generous serving of white-meat gyros, golden chips, house tzatziki, fresh vegetables, traditional Greek salad. Serves 1-2.',
@@ -277,7 +277,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
           he: 'מגש משפחתי',
           ar: 'صينية عائلية',
           ru: 'Семейный поднос',
-          el: 'Μερίδα οικογένειας',
+          el: 'Οικογενειακή μερίδα',
         },
         description: {
           en: 'White-meat gyros + 3 skewers, chips, sauces, fresh vegetables, salads, warm pitas. Feeds 4-5.',
@@ -297,19 +297,18 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       he: 'פיצה גירוס',
       ar: 'بيتزا غيروس',
       ru: 'Пицца гирос',
-      el: 'Πίτσα γύρος',
+      el: 'Πίτσα με γύρο',
     },
     Icon: Pizza,
     items: [
       {
         id: 'pizza-small',
-        image: '/gallery/IMG-20251205-WA0039-400.webp',
         name: {
           en: 'Pizza Gyros — Small',
           he: 'פיצה גירוס קטנה',
           ar: 'بيتزا غيروس صغيرة',
           ru: 'Пицца гирос (маленькая)',
-          el: 'Πίτσα γύρος (μικρή)',
+          el: 'Πίτσα με γύρο (μικρή)',
         },
         description: {
           en: 'Personal pizza topped with white-meat gyros and golden chips.',
@@ -322,13 +321,12 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       },
       {
         id: 'pizza-large',
-        image: '/gallery/IMG-20251205-WA0040-400.webp',
         name: {
           en: 'Pizza Gyros — Large',
           he: 'פיצה גירוס גדולה',
           ar: 'بيتزا غيروس كبيرة',
           ru: 'Пицца гирос (большая)',
-          el: 'Πίτσα γύρος (μεγάλη)',
+          el: 'Πίτσα με γύρο (μεγάλη)',
         },
         description: {
           en: 'Sharing-size pizza topped with white-meat gyros and golden chips.',
@@ -348,7 +346,6 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'greek-salad',
-        image: '/gallery/IMG-20251205-WA0041-400.webp',
         name: {
           en: 'Greek Salad',
           he: 'סלט יווני',
@@ -357,11 +354,11 @@ export const MENU_CATEGORIES: MenuCategory[] = [
           el: 'Ελληνική σαλάτα',
         },
         description: {
-          en: 'Tomato, cucumber, bell pepper, onion, Kalamata olives, creamy feta — drizzled with olive oil.',
+          en: 'Tomato, cucumber, bell pepper, onion, Kalamata olives and feta — dressed with lemon and olive oil.',
           he: 'עגבנייה, מלפפון, פלפל, בצל, זיתי קלמטה ופטה קרמית — בלימון ושמן זית.',
-          ar: 'طماطم، خيار، فلفل، بصل، زيتون كالاماتا وجبنة فيتا كريمية — مع زيت زيتون.',
-          ru: 'Помидоры, огурец, перец, лук, оливки каламата и сливочная фета — с оливковым маслом.',
-          el: 'Ντομάτα, αγγούρι, πιπεριά, κρεμμύδι, ελιές Καλαμών και κρεμώδης φέτα — με ελαιόλαδο.',
+          ar: 'طماطم، خيار، فلفل، بصل، زيتون كالاماتا وجبنة فيتا — مع الليمون وزيت الزيتون.',
+          ru: 'Помидоры, огурец, перец, лук, оливки каламата и фета — с лимоном и оливковым маслом.',
+          el: 'Ντομάτα, αγγούρι, πιπεριά, κρεμμύδι, ελιές Καλαμών και φέτα — με λεμόνι και ελαιόλαδο.',
         },
         price: 40,
       },
@@ -380,20 +377,20 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       {
         id: 'fries',
-        image: '/gallery/IMG-20251205-WA0042-400.webp',
+        image: '/gallery/IMG-20251205-WA0048-400.webp',
         name: {
-          en: 'Greek Chips',
+          en: 'Fries',
           he: 'צ׳יפס',
-          ar: 'بطاطس',
+          ar: 'بطاطا مقلية',
           ru: 'Картофель фри',
-          el: 'Πατάτες',
+          el: 'Τηγανητές πατάτες',
         },
         description: {
-          en: 'Hand-cut, crispy, salted just right.',
-          he: 'פרוס ביד, פריך ומלוח בדיוק כמו שצריך.',
-          ar: 'مقطعة باليد، مقرمشة ومملحة بالقدر المناسب.',
-          ru: 'Нарезанные вручную, хрустящие, идеально посоленные.',
-          el: 'Κομμένες στο χέρι, τραγανές, αλατισμένες στην εντέλεια.',
+          en: 'Golden, crispy fries, salted just right.',
+          he: 'צ׳יפס זהוב ופריך, מומלח בדיוק במידה.',
+          ar: 'بطاطا مقلية ذهبية ومقرمشة، مملحة بالقدر المناسب.',
+          ru: 'Золотистый хрустящий картофель фри, идеально посоленный.',
+          el: 'Χρυσαφένιες τραγανές πατάτες, αλατισμένες στην εντέλεια.',
         },
         price: 15,
       },
@@ -416,14 +413,14 @@ export const MENU_CATEGORIES: MenuCategory[] = [
           en: 'Soft Drinks',
           he: 'משקאות קלים',
           ar: 'مشروبات غازية',
-          ru: 'Безалкогольные',
+          ru: 'Безалкогольные напитки',
           el: 'Αναψυκτικά',
         },
         description: {
           en: 'Coca-Cola, Cola Zero, Fanta, Sprite, Grape.',
           he: 'קוקה קולה, קולה זירו, פנטה, ספרייט, ענבים.',
           ar: 'كوكا كولا، كولا زيرو، فانتا، سبرايت، عنب.',
-          ru: 'Кока-Кола, Кола Зеро, Фанта, Спрайт, Виноградный.',
+          ru: 'Кока-Кола, Кола Зеро, Фанта, Спрайт, виноградный напиток.',
           el: 'Coca-Cola, Cola Zero, Fanta, Sprite, Σταφύλι.',
         },
         price: 7,
@@ -501,7 +498,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
           en: 'House selection — ask your server.',
           he: 'בחירת הבית — שאלו את המלצר.',
           ar: 'اختيار البيت — اسأل النادل.',
-          ru: 'Выбор шефа — спросите официанта.',
+          ru: 'Выбор заведения — спросите официанта.',
           el: 'Επιλογή σπιτιού — ρωτήστε τον σερβιτόρο.',
         },
         price: 100,
@@ -525,7 +522,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
           he: 'משקה יווני מסורתי בטעם אניס. בקבוק 200 מ״ל.',
           ar: 'مشروب يوناني تقليدي بنكهة اليانسون. زجاجة 200 مل.',
           ru: 'Традиционный греческий напиток с анисом. Бутылка 200 мл.',
-          el: 'Παραδοσιακό ελληνικό ποτό γλυκάνισου. Μπουκάλι 200 ml.',
+          el: 'Παραδοσιακό ελληνικό ποτό με γεύση γλυκάνισου. Μπουκάλι 200 ml.',
         },
         price: 70,
       },

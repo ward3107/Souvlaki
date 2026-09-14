@@ -186,8 +186,22 @@ function Sticker({
 }) {
   const line1 =
     dest === 'menu'
-      ? tx(lang, 'סרקו לתפריט', 'Scan for the menu', 'امسح لعرض القائمة')
-      : tx(lang, 'סרקו לאתר שלנו', 'Scan our website', 'امسح لزيارة موقعنا');
+      ? tx(
+          lang,
+          'סרקו לתפריט',
+          'Scan for the menu',
+          'امسح لعرض القائمة',
+          'Отсканируйте, чтобы открыть меню',
+          'Σαρώστε για το μενού'
+        )
+      : tx(
+          lang,
+          'סרקו לאתר שלנו',
+          'Scan our website',
+          'امسح لزيارة موقعنا',
+          'Отсканируйте, чтобы открыть наш сайт',
+          'Σαρώστε για τον ιστότοπό μας'
+        );
 
   const display = url.replace(/^https?:\/\//, '');
 
@@ -294,7 +308,14 @@ export default function QrStickers({ lang }: { lang: Language }) {
           <div className="flex items-center gap-2 text-brand-blue-700 dark:text-brand-blue-100">
             <QrCode className="w-5 h-5" aria-hidden="true" />
             <h1 className="font-display text-lg font-bold">
-              {tx(lang, 'מדבקות QR לשולחנות', 'Table QR stickers', 'ملصقات QR للطاولات')}
+              {tx(
+                lang,
+                'מדבקות QR לשולחנות',
+                'Table QR stickers',
+                'ملصقات QR للطاولات',
+                'QR-наклейки для столов',
+                'Αυτοκόλλητα QR για τραπέζια'
+              )}
             </h1>
           </div>
 
@@ -304,7 +325,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
           <div
             className="inline-flex rounded-full bg-slate-100 dark:bg-slate-700 p-1"
             role="group"
-            aria-label={tx(lang, 'יעד', 'Destination', 'الوجهة')}
+            aria-label={tx(lang, 'יעד', 'Destination', 'الوجهة', 'Назначение', 'Προορισμός')}
           >
             <button
               type="button"
@@ -317,7 +338,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
               }`}
             >
               <QrCode className="w-4 h-4" aria-hidden="true" />
-              {tx(lang, 'תפריט', 'Menu', 'القائمة')}
+              {tx(lang, 'תפריט', 'Menu', 'القائمة', 'Меню', 'Μενού')}
             </button>
             <button
               type="button"
@@ -330,7 +351,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
               }`}
             >
               <Home className="w-4 h-4" aria-hidden="true" />
-              {tx(lang, 'אתר', 'Website', 'الموقع')}
+              {tx(lang, 'אתר', 'Website', 'الموقع', 'Сайт', 'Ιστότοπος')}
             </button>
           </div>
 
@@ -338,7 +359,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
           <div
             className="inline-flex rounded-full bg-slate-100 dark:bg-slate-700 p-1"
             role="group"
-            aria-label={tx(lang, 'סגנון', 'Style', 'النمط')}
+            aria-label={tx(lang, 'סגנון', 'Style', 'النمط', 'Стиль', 'Στυλ')}
           >
             <button
               type="button"
@@ -348,7 +369,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
                 style === 'plain' ? 'bg-slate-800 text-white' : 'text-slate-600 dark:text-slate-200'
               }`}
             >
-              {tx(lang, 'רגיל', 'Plain', 'عادي')}
+              {tx(lang, 'רגיל', 'Plain', 'عادي', 'Обычный', 'Απλό')}
             </button>
             <button
               type="button"
@@ -358,7 +379,14 @@ export default function QrStickers({ lang }: { lang: Language }) {
                 style === 'frame' ? 'bg-slate-800 text-white' : 'text-slate-600 dark:text-slate-200'
               }`}
             >
-              {tx(lang, 'מסגרת', 'Greek frame', 'إطار يوناني')}
+              {tx(
+                lang,
+                'מסגרת',
+                'Greek frame',
+                'إطار يوناني',
+                'Греческая рамка',
+                'Ελληνικό πλαίσιο'
+              )}
             </button>
             <button
               type="button"
@@ -370,7 +398,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
                   : 'text-slate-600 dark:text-slate-200'
               }`}
             >
-              {tx(lang, 'מדליון', 'Medallion', 'ميدالية')}
+              {tx(lang, 'מדליון', 'Medallion', 'ميدالية', 'Медальон', 'Μενταγιόν')}
             </button>
           </div>
 
@@ -378,7 +406,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
           <div
             className="inline-flex rounded-full bg-slate-100 dark:bg-slate-700 p-1"
             role="group"
-            aria-label={tx(lang, 'פריסה', 'Layout', 'التخطيط')}
+            aria-label={tx(lang, 'פריסה', 'Layout', 'التخطيط', 'Макет', 'Διάταξη')}
           >
             <button
               type="button"
@@ -390,7 +418,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
                   : 'text-slate-600 dark:text-slate-200'
               }`}
             >
-              {tx(lang, '6 בדף', '6 per page', '٦ في الصفحة')}
+              {tx(lang, '6 בדף', '6 per page', '٦ في الصفحة', '6 на странице', '6 ανά σελίδα')}
             </button>
             <button
               type="button"
@@ -402,7 +430,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
                   : 'text-slate-600 dark:text-slate-200'
               }`}
             >
-              {tx(lang, 'גדול', 'Large', 'كبير')}
+              {tx(lang, 'גדול', 'Large', 'كبير', 'Крупный', 'Μεγάλο')}
             </button>
           </div>
 
@@ -412,7 +440,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
             className={`${btnBase} bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-white`}
           >
             <Download className="w-4 h-4" aria-hidden="true" />
-            {tx(lang, 'הורד PNG', 'Download PNG', 'تنزيل PNG')}
+            {tx(lang, 'הורד PNG', 'Download PNG', 'تنزيل PNG', 'Скачать PNG', 'Λήψη PNG')}
           </button>
 
           <button
@@ -421,7 +449,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
             className={`${btnBase} bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white shadow-lift`}
           >
             <Printer className="w-4 h-4" aria-hidden="true" />
-            {tx(lang, 'הדפס', 'Print', 'طباعة')}
+            {tx(lang, 'הדפס', 'Print', 'طباعة', 'Печать', 'Εκτύπωση')}
           </button>
         </div>
 
@@ -436,6 +464,12 @@ export default function QrStickers({ lang }: { lang: Language }) {
               '.',
             'اطبع، قص على طول الخط المتقطع، والصق على الطاولات. يفتح الرمز ' +
               (dest === 'menu' ? 'القائمة' : 'الموقع') +
+              '.',
+            'Распечатайте, вырежьте по пунктирным линиям и наклейте на столы. Код открывает ' +
+              (dest === 'menu' ? 'меню' : 'сайт') +
+              '.',
+            'Εκτυπώστε, κόψτε στις διακεκομμένες γραμμές και κολλήστε στα τραπέζια. Ο κωδικός ανοίγει ' +
+              (dest === 'menu' ? 'το μενού' : 'τον ιστότοπο') +
               '.'
           )}
         </p>
@@ -446,7 +480,7 @@ export default function QrStickers({ lang }: { lang: Language }) {
             onClick={() => navigate('/')}
             className="text-sm font-medium text-brand-blue-600 dark:text-brand-blue-300 hover:underline"
           >
-            {tx(lang, '← לדף הבית', '← Home', '← الصفحة الرئيسية')}
+            {tx(lang, '← לדף הבית', '← Home', '← الصفحة الرئيسية', '← На главную', '← Αρχική')}
           </button>
         </div>
       </div>
