@@ -17,6 +17,26 @@
   },
   "rewrites": [
     {
+      "source": "/menu",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/kitchen",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/ticket",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/qr",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
