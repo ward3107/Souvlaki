@@ -110,11 +110,8 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
         {isOpen ? (
           // OPEN NOW - Make it POP!
           <div className="flex justify-center">
-            <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold tracking-wider uppercase text-lg rounded-2xl shadow-xl shadow-green-500/30 animate-pulse">
-              <span className="relative flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-white"></span>
-              </span>
+            <div className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold tracking-wider uppercase text-lg rounded-2xl shadow-lg">
+              <span className="inline-flex h-3 w-3 rounded-full bg-white" aria-hidden="true" />
               <span>{statusText}</span>
             </div>
           </div>

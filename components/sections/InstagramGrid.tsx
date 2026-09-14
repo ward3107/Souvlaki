@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import { InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
-import { MouseParallax, ParallaxLayer } from '../MouseParallax';
-import { useTilt3D } from '../hooks/useTilt3D';
 
 interface Props {
   lang: Language;
@@ -56,11 +53,6 @@ function parseFeed(data: unknown): Photo[] {
   return photos.slice(0, 8);
 }
 
-// Each card sits at a slightly different z-depth so the parallax layer
-// translates them independently — the grid feels like a window onto a
-// shallow 3D space, not a flat wall of pictures.
-const DEPTHS = [0.25, 0.55, 0.4, 0.7, 0.5, 0.3, 0.65, 0.45];
-
 function freshCache(): Photo[] | null {
   try {
     const raw = localStorage.getItem(CACHE_KEY);
@@ -76,7 +68,6 @@ function freshCache(): Photo[] | null {
 }
 
 export default function InstagramGrid({ lang, galleryImages }: Props) {
-  const reduced = useReducedMotion();
   // Serve a fresh-enough cache immediately (no flash / refetch); otherwise the
   // bundled gallery is the initial and fallback state.
   const [photos, setPhotos] = useState<Photo[]>(() => {
@@ -117,13 +108,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
   return (
     <section className="py-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] transition-colors duration-300">
       <div className="container mx-auto px-4">
-        <motion.div
-          className="text-center mb-12"
-          initial={reduced ? false : { opacity: 0, scale: 0.85, y: 30, filter: 'blur(8px)' }}
-          whileInView={reduced ? undefined : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
-          viewport={{ once: true, margin: '-10%' }}
-          transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-terracotta-400 rounded-2xl mb-4 shadow-soft">
             <InstagramIcon className="w-8 h-8 text-white" />
           </div>
@@ -156,33 +141,15 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
             <InstagramIcon className="w-5 h-5" />
             <span>@greek.souvlakii</span>
           </a>
-        </motion.div>
+        </div>
 
-        {/* 3D depth wall: outer mouse-parallax, per-card tilt */}
-        <MouseParallax range={28} className="max-w-5xl mx-auto" style={{ perspective: '1200px' }}>
+        <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
             {photos.map((photo, idx) => (
-              <ParallaxLayer key={`${photo.src}-${idx}`} depth={DEPTHS[idx % DEPTHS.length]}>
-                <motion.div
-                  initial={
-                    reduced ? false : { opacity: 0, scale: 0.7, y: 60, filter: 'blur(10px)' }
-                  }
-                  whileInView={
-                    reduced ? undefined : { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }
-                  }
-                  viewport={{ once: true, margin: '-10%' }}
-                  transition={{
-                    duration: 1.6,
-                    delay: idx * 0.15,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  <DepthCard img={photo.src} link={photo.link} />
-                </motion.div>
-              </ParallaxLayer>
+              <PhotoCard key={`${photo.src}-${idx}`} img={photo.src} link={photo.link} />
             ))}
           </div>
-        </MouseParallax>
+        </div>
 
         <div className="text-center mt-10">
           <a
@@ -206,32 +173,21 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
   );
 }
 
-function DepthCard({ img, link }: { img: string; link: string }) {
-  const {
-    ref: tiltRef,
-    innerRef: tiltInnerRef,
-    style: tiltOuterStyle,
-    innerStyle: tiltInnerStyle,
-    handlers: tiltHandlers,
-  } = useTilt3D<HTMLAnchorElement>({ max: 8, scale: 1.04, perspective: 800 });
-
+function PhotoCard({ img, link }: { img: string; link: string }) {
   return (
     <a
-      ref={tiltRef}
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      style={tiltOuterStyle}
-      {...tiltHandlers}
-      className="relative aspect-square rounded-xl overflow-hidden group shadow-soft hover:shadow-pop transition-shadow duration-300 block"
+      className="relative aspect-square rounded-xl overflow-hidden group shadow-soft hover:shadow-lift transition-shadow duration-300 block"
     >
-      <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
+      <div className="relative w-full h-full">
         <img
           src={img}
           alt=""
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">

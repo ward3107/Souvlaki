@@ -20,7 +20,6 @@ import FloatingActions from './components/FloatingActions';
 import BackToTopButton from './components/BackToTopButton';
 import Lightbox from './components/Lightbox';
 import FirePlateJourney from './components/FirePlateJourney';
-import GreekKeyThread from './components/GreekKeyThread';
 import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
 import SignatureShowpiece from './components/SignatureShowpiece';
@@ -335,7 +334,6 @@ const App: React.FC = () => {
         <CookieBanner language={lang} />
         <RatingWidget language={lang} isRtl={isRtl} />
       </Suspense>
-      <GreekKeyThread />
       <FloatingActions lang={lang} />
       <BackToTopButton />
       <InstallPrompt lang={lang} />
