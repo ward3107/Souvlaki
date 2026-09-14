@@ -3,7 +3,6 @@ import { Sandwich, ChevronRight, Plus, RotateCcw } from 'lucide-react';
 import MenuImageLightbox, { IMAGE_VIEW_LABEL, ImageViewIcon } from './MenuImageLightbox';
 import { motion } from 'framer-motion';
 import { getLocalized, formatPrice, type Lang, type MenuItem } from '../../utils/menuData';
-import { useTilt3D } from '../hooks/useTilt3D';
 import Badge from './Badge';
 import {
   DETAILS_HINT,
@@ -29,13 +28,6 @@ export default function MenuCard({
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [imageOpen, setImageOpen] = useState(false);
-  const {
-    ref: tiltRef,
-    innerRef: tiltInnerRef,
-    style: tiltOuterStyle,
-    innerStyle: tiltInnerStyle,
-    handlers: tiltHandlers,
-  } = useTilt3D<HTMLDivElement>({ max: 6, scale: 1.02, perspective: 1400 });
   const name = getLocalized(item.name, lang);
   const desc = getLocalized(item.description, lang);
   const hasVariants = !!item.variants?.length;
@@ -51,19 +43,16 @@ export default function MenuCard({
 
   return (
     <div
-      ref={tiltRef}
-      style={tiltOuterStyle}
-      {...tiltHandlers}
       onKeyDown={(e) => {
         if (e.key === 'Escape' && isFlipped) setIsFlipped(false);
       }}
-      className="aspect-[3/4]"
+      className="aspect-[4/5] sm:aspect-[3/4]"
     >
-      <div ref={tiltInnerRef} style={tiltInnerStyle} className="relative w-full h-full">
+      <div className="relative w-full h-full [perspective:1400px]">
         <motion.div
           className="relative w-full h-full"
           animate={{ rotateY: isFlipped ? 180 : 0 }}
-          transition={{ type: 'spring', stiffness: 90, damping: 18 }}
+          transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* FRONT — tap to flip to details */}
@@ -78,7 +67,7 @@ export default function MenuCard({
               }
             }}
             aria-label={`${name} — ${getLocalized(DETAILS_HINT, lang)}`}
-            className="absolute inset-0 cursor-pointer rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-soft hover:shadow-lift overflow-hidden text-start transition-shadow group focus:outline-none focus:ring-2 focus:ring-brand-terracotta-400"
+            className="absolute inset-0 cursor-pointer rounded-3xl border border-brand-blue-900/10 bg-white dark:border-white/10 dark:bg-slate-800 shadow-sm hover:shadow-soft overflow-hidden text-start transition-shadow group focus:outline-none focus:ring-2 focus:ring-brand-terracotta-400"
             style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' as const }}
           >
             <div className="relative h-[62%] overflow-hidden bg-brand-cream-200 dark:bg-slate-700">
@@ -88,7 +77,7 @@ export default function MenuCard({
                   alt=""
                   loading="lazy"
                   decoding="async"
-                  className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                  className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.025] ${
                     soldOut ? 'grayscale opacity-60' : ''
                   }`}
                 />
@@ -125,14 +114,14 @@ export default function MenuCard({
                     setImageOpen(true);
                   }}
                   aria-label={`${IMAGE_VIEW_LABEL[lang]} — ${name}`}
-                  className="absolute bottom-2 start-2 inline-flex min-h-11 items-center gap-1.5 rounded-full bg-slate-950/75 px-3 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-white"
+                  className="absolute bottom-2 start-2 inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-slate-950/80 px-2.5 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-white"
                 >
                   <ImageViewIcon />
                   <span>{IMAGE_VIEW_LABEL[lang]}</span>
                 </button>
               )}
               <div className="absolute bottom-2 end-2">
-                <span className="bg-brand-terracotta-400 text-white px-2.5 py-1 rounded-full text-xs sm:text-sm font-bold shadow-soft whitespace-nowrap">
+                <span className="rounded-xl bg-white/95 px-2.5 py-1.5 text-xs sm:text-sm font-bold text-brand-blue-800 shadow-sm whitespace-nowrap">
                   {hasVariants
                     ? `${getLocalized(FROM_LABEL, lang)} ${formatPrice(basePrice)}`
                     : formatPrice(basePrice)}
@@ -140,7 +129,7 @@ export default function MenuCard({
               </div>
             </div>
             <div className="p-3.5 sm:p-4 h-[38%] flex flex-col justify-between">
-              <h4 className="font-display text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
+              <h4 className="font-display text-base sm:text-lg md:text-xl font-semibold text-brand-blue-900 dark:text-white tracking-tight leading-tight line-clamp-2">
                 {name}
               </h4>
               <div className="text-xs sm:text-sm font-medium text-brand-terracotta-500 inline-flex items-center gap-1">
@@ -156,7 +145,7 @@ export default function MenuCard({
             tabIndex={-1}
             onClick={() => setIsFlipped(false)}
             aria-label={getLocalized(BACK_LABEL, lang)}
-            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-lift p-4 sm:p-5 flex flex-col cursor-pointer overflow-y-auto overscroll-contain"
+            className="absolute inset-0 rounded-3xl border border-brand-blue-900/10 bg-white dark:border-white/10 dark:bg-slate-800 shadow-sm p-4 sm:p-5 flex flex-col cursor-pointer overflow-y-auto overscroll-contain"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden' as const,
