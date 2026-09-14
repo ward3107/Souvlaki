@@ -226,6 +226,46 @@ export const NAME_PLACEHOLDER: LocalizedString = {
   el: 'Το όνομά σας (απαιτείται)',
 };
 
+export const NAME_REQUIRED_LABEL: LocalizedString = {
+  he: 'יש להזין שם לפני המעבר לוואטסאפ.',
+  en: 'Enter your name before continuing to WhatsApp.',
+  ar: 'أدخل اسمك قبل الانتقال إلى واتساب.',
+  ru: 'Введите имя перед переходом в WhatsApp.',
+  el: 'Εισαγάγετε το όνομά σας πριν συνεχίσετε στο WhatsApp.',
+};
+
+export const NOTE_LABEL: LocalizedString = {
+  he: 'הערה להזמנה',
+  en: 'Order note',
+  ar: 'ملاحظة للطلب',
+  ru: 'Комментарий к заказу',
+  el: 'Σημείωση παραγγελίας',
+};
+
+export const NOTE_PLACEHOLDER: LocalizedString = {
+  he: 'למשל: בלי בצל (לא חובה)',
+  en: 'For example: no onions (optional)',
+  ar: 'مثال: بدون بصل (اختياري)',
+  ru: 'Например: без лука (необязательно)',
+  el: 'Π.χ. χωρίς κρεμμύδι (προαιρετικό)',
+};
+
+export const UNAVAILABLE_LABEL: LocalizedString = {
+  he: 'הפריט אינו זמין כרגע — יש להסירו מההזמנה.',
+  en: 'This item is currently unavailable—remove it from your order.',
+  ar: 'هذا الصنف غير متاح حاليًا — أزله من الطلب.',
+  ru: 'Позиция сейчас недоступна — удалите её из заказа.',
+  el: 'Το είδος δεν είναι διαθέσιμο — αφαιρέστε το από την παραγγελία.',
+};
+
+export const ADDED_TO_ORDER_LABEL: LocalizedString = {
+  he: 'נוסף להזמנה',
+  en: 'Added to your order',
+  ar: 'أُضيف إلى طلبك',
+  ru: 'Добавлено в заказ',
+  el: 'Προστέθηκε στην παραγγελία',
+};
+
 export const TICKET_HINT: LocalizedString = {
   he: '🖨️ כרטיס מטבח (הקש להדפסה):',
   en: '🖨️ Kitchen ticket (tap to print):',

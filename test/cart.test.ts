@@ -58,6 +58,20 @@ describe('loadCart', () => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(lines));
     expect(loadCart()).toEqual(lines);
   });
+
+  it('sanitizes malformed, duplicate and excessive stored quantities', () => {
+    localStorage.setItem(
+      CART_STORAGE_KEY,
+      JSON.stringify([
+        null,
+        { itemId: '', qty: 2 },
+        { itemId: 'fries', qty: -4 },
+        { itemId: 'fries', qty: 7.8 },
+        { itemId: 'fries', qty: 99 },
+      ])
+    );
+    expect(loadCart()).toEqual([{ itemId: 'fries', variantId: undefined, qty: 20 }]);
+  });
 });
 
 describe('resolveLine', () => {
@@ -89,6 +103,19 @@ describe('resolveLine', () => {
   it('returns null for an unknown item', () => {
     expect(resolveLine({ itemId: 'ghost', qty: 1 }, 'en', {}, categories)).toBeNull();
   });
+
+  it('rejects a missing or unknown required variant', () => {
+    expect(resolveLine({ itemId: 'souvlaki', qty: 1 }, 'en', {}, categories)).toBeNull();
+    expect(
+      resolveLine({ itemId: 'souvlaki', variantId: 'fake', qty: 1 }, 'en', {}, categories)
+    ).toBeNull();
+  });
+
+  it('marks a sold-out item as unavailable', () => {
+    expect(
+      resolveLine({ itemId: 'fries', qty: 1 }, 'en', { fries: { soldOut: true } }, categories)
+    ).toMatchObject({ unavailable: true });
+  });
 });
 
 describe('buildCartUrl', () => {
@@ -99,7 +126,7 @@ describe('buildCartUrl', () => {
       {},
       categories
     )!;
-    const url = buildCartUrl('en', [line], 'Sam');
+    const url = buildCartUrl('en', [line], 'Sam', 'No onions');
 
     expect(url.startsWith(`https://wa.me/${WHATSAPP_NUMBER}?text=`)).toBe(true);
     const text = decodeURIComponent(url.split('text=')[1]);
@@ -107,6 +134,7 @@ describe('buildCartUrl', () => {
     expect(text).toContain('Souvlaki');
     expect(text).toContain('Large');
     expect(text).toContain('90'); // line total (45 × 2)
+    expect(text).toContain('Order note: No onions');
     expect(text).toContain('/ticket#'); // printable kitchen-ticket link
   });
 });

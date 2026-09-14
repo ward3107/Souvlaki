@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Language } from '../types';
 import Reveal from './Reveal';
@@ -23,9 +23,11 @@ import {
   NO_RESULTS,
   RESULTS_LABEL,
   CLEAR_FILTERS_LABEL,
+  ADDED_TO_ORDER_LABEL,
 } from './menu/labels';
 import {
   CART_STORAGE_KEY,
+  MAX_LINE_QUANTITY,
   lineKey,
   loadCart,
   resolveLine,
@@ -49,10 +51,13 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [cart, setCart] = useState<CartLine[]>(() => loadCart());
   const [cartOpen, setCartOpen] = useState(false);
   const [customerName, setCustomerName] = useState('');
+  const [customerNote, setCustomerNote] = useState('');
+  const [cartAnnouncement, setCartAnnouncement] = useState('');
   const [query, setQuery] = useState('');
   const [activeBadges, setActiveBadges] = useState<BadgeKey[]>([]);
   const [overrides, setOverrides] = useState<MenuOverrides>({});
   const [categories, setCategories] = useState<MenuCategory[]>(MENU_CATEGORIES);
+  const announcementTimer = useRef<number | null>(null);
   const lang = language as Lang;
   const isRtl = lang === 'he' || lang === 'ar';
   const titles = SECTION_TITLES[lang] ?? SECTION_TITLES.en;
@@ -68,8 +73,16 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     const refresh = () => {
       Promise.all([getOverrides(), fetchMenuItems()]).then(([codeOverrides, dbItems]) => {
         if (cancelled) return;
-        setCategories(buildMergedCategories(dbItems));
-        setOverrides({ ...codeOverrides, ...dbAvailabilityOverrides(dbItems) });
+        const mergedCategories = buildMergedCategories(dbItems);
+        const mergedOverrides = { ...codeOverrides, ...dbAvailabilityOverrides(dbItems) };
+        setCategories(mergedCategories);
+        setOverrides(mergedOverrides);
+        setCart((previous) => {
+          const valid = previous.filter((line) =>
+            resolveLine(line, 'en', mergedOverrides, mergedCategories)
+          );
+          return valid.length === previous.length ? previous : valid;
+        });
       });
     };
     refresh();
@@ -94,6 +107,13 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     }
   }, [cart]);
 
+  useEffect(
+    () => () => {
+      if (announcementTimer.current) window.clearTimeout(announcementTimer.current);
+    },
+    []
+  );
+
   // Inject Menu/MenuItem JSON-LD for SEO while the menu page is mounted.
   useEffect(() => {
     const el = document.createElement('script');
@@ -114,7 +134,10 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     [cart, lang, overrides, categories]
   );
   const itemCount = resolvedLines.reduce((sum, l) => sum + l.qty, 0);
-  const cartTotal = resolvedLines.reduce((sum, l) => sum + l.lineTotal, 0);
+  const cartTotal = resolvedLines.reduce(
+    (sum, line) => sum + (line.unavailable ? 0 : line.lineTotal),
+    0
+  );
 
   const isFiltering = query.trim().length > 0 || activeBadges.length > 0;
 
@@ -155,17 +178,36 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
       const idx = prev.findIndex((l) => l.itemId === itemId && l.variantId === variantId);
       if (idx >= 0) {
         const next = [...prev];
-        next[idx] = { ...next[idx], qty: next[idx].qty + 1 };
+        next[idx] = {
+          ...next[idx],
+          qty: Math.min(MAX_LINE_QUANTITY, next[idx].qty + 1),
+        };
         return next;
       }
       return [...prev, { itemId, variantId, qty: 1 }];
     });
+
+    const item = categories
+      .flatMap((category) => category.items)
+      .find((dish) => dish.id === itemId);
+    if (item) {
+      const itemName = getLocalized(item.name, lang);
+      const variant = item.variants?.find((choice) => choice.id === variantId);
+      const variantName = variant ? ` — ${getLocalized(variant.label, lang)}` : '';
+      setCartAnnouncement(`${itemName}${variantName}: ${ADDED_TO_ORDER_LABEL[lang]}`);
+      if (announcementTimer.current) window.clearTimeout(announcementTimer.current);
+      announcementTimer.current = window.setTimeout(() => setCartAnnouncement(''), 2200);
+    }
   };
 
   const adjustQty = (key: string, delta: number) => {
     setCart((prev) =>
       prev
-        .map((l) => (lineKey(l.itemId, l.variantId) === key ? { ...l, qty: l.qty + delta } : l))
+        .map((l) =>
+          lineKey(l.itemId, l.variantId) === key
+            ? { ...l, qty: Math.min(MAX_LINE_QUANTITY, l.qty + delta) }
+            : l
+        )
         .filter((l) => l.qty > 0)
     );
   };
@@ -180,7 +222,8 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   };
 
   const sendOrder = () => {
-    if (resolvedLines.length === 0) return;
+    const availableLines = resolvedLines.filter((line) => !line.unavailable);
+    if (availableLines.length === 0 || availableLines.length !== resolvedLines.length) return;
     if (!customerName.trim()) return;
     const name = customerName.trim();
     track('order_whatsapp', {
@@ -193,7 +236,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     void recordOrder({
       customerName: name,
       total: cartTotal,
-      items: resolvedLines.map((l) => ({
+      items: availableLines.map((l) => ({
         q: l.qty,
         n: l.name,
         v: l.variantLabel,
@@ -201,12 +244,11 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
       })),
       lang,
     });
-    const url = buildCartUrl(lang, resolvedLines, name);
+    const url = buildCartUrl(lang, availableLines, name, customerNote);
     window.open(url, '_blank', 'noopener,noreferrer');
-    // The order handed off to WhatsApp — reset so returning to the tab doesn't
-    // show a stale cart the customer might re-send as a duplicate.
-    setCart([]);
-    setCustomerName('');
+    // Opening WhatsApp does not prove that the customer sent the message. Keep
+    // the order intact so a blocked handoff or an accidental return never loses
+    // their work; the customer can explicitly clear it after sending.
     setCartOpen(false);
   };
 
@@ -391,6 +433,17 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
         />
       )}
 
+      <div
+        className={`pointer-events-none fixed left-1/2 z-[65] w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-full bg-emerald-700 px-4 py-2 text-center text-sm font-semibold text-white shadow-lift transition-all duration-200 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4.5rem)] ${
+          cartAnnouncement ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
+        }`}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {cartAnnouncement}
+      </div>
+
       {cartOpen && (
         <CartSheet
           lines={resolvedLines}
@@ -405,6 +458,8 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
           onSend={sendOrder}
           customerName={customerName}
           onNameChange={setCustomerName}
+          customerNote={customerNote}
+          onNoteChange={setCustomerNote}
         />
       )}
     </section>

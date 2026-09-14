@@ -4,7 +4,7 @@
 // Using the hash keeps the data client-side only — it is never sent to a server.
 
 export type TicketItem = { q: number; n: string; v?: string; p: number };
-export type TicketOrder = { n: string; t: number; at: number; items: TicketItem[] };
+export type TicketOrder = { n: string; note?: string; t: number; at: number; items: TicketItem[] };
 
 function toB64Url(json: string): string {
   const bytes = new TextEncoder().encode(json);
@@ -31,7 +31,38 @@ export function decodeTicket(hash: string): TicketOrder | null {
     if (!raw) return null;
     const obj = JSON.parse(fromB64Url(raw));
     if (!obj || typeof obj !== 'object' || !Array.isArray(obj.items)) return null;
-    return obj as TicketOrder;
+    if (
+      typeof obj.n !== 'string' ||
+      obj.n.length > 120 ||
+      (obj.note !== undefined && (typeof obj.note !== 'string' || obj.note.length > 240)) ||
+      !Number.isFinite(obj.t) ||
+      obj.t < 0 ||
+      obj.t > 100_000 ||
+      !Number.isFinite(obj.at) ||
+      obj.items.length === 0 ||
+      obj.items.length > 50
+    ) {
+      return null;
+    }
+    const validItems = obj.items.every(
+      (item: unknown) =>
+        !!item &&
+        typeof item === 'object' &&
+        Number.isInteger((item as TicketItem).q) &&
+        (item as TicketItem).q > 0 &&
+        (item as TicketItem).q <= 20 &&
+        typeof (item as TicketItem).n === 'string' &&
+        (item as TicketItem).n.length > 0 &&
+        (item as TicketItem).n.length <= 160 &&
+        ((item as TicketItem).v === undefined ||
+          (typeof (item as TicketItem).v === 'string' && (item as TicketItem).v!.length <= 120)) &&
+        Number.isFinite((item as TicketItem).p) &&
+        (item as TicketItem).p >= 0 &&
+        (item as TicketItem).p <= 100_000
+    );
+    if (!validItems) return null;
+    const calculatedTotal = obj.items.reduce((sum: number, item: TicketItem) => sum + item.p, 0);
+    return calculatedTotal === obj.t ? (obj as TicketOrder) : null;
   } catch {
     return null;
   }
