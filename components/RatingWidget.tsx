@@ -273,19 +273,20 @@ export default function RatingWidget({ language, isRtl }: RatingWidgetProps) {
   return (
     <>
       {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-start p-4 sm:p-6 bg-black/30 backdrop-blur-sm animate-fade-in"
-          onClick={closePanel}
-          role="presentation"
-        >
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-start p-4 sm:p-6 bg-black/30 backdrop-blur-sm animate-fade-in">
+          <button
+            type="button"
+            className="absolute inset-0 cursor-default"
+            onClick={closePanel}
+            aria-label={tt(language, 'close')}
+          />
           <div
             ref={panelRef}
-            onClick={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-labelledby="rating-widget-title"
             dir={isRtl ? 'rtl' : 'ltr'}
-            className={`relative w-full sm:w-96 sm:max-w-[calc(100vw-3rem)] bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-pop border border-gray-100 dark:border-slate-700 p-4 sm:p-6 ${
+            className={`relative z-10 w-full sm:w-96 sm:max-w-[calc(100vw-3rem)] bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-pop border border-gray-100 dark:border-slate-700 p-4 sm:p-6 ${
               isRtl ? 'sm:mr-auto sm:ml-0' : 'sm:ml-auto sm:mr-0'
             } sm:fixed sm:bottom-24 ${isRtl ? 'sm:right-6' : 'sm:left-6'}`}
           >
