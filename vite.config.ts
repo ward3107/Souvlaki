@@ -127,11 +127,12 @@ export default defineConfig(({ mode }) => {
       // Enable code splitting for better caching
       rollupOptions: {
         output: {
-          manualChunks: {
-            // Vendor chunk for React and related libraries
-            'react-vendor': ['react', 'react-dom', 'react-dom/client'],
-            // Lucide icons chunk
-            icons: ['lucide-react'],
+          manualChunks(id: string) {
+            if (id.includes('/node_modules/react') || id.includes('/node_modules/react-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('/node_modules/lucide-react')) return 'icons';
+            return undefined;
           },
         },
       },

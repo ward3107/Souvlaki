@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Sandwich, ChevronRight, Plus, RotateCcw } from 'lucide-react';
+import MenuImageLightbox, { IMAGE_VIEW_LABEL, ImageViewIcon } from './MenuImageLightbox';
 import { motion } from 'framer-motion';
 import { getLocalized, formatPrice, type Lang, type MenuItem } from '../../utils/menuData';
 import { useTilt3D } from '../hooks/useTilt3D';
@@ -27,6 +28,7 @@ export default function MenuCard({
   priceOverride?: number;
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [imageOpen, setImageOpen] = useState(false);
   const {
     ref: tiltRef,
     innerRef: tiltInnerRef,
@@ -65,11 +67,18 @@ export default function MenuCard({
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* FRONT — tap to flip to details */}
-          <button
-            type="button"
+          <div
+            role="button"
+            tabIndex={0}
             onClick={() => setIsFlipped(true)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                setIsFlipped(true);
+              }
+            }}
             aria-label={`${name} — ${getLocalized(DETAILS_HINT, lang)}`}
-            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-soft hover:shadow-pop overflow-hidden text-start transition-shadow group"
+            className="absolute inset-0 cursor-pointer rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-soft hover:shadow-lift overflow-hidden text-start transition-shadow group focus:outline-none focus:ring-2 focus:ring-brand-terracotta-400"
             style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' as const }}
           >
             <div className="relative h-[62%] overflow-hidden bg-brand-cream-200 dark:bg-slate-700">
@@ -104,10 +113,24 @@ export default function MenuCard({
                 </div>
               )}
               <div className="absolute top-2 end-2 flex flex-col items-end gap-1">
-                {item.badges?.map((b) => (
+                {item.badges?.slice(0, 2).map((b) => (
                   <Badge key={b} kind={b} lang={lang} />
                 ))}
               </div>
+              {item.image && (
+                <button
+                  type="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setImageOpen(true);
+                  }}
+                  aria-label={`${IMAGE_VIEW_LABEL[lang]} — ${name}`}
+                  className="absolute bottom-2 start-2 inline-flex min-h-11 items-center gap-1.5 rounded-full bg-slate-950/75 px-3 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-white"
+                >
+                  <ImageViewIcon />
+                  <span>{IMAGE_VIEW_LABEL[lang]}</span>
+                </button>
+              )}
               <div className="absolute bottom-2 end-2">
                 <span className="bg-brand-terracotta-400 text-white px-2.5 py-1 rounded-full text-xs sm:text-sm font-bold shadow-soft whitespace-nowrap">
                   {hasVariants
@@ -116,16 +139,16 @@ export default function MenuCard({
                 </span>
               </div>
             </div>
-            <div className="p-2.5 sm:p-4 h-[38%] flex flex-col justify-between">
-              <h4 className="font-display text-sm sm:text-base md:text-lg font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
+            <div className="p-3.5 sm:p-4 h-[38%] flex flex-col justify-between">
+              <h4 className="font-display text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white tracking-tight leading-tight line-clamp-2">
                 {name}
               </h4>
-              <div className="text-[10px] sm:text-[11px] font-medium text-brand-terracotta-500 inline-flex items-center gap-1">
+              <div className="text-xs sm:text-sm font-medium text-brand-terracotta-500 inline-flex items-center gap-1">
                 <ChevronRight className="w-3 h-3 rtl:rotate-180" aria-hidden="true" />
                 {getLocalized(DETAILS_HINT, lang)}
               </div>
             </div>
-          </button>
+          </div>
 
           {/* BACK — tap anywhere (outside the add controls) to flip back */}
           <div
@@ -133,7 +156,7 @@ export default function MenuCard({
             tabIndex={-1}
             onClick={() => setIsFlipped(false)}
             aria-label={getLocalized(BACK_LABEL, lang)}
-            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-pop p-3 sm:p-5 flex flex-col cursor-pointer overflow-y-auto overscroll-contain"
+            className="absolute inset-0 rounded-2xl bg-white dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10 shadow-lift p-4 sm:p-5 flex flex-col cursor-pointer overflow-y-auto overscroll-contain"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden' as const,
@@ -157,7 +180,7 @@ export default function MenuCard({
             </div>
 
             {desc && (
-              <p className="text-[11px] sm:text-xs text-gray-600 dark:text-gray-300 italic leading-snug mb-2.5 line-clamp-3 sm:line-clamp-4">
+              <p className="text-sm text-gray-600 dark:text-gray-300 italic leading-snug mb-2.5 line-clamp-3 sm:line-clamp-4">
                 {desc}
               </p>
             )}
@@ -170,7 +193,7 @@ export default function MenuCard({
                 </div>
               ) : hasVariants ? (
                 <>
-                  <div className="text-[10px] uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">
+                  <div className="text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1.5">
                     {getLocalized(CHOOSE_HINT, lang)}
                   </div>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -182,7 +205,7 @@ export default function MenuCard({
                           e.stopPropagation();
                           handleAdd(v.id);
                         }}
-                        className="inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-slate-600 text-[11px] leading-tight text-center hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors active:scale-95"
+                        className="inline-flex items-center justify-center gap-1 px-2 py-1.5 rounded-lg border border-gray-300 dark:border-slate-600 text-xs leading-tight text-center hover:bg-brand-terracotta-400 hover:text-white hover:border-brand-terracotta-400 transition-colors active:scale-95"
                       >
                         <Plus className="w-3 h-3 shrink-0" aria-hidden="true" />
                         <span>{v.label[lang]}</span>
@@ -210,6 +233,13 @@ export default function MenuCard({
           </div>
         </motion.div>
       </div>
+      <MenuImageLightbox
+        open={imageOpen}
+        src={item.image}
+        name={name}
+        lang={lang}
+        onClose={() => setImageOpen(false)}
+      />
     </div>
   );
 }

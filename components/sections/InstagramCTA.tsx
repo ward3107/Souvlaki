@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { Camera, Instagram, X } from 'lucide-react';
+import { Camera, X } from 'lucide-react';
+import { InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
 import { useBackClose } from '../hooks/useBackClose';
@@ -54,7 +55,7 @@ export default function InstagramCTA({ lang }: Props) {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 backdrop-blur-sm text-white rounded-full font-medium border border-white/30 hover:bg-white/25 transition-all duration-300"
             >
-              <Instagram className="w-5 h-5" />
+              <InstagramIcon className="w-5 h-5" />
               <span>@greek.souvlakii</span>
             </a>
           </div>
