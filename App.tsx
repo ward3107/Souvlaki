@@ -25,6 +25,7 @@ import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
 import SignatureShowpiece from './components/SignatureShowpiece';
 import MenuCTA from './components/MenuCTA';
+import QuickVisitStrip from './components/QuickVisitStrip';
 import InstallPrompt from './components/InstallPrompt';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -303,6 +304,9 @@ const App: React.FC = () => {
               <BoardOfTheWeek lang={lang} />
             </Suspense>
 
+            <MenuCTA lang={lang} />
+            <QuickVisitStrip lang={lang} />
+
             {/* Dramatic full-screen signature showpiece */}
             <SignatureShowpiece lang={lang} />
 
@@ -310,7 +314,6 @@ const App: React.FC = () => {
             <FirePlateJourney lang={lang} />
 
             <FreshIngredients lang={lang} />
-            <MenuCTA lang={lang} />
             <About lang={lang} />
             <FamilyHeritage lang={lang} />
 
