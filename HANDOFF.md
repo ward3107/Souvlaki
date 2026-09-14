@@ -86,7 +86,7 @@ Your new modern, professional restaurant website is live and accessible to custo
 | Responsive design        | ✅ Working | Tested on desktop, tablet, mobile |
 | Dark mode                | ✅ Working | Automatic based on system         |
 | Menu display             | ✅ Working | All items visible                 |
-| WhatsApp button          | ✅ Working | Links to +972-54-200-1235         |
+| WhatsApp button          | ✅ Working | Links to +972-52-892-1454         |
 | Google Maps              | ✅ Working | Routes to restaurant              |
 | Facebook reviews         | ✅ Working | Displays live reviews             |
 | Opening hours            | ✅ Working | Shows current status              |
@@ -135,7 +135,7 @@ Your new modern, professional restaurant website is live and accessible to custo
 
 **Developer Contact**: Waseem
 
-- **WhatsApp**: +972-54-200-1235
+- **WhatsApp**: +972-52-892-1454
 - **Email**: [Your email]
 - **Response Time**: Within 24 hours
 
@@ -303,7 +303,7 @@ Thank you for choosing me to build your restaurant website. I'm proud of what we
 - **Name**: Greek Souvlaki Kfar Yasif
 - **Location**: Route 70, Kafr Yasif, Northern District, Israel
 - **Phone**: +972-4-812-2980
-- **WhatsApp**: +972-54-200-1235
+- **WhatsApp**: +972-52-892-1454
 
 ### Social Media
 

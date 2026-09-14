@@ -2,6 +2,7 @@ import { FacebookIcon, InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
 import { track } from '../../utils/analytics';
+import { BUSINESS_INFO } from '../../utils/businessInfo';
 
 interface Props {
   lang: Language;
@@ -48,7 +49,7 @@ export default function Footer({ lang, onOpenLegal }: Props) {
 
           <div className="flex gap-4">
             <a
-              href="https://wa.me/972542001235"
+              href={BUSINESS_INFO.whatsapp.href}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => track('click_whatsapp', { location: 'footer' })}
@@ -65,7 +66,7 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               <WhatsAppGlyph />
             </a>
             <a
-              href="https://www.facebook.com/profile.php?id=100089667506328"
+              href={BUSINESS_INFO.social.facebookUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group"
@@ -84,7 +85,7 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               />
             </a>
             <a
-              href="https://www.instagram.com/greek.souvlakii"
+              href={BUSINESS_INFO.social.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group"

@@ -4,6 +4,7 @@ import { t, tx } from '../../utils/i18n';
 import { track } from '../../utils/analytics';
 import OpeningHours from '../OpeningHours';
 import Reveal from '../Reveal';
+import { BUSINESS_INFO } from '../../utils/businessInfo';
 
 interface Props {
   lang: Language;
@@ -61,7 +62,7 @@ export default function Contact({ lang }: Props) {
 
               <div className="grid grid-cols-1 gap-3">
                 <a
-                  href="tel:048122980"
+                  href={BUSINESS_INFO.phone.href}
                   onClick={() => track('click_call', { location: 'contact' })}
                   className="group flex items-center gap-3 p-4 bg-gradient-to-r from-brand-blue-50 to-brand-blue-100 dark:from-brand-blue-900/20 dark:to-brand-blue-800/20 rounded-xl border-2 border-brand-blue-200 dark:border-brand-blue-800 hover:border-brand-blue-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
                 >
@@ -70,7 +71,7 @@ export default function Contact({ lang }: Props) {
                   </div>
                   <div className="flex-1">
                     <div className="font-bold text-gray-900 dark:text-white text-lg">
-                      04-812-2980
+                      {BUSINESS_INFO.phone.display}
                     </div>
                     <div className="text-brand-blue-500 dark:text-brand-blue-300 text-sm font-medium">
                       {tx(
@@ -86,61 +87,33 @@ export default function Contact({ lang }: Props) {
                 </a>
 
                 <a
-                  href="https://wa.me/972542001235"
+                  href={BUSINESS_INFO.whatsapp.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() =>
-                    track('click_whatsapp', { location: 'contact', contact: 'jennje' })
-                  }
+                  onClick={() => track('click_whatsapp', { location: 'contact' })}
                   className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
                 >
                   <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
                     <WhatsAppGlyph />
                   </div>
                   <div className="flex-1">
-                    <div className="font-bold text-gray-900 dark:text-white text-lg">Jennje</div>
+                    <div className="font-bold text-gray-900 dark:text-white text-lg">WhatsApp</div>
                     <div className="text-green-600 dark:text-green-400 text-sm font-medium">
                       {tx(
                         lang,
-                        '054-200-1235 • לחצו כאן 💬',
-                        '054-200-1235 • Tap here 💬',
-                        '054-200-1235 • اضغط هنا 💬',
-                        '054-200-1235 • Нажмите здесь 💬',
-                        '054-200-1235 • Πατήστε εδώ 💬'
-                      )}
+                        'לחצו כאן 💬',
+                        'Tap here 💬',
+                        'اضغط هنا 💬',
+                        'Нажмите здесь 💬',
+                        'Πατήστε εδώ 💬'
+                      )}{' '}
+                      · {BUSINESS_INFO.whatsapp.display}
                     </div>
                   </div>
                 </a>
 
                 <a
-                  href="https://wa.me/972528921454"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    track('click_whatsapp', { location: 'contact', contact: 'andreia' })
-                  }
-                  className="group flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-800 hover:border-green-400 transition-all duration-300 hover:scale-[1.02] hover:shadow-lift"
-                >
-                  <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center text-white shrink-0 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
-                    <WhatsAppGlyph />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-bold text-gray-900 dark:text-white text-lg">Andreia</div>
-                    <div className="text-green-600 dark:text-green-400 text-sm font-medium">
-                      {tx(
-                        lang,
-                        '052-892-1454 • לחצו כאן 💬',
-                        '052-892-1454 • Tap here 💬',
-                        '052-892-1454 • اضغط هنا 💬',
-                        '052-892-1454 • Нажмите здесь 💬',
-                        '052-892-1454 • Πατήστε εδώ 💬'
-                      )}
-                    </div>
-                  </div>
-                </a>
-
-                <a
-                  href="https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
+                  href={BUSINESS_INFO.location.wazeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => track('click_directions', { provider: 'waze' })}
@@ -196,7 +169,7 @@ export default function Contact({ lang }: Props) {
                 <div className="flex text-yellow-500 text-xs">★★★★★ (4.9)</div>
               </div>
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Greek+Souvlaki+Kafr+Yasif"
+                href={BUSINESS_INFO.location.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-brand-blue-500 text-white text-sm font-bold rounded-lg hover:bg-brand-blue-600 transition-colors"

@@ -2,6 +2,7 @@ import { Clock } from 'lucide-react';
 import { Language } from '../types';
 import { useOpenStatus } from '../utils/openStatus';
 import OpenStatusPill from './OpenStatusPill';
+import { BUSINESS_INFO } from '../utils/businessInfo';
 
 interface OpeningHoursProps {
   language?: string;
@@ -126,7 +127,7 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
         )}
       </div>
 
-      {/* Live next-change hint: "Open until 01:00" / "Opens Wed 13:00" */}
+      {/* Live next-change hint: "Open until 00:00" / "Opens Wed 13:00" */}
       <div className="flex justify-center mb-6">
         <OpenStatusPill lang={language as Language} />
       </div>
@@ -139,7 +140,7 @@ export default function OpeningHours({ language = 'en' }: OpeningHoursProps) {
             {dayNames[3]} - {dayNames[6]}
           </span>
           <span className="text-green-600 dark:text-green-400 font-bold text-lg bg-green-50 dark:bg-green-900/30 px-4 py-1.5 rounded-full">
-            13:00 - 01:00
+            {BUSINESS_INFO.hours.displaySpaced}
           </span>
         </li>
 

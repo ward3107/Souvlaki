@@ -23,7 +23,7 @@
 At Greek Souvlaki ("we", "us", "our"), we respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and protect your data when you visit our website.
 
 **Data Controller:** **Greek Souvlaki**
-**Contact:** **[INSERT EMAIL]** | 04-812-2980
+**Contact:** 04-812-2980
 
 ---
 
@@ -105,7 +105,7 @@ Under Israeli Privacy Protection Law 5741-1981 (and Amendment 13 from 2017), you
 ✅ **Objection** - Object to processing of your data
 ✅ **Restrict** - Request we limit how we use your data
 
-To exercise these rights, contact us: **[INSERT EMAIL]**
+To exercise these rights, contact us: 04-812-2980
 
 We will respond within 30 days.
 
@@ -153,7 +153,6 @@ We may update this Privacy Policy from time to time. We will notify you of signi
 For privacy-related questions, contact:
 
 **Greek Souvlaki**
-Email: **[INSERT EMAIL]**
 Website: https://www.greeksouflaki.com/
 Phone: 04-812-2980
 Address: Kafr Yasif, Route 70, Israel
@@ -167,7 +166,7 @@ Address: Kafr Yasif, Route 70, Israel
 במסעדת Greek Souvlaki ("אנו", "שלנו"), אנו מכבדים את הפרטיות שלך ומחויבים להגן על המידע האישי שלך. מדיניות פרטיות זו מסבירה כיצד אנו אוספים, משתמשים ומגנים על הנתונים שלך בעת ביקור באתר שלנו.
 
 **בקרת הנתונים:** **Greek Souvlaki**
-**צור קשר:** **[INSERT EMAIL]** | 04-812-2980
+**צור קשר:** 04-812-2980
 
 ---
 
@@ -248,7 +247,7 @@ Address: Kafr Yasif, Route 70, Israel
 ✅ **התנגדות** - להתנגד לעיבוד המידע שלך
 ✅ **הגבלה** - לבקות שנגביל את השימוש במידע שלך
 
-כדי לממש זכויות אלו, צור קשר: **[INSERT EMAIL]**
+כדי לממש זכויות אלו, צור קשר: 04-812-2980
 
 אנו נענה תוך 30 יום.
 
@@ -358,7 +357,6 @@ Address: Kafr Yasif, Route 70, Israel
 לשאלות בנושא פרטיות, צור קשר:
 
 **Greek Souvlaki**
-אימייל: **[INSERT EMAIL]**
 
 - אתר: https://www.greeksouflaki.com/
   טלפון: 04-812-2980
@@ -373,7 +371,7 @@ Address: Kafr Yasif, Route 70, Israel
 في مطعم Greek Souvlaki ("نحن")، نحترم خصوصيتك ونلتزم بحماية معلوماتك الشخصية. توضح سياسة الخصوصية هذه كيف نجمع ونستخدم ونحمي بياناتك عند زيارة موقعنا الإلكتروني.
 
 **متحكم البيانات:** **Greek Souvlaki**
-**التواصل:** **[INSERT EMAIL]** | 04-812-2980
+**التواصل:** 04-812-2980
 
 ---
 
@@ -454,7 +452,7 @@ Address: Kafr Yasif, Route 70, Israel
 ✅ **الاعتراض** - الاعتراض على معالجة بياناتك
 ✅ **التقييد** - طلب تقييد كيفية استخدامنا لبياناتك
 
-لتمارك هذه الحقوق، اتصل بنا: **[INSERT EMAIL]**
+لتمارك هذه الحقوق، اتصل بنا: 04-812-2980
 
 سنرد خلال 30 يومًا.
 
@@ -502,7 +500,6 @@ Address: Kafr Yasif, Route 70, Israel
 للأسئلة المتعلقة بالخصوصية، اتصل بنا:
 
 **Greek Souvlaki**
-البريد الإلكتروني: **[INSERT EMAIL]**
 الهاتف: 04-812-2980
 العنوان: كفر ياسيف، طريق 70، إسرائيل
 
@@ -517,7 +514,7 @@ Address: Kafr Yasif, Route 70, Israel
 В Greek Souvlaki ("мы", "наш") мы уважаем вашу конфиденциальность и обязуемся защищать вашу личную информацию. Эта Политика конфиденциальности объясняет, как мы собираем, используем и защищаем ваши данные при посещении нашего веб-сайта.
 
 **Контролер данных:** **Greek Souvlaki**
-**Контакты:** **[INSERT EMAIL]** | 04-812-2980
+**Контакты:** 04-812-2980
 
 ---
 
@@ -633,7 +630,6 @@ Address: Kafr Yasif, Route 70, Israel
 По вопросам, связанным с конфиденциальностью, свяжитесь с нами:
 
 **Greek Souvlaki**
-Электронная почта: **[INSERT EMAIL]**
 Телефон: 04-812-2980
 Адрес: Кафр Ясиф, шоссе 70, Израиль
 
@@ -646,7 +642,7 @@ Address: Kafr Yasif, Route 70, Israel
 Στο Greek Souvlaki ("εμείς", "μας"), σεβόμαστε την ιδιωτικότητά σας και δεόμαστε να προστατεύουμε τις προσωπικές σας πληροφορίες. Αυτή η Πολιτική Απορρήτου εξηγεί πώς συλλέγουμε, χρησιμοποιούμε και προστατεύουμε τα δεδομένα σας όταν επισκέπτεστε τον ιστότοπό μας.
 
 **Υπεύθυνος επεξεργασίας δεδομένων:** **Greek Souvlaki**
-**Επικοινωνία:** **[INSERT EMAIL]** | 04-812-2980
+**Επικοινωνία:** 04-812-2980
 
 ---
 
@@ -762,7 +758,6 @@ Address: Kafr Yasif, Route 70, Israel
 Για ερωτήματα σχετικά με την ιδιωτικότητα, επικοινωνήστε μαζί μας:
 
 **Greek Souvlaki**
-Email: **[INSERT EMAIL]**
 Website: https://www.greeksouflaki.com/
 Τηλέφωνο: 04-812-2980
 Διεύθυνση: Kafr Yasif, Επαρχιακή οδός 70, Ισραήλ
