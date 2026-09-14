@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Sandwich, ChevronRight, Plus, RotateCcw } from 'lucide-react';
-import MenuImageLightbox, { IMAGE_VIEW_LABEL, ImageViewIcon } from './MenuImageLightbox';
+import { Sandwich, ChevronRight, Plus, RotateCcw, ZoomIn } from 'lucide-react';
+import MenuImageLightbox from './MenuImageLightbox';
+import { IMAGE_VIEW_LABEL } from './imageLightboxLabels';
 import { motion } from 'framer-motion';
 import { getLocalized, formatPrice, type Lang, type MenuItem } from '../../utils/menuData';
 import Badge from './Badge';
@@ -42,12 +43,7 @@ export default function MenuCard({
   };
 
   return (
-    <div
-      onKeyDown={(e) => {
-        if (e.key === 'Escape' && isFlipped) setIsFlipped(false);
-      }}
-      className="aspect-[4/5] sm:aspect-[3/4]"
-    >
+    <div className="aspect-[4/5] sm:aspect-[3/4]">
       <div className="relative w-full h-full [perspective:1400px]">
         <motion.div
           className="relative w-full h-full"
@@ -58,7 +54,7 @@ export default function MenuCard({
           {/* FRONT — tap to flip to details */}
           <div
             role="button"
-            tabIndex={0}
+            tabIndex={isFlipped ? -1 : 0}
             onClick={() => setIsFlipped(true)}
             onKeyDown={(event) => {
               if (event.key === 'Enter' || event.key === ' ') {
@@ -116,7 +112,7 @@ export default function MenuCard({
                   aria-label={`${IMAGE_VIEW_LABEL[lang]} — ${name}`}
                   className="absolute bottom-2 start-2 inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-slate-950/80 px-2.5 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-white"
                 >
-                  <ImageViewIcon />
+                  <ZoomIn className="h-4 w-4" aria-hidden="true" />
                   <span>{IMAGE_VIEW_LABEL[lang]}</span>
                 </button>
               )}
@@ -142,8 +138,14 @@ export default function MenuCard({
           {/* BACK — tap anywhere (outside the add controls) to flip back */}
           <div
             role="button"
-            tabIndex={-1}
+            tabIndex={isFlipped ? 0 : -1}
             onClick={() => setIsFlipped(false)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter' || event.key === ' ' || event.key === 'Escape') {
+                event.preventDefault();
+                setIsFlipped(false);
+              }
+            }}
             aria-label={getLocalized(BACK_LABEL, lang)}
             className="absolute inset-0 rounded-3xl border border-brand-blue-900/10 bg-white dark:border-white/10 dark:bg-slate-800 shadow-sm p-4 sm:p-5 flex flex-col cursor-pointer overflow-y-auto overscroll-contain"
             style={{
@@ -175,7 +177,7 @@ export default function MenuCard({
             )}
 
             {/* Actions don't flip the card — only add to cart */}
-            <div className="mt-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="mt-auto">
               {soldOut ? (
                 <div className="w-full rounded-full bg-gray-100 dark:bg-slate-700 px-3.5 py-2 text-center text-xs sm:text-sm font-semibold text-gray-500 dark:text-gray-400">
                   {SOLD_OUT_LABEL[lang]}
