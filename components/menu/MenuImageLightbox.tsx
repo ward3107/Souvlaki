@@ -1,16 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { X, ZoomIn } from 'lucide-react';
+import { X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Lang } from '../../utils/menuData';
-
-const LABELS: Record<Lang, { close: string; title: string }> = {
-  he: { close: 'סגירת התמונה', title: 'תמונה מוגדלת' },
-  ar: { close: 'إغلاق الصورة', title: 'صورة مكبرة' },
-  en: { close: 'Close image', title: 'Enlarged image' },
-  ru: { close: 'Закрыть изображение', title: 'Увеличенное изображение' },
-  el: { close: 'Κλείσιμο εικόνας', title: 'Μεγεθυμένη εικόνα' },
-};
+import { IMAGE_LIGHTBOX_LABELS } from './imageLightboxLabels';
 
 export default function MenuImageLightbox({
   open,
@@ -25,10 +18,14 @@ export default function MenuImageLightbox({
   lang: Lang;
   onClose: () => void;
 }) {
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     if (!open) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') onClose();
     };
@@ -36,11 +33,12 @@ export default function MenuImageLightbox({
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKeyDown);
+      previouslyFocused?.focus();
     };
   }, [open, onClose]);
 
   if (!open || !src) return null;
-  const labels = LABELS[lang] ?? LABELS.en;
+  const labels = IMAGE_LIGHTBOX_LABELS[lang] ?? IMAGE_LIGHTBOX_LABELS.en;
 
   return createPortal(
     <motion.div
@@ -51,9 +49,15 @@ export default function MenuImageLightbox({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onClick={onClose}
     >
       <button
+        type="button"
+        className="absolute inset-0 cursor-default"
+        onClick={onClose}
+        aria-label={labels.close}
+      />
+      <button
+        ref={closeButtonRef}
         type="button"
         onClick={onClose}
         aria-label={labels.close}
@@ -66,7 +70,6 @@ export default function MenuImageLightbox({
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.22 }}
-        onClick={(event) => event.stopPropagation()}
       >
         <img
           src={src}
@@ -80,16 +83,4 @@ export default function MenuImageLightbox({
     </motion.div>,
     document.body
   );
-}
-
-export const IMAGE_VIEW_LABEL: Record<Lang, string> = {
-  he: 'צפייה בתמונה',
-  ar: 'عرض الصورة',
-  en: 'View image',
-  ru: 'Открыть фото',
-  el: 'Προβολή εικόνας',
-};
-
-export function ImageViewIcon() {
-  return <ZoomIn className="h-4 w-4" aria-hidden="true" />;
 }
