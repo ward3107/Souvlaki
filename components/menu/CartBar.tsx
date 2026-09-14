@@ -18,13 +18,13 @@ export default function CartBar({
   const itemWord = count === 1 ? ITEM_LABEL[lang] : ITEMS_LABEL[lang];
   return (
     <div
-      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[60] w-[min(92vw,28rem)]"
+      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 -translate-x-1/2 z-[60] w-[min(92vw,30rem)]"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
       <button
         type="button"
         onClick={onOpen}
-        className="w-full flex items-center justify-between gap-3 px-5 py-3 rounded-full bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white shadow-lift transition-all active:scale-[0.98]"
+        className="w-full min-h-14 flex items-center justify-between gap-3 px-5 py-3 rounded-2xl border border-white/15 bg-brand-blue-800 hover:bg-brand-blue-700 text-white shadow-lift transition-colors active:scale-[0.99]"
       >
         <span className="inline-flex items-center gap-2">
           <ShoppingBag className="w-5 h-5" aria-hidden="true" />
