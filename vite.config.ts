@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
       react(),
       injectPreloads(),
       VitePWA({
-        registerType: 'prompt',
+        registerType: 'autoUpdate',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icons/*.png'],
         strategies: 'generateSW',
         manifest: {
@@ -67,6 +67,9 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
+          skipWaiting: true,
+          clientsClaim: true,
+          cleanupOutdatedCaches: true,
           // Precache only the app shell. Photos (png/jpg/webp) are NOT precached
           // here — they're fetched on demand and cached by the runtimeCaching
           // images rule below, so first install doesn't pull ~60 MB of gallery.
