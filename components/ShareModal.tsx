@@ -331,17 +331,19 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-      onClick={onClose}
-      aria-modal="true"
-      role="dialog"
-      aria-labelledby="share-modal-title"
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+      <button
+        type="button"
+        className="absolute inset-0 cursor-default"
+        onClick={onClose}
+        aria-label={tx(lang, 'סגירה', 'Close', 'إغلاق', 'Закрыть', 'Κλείσιμο')}
+      />
       <div
         ref={modalRef}
-        className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-4 sm:p-6 outline-none max-h-[90vh] overflow-y-auto"
-        onClick={(e) => e.stopPropagation()}
+        className="relative z-10 bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-4 sm:p-6 outline-none max-h-[90vh] overflow-y-auto"
+        aria-modal="true"
+        role="dialog"
+        aria-labelledby="share-modal-title"
         tabIndex={-1}
       >
         <div className="flex justify-between items-center mb-4 sm:mb-6">
