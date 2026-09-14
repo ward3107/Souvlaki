@@ -37,91 +37,64 @@ const ALL_REVIEWS_URL = `https://search.google.com/local/reviews?placeid=${PLACE
 const T: Record<string, Record<string, string>> = {
   he: {
     title: 'מה הלקוחות אומרים',
-    subtitle: 'ביקורות חיות מ-Google',
+    subtitle: 'ביקורות ב-Google',
     based_on: 'מבוסס על',
     reviews_word: 'ביקורות',
     write: 'כתוב ביקורת',
     see_all: 'ראו הכל ב-Google',
     loading: 'טוען ביקורות…',
-    fallback_note: 'ביקורות נבחרות מלקוחותינו',
+    fallback_note: 'לצפייה בביקורות מאומתות, עברו ל-Google',
   },
   ar: {
     title: 'ماذا يقول عملاؤنا',
-    subtitle: 'تقييمات حقيقية من Google',
+    subtitle: 'تقييمات على Google',
     based_on: 'استناداً إلى',
     reviews_word: 'تقييم',
     write: 'اكتب تقييماً',
     see_all: 'شاهد الكل على Google',
     loading: 'جاري تحميل التقييمات…',
-    fallback_note: 'تقييمات مختارة من زبائننا',
+    fallback_note: 'للاطلاع على التقييمات الموثقة، انتقلوا إلى Google',
   },
   ru: {
     title: 'Что говорят клиенты',
-    subtitle: 'Живые отзывы с Google',
+    subtitle: 'Отзывы в Google',
     based_on: 'На основе',
     reviews_word: 'отзывов',
     write: 'Написать отзыв',
     see_all: 'Все отзывы в Google',
     loading: 'Загрузка отзывов…',
-    fallback_note: 'Избранные отзывы наших гостей',
+    fallback_note: 'Проверенные отзывы доступны в Google',
   },
   el: {
     title: 'Τι λένε οι πελάτες μας',
-    subtitle: 'Πραγματικές κριτικές από Google',
+    subtitle: 'Κριτικές στο Google',
     based_on: 'Βάσει',
     reviews_word: 'κριτικών',
     write: 'Γράψτε κριτική',
     see_all: 'Δείτε όλες στο Google',
     loading: 'Φόρτωση κριτικών…',
-    fallback_note: 'Επιλεγμένες κριτικές πελατών',
+    fallback_note: 'Δείτε τις επαληθευμένες κριτικές στο Google',
   },
   en: {
     title: 'What Our Customers Say',
-    subtitle: 'Live reviews from Google',
+    subtitle: 'Reviews on Google',
     based_on: 'Based on',
     reviews_word: 'reviews',
     write: 'Write a Review',
     see_all: 'See all on Google',
     loading: 'Loading reviews…',
-    fallback_note: 'Selected reviews from our customers',
+    fallback_note: 'View verified customer reviews on Google',
   },
 };
 
 const tt = (lang: string, key: keyof typeof T.en) => (T[lang] ?? T.en)[key] ?? T.en[key];
 
-// Curated fallback reviews shown when the API key is not configured.
-// These render with identical design so the section always looks complete.
+// Do not display locally-authored reviews as if they came from Google.
+// When the API is unavailable, keep only the verified Google destination links.
 const FALLBACK: { data: PlacesResponse; isFallback: true } = {
   isFallback: true,
   data: {
-    rating: 4.9,
-    userRatingCount: 5,
-    reviews: [
-      {
-        rating: 5,
-        text: {
-          text: 'Authentic Greek flavors and incredibly fresh ingredients. The pita souvlaki was unforgettable — exactly like what we had in Athens.',
-        },
-        authorAttribution: { displayName: 'Daniel K.' },
-        relativePublishTimeDescription: 'a month ago',
-      },
-      {
-        rating: 5,
-        text: {
-          text: 'Family-run, warm atmosphere, and the gyros are the best in the Galilee. Will be back next week.',
-        },
-        authorAttribution: { displayName: 'Maya R.' },
-        relativePublishTimeDescription: '2 weeks ago',
-      },
-      {
-        rating: 5,
-        text: {
-          text: 'הסובלקי הכי טעים שאכלתי. המקום מטופח, השירות מהיר ואכפתי, והמחירים הוגנים.',
-        },
-        authorAttribution: { displayName: 'יוסף ש.' },
-        relativePublishTimeDescription: 'לפני שבוע',
-      },
-    ],
+    reviews: [],
   },
 };
 
@@ -293,24 +266,24 @@ export default function GoogleReviews({ language, isRtl }: GoogleReviewsProps) {
           <h3 className="font-display text-3xl md:text-4xl font-semibold text-gray-900 dark:text-white tracking-tight mb-3">
             {tt(language, 'title')}
           </h3>
-          <div className="inline-flex items-center gap-3 text-gray-700 dark:text-gray-200">
-            <span className="font-display text-3xl font-semibold text-brand-blue-500">
-              {rating ? rating.toFixed(1) : '—'}
-            </span>
-            <div className="flex gap-0.5 text-yellow-400" aria-hidden="true">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-5 h-5 ${i < Math.round(rating) ? 'fill-current' : 'opacity-30'}`}
-                />
-              ))}
-            </div>
-            {count > 0 && (
+          {!fromFallback && (
+            <div className="inline-flex items-center gap-3 text-gray-700 dark:text-gray-200">
+              <span className="font-display text-3xl font-semibold text-brand-blue-500">
+                {rating.toFixed(1)}
+              </span>
+              <div className="flex gap-0.5 text-yellow-400" aria-hidden="true">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-5 h-5 ${i < Math.round(rating) ? 'fill-current' : 'opacity-30'}`}
+                  />
+                ))}
+              </div>
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 {tt(language, 'based_on')} {count} {tt(language, 'reviews_word')}
               </span>
-            )}
-          </div>
+            </div>
+          )}
           {fromFallback && (
             <div className="mt-2 text-xs text-gray-400 dark:text-gray-500">
               {tt(language, 'fallback_note')}
@@ -319,20 +292,22 @@ export default function GoogleReviews({ language, isRtl }: GoogleReviewsProps) {
         </div>
       </Reveal>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {reviews.map((r, i) => {
-          const isLeft = i < reviews.length / 2;
-          const isMiddle = reviews.length % 2 === 1 && i === Math.floor(reviews.length / 2);
-          let x = isLeft ? -60 : 60;
-          if (isMiddle) x = 0;
-          if (isRtl) x = -x;
-          return (
-            <Reveal key={r.name ?? i} y={isMiddle ? 20 : 0} x={x}>
-              <ReviewCard review={r} />
-            </Reveal>
-          );
-        })}
-      </div>
+      {reviews.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {reviews.map((r, i) => {
+            const isLeft = i < reviews.length / 2;
+            const isMiddle = reviews.length % 2 === 1 && i === Math.floor(reviews.length / 2);
+            let x = isLeft ? -60 : 60;
+            if (isMiddle) x = 0;
+            if (isRtl) x = -x;
+            return (
+              <Reveal key={r.name ?? i} y={isMiddle ? 20 : 0} x={x}>
+                <ReviewCard review={r} />
+              </Reveal>
+            );
+          })}
+        </div>
+      )}
 
       <Reveal>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
