@@ -35,7 +35,14 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               <span className="font-display text-2xl font-semibold text-white">Greek Souvlaki</span>
             </div>
             <p className="opacity-70 text-sm">
-              Authentic Greek flavors in the heart of Kafr Yasif.
+              {tx(
+                lang,
+                'טעמים יווניים אותנטיים בלב כפר יאסיף.',
+                'Authentic Greek flavors in the heart of Kafr Yasif.',
+                'نكهات يونانية أصيلة في قلب كفر ياسيف.',
+                'Аутентичные греческие вкусы в самом сердце Кафр-Ясифа.',
+                'Αυθεντικές ελληνικές γεύσεις στην καρδιά του Κφαρ Γιασίφ.'
+              )}
             </p>
           </div>
 
@@ -46,7 +53,14 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               rel="noopener noreferrer"
               onClick={() => track('click_whatsapp', { location: 'footer' })}
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-green-600 transition-colors group"
-              aria-label="Chat with us on WhatsApp"
+              aria-label={tx(
+                lang,
+                'דברו איתנו ב-WhatsApp',
+                'Chat with us on WhatsApp',
+                'تحدثوا معنا عبر واتساب',
+                'Напишите нам в WhatsApp',
+                'Μιλήστε μαζί μας στο WhatsApp'
+              )}
             >
               <WhatsAppGlyph />
             </a>
@@ -55,7 +69,14 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-blue-600 transition-colors group"
-              aria-label="Visit our Facebook page"
+              aria-label={tx(
+                lang,
+                'בקרו בעמוד ה-Facebook שלנו',
+                'Visit our Facebook page',
+                'زوروا صفحتنا على Facebook',
+                'Откройте нашу страницу в Facebook',
+                'Επισκεφθείτε τη σελίδα μας στο Facebook'
+              )}
             >
               <FacebookIcon
                 className="w-6 h-6 group-hover:scale-110 transition-transform"
@@ -67,7 +88,14 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-pink-600 transition-colors group"
-              aria-label="Visit our Instagram page"
+              aria-label={tx(
+                lang,
+                'בקרו בעמוד ה-Instagram שלנו',
+                'Visit our Instagram page',
+                'زوروا صفحتنا على Instagram',
+                'Откройте нашу страницу в Instagram',
+                'Επισκεφθείτε τη σελίδα μας στο Instagram'
+              )}
             >
               <InstagramIcon
                 className="w-6 h-6 group-hover:scale-110 transition-transform"
@@ -120,7 +148,16 @@ export default function Footer({ lang, onOpenLegal }: Props) {
               className="flex items-center gap-2 text-gray-400 hover:text-gray-200 transition-colors group"
               title="Built with wwwebsie"
             >
-              <span className="text-sm">Built with</span>
+              <span className="text-sm">
+                {tx(
+                  lang,
+                  'נבנה על ידי',
+                  'Built by',
+                  'بُني بواسطة',
+                  'Создано',
+                  'Κατασκευάστηκε από'
+                )}
+              </span>
               <img
                 src="/ws-logo-100w.avif"
                 alt="wwwebsie logo"
