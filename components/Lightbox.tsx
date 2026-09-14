@@ -92,12 +92,19 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
       onTouchEnd={onTouchEnd}
       role="dialog"
       aria-modal="true"
-      aria-label={`${tx(lang, 'גלריית תמונות', 'Image Gallery', 'معرض الصور')} - ${index + 1} / ${images.length}`}
+      aria-label={`${tx(lang, 'גלריית תמונות', 'Image Gallery', 'معرض الصور', 'Галерея изображений', 'Συλλογή εικόνων')} - ${index + 1} / ${images.length}`}
     >
       <button
         onClick={onClose}
         className="absolute top-4 right-4 text-white p-2 hover:bg-white/20 rounded-full z-10 transition-colors"
-        aria-label={tx(lang, 'סגור גלריה', 'Close gallery', 'إغلاق المعرض')}
+        aria-label={tx(
+          lang,
+          'סגור גלריה',
+          'Close gallery',
+          'إغلاق المعرض',
+          'Закрыть галерею',
+          'Κλείσιμο συλλογής'
+        )}
       >
         <X className="w-8 h-8" aria-hidden="true" />
       </button>
@@ -109,7 +116,14 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
       <button
         onClick={prev}
         className="absolute left-4 rtl:left-auto rtl:right-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
-        aria-label={tx(lang, 'תמונה קודמת', 'Previous image', 'الصورة السابقة')}
+        aria-label={tx(
+          lang,
+          'תמונה קודמת',
+          'Previous image',
+          'الصورة السابقة',
+          'Предыдущее изображение',
+          'Προηγούμενη εικόνα'
+        )}
       >
         <ChevronDown
           className={`w-10 h-10 ${isRtl ? 'rotate-90' : '-rotate-90'}`}
@@ -122,7 +136,14 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
         onClick={prev}
         role="button"
         tabIndex={0}
-        aria-label={tx(lang, 'תמונה קודמת', 'Previous image', 'الصورة السابقة')}
+        aria-label={tx(
+          lang,
+          'תמונה קודמת',
+          'Previous image',
+          'الصورة السابقة',
+          'Предыдущее изображение',
+          'Προηγούμενη εικόνα'
+        )}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -135,7 +156,14 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
         onClick={next}
         role="button"
         tabIndex={0}
-        aria-label={tx(lang, 'תמונה הבאה', 'Next image', 'الصورة التالية')}
+        aria-label={tx(
+          lang,
+          'תמונה הבאה',
+          'Next image',
+          'الصورة التالية',
+          'Следующее изображение',
+          'Επόμενη εικόνα'
+        )}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -153,7 +181,14 @@ export default function Lightbox({ lang, index, images, onClose, onChange }: Pro
       <button
         onClick={next}
         className="absolute right-4 rtl:right-auto rtl:left-4 text-white p-3 hover:bg-white/20 rounded-full transition-all hover:scale-110"
-        aria-label={tx(lang, 'תמונה הבאה', 'Next image', 'الصورة التالية')}
+        aria-label={tx(
+          lang,
+          'תמונה הבאה',
+          'Next image',
+          'الصورة التالية',
+          'Следующее изображение',
+          'Επόμενη εικόνα'
+        )}
       >
         <ChevronDown
           className={`w-10 h-10 ${isRtl ? '-rotate-90' : 'rotate-90'}`}

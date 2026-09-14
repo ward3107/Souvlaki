@@ -198,11 +198,11 @@ const ShareModal: React.FC<ShareModalProps> = ({ lang, open, onClose }) => {
 
   const shareMessage = tx(
     lang,
-    'בואו לסובלקי יווני כפר יאסיף! תלוו להזמין טעימה',
-    'Welcome to Greek Souvlaki Kfar Yasif!',
-    'مرحباً بكم في سوفلاكي يوناني كفر ياسيف! تفضلوا للحجز',
-    'Добро пожаловать в Греческий Сувлаки Кафр Ясиф!',
-    'Καλώς ήρθατε στο Ελληνικό Σουβλάκι Καφρ Γιασίφ!'
+    'בואו לטעום ולהזמין מסובלאקי יווני כפר יאסיף!',
+    'Taste authentic Greek food at Greek Souvlaki Kafr Yasif!',
+    'تذوّقوا الطعام اليوناني الأصيل واطلبوا من سوفلاكي يوناني كفر ياسيف!',
+    'Попробуйте настоящую греческую кухню в Greek Souvlaki Kafr Yasif!',
+    'Δοκιμάστε αυθεντικές ελληνικές γεύσεις στο Greek Souvlaki Kafr Yasif!'
   );
 
   const handleNativeShare = async () => {

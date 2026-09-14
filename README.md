@@ -401,19 +401,18 @@ Contributions are welcome! Please follow these guidelines:
 <details>
 <summary><b>How do I change the restaurant information?</b></summary>
 
-Update the constants in `constants.ts`:
+Update the typed sources used by the site:
 
 - `SEO_METADATA` - Restaurant name, description, contact info
-- `MENU_ITEMS` - Menu items, prices, descriptions
-- `OPENING_HOURS` - Business hours
-- `CONTACT_INFO` - Phone, WhatsApp, address
+- `MENU_CATEGORIES` in `utils/menuData.ts` - menu categories, items, prices, and descriptions
+- `BUSINESS_INFO` in `utils/businessInfo.ts` - phone, WhatsApp, hours, location, and social links
 
 </details>
 
 <details>
 <summary><b>How do I add a new menu item?</b></summary>
 
-Add to `MENU_ITEMS` array in `constants.ts`:
+Add the item to its category in `MENU_CATEGORIES` inside `utils/menuData.ts`:
 
 ```typescript
 {
@@ -421,7 +420,6 @@ Add to `MENU_ITEMS` array in `constants.ts`:
   name: { he: 'שם', ar: 'اسم', ru: 'Имя', el: 'Όνομα', en: 'Name' },
   description: { he: 'תיאור', ar: 'وصف', ru: 'Описание', el: 'Περιγραφή', en: 'Description' },
   price: 99,
-  category: 'category_key',
   image: '/gallery/image.webp'
 }
 ```

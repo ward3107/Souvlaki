@@ -20,7 +20,7 @@ export const SCROLL_HINT: LocalizedString = {
 
 export const CHOOSE_HINT: LocalizedString = {
   en: 'Tap a choice to order',
-  he: 'הקש על אפשרות להזמין',
+  he: 'לחצו על אפשרות להזמנה',
   ar: 'اضغط على اختيار للطلب',
   ru: 'Нажмите на вариант, чтобы заказать',
   el: 'Πατήστε επιλογή για παραγγελία',
@@ -85,7 +85,7 @@ export const YOUR_ORDER_LABEL: LocalizedString = {
 export const ITEM_LABEL: LocalizedString = {
   en: 'item',
   he: 'פריט',
-  ar: 'عنصر',
+  ar: 'صنف',
   ru: 'позиция',
   el: 'είδος',
 };
@@ -93,7 +93,7 @@ export const ITEM_LABEL: LocalizedString = {
 export const ITEMS_LABEL: LocalizedString = {
   en: 'items',
   he: 'פריטים',
-  ar: 'عناصر',
+  ar: 'أصناف',
   ru: 'позиций',
   el: 'είδη',
 };
