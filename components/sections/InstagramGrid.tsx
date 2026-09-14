@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Heart, Instagram } from 'lucide-react';
+import { Heart } from 'lucide-react';
+import { InstagramIcon } from '../BrandIcons';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
 import { MouseParallax, ParallaxLayer } from '../MouseParallax';
@@ -124,7 +125,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
           transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-terracotta-400 rounded-2xl mb-4 shadow-soft">
-            <Instagram className="w-8 h-8 text-white" />
+            <InstagramIcon className="w-8 h-8 text-white" />
           </div>
           <h2 className="font-display text-4xl font-semibold text-gray-900 dark:text-white mb-4 tracking-tight">
             {tx(
@@ -152,7 +153,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white rounded-full font-semibold shadow-soft hover:shadow-lift transition-all duration-300"
           >
-            <Instagram className="w-5 h-5" />
+            <InstagramIcon className="w-5 h-5" />
             <span>@greek.souvlakii</span>
           </a>
         </motion.div>
@@ -235,11 +236,11 @@ function DepthCard({ img, link }: { img: string; link: string }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="absolute bottom-3 left-3 flex items-center gap-2 text-white">
             <Heart className="w-5 h-5 fill-white" />
-            <Instagram className="w-5 h-5" />
+            <InstagramIcon className="w-5 h-5" />
           </div>
         </div>
         <div className="absolute top-2 right-2 bg-white/90 dark:bg-black/70 rounded-full p-1.5 shadow-soft opacity-0 group-hover:opacity-100 transition-opacity">
-          <Instagram className="w-4 h-4 text-pink-600" />
+          <InstagramIcon className="w-4 h-4 text-pink-600" />
         </div>
       </div>
     </a>
