@@ -33,10 +33,13 @@ export default function WhatsAppModal({ lang, open, onClose }: WhatsAppModalProp
   if (!open) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-[9998] bg-black/50 flex items-end sm:items-center justify-center p-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[9998] bg-black/50 flex items-end sm:items-center justify-center p-4">
+      <button
+        type="button"
+        className="absolute inset-0 cursor-default"
+        onClick={onClose}
+        aria-label={tx(lang, 'סגירה', 'Close', 'إغلاق', 'Закрыть', 'Κλείσιμο')}
+      />
       <div
         ref={dialogRef}
         role="dialog"
@@ -50,9 +53,8 @@ export default function WhatsAppModal({ lang, open, onClose }: WhatsAppModalProp
           'Συνέχεια στο WhatsApp'
         )}
         tabIndex={-1}
-        className={`max-w-sm w-full rounded-2xl shadow-2xl p-6 outline-none ${isRtl ? 'rtl' : 'ltr'}`}
+        className={`relative z-10 max-w-sm w-full rounded-2xl shadow-2xl p-6 outline-none ${isRtl ? 'rtl' : 'ltr'}`}
         style={{ backgroundColor: '#1a1a2e', borderTop: '3px solid #F5A623' }}
-        onClick={(e) => e.stopPropagation()}
       >
         <p
           className="text-sm leading-relaxed text-gray-200 mb-4"
