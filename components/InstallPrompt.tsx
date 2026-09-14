@@ -11,6 +11,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 const DISMISS_KEY = 'a2hs-dismissed-v1';
+const VISIT_KEY = 'a2hs-visit-count-v1';
 
 // Two small, unobtrusive helpers bundled together:
 //  1. "Install app" — an Add-to-Home-Screen prompt that appears only when the
@@ -27,10 +28,14 @@ export default function InstallPrompt({ lang }: { lang: Language }) {
 
   useEffect(() => {
     if (localStorage.getItem(DISMISS_KEY)) return;
+    const visits = Number(localStorage.getItem(VISIT_KEY) || '0') + 1;
+    localStorage.setItem(VISIT_KEY, String(visits));
     const onPrompt = (e: Event) => {
       e.preventDefault(); // stop Chrome's default mini-infobar
       setDeferred(e as BeforeInstallPromptEvent);
-      setShowInstall(true);
+      if (visits >= 2) {
+        window.setTimeout(() => setShowInstall(true), 12000);
+      }
     };
     const onInstalled = () => {
       setShowInstall(false);
