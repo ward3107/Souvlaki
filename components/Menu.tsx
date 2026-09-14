@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Language } from '../types';
 import Reveal from './Reveal';
-import IngredientFloaters from './IngredientFloaters';
 import { track } from '../utils/analytics';
 import {
   MENU_CATEGORIES,
@@ -251,15 +250,14 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   return (
     <section
       id={id}
-      className="relative py-20 px-4 bg-brand-cream-100 dark:bg-slate-900 overflow-hidden"
+      className="relative px-4 pb-20 pt-12 md:pb-24 md:pt-16 bg-brand-cream-100 dark:bg-slate-900 overflow-hidden"
       dir={isRtl ? 'rtl' : 'ltr'}
     >
-      <IngredientFloaters />
       <div className="relative max-w-6xl mx-auto">
         {/* Header */}
         <Reveal>
-          <div className="text-center mb-8">
-            <h2 className="font-display text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-3 tracking-tight">
+          <div className="text-center mb-7">
+            <h2 className="font-display text-4xl md:text-5xl font-semibold text-brand-blue-800 dark:text-white mb-2 tracking-tight">
               {titles.title}
             </h2>
             <p className="text-base md:text-lg text-gray-600 dark:text-gray-300">
@@ -281,7 +279,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder={SEARCH_PLACEHOLDER[lang]}
               aria-label={SEARCH_PLACEHOLDER[lang]}
-              className="w-full ps-11 pe-4 py-2.5 rounded-full border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-terracotta-300"
+              className="w-full min-h-12 ps-11 pe-4 py-3 rounded-2xl border border-brand-blue-900/10 dark:border-white/10 bg-white dark:bg-slate-800 text-gray-900 dark:text-white text-base shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-terracotta-300"
             />
           </div>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
@@ -326,7 +324,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
                 {NO_RESULTS[lang]}
               </p>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 {filteredItems.map((item, idx) =>
                   renderCard(item, `search-${item.id}`, idx * 0.03)
                 )}
@@ -336,8 +334,8 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
         ) : (
           <>
             {/* Category tabs (sticky) */}
-            <div className="mb-2 sticky top-20 z-20 -mx-4 px-4 py-3 bg-brand-cream-100/90 dark:bg-slate-900/90 backdrop-blur-sm">
-              <div className="flex overflow-x-auto gap-2 pb-1 scrollbar-hide">
+            <div className="mb-2 sticky top-16 md:top-20 z-20 -mx-4 border-y border-brand-blue-900/5 bg-brand-cream-100/95 px-4 py-3 shadow-[0_8px_24px_rgba(15,23,42,0.04)] backdrop-blur-xl dark:border-white/5 dark:bg-slate-900/95">
+              <div className="flex overflow-x-auto gap-1.5 pb-1 scrollbar-hide">
                 {categories.map((cat) => {
                   const Icon = cat.Icon;
                   const activeTab = activeId === cat.id;
@@ -347,11 +345,11 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
                       onClick={() => setActiveId(cat.id)}
                       aria-pressed={activeTab}
                       className={`
-                        flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all active:scale-95
+                        flex min-h-11 items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-colors
                         ${
                           activeTab
-                            ? 'bg-brand-blue-500 text-white shadow-soft'
-                            : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-brand-blue-50 dark:hover:bg-slate-700'
+                            ? 'bg-brand-blue-700 text-white'
+                            : 'bg-transparent text-gray-700 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-slate-800'
                         }
                       `}
                     >
@@ -366,15 +364,15 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
               </div>
             </div>
 
-            {/* Items grid — 3D flip cards */}
+            {/* Items grid — calm editorial flip cards */}
             <div className="mt-6 pb-24">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 {active.items.map((item, idx) =>
                   renderCard(item, `${active.id}-${item.id}`, idx * 0.05)
                 )}
               </div>
               {active.addons && active.addons.length > 0 && (
-                <div className="mt-6 bg-white/60 dark:bg-slate-800/40 backdrop-blur-sm rounded-2xl border border-gray-200/60 dark:border-slate-700/60 px-6 md:px-8 py-2">
+                <div className="mt-8 bg-white dark:bg-slate-800 rounded-2xl border border-gray-200/70 dark:border-slate-700 px-6 md:px-8 py-2 shadow-sm">
                   <AddOnsList addons={active.addons} lang={lang} />
                 </div>
               )}
