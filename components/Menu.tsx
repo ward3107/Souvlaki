@@ -434,6 +434,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
       )}
 
       <div
+        data-testid="cart-announcement"
         className={`pointer-events-none fixed left-1/2 z-[65] w-max max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-full bg-emerald-700 px-4 py-2 text-center text-sm font-semibold text-white shadow-lift transition-all duration-200 bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4.5rem)] ${
           cartAnnouncement ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0'
         }`}

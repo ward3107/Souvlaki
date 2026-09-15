@@ -61,7 +61,7 @@ test.describe('Greek Souvlaki Website', () => {
     await page.getByRole('button', { name: 'Sides', exact: true }).click();
     await page.getByRole('button', { name: /Fries — Tap for details/ }).click();
     await page.getByRole('button', { name: 'Add', exact: true }).click();
-    await expect(page.getByRole('status')).toContainText('Added to your order');
+    await expect(page.getByTestId('cart-announcement')).toContainText('Added to your order');
 
     await page.getByText('View order', { exact: true }).click();
     const sendButton = page.getByRole('button', { name: 'Send via WhatsApp' });
