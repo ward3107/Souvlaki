@@ -239,10 +239,7 @@ const App: React.FC = () => {
     localStorage.setItem('language', nextLanguage);
     if (!isInternalPage) {
       const nextPath = localizedPublicPath(nextLanguage, routePath);
-      const params = new URLSearchParams(window.location.search);
-      params.delete('lang');
-      const search = params.size ? `?${params.toString()}` : '';
-      window.history.replaceState({}, '', `${nextPath}${search}`);
+      window.history.replaceState({}, '', nextPath);
       window.dispatchEvent(new Event('locationchange'));
     }
   };
