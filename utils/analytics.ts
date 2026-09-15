@@ -8,6 +8,33 @@
 
 type GtagFn = (...args: unknown[]) => void;
 
+export type AnalyticsEventName =
+  | 'add_to_cart'
+  | 'begin_checkout'
+  | 'click_call'
+  | 'click_directions'
+  | 'click_whatsapp'
+  | 'generate_lead'
+  | 'language_change'
+  | 'open_whatsapp'
+  | 'order_whatsapp'
+  | 'page_view'
+  | 'pwa_install_click'
+  | 'pwa_installed'
+  | 'select_item'
+  | 'view_cart'
+  | 'view_item'
+  | 'view_item_list';
+
+export interface AnalyticsItem {
+  item_id: string;
+  item_name: string;
+  item_category?: string;
+  item_variant?: string;
+  price?: number;
+  quantity?: number;
+}
+
 interface GtagWindow extends Window {
   gtag?: GtagFn;
 }
@@ -17,7 +44,7 @@ interface GtagWindow extends Window {
  * @param name   GA4 event name, e.g. 'order_whatsapp', 'click_call'.
  * @param params Optional event parameters (value, currency, item counts…).
  */
-export function track(name: string, params?: Record<string, unknown>): void {
+export function track(name: AnalyticsEventName, params?: Record<string, unknown>): void {
   if (typeof window === 'undefined') return;
   const gtag = (window as GtagWindow).gtag;
   if (typeof gtag !== 'function') return; // no consent / analytics not loaded

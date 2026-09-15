@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Search } from 'lucide-react';
 import { Language } from '../types';
 import Reveal from './Reveal';
-import { track } from '../utils/analytics';
+import { track, type AnalyticsItem } from '../utils/analytics';
 import {
   MENU_CATEGORIES,
   BADGE_LABELS,
@@ -58,6 +58,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
   const [overrides, setOverrides] = useState<MenuOverrides>({});
   const [categories, setCategories] = useState<MenuCategory[]>(MENU_CATEGORIES);
   const announcementTimer = useRef<number | null>(null);
+  const lastViewedList = useRef('');
   const lang = language as Lang;
   const isRtl = lang === 'he' || lang === 'ar';
   const titles = SECTION_TITLES[lang] ?? SECTION_TITLES.en;
@@ -172,8 +173,62 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     setActiveBadges([]);
   };
 
+  const getAnalyticsItem = useCallback(
+    (itemId: string, variantId?: string, quantity = 1): AnalyticsItem | null => {
+      for (const category of categories) {
+        const item = category.items.find((candidate) => candidate.id === itemId);
+        if (!item) continue;
+        const variant = item.variants?.find((candidate) => candidate.id === variantId);
+        return {
+          item_id: item.id,
+          item_name: getLocalized(item.name, lang),
+          item_category: category.id,
+          item_variant: variant?.id,
+          price: (overrides[item.id]?.price ?? item.price) + (variant?.extra ?? 0),
+          quantity,
+        };
+      }
+      return null;
+    },
+    [categories, lang, overrides]
+  );
+
+  useEffect(() => {
+    const listKey = `${lang}:${active.id}`;
+    if (lastViewedList.current === listKey) return;
+    lastViewedList.current = listKey;
+    const items = active.items
+      .map((item) => getAnalyticsItem(item.id))
+      .filter((item): item is AnalyticsItem => item !== null);
+    track('view_item_list', {
+      item_list_id: active.id,
+      item_list_name: getLocalized(active.name, lang),
+      items,
+    });
+  }, [active, getAnalyticsItem, lang]);
+
+  const handleView = (itemId: string) => {
+    const item = getAnalyticsItem(itemId);
+    if (!item) return;
+    const listId = isFiltering ? 'search_results' : active.id;
+    const listName = isFiltering ? 'Search results' : getLocalized(active.name, lang);
+    track('select_item', {
+      item_list_id: listId,
+      item_list_name: listName,
+      items: [item],
+    });
+    track('view_item', { currency: 'ILS', value: item.price, items: [item] });
+  };
+
   const handleAdd = (itemId: string, variantId?: string) => {
-    track('menu_add_to_cart', { item_id: itemId, variant: variantId ?? '' });
+    const analyticsItem = getAnalyticsItem(itemId, variantId);
+    if (analyticsItem) {
+      track('add_to_cart', {
+        currency: 'ILS',
+        value: analyticsItem.price,
+        items: [analyticsItem],
+      });
+    }
     setCart((prev) => {
       const idx = prev.findIndex((l) => l.itemId === itemId && l.variantId === variantId);
       if (idx >= 0) {
@@ -226,10 +281,28 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     if (availableLines.length === 0 || availableLines.length !== resolvedLines.length) return;
     if (!customerName.trim()) return;
     const name = customerName.trim();
+    const analyticsItems = availableLines.map((line) => ({
+      item_id: line.itemId,
+      item_name: line.name,
+      item_variant: line.variantId,
+      price: line.unitPrice,
+      quantity: line.qty,
+    }));
+    track('begin_checkout', {
+      value: cartTotal,
+      currency: 'ILS',
+      items: analyticsItems,
+    });
     track('order_whatsapp', {
       value: cartTotal,
       currency: 'ILS',
       items: itemCount,
+    });
+    track('generate_lead', {
+      value: cartTotal,
+      currency: 'ILS',
+      lead_source: 'whatsapp',
+      item_count: itemCount,
     });
     // Persist to order history (no-op unless Supabase is configured); never let
     // it block or delay the WhatsApp handoff.
@@ -282,6 +355,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
           item={item}
           lang={lang}
           onAdd={handleAdd}
+          onView={handleView}
           soldOut={!!ov.soldOut}
           priceOverride={ov.price}
         />
@@ -429,7 +503,20 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
           total={cartTotal}
           lang={lang}
           isRtl={isRtl}
-          onOpen={() => setCartOpen(true)}
+          onOpen={() => {
+            track('view_cart', {
+              currency: 'ILS',
+              value: cartTotal,
+              items: resolvedLines.map((line) => ({
+                item_id: line.itemId,
+                item_name: line.name,
+                item_variant: line.variantId,
+                price: line.unitPrice,
+                quantity: line.qty,
+              })),
+            });
+            setCartOpen(true);
+          }}
         />
       )}
 

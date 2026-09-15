@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Language } from './types';
 import { SEO_METADATA } from './constants';
 import { isRtlLang } from './utils/i18n';
+import { track } from './utils/analytics';
 import {
   canonicalUrl,
   languageAlternates,
@@ -234,7 +235,22 @@ const App: React.FC = () => {
     }
   }, [isMenuPage, lang, routePath]);
 
+  // GA's initial config reports the landing page after consent. Explicit page
+  // views here cover later SPA route and language changes without including
+  // query strings or owner-only routes in analytics.
+  useEffect(() => {
+    if (isInternalPage) return;
+    track('page_view', {
+      page_location: `${window.location.origin}${path}`,
+      page_path: path,
+      language: lang,
+    });
+  }, [isInternalPage, lang, path]);
+
   const changeLanguage = (nextLanguage: Language) => {
+    if (nextLanguage !== lang) {
+      track('language_change', { from_language: lang, to_language: nextLanguage });
+    }
     setLang(nextLanguage);
     localStorage.setItem('language', nextLanguage);
     if (!isInternalPage) {
