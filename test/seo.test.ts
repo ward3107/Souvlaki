@@ -22,6 +22,12 @@ describe('localized public SEO routes', () => {
     expect(canonicalUrl(Language.EL, '/menu')).toBe('https://www.greeksouflaki.com/el/menu');
   });
 
+  it('never copies an untrusted path or language into a navigation target', () => {
+    expect(localizedPublicPath(Language.HE, '//evil.example/phish')).toBe('/he');
+    expect(localizedPublicPath(Language.AR, '/menu/../../admin')).toBe('/ar');
+    expect(localizedPublicPath('https://evil.example' as Language, '/menu')).toBe('/menu');
+  });
+
   it('keeps each hreflang cluster on the same page type', () => {
     const menu = languageAlternates('/ru/menu');
     expect(menu.en).toBe('https://www.greeksouflaki.com/menu');
