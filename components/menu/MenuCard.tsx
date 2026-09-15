@@ -18,12 +18,14 @@ export default function MenuCard({
   item,
   lang,
   onAdd,
+  onView,
   soldOut,
   priceOverride,
 }: {
   item: MenuItem;
   lang: Lang;
   onAdd: (itemId: string, variantId?: string) => void;
+  onView: (itemId: string) => void;
   soldOut: boolean;
   priceOverride?: number;
 }) {
@@ -68,7 +70,10 @@ export default function MenuCard({
             <button
               type="button"
               tabIndex={isFlipped ? -1 : 0}
-              onClick={() => setIsFlipped(true)}
+              onClick={() => {
+                onView(item.id);
+                setIsFlipped(true);
+              }}
               aria-label={`${name} — ${getLocalized(DETAILS_HINT, lang)}`}
               className="absolute inset-0 z-0 cursor-pointer rounded-3xl focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-terracotta-400"
             />
