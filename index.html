@@ -60,14 +60,17 @@
     <meta name="author" content="Greek Souvlaki Kfar Yasif" />
 
     <!-- Restaurant Schema (JSON-LD) -->
-    <script type="application/ld+json">
+    <script id="restaurant-schema" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Restaurant",
+        "@id": "https://www.greeksouflaki.com/#restaurant",
         "name": "Greek Souvlaki Kfar Yasif",
         "alternateName": "סובלאקי יווני כפר יאסיף",
         "image": "https://www.greeksouflaki.com/gallery/hero-bg-1280w.webp",
         "url": "https://www.greeksouflaki.com/",
+        "mainEntityOfPage": "https://www.greeksouflaki.com/",
+        "inLanguage": "en",
         "telephone": "+972-4-812-2980",
         "address": {
           "@type": "PostalAddress",
@@ -83,7 +86,9 @@
           "longitude": 35.1636
         },
         "servesCuisine": "Greek",
+        "areaServed": ["Kafr Yasif", "Western Galilee", "Northern District"],
         "priceRange": "$$",
+        "acceptsReservations": true,
         "openingHoursSpecification": [
           {
             "@type": "OpeningHoursSpecification",
@@ -92,17 +97,12 @@
             "closes": "00:00"
           }
         ],
-        "menu": "https://www.greeksouflaki.com/#menu",
+        "menu": "https://www.greeksouflaki.com/menu",
+        "hasMap": "https://www.google.com/maps/search/?api=1&query=Greek+Souvlaki+Kafr+Yasif",
         "sameAs": [
           "https://www.facebook.com/profile.php?id=100089667506328",
-          "https://www.instagram.com/greek.souvlakii",
-          "https://waze.com/ul?ll=32.9556,35.1636&navigate=yes"
+          "https://www.instagram.com/greek.souvlakii"
         ],
-        "aggregateRating": {
-          "@type": "AggregateRating",
-          "ratingValue": "4.9",
-          "reviewCount": "5"
-        },
         "potentialAction": {
           "@type": "OrderAction",
           "target": {
@@ -112,21 +112,25 @@
               "http://schema.org/DesktopWebPlatform",
               "http://schema.org/MobileWebPlatform"
             ]
-          },
-          "deliveryMethod": [
-            {
-              "@type": "OnSitePickup"
-            },
-            {
-              "@type": "DeliveryUrl"
-            }
-          ]
+          }
         }
       }
     </script>
 
+    <script id="website-schema" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.greeksouflaki.com/#website",
+        "url": "https://www.greeksouflaki.com/",
+        "name": "Greek Souvlaki Kafr Yasif",
+        "publisher": { "@id": "https://www.greeksouflaki.com/#restaurant" },
+        "inLanguage": ["en", "he", "ar", "ru", "el"]
+      }
+    </script>
+
     <!-- FAQ Page Schema (JSON-LD) -->
-    <script type="application/ld+json">
+    <script id="faq-schema" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
@@ -284,11 +288,12 @@
 
     <!-- Language Alternates -->
     <link rel="alternate" hreflang="en" href="https://www.greeksouflaki.com/" />
-    <link rel="alternate" hreflang="he" href="https://www.greeksouflaki.com/?lang=he" />
-    <link rel="alternate" hreflang="ar" href="https://www.greeksouflaki.com/?lang=ar" />
-    <link rel="alternate" hreflang="ru" href="https://www.greeksouflaki.com/?lang=ru" />
-    <link rel="alternate" hreflang="el" href="https://www.greeksouflaki.com/?lang=el" />
+    <link rel="alternate" hreflang="he" href="https://www.greeksouflaki.com/he" />
+    <link rel="alternate" hreflang="ar" href="https://www.greeksouflaki.com/ar" />
+    <link rel="alternate" hreflang="ru" href="https://www.greeksouflaki.com/ru" />
+    <link rel="alternate" hreflang="el" href="https://www.greeksouflaki.com/el" />
     <link rel="alternate" hreflang="x-default" href="https://www.greeksouflaki.com/" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="AI-readable site summary" />
 
     <!-- Web App Manifest -->
     <!-- VitePWA injects manifest link automatically -->

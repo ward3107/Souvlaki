@@ -90,5 +90,21 @@ test.describe('Greek Souvlaki Website', () => {
       .toBe(1);
   });
 
+  test('localized menu routes keep their language and page identity', async ({ page }) => {
+    await page.addInitScript(() => {
+      window.localStorage.setItem('cookieConsent', 'essential');
+    });
+    await page.goto('/he/menu');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'he');
+    await expect(page.getByRole('heading', { name: 'התפריט שלנו' })).toBeVisible();
+    await expect(page).toHaveURL(/\/he\/menu$/);
+
+    await page.getByRole('button', { name: 'Select language' }).click();
+    await page.getByRole('button', { name: 'AR', exact: true }).click();
+    await expect(page).toHaveURL(/\/ar\/menu$/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+    await expect(page.getByRole('heading', { name: 'قائمتنا' })).toBeVisible();
+  });
+
   // Add more E2E tests as needed
 });

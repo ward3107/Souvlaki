@@ -2,6 +2,13 @@ import { lazy, Suspense, useEffect, useState } from 'react';
 import { Language } from './types';
 import { SEO_METADATA } from './constants';
 import { isRtlLang } from './utils/i18n';
+import {
+  canonicalUrl,
+  languageAlternates,
+  localizedPublicPath,
+  MENU_SEO,
+  stripLanguagePrefix,
+} from './utils/seo';
 
 // Sections
 import Header from './components/sections/Header';
@@ -125,11 +132,12 @@ const App: React.FC = () => {
   const [path, setPath] = useState(() => window.location.pathname);
 
   const isRtl = isRtlLang(lang);
-  const isMenuPage = path === '/menu';
-  const isKitchenPage = path === '/kitchen';
-  const isTicketPage = path === '/ticket';
-  const isQrPage = path === '/qr';
-  const isAdminPage = path === '/admin';
+  const routePath = stripLanguagePrefix(path);
+  const isMenuPage = routePath === '/menu';
+  const isKitchenPage = routePath === '/kitchen';
+  const isTicketPage = routePath === '/ticket';
+  const isQrPage = routePath === '/qr';
+  const isAdminPage = routePath === '/admin';
 
   // Minimal routing: the menu lives on its own /menu page so browsing it stays
   // focused instead of scrolling on into the homepage story.
@@ -181,14 +189,15 @@ const App: React.FC = () => {
   // SEO metadata sync
   useEffect(() => {
     const seo = SEO_METADATA[lang];
-    document.title = seo.title;
+    const pageSeo = isMenuPage ? MENU_SEO[lang] : seo;
+    document.title = pageSeo.title;
 
     const setMeta = (selector: string, content: string) => {
       const el = document.querySelector(selector);
       if (el) el.setAttribute('content', content);
     };
 
-    setMeta('meta[name="description"]', seo.description);
+    setMeta('meta[name="description"]', pageSeo.description);
 
     let metaKeywords = document.querySelector('meta[name="keywords"]');
     if (!metaKeywords) {
@@ -198,23 +207,45 @@ const App: React.FC = () => {
     }
     metaKeywords.setAttribute('content', seo.keywords);
 
-    setMeta('meta[property="og:title"]', seo.ogTitle);
-    setMeta('meta[property="og:description"]', seo.ogDescription);
+    setMeta('meta[property="og:title"]', isMenuPage ? pageSeo.title : seo.ogTitle);
+    setMeta(
+      'meta[property="og:description"]',
+      isMenuPage ? pageSeo.description : seo.ogDescription
+    );
     setMeta('meta[property="og:locale"]', seo.ogLocale);
-    setMeta('meta[name="twitter:title"]', seo.ogTitle);
-    setMeta('meta[name="twitter:description"]', seo.ogDescription);
+    setMeta('meta[name="twitter:title"]', isMenuPage ? pageSeo.title : seo.ogTitle);
+    setMeta(
+      'meta[name="twitter:description"]',
+      isMenuPage ? pageSeo.description : seo.ogDescription
+    );
 
     // Canonical + og/twitter URL point at the language's own pre-rendered page
     // (/he/, /ar/, …), English at the root — matching the hreflang set.
-    const langUrl =
-      lang === Language.EN
-        ? 'https://www.greeksouflaki.com/'
-        : `https://www.greeksouflaki.com/${lang}/`;
+    const langUrl = canonicalUrl(lang, routePath);
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute('href', langUrl);
     setMeta('meta[property="og:url"]', langUrl);
     setMeta('meta[name="twitter:url"]', langUrl);
-  }, [lang]);
+
+    const alternates = languageAlternates(routePath);
+    for (const [code, href] of Object.entries(alternates)) {
+      const link = document.querySelector(`link[rel="alternate"][hreflang="${code}"]`);
+      if (link) link.setAttribute('href', href);
+    }
+  }, [isMenuPage, lang, routePath]);
+
+  const changeLanguage = (nextLanguage: Language) => {
+    setLang(nextLanguage);
+    localStorage.setItem('language', nextLanguage);
+    if (!isInternalPage) {
+      const nextPath = localizedPublicPath(nextLanguage, routePath);
+      const params = new URLSearchParams(window.location.search);
+      params.delete('lang');
+      const search = params.size ? `?${params.toString()}` : '';
+      window.history.replaceState({}, '', `${nextPath}${search}`);
+      window.dispatchEvent(new Event('locationchange'));
+    }
+  };
 
   // Theme class
   useEffect(() => {
@@ -277,7 +308,7 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${isRtl ? 'font-heebo' : 'font-rubik'}`}>
-      <Header lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} />
+      <Header lang={lang} setLang={changeLanguage} theme={theme} setTheme={setTheme} />
 
       {isMenuPage ? (
         <main id="main-content" role="main" className="bg-brand-cream-100 dark:bg-slate-900">

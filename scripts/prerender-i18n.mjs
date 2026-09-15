@@ -4,13 +4,18 @@
  * The site is a client-rendered SPA that serves all five languages from one
  * HTML file. Search engines that don't run JS (and the ones that do, but weakly)
  * then see a single language. This step takes the built `dist/index.html` and
- * writes a real, crawlable page per language at its own URL:
+ * writes real, crawlable home and menu pages per language.
  *
  *   en → dist/index.html        (also the x-default)
- *   he → dist/he/index.html
- *   ar → dist/ar/index.html
- *   ru → dist/ru/index.html
- *   el → dist/el/index.html
+ *   he → dist/he.html
+ *   ar → dist/ar.html
+ *   ru → dist/ru.html
+ *   el → dist/el.html
+ *
+ * Non-root routes are emitted as `.html` files because Vercel's `cleanUrls`
+ * maps `/he` to `he.html` and `/he/menu` to `he/menu.html`. Directory index
+ * files would instead depend on a trailing slash and can fall through to the
+ * SPA shell, giving crawlers the wrong canonical and language.
  *
  * Each page carries the correct <html lang/dir>, translated <title> + meta,
  * self-referential canonical, a full hreflang set, and a block of translated
@@ -30,7 +35,7 @@ const ORIGIN = 'https://www.greeksouflaki.com';
 
 // Language code → its own path segment (English lives at the root).
 const LANGS = ['en', 'he', 'ar', 'ru', 'el'];
-const PATH = { en: '/', he: '/he/', ar: '/ar/', ru: '/ru/', el: '/el/' };
+const HOME_PATH = { en: '/', he: '/he', ar: '/ar', ru: '/ru', el: '/el' };
 const RTL = new Set(['he', 'ar']);
 
 // Per-language content. Meta strings mirror SEO_METADATA in constants.ts; the
@@ -63,6 +68,9 @@ const C = {
     hours: 'Wednesday–Saturday, 13:00–00:00 (closed Sunday–Tuesday)',
     phoneLabel: 'Phone',
     order: 'Order on WhatsApp: 052-892-1454',
+    menuTitle: 'Greek Souvlaki Menu | Kafr Yasif',
+    menuDescription:
+      'View the Greek Souvlaki Kafr Yasif menu: pita souvlaki from ₪30, gyros, platters, salads, vegan and gluten-free options. Order via WhatsApp.',
   },
   he: {
     title: 'סובלאקי יווני כפר יאסיף | Greek Souvlaki Kfar Yasif - מסעדה יוונית אותנטית',
@@ -91,6 +99,9 @@ const C = {
     hours: 'רביעי–שבת, 13:00–00:00 (סגור ראשון–שלישי)',
     phoneLabel: 'טלפון',
     order: 'הזמנה בוואטסאפ: 052-892-1454',
+    menuTitle: 'תפריט סובלאקי יווני | כפר יאסיף',
+    menuDescription:
+      'צפו בתפריט סובלאקי יווני כפר יאסיף: סובלאקי בפיתה החל מ־30 ₪, גירוס, מגשים, סלטים ואפשרויות טבעוניות וללא גלוטן. הזמנה בוואטסאפ.',
   },
   ar: {
     title: 'سوفلاكي يوناني كفر ياسيف | Greek Souvlaki Kafr Yasif - مطعم يوناني أصيل',
@@ -119,6 +130,9 @@ const C = {
     hours: 'الأربعاء–السبت، 13:00–00:00 (مغلق الأحد–الثلاثاء)',
     phoneLabel: 'الهاتف',
     order: 'اطلب عبر واتساب: 052-892-1454',
+    menuTitle: 'قائمة سوفلاكي يوناني | كفر ياسيف',
+    menuDescription:
+      'تصفّحوا قائمة سوفلاكي يوناني كفر ياسيف: سوفلاكي في بيتا من 30 شيكل، جيروس، صوانٍ، سلطات وخيارات نباتية وخالية من الغلوتين. الطلب عبر واتساب.',
   },
   ru: {
     title: 'Греческий сувлаки Кафр Ясиф | Greek Souvlaki Kfar Yasif - Греческий ресторан',
@@ -147,6 +161,9 @@ const C = {
     hours: 'Среда–суббота, 13:00–00:00 (воскресенье–вторник закрыто)',
     phoneLabel: 'Телефон',
     order: 'Заказ в WhatsApp: 052-892-1454',
+    menuTitle: 'Меню Greek Souvlaki | Кафр-Ясиф',
+    menuDescription:
+      'Меню Greek Souvlaki в Кафр-Ясифе: сувлаки в пите от ₪30, гирос, блюда на компанию, салаты, веганские и безглютеновые варианты. Заказ в WhatsApp.',
   },
   el: {
     title: 'Ελληνικό σουβλάκι Καφρ Γιασίφ | Greek Souvlaki Kfar Yasif - Ελληνικό εστιατόριο',
@@ -175,27 +192,97 @@ const C = {
     hours: 'Τετάρτη–Σάββατο, 13:00–00:00 (κλειστά Κυριακή–Τρίτη)',
     phoneLabel: 'Τηλέφωνο',
     order: 'Παραγγελία στο WhatsApp: 052-892-1454',
+    menuTitle: 'Μενού Greek Souvlaki | Καφρ Γιασίφ',
+    menuDescription:
+      'Δείτε το μενού του Greek Souvlaki στο Καφρ Γιασίφ: σουβλάκι σε πίτα από ₪30, γύρος, ποικιλίες, σαλάτες, βίγκαν και χωρίς γλουτένη επιλογές. Παραγγελία στο WhatsApp.',
   },
 };
 
 const esc = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-// hreflang block shared by every page (absolute URLs, self + all + x-default).
-function hreflangs() {
+const FAQ_Q = {
+  en: ['What are the opening hours?', 'Where is Greek Souvlaki located?', 'How can I order?'],
+  he: ['מהן שעות הפתיחה?', 'איפה נמצא סובלאקי יווני?', 'איך אפשר להזמין?'],
+  ar: ['ما هي ساعات العمل؟', 'أين يقع سوفلاكي يوناني؟', 'كيف يمكنني الطلب؟'],
+  ru: ['Какие часы работы?', 'Где находится Greek Souvlaki?', 'Как сделать заказ?'],
+  el: [
+    'Ποιες είναι οι ώρες λειτουργίας;',
+    'Πού βρίσκεται το Greek Souvlaki;',
+    'Πώς μπορώ να παραγγείλω;',
+  ],
+};
+
+function pagePath(lang, page) {
+  if (page === 'home') return HOME_PATH[lang];
+  return lang === 'en' ? '/menu' : `/${lang}/menu`;
+}
+
+// hreflang block shared by every equivalent page cluster.
+function hreflangs(page) {
   const links = LANGS.map(
-    (l) => `<link rel="alternate" hreflang="${l}" href="${ORIGIN}${PATH[l]}" />`
+    (l) => `<link rel="alternate" hreflang="${l}" href="${ORIGIN}${pagePath(l, page)}" />`
   );
-  links.push(`<link rel="alternate" hreflang="x-default" href="${ORIGIN}/" />`);
+  links.push(
+    `<link rel="alternate" hreflang="x-default" href="${ORIGIN}${pagePath('en', page)}" />`
+  );
   return links.join('\n    ');
 }
 
+function faqSchema(c, lang) {
+  const answers = [c.hours, c.address, c.order];
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    inLanguage: lang,
+    mainEntity: FAQ_Q[lang].map((name, index) => ({
+      '@type': 'Question',
+      name,
+      acceptedAnswer: { '@type': 'Answer', text: answers[index] },
+    })),
+  });
+}
+
+function webPageSchema(c, lang, page, url) {
+  const title = page === 'menu' ? c.menuTitle : c.title;
+  const description = page === 'menu' ? c.menuDescription : c.description;
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: lang,
+    isPartOf: { '@id': `${ORIGIN}/#website` },
+    about: { '@id': `${ORIGIN}/#restaurant` },
+    ...(page === 'menu' ? { mainEntity: { '@id': `${ORIGIN}/menu#menu` } } : {}),
+  });
+}
+
+function menuSummarySchema(c, lang, url) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Menu',
+    '@id': `${ORIGIN}/menu#menu`,
+    name: c.menuTitle,
+    url,
+    inLanguage: lang,
+    provider: { '@id': `${ORIGIN}/#restaurant` },
+    hasMenuSection: {
+      '@type': 'MenuSection',
+      name: c.menuHeading,
+      hasMenuItem: c.menu.map((name) => ({ '@type': 'MenuItem', name })),
+    },
+  });
+}
+
 // Crawlable localized content injected into #root (React replaces it on mount).
-function seoBlock(c) {
+function seoBlock(c, page) {
   const items = c.menu.map((m) => `<li>${esc(m)}</li>`).join('');
   return (
     `<div id="seo-prerender">` +
-    `<h1>${esc(c.h1)}</h1>` +
+    `<h1>${esc(page === 'menu' ? c.menuTitle : c.h1)}</h1>` +
     `<p>${esc(c.intro)}</p>` +
     `<h2>${esc(c.menuHeading)}</h2><ul>${items}</ul>` +
     `<h2>${esc(c.visitHeading)}</h2>` +
@@ -207,17 +294,19 @@ function seoBlock(c) {
   );
 }
 
-function buildPage(shell, lang) {
+function buildPage(shell, lang, page) {
   const c = C[lang];
-  const url = `${ORIGIN}${PATH[lang]}`;
+  const url = `${ORIGIN}${pagePath(lang, page)}`;
   const dir = RTL.has(lang) ? 'rtl' : 'ltr';
   let html = shell;
 
   html = html.replace(/<html[^>]*>/, `<html lang="${lang}" dir="${dir}" xml:lang="${lang}">`);
-  html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(c.title)}</title>`);
+  const title = page === 'menu' ? c.menuTitle : c.title;
+  const description = page === 'menu' ? c.menuDescription : c.description;
+  html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`);
   html = html.replace(
     /<meta\s+name="description"[\s\S]*?\/?>/,
-    `<meta name="description" content="${esc(c.description)}" />`
+    `<meta name="description" content="${esc(description)}" />`
   );
   html = html.replace(
     /<meta\s+name="keywords"[\s\S]*?\/?>/,
@@ -225,11 +314,11 @@ function buildPage(shell, lang) {
   );
   html = html.replace(
     /<meta\s+property="og:title"[\s\S]*?\/?>/,
-    `<meta property="og:title" content="${esc(c.ogTitle)}" />`
+    `<meta property="og:title" content="${esc(page === 'menu' ? title : c.ogTitle)}" />`
   );
   html = html.replace(
     /<meta\s+property="og:description"[\s\S]*?\/?>/,
-    `<meta property="og:description" content="${esc(c.ogDescription)}" />`
+    `<meta property="og:description" content="${esc(page === 'menu' ? description : c.ogDescription)}" />`
   );
   html = html.replace(
     /<meta\s+property="og:url"[\s\S]*?\/?>/,
@@ -241,11 +330,11 @@ function buildPage(shell, lang) {
   );
   html = html.replace(
     /<meta\s+name="twitter:title"[\s\S]*?\/?>/,
-    `<meta name="twitter:title" content="${esc(c.ogTitle)}" />`
+    `<meta name="twitter:title" content="${esc(page === 'menu' ? title : c.ogTitle)}" />`
   );
   html = html.replace(
     /<meta\s+name="twitter:description"[\s\S]*?\/?>/,
-    `<meta name="twitter:description" content="${esc(c.ogDescription)}" />`
+    `<meta name="twitter:description" content="${esc(page === 'menu' ? description : c.ogDescription)}" />`
   );
   html = html.replace(
     /<meta\s+name="twitter:url"[\s\S]*?\/?>/,
@@ -257,24 +346,46 @@ function buildPage(shell, lang) {
   );
   // Remove every existing hreflang alternate, then insert a fresh set after canonical.
   html = html.replace(/\s*<link\s+rel="alternate"\s+hreflang="[^"]*"[^>]*>/g, '');
-  html = html.replace(/(<link\s+rel="canonical"[^>]*>)/, `$1\n    ${hreflangs()}`);
+  html = html.replace(/(<link\s+rel="canonical"[^>]*>)/, `$1\n    ${hreflangs(page)}`);
+  html = html.replace(/("inLanguage"\s*:\s*)"en"/, `$1"${lang}"`);
+  if (page === 'home') {
+    html = html.replace(
+      /<script id="faq-schema" type="application\/ld\+json">[\s\S]*?<\/script>/,
+      `<script id="faq-schema" type="application/ld+json">${faqSchema(c, lang)}</script>`
+    );
+  } else {
+    html = html.replace(
+      /\s*<script id="faq-schema" type="application\/ld\+json">[\s\S]*?<\/script>/,
+      ''
+    );
+  }
+  const pageSchemas =
+    `<script id="webpage-schema" type="application/ld+json">${webPageSchema(c, lang, page, url)}</script>` +
+    (page === 'menu'
+      ? `<script id="menu-prerender-schema" type="application/ld+json">${menuSummarySchema(c, lang, url)}</script>`
+      : '');
+  html = html.replace('</head>', `    ${pageSchemas}\n  </head>`);
   // Inject crawlable localized content into the empty mount node.
-  html = html.replace(/<div id="root">\s*<\/div>/, `<div id="root">${seoBlock(c)}</div>`);
+  html = html.replace(/<div id="root">\s*<\/div>/, `<div id="root">${seoBlock(c, page)}</div>`);
 
   return html;
 }
 
 const shell = readFileSync(resolve(DIST, 'index.html'), 'utf8');
 
-for (const lang of LANGS) {
-  const page = buildPage(shell, lang);
-  if (lang === 'en') {
-    writeFileSync(resolve(DIST, 'index.html'), page);
-  } else {
-    mkdirSync(resolve(DIST, lang), { recursive: true });
-    writeFileSync(resolve(DIST, lang, 'index.html'), page);
+for (const pageKind of ['home', 'menu']) {
+  for (const lang of LANGS) {
+    const page = buildPage(shell, lang, pageKind);
+    const relative = pagePath(lang, pageKind).replace(/^\//, '').replace(/\/$/, '');
+    if (!relative) {
+      writeFileSync(resolve(DIST, 'index.html'), page);
+    } else {
+      const output = resolve(DIST, `${relative}.html`);
+      mkdirSync(dirname(output), { recursive: true });
+      writeFileSync(output, page);
+    }
+    console.log(`prerendered ${pagePath(lang, pageKind)}`);
   }
-  console.log(`prerendered ${PATH[lang]} → ${lang === 'en' ? 'index.html' : `${lang}/index.html`}`);
 }
 
-console.log('i18n prerender complete: 5 language pages written.');
+console.log('i18n prerender complete: 10 localized home/menu pages written.');

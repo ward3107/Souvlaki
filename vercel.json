@@ -17,10 +17,6 @@
   },
   "rewrites": [
     {
-      "source": "/menu",
-      "destination": "/"
-    },
-    {
       "source": "/admin",
       "destination": "/"
     },
@@ -34,10 +30,6 @@
     },
     {
       "source": "/qr",
-      "destination": "/"
-    },
-    {
-      "source": "/(.*)",
       "destination": "/"
     }
   ],

@@ -3,6 +3,7 @@ import { ChevronDown, Star } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
 import { navigate } from '../../utils/router';
+import { localizedPublicPath } from '../../utils/seo';
 
 interface HeroProps {
   lang: Language;
@@ -129,7 +130,7 @@ export default function Hero({ lang }: HeroProps) {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 type="button"
-                onClick={() => navigate('/menu')}
+                onClick={() => navigate(localizedPublicPath(lang, '/menu'))}
                 className="px-8 py-4 bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white rounded-full font-semibold text-lg shadow-lift hover:shadow-pop transition-all active:scale-[0.97] inline-block"
                 aria-label={t(lang, 'hero_cta_menu')}
               >
