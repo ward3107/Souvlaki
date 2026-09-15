@@ -233,6 +233,17 @@ export default function Ticket({ lang }: { lang: Language }) {
           ))}
         </div>
 
+        {order.note && (
+          <div className="mt-3 rounded border-2 border-black px-2 py-2">
+            <div className="text-[10px] font-bold uppercase tracking-widest">
+              {tx(lang, 'הערה', 'Note', 'ملاحظة', 'Комментарий', 'Σημείωση')}
+            </div>
+            <div className="mt-0.5 whitespace-pre-wrap break-words text-sm font-bold">
+              {order.note}
+            </div>
+          </div>
+        )}
+
         <div className="border-t border-dashed border-black/60 my-3" />
 
         <div className="flex items-center justify-between font-bold text-lg">
