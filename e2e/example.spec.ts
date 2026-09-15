@@ -13,6 +13,7 @@ test.describe('Greek Souvlaki Website', () => {
     // of browser locale.
     await page.addInitScript(() => {
       window.localStorage.setItem('language', 'en');
+      window.localStorage.setItem('cookieConsent', 'essential');
     });
     await page.goto('/');
 
@@ -32,6 +33,7 @@ test.describe('Greek Souvlaki Website', () => {
   test('theme toggle works', async ({ page }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem('language', 'en');
+      window.localStorage.setItem('cookieConsent', 'essential');
     });
     await page.goto('/');
 
@@ -48,6 +50,7 @@ test.describe('Greek Souvlaki Website', () => {
   }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem('language', 'en');
+      window.localStorage.setItem('cookieConsent', 'essential');
       Object.defineProperty(window, 'open', {
         configurable: true,
         value: (url: string) => {
