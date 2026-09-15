@@ -20,14 +20,15 @@ test.describe('Greek Souvlaki Website', () => {
     // On mobile viewports the desktop nav is hidden behind a burger button.
     // Open it first if needed.
     const burger = page.getByRole('button', { name: 'Open menu' });
-    if (await burger.isVisible().catch(() => false)) {
+    if ((page.viewportSize()?.width ?? 1024) < 768) {
+      await expect(burger).toBeVisible({ timeout: 15_000 });
       await burger.click();
     }
 
     // Nav items are <button> (they trigger smooth-scroll, not real navigation).
     // Match by exact name to avoid catching "Open menu", "View Menu" CTA, etc.
     const menuButton = page.getByRole('button', { name: 'Menu', exact: true }).first();
-    await expect(menuButton).toBeVisible();
+    await expect(menuButton).toBeVisible({ timeout: 15_000 });
   });
 
   test('theme toggle works', async ({ page }) => {

@@ -116,7 +116,7 @@ export default function MenuCard({
                     setImageOpen(true);
                   }}
                   aria-label={`${IMAGE_VIEW_LABEL[lang]} — ${name}`}
-                  className="pointer-events-auto absolute bottom-2 start-2 z-10 inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-slate-950/80 px-2.5 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-white"
+                  className="pointer-events-auto absolute top-2 start-2 z-10 inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-slate-950/80 px-2.5 py-2 text-xs font-semibold text-white backdrop-blur-sm transition hover:bg-slate-950 focus:outline-none focus:ring-2 focus:ring-white"
                 >
                   <ZoomIn className="h-4 w-4" aria-hidden="true" />
                   <span>{IMAGE_VIEW_LABEL[lang]}</span>
