@@ -1,6 +1,7 @@
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
 import { navigate } from '../utils/router';
+import { localizedPublicPath } from '../utils/seo';
 
 export default function MenuCTA({ lang }: { lang: Language }) {
   return (
@@ -19,7 +20,7 @@ export default function MenuCTA({ lang }: { lang: Language }) {
         )}
       </p>
       <button
-        onClick={() => navigate('/menu')}
+        onClick={() => navigate(localizedPublicPath(lang, '/menu'))}
         className="mt-8 inline-flex items-center justify-center gap-2 px-10 py-4 bg-brand-terracotta-400 hover:bg-brand-terracotta-500 text-white rounded-full font-semibold text-lg shadow-lift hover:shadow-pop active:scale-[0.97] transition-all"
       >
         {tx(

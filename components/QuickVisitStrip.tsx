@@ -4,6 +4,7 @@ import { tx, isRtlLang } from '../utils/i18n';
 import { track } from '../utils/analytics';
 import { navigate } from '../utils/router';
 import { BUSINESS_INFO } from '../utils/businessInfo';
+import { localizedPublicPath } from '../utils/seo';
 
 export default function QuickVisitStrip({ lang }: { lang: Language }) {
   const isRtl = isRtlLang(lang);
@@ -25,10 +26,10 @@ export default function QuickVisitStrip({ lang }: { lang: Language }) {
     >
       <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 md:grid-cols-4">
         <a
-          href="/menu"
+          href={localizedPublicPath(lang, '/menu')}
           onClick={(event) => {
             event.preventDefault();
-            navigate('/menu');
+            navigate(localizedPublicPath(lang, '/menu'));
           }}
           className={actionClass}
         >

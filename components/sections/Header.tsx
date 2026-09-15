@@ -4,6 +4,7 @@ import { Language, type TranslationKey } from '../../types';
 import { t } from '../../utils/i18n';
 import { scrollToSection, scrollToSectionWhenReady } from '../../utils/scroll';
 import { navigate } from '../../utils/router';
+import { localizedPublicPath } from '../../utils/seo';
 import { useBackClose } from '../hooks/useBackClose';
 import OpenStatusPill from '../OpenStatusPill';
 
@@ -57,16 +58,16 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
   const handleNav = (id: string) => {
     setIsMenuOpen(false);
     if (id === 'menu') {
-      navigate('/menu');
+      navigate(localizedPublicPath(lang, '/menu'));
       return;
     }
     if (id === 'home') {
-      navigate('/');
+      navigate(localizedPublicPath(lang, '/'));
       return;
     }
     // Section links: make sure we're on the homepage, then scroll to the section.
-    if (window.location.pathname !== '/') {
-      navigate('/');
+    if (window.location.pathname !== localizedPublicPath(lang, '/')) {
+      navigate(localizedPublicPath(lang, '/'));
       // The homepage tree needs a few frames to mount before the target exists.
       scrollToSectionWhenReady(id);
     } else {
@@ -136,7 +137,6 @@ export default function Header({ lang, setLang, theme, setTheme }: HeaderProps) 
                     key={l}
                     onClick={() => {
                       setLang(l);
-                      localStorage.setItem('language', l);
                       setIsLangDropdownOpen(false);
                     }}
                     className={`block w-full text-start px-4 py-2 text-sm hover:bg-brand-blue-50 dark:hover:bg-slate-700 ${

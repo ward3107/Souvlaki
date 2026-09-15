@@ -119,12 +119,12 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     const el = document.createElement('script');
     el.type = 'application/ld+json';
     el.id = 'menu-schema';
-    el.textContent = JSON.stringify(buildMenuSchema(categories, overrides));
+    el.textContent = JSON.stringify(buildMenuSchema(categories, overrides, lang));
     document.head.appendChild(el);
     return () => {
       el.remove();
     };
-  }, [overrides, categories]);
+  }, [overrides, categories, lang]);
 
   const resolvedLines = useMemo(
     () =>
