@@ -64,8 +64,13 @@ export default function MenuCard({
         >
           {/* FRONT — tap to flip to details */}
           <div
+            inert={isFlipped}
             className="group absolute inset-0 overflow-hidden rounded-3xl border border-brand-blue-900/10 bg-white text-start shadow-sm transition-shadow hover:shadow-soft dark:border-white/10 dark:bg-slate-800"
-            style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' as const }}
+            style={{
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden' as const,
+              pointerEvents: isFlipped ? 'none' : 'auto',
+            }}
           >
             <button
               type="button"
@@ -148,11 +153,13 @@ export default function MenuCard({
 
           {/* BACK — dedicated back control keeps add buttons unambiguous. */}
           <div
+            inert={!isFlipped}
             className="absolute inset-0 flex flex-col overflow-y-auto overscroll-contain rounded-3xl border border-brand-blue-900/10 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-slate-800 sm:p-5"
             style={{
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden' as const,
               transform: 'rotateY(180deg)',
+              pointerEvents: isFlipped ? 'auto' : 'none',
             }}
           >
             <button
