@@ -54,7 +54,7 @@ export default function SupabaseAdmin({ lang }: { lang: Language }) {
   }, []);
 
   useEffect(() => {
-    if (session) getOverrides().then(setOverrides);
+    if (session?.user.app_metadata.role === 'owner') getOverrides().then(setOverrides);
   }, [session]);
 
   const signIn = async () => {
@@ -83,6 +83,35 @@ export default function SupabaseAdmin({ lang }: { lang: Language }) {
       <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white/50">
         <Loader2 className="h-6 w-6 animate-spin" aria-hidden="true" />
       </div>
+    );
+  }
+
+  if (session && session.user.app_metadata.role !== 'owner') {
+    return (
+      <main
+        className="flex min-h-screen items-center justify-center bg-slate-950 p-6 text-white"
+        dir={isRtl ? 'rtl' : 'ltr'}
+      >
+        <div>
+          <p role="alert">
+            {tx(
+              lang,
+              'לחשבון זה אין הרשאת בעלים.',
+              'This account does not have owner access.',
+              'هذا الحساب لا يملك صلاحيات المالك.',
+              'У этого аккаунта нет доступа владельца.',
+              'Αυτός ο λογαριασμός δεν έχει πρόσβαση ιδιοκτήτη.'
+            )}
+          </p>
+          <button
+            type="button"
+            className="mt-4 min-h-11 rounded-lg bg-white/10 px-4"
+            onClick={() => void supabase!.auth.signOut()}
+          >
+            {tx(lang, 'יציאה', 'Sign out', 'تسجيل الخروج', 'Выйти', 'Αποσύνδεση')}
+          </button>
+        </div>
+      </main>
     );
   }
 

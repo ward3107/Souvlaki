@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { Language } from '../../types';
 import { tx } from '../../utils/i18n';
 import { flattenItems } from '../../utils/menuData';
-import { fetchRecentOrders, type OrderRow } from '../../utils/orders';
+import { fetchRecentOrders, isConfirmedOrder, type OrderRow } from '../../utils/orders';
 import { fetchMenuItems, type MenuItemRecord } from '../../utils/menuStore';
 import { getOverrides, type MenuOverrides } from '../../utils/menuOverrides';
 import { startOfToday, daysAgo } from './dates';
@@ -29,7 +29,7 @@ export default function Overview({ lang }: { lang: Language }) {
 
   useEffect(() => {
     Promise.all([fetchRecentOrders(200), fetchMenuItems(), getOverrides()]).then(([o, d, ov]) => {
-      setOrders(o);
+      setOrders(o.filter(isConfirmedOrder));
       setDbItems(d);
       setOverrides(ov);
       setLoading(false);

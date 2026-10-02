@@ -308,6 +308,7 @@ export default function Menu({ language, id = 'menu' }: MenuProps) {
     // it block or delay the WhatsApp handoff.
     void recordOrder({
       customerName: name,
+      customerNote,
       total: cartTotal,
       items: availableLines.map((l) => ({
         q: l.qty,
