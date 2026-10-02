@@ -21,8 +21,27 @@ jobs:
         id: meta
         uses: dependabot/fetch-metadata@v3
 
-      # Merge every Dependabot update (patch, minor and major) once CI is green.
+      # Never enable merging on an unprotected branch, or for major upgrades.
+      - name: Check branch protection
+        id: branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BASE: ${{ github.event.pull_request.base.ref }}
+        run: |
+          protected=$(gh api "repos/$REPO/branches/$BASE" --jq '.protected')
+          eligible=false
+          if [ "$protected" = "true" ]; then
+            # Fail closed if required-check settings cannot be read. Protection
+            # alone does not guarantee that CI is required before a merge.
+            if gh api "repos/$REPO/branches/$BASE/protection/required_status_checks" > required-checks.json; then
+              eligible=$(jq '(.contexts + [.checks[]?.context]) as $configured | ["Lint", "Type Check", "Test", "E2E Tests", "Build"] | all(. as $name | $configured | index($name) != null)' required-checks.json)
+            fi
+          fi
+          echo "eligible=$eligible" >> "$GITHUB_OUTPUT"
+
       - name: Enable auto-merge
+        if: steps.branch.outputs.eligible == 'true' && steps.meta.outputs.update-type != 'version-update:semver-major'
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
