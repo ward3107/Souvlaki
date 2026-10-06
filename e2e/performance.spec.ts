@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.use({ serviceWorkers: 'block' });
 
-test('RTL footer links remain clear of the floating WhatsApp control at the bottom of the page', async ({
+test('RTL footer links remain clear of the floating controls at the bottom of the page', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -15,12 +15,15 @@ test('RTL footer links remain clear of the floating WhatsApp control at the bott
   await expect
     .poll(async () => {
       await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-      const floating = await page
-        .getByRole('button', { name: 'פתיחת WhatsApp', exact: true })
-        .boundingBox();
+      const floating = await Promise.all([
+        page.getByRole('button', { name: 'פתיחת WhatsApp', exact: true }).boundingBox(),
+        page.getByRole('button', { name: 'Back to Top', exact: true }).boundingBox(),
+      ]);
       const links = await page.locator('[data-builder-signature] nav a').all();
       const boxes = await Promise.all(links.map((link) => link.boundingBox()));
-      return !!floating && boxes.every((box) => !!box && box.y + box.height < floating.y);
+      return floating.every(
+        (control) => !!control && boxes.every((box) => !!box && box.y + box.height < control.y)
+      );
     })
     .toBe(true);
 });
