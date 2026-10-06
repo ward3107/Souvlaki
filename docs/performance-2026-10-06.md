@@ -83,7 +83,10 @@ score guarantee is claimed.
   handoff/cart retention, navigation, theme changes, contact alignment, full
   story captions, signature links and no video downloads with 6× CPU slowdown.
 - Desktop hero and mobile hero/footer screenshots were visually inspected.
+  After deployment, the public Hebrew page and all eight signature links were
+  verified in the live browser. A desktop RTL overlap with the floating
+  WhatsApp control was then corrected and two focused layout checks passed.
 - Firefox/WebKit and actual older devices were not run locally: their browser
-  downloads were unavailable in this environment. CI retains all five existing
-  browser projects for independent verification. No complete accessibility or
+  downloads were unavailable in this environment. The subsequent CI run passed
+  all five configured browser projects, including Firefox and WebKit. No complete accessibility or
   legal-compliance certification is implied by this performance audit.
