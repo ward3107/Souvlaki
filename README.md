@@ -79,13 +79,13 @@
 
 ### 🎨 Modern UI/UX
 
-| Feature                  | Description                                                   |
-| ------------------------ | ------------------------------------------------------------- |
-| **3D Tilt Effects**      | Interactive menu cards with 3D perspective (desktop & mobile) |
-| **Dark Mode**            | Automatic theme switching based on system preferences         |
-| **Smooth Animations**    | Scroll-reveal effects with intersection observers             |
-| **Parallax Backgrounds** | Beautiful parallax scrolling on desktop                       |
-| **Responsive Design**    | Optimized for desktop, tablet, and mobile devices             |
+| Feature                  | Description                                                    |
+| ------------------------ | -------------------------------------------------------------- |
+| **3D Tilt Effects**      | Interactive menu cards with 3D perspective on capable desktops |
+| **Dark Mode**            | Automatic theme switching based on system preferences          |
+| **Smooth Animations**    | Scroll-reveal effects with intersection observers              |
+| **Parallax Backgrounds** | Beautiful parallax scrolling on desktop                        |
+| **Responsive Design**    | Optimized for desktop, tablet, and mobile devices              |
 
 ### 🚀 Performance Optimizations
 
@@ -105,9 +105,9 @@
 
 ### 📱 Mobile Optimizations
 
-- **Touch Events**: 3D tilt effects with touch handling
+- **Adaptive Rendering**: Static cinematic photography on touch devices; no decorative video downloads
 - **Smooth Scrolling**: No horizontal movement issues
-- **Large Tap Targets**: Minimum 48x48px for buttons
+- **Large Tap Targets**: VASIA signature links have 44×44px tap targets
 - **Responsive Images**: Adaptive image sizes
 
 ### 🛡️ Legal & Privacy
@@ -118,27 +118,22 @@
 
 ---
 
-## 📊 Performance Metrics
+## 📊 Performance Verification
 
-| Metric                             | Value             | Status       |
-| ---------------------------------- | ----------------- | ------------ |
-| **LCP** (Largest Contentful Paint) | < 2.5s            | 🟢 Good      |
-| **CLS** (Cumulative Layout Shift)  | < 0.1             | 🟢 Good      |
-| **FCP** (First Contentful Paint)   | < 1.8s            | 🟢 Good      |
-| **TBT** (Total Blocking Time)      | < 200ms           | 🟢 Good      |
-| **Bundle Size**                    | ~135 KB (gzipped) | 🟢 Excellent |
+The current measured audit and device policy are documented in
+[the October 2026 performance report](docs/performance-2026-10-06.md).
+Results use controlled device emulation and are not field measurements.
 
-### Optimization Techniques
+| Metric                         | Target  |
+| ------------------------------ | ------- |
+| LCP (Largest Contentful Paint) | < 2.5s  |
+| CLS (Cumulative Layout Shift)  | < 0.1   |
+| FCP (First Contentful Paint)   | < 1.8s  |
+| TBT (Total Blocking Time)      | < 200ms |
 
-```bash
-# Build output sizes
-react-vendor.js   193 KB → 60 KB gzipped
-icons.js          16 KB → 4 KB gzipped
-index.js         245 KB → 71 KB gzipped
-styles.css        61 KB → 10 KB gzipped
-─────────────────────────────────────
-Total:           515 KB → 145 KB gzipped
-```
+These are goals, not guarantees for every device or connection. Use
+`npm run build` for current compressed bundle sizes and the CI Lighthouse
+report for its own test conditions.
 
 ---
 

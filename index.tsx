@@ -4,7 +4,9 @@ import App from './App';
 import './index.css';
 import './src/pwa';
 import { initSmoothScroll } from './src/smoothScroll';
+import { initRenderingPolicy } from './src/renderingPolicy';
 
+initRenderingPolicy();
 initSmoothScroll();
 
 const rootElement = document.getElementById('root');

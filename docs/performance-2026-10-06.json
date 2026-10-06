@@ -1,0 +1,59 @@
+[
+  {
+    "label": "before",
+    "run": 0,
+    "lcp": 6732,
+    "longTaskBlocking": 688,
+    "bytes": 2205087,
+    "overflow": false,
+    "videoRequests": 3
+  },
+  {
+    "label": "before",
+    "run": 1,
+    "lcp": 6688,
+    "longTaskBlocking": 664,
+    "bytes": 2205087,
+    "overflow": false,
+    "videoRequests": 3
+  },
+  {
+    "label": "before",
+    "run": 2,
+    "lcp": 6676,
+    "longTaskBlocking": 666,
+    "bytes": 2205087,
+    "overflow": false,
+    "videoRequests": 3
+  },
+  {
+    "label": "after",
+    "run": 0,
+    "lcp": 4716,
+    "longTaskBlocking": 515,
+    "bytes": 1031424,
+    "overflow": false,
+    "mode": "lite",
+    "videoRequests": 0
+  },
+  {
+    "label": "after",
+    "run": 1,
+    "lcp": 4528,
+    "longTaskBlocking": 363,
+    "bytes": 1031424,
+    "overflow": false,
+    "mode": "lite",
+    "videoRequests": 0
+  },
+  {
+    "label": "after",
+    "run": 2,
+    "lcp": 4576,
+    "longTaskBlocking": 399,
+    "bytes": 1031424,
+    "overflow": false,
+    "mode": "lite",
+    "videoRequests": 0
+  }
+]

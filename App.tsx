@@ -26,7 +26,6 @@ import Footer from './components/sections/Footer';
 // Eagerly loaded
 import FloatingActions from './components/FloatingActions';
 import BackToTopButton from './components/BackToTopButton';
-import Lightbox from './components/Lightbox';
 import FirePlateJourney from './components/FirePlateJourney';
 import FreshIngredients from './components/FreshIngredients';
 import FamilyHeritage from './components/FamilyHeritage';
@@ -37,6 +36,7 @@ import InstallPrompt from './components/InstallPrompt';
 import ErrorBoundary from './components/ErrorBoundary';
 
 // Lazy chunks
+const Lightbox = lazy(() => import('./components/Lightbox'));
 // The full menu lives on its own /menu route, so keep it out of the homepage
 // bundle — it loads only when a visitor actually opens the menu.
 const Menu = lazy(() => import('./components/Menu'));
@@ -334,8 +334,7 @@ const App: React.FC = () => {
       ) : (
         <main id="main-content" role="main">
           <Hero lang={lang} />
-          {/* Solid-bg layer covers the pinned Hero so translucent sections
-              below render against the page bg, not the hero video. */}
+          {/* Consistent page surface beneath the hero and translucent sections. */}
           <div className="relative z-10 bg-slate-50 dark:bg-slate-900">
             {/* Story, top to bottom: welcome band -> menu prompt -> watch it made
                 -> made fresh -> meet the family -> our world -> proof -> visit. */}
@@ -382,13 +381,17 @@ const App: React.FC = () => {
       <BackToTopButton />
       <InstallPrompt lang={lang} />
 
-      <Lightbox
-        lang={lang}
-        index={lightboxIndex}
-        images={GALLERY_IMAGES}
-        onClose={() => setLightboxIndex(null)}
-        onChange={setLightboxIndex}
-      />
+      {lightboxIndex !== null && (
+        <Suspense fallback={null}>
+          <Lightbox
+            lang={lang}
+            index={lightboxIndex}
+            images={GALLERY_IMAGES}
+            onClose={() => setLightboxIndex(null)}
+            onChange={setLightboxIndex}
+          />
+        </Suspense>
+      )}
 
       {legalDocument && (
         <Suspense fallback={null}>

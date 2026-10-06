@@ -3,6 +3,7 @@ import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
 import { track } from '../../utils/analytics';
 import { BUSINESS_INFO } from '../../utils/businessInfo';
+import BuilderSignature from '../BuilderSignature';
 
 interface Props {
   lang: Language;
@@ -21,7 +22,7 @@ const WhatsAppGlyph = ({ className = 'w-6 h-6' }: { className?: string }) => (
 
 export default function Footer({ lang, onOpenLegal }: Props) {
   return (
-    <footer className="bg-gray-900 text-gray-300 py-12 border-t border-gray-800">
+    <footer className="bg-gray-900 text-gray-300 pt-12 pb-28 md:pb-12 border-t border-gray-800">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
           <div className="text-center md:text-start">
@@ -106,33 +107,33 @@ export default function Footer({ lang, onOpenLegal }: Props) {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-70 hover:opacity-100 transition-opacity">
-          <p className="text-gray-400 dark:text-gray-500">{t(lang, 'footer_copyright')}</p>
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+          <p className="text-gray-400">{t(lang, 'footer_copyright')}</p>
           <div className="flex gap-4 flex-wrap justify-center md:justify-end items-center">
             <button
               onClick={() => onOpenLegal('/legal/terms-of-use.md')}
-              className="text-gray-400 dark:text-gray-500 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+              className="text-gray-300 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
             >
               {t(lang, 'footer_terms')}
             </button>
             <span className="text-gray-600">•</span>
             <button
               onClick={() => onOpenLegal('/legal/privacy-policy.md')}
-              className="text-gray-400 dark:text-gray-500 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+              className="text-gray-300 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
             >
               {t(lang, 'footer_privacy')}
             </button>
             <span className="text-gray-600">•</span>
             <button
               onClick={() => onOpenLegal('/legal/accessibility-statement.md')}
-              className="text-gray-400 dark:text-gray-500 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+              className="text-gray-300 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
             >
               {t(lang, 'footer_accessibility')}
             </button>
             <span className="text-gray-600">•</span>
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('openRatingWidget'))}
-              className="text-gray-400 dark:text-gray-500 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
+              className="text-gray-300 hover:text-brand-blue-300 hover:underline transition-all cursor-pointer font-medium px-2 py-1 rounded hover:bg-gray-800/50"
             >
               {tx(lang, 'דרגו אותנו', 'Rate us', 'قيّمنا', 'Оценить', 'Αξιολογήστε')}
             </button>
@@ -140,35 +141,8 @@ export default function Footer({ lang, onOpenLegal }: Props) {
                 cards left-to-right in the "Fresh, every day" section), not a
                 visible link. */}
           </div>
-
-          <div className="flex justify-center md:justify-end items-center md:ml-24">
-            <a
-              href="https://waseemp.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-gray-400 hover:text-gray-200 transition-colors group"
-              title="Built with wwwebsie"
-            >
-              <span className="text-sm">
-                {tx(
-                  lang,
-                  'נבנה על ידי',
-                  'Built by',
-                  'بُني بواسطة',
-                  'Создано',
-                  'Κατασκευάστηκε από'
-                )}
-              </span>
-              <img
-                src="/ws-logo-100w.avif"
-                alt="wwwebsie logo"
-                loading="lazy"
-                decoding="async"
-                className="h-10 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
-              />
-            </a>
-          </div>
         </div>
+        <BuilderSignature lang={lang} />
       </div>
     </footer>
   );

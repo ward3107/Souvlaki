@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLiteEffects } from '../../src/renderingPolicy';
 
 interface Options {
   max?: number;
@@ -24,7 +25,9 @@ export function useTilt3D<T extends HTMLElement>({
 }: Options = {}) {
   const ref = useRef<T | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
-  const [enabled, setEnabled] = useState(false);
+  const [hasHover, setHasHover] = useState(false);
+  const lite = useLiteEffects();
+  const enabled = hasHover && !lite;
 
   const rectRef = useRef<DOMRect | null>(null);
   const coordsRef = useRef({ rx: 0, ry: 0 });
@@ -32,16 +35,23 @@ export function useTilt3D<T extends HTMLElement>({
 
   useEffect(() => {
     const mq = window.matchMedia('(hover: hover)');
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setEnabled(mq.matches && !reduce.matches);
+    const update = () => setHasHover(mq.matches);
     update();
-    mq.addEventListener('change', update);
-    reduce.addEventListener('change', update);
+    if (mq.addEventListener) mq.addEventListener('change', update);
+    else mq.addListener(update);
     return () => {
-      mq.removeEventListener('change', update);
-      reduce.removeEventListener('change', update);
+      if (mq.removeEventListener) mq.removeEventListener('change', update);
+      else mq.removeListener(update);
     };
   }, []);
+
+  useEffect(() => {
+    if (!enabled) {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      innerRef.current?.style.removeProperty('transform');
+    }
+  }, [enabled]);
 
   // Cancel any pending frame on unmount.
   useEffect(() => {

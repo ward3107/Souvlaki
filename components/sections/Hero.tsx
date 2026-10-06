@@ -1,67 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
 import { ChevronDown, Star } from 'lucide-react';
 import { Language } from '../../types';
 import { t, tx } from '../../utils/i18n';
 import { navigate } from '../../utils/router';
 import { localizedPublicPath } from '../../utils/seo';
+import AmbientVideo from '../AmbientVideo';
 
 interface HeroProps {
   lang: Language;
 }
 
 export default function Hero({ lang }: HeroProps) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [allowVideo, setAllowVideo] = useState(false);
-
-  // Skip the video on reduced-motion / data-saver — the poster carries the
-  // hero on its own, saving several MB on metered connections.
-  useEffect(() => {
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-    type WithSaveData = Navigator & { connection?: { saveData?: boolean } };
-    const conn = (navigator as WithSaveData).connection;
-    const update = () => setAllowVideo(!reduce.matches && !conn?.saveData);
-    update();
-    reduce.addEventListener('change', update);
-    return () => reduce.removeEventListener('change', update);
-  }, []);
-
-  // Only decode frames while the hero is actually on screen — the hero is
-  // sticky, so it stays pinned behind scrolled content and would otherwise
-  // keep decoding off-view.
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (!allowVideo) {
-      el.pause();
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) el.play().catch(() => {});
-          else el.pause();
-        }
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [allowVideo]);
-
   return (
-    <div className="gpu-stable sticky top-0 z-0 h-screen overflow-hidden">
+    <div className="relative z-0 h-screen min-h-[720px] overflow-hidden">
       <div className="relative flex h-full w-full items-center justify-center">
         <section id="home" className="absolute inset-0 flex items-center justify-center">
-          <video
-            ref={videoRef}
-            className="gpu-stable absolute inset-0 w-full h-full object-cover z-0"
+          <AmbientVideo
+            className="absolute inset-0 z-0"
             src="/gallery/hero-bg.mp4"
-            poster="/gallery/hero-bg.webp"
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
+            poster="/gallery/hero-bg-1280w.webp"
+            priority
           />
           <div className="absolute inset-0 z-0 pointer-events-none">
             <div
@@ -92,7 +49,7 @@ export default function Hero({ lang }: HeroProps) {
             />
           </div>
 
-          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+          <div className="relative z-10 text-center px-4 pb-20 md:pb-0 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 mb-8 bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-white/20 shadow-lift hover:bg-white/20 transition-all cursor-default">
               <img src="/favicon.png" alt="Logo" className="w-12 h-12 rounded-full" />
               <div className="flex gap-0.5 text-yellow-400">
