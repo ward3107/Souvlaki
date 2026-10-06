@@ -22,7 +22,7 @@ const WhatsAppGlyph = ({ className = 'w-6 h-6' }: { className?: string }) => (
 
 export default function Footer({ lang, onOpenLegal }: Props) {
   return (
-    <footer className="bg-gray-900 text-gray-300 pt-12 pb-28 md:pb-12 border-t border-gray-800">
+    <footer className="bg-gray-900 text-gray-300 pt-12 pb-28 border-t border-gray-800">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
           <div className="text-center md:text-start">

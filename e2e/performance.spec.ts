@@ -2,6 +2,29 @@ import { test, expect } from '@playwright/test';
 
 test.use({ serviceWorkers: 'block' });
 
+test('RTL footer links remain clear of the floating WhatsApp control at the bottom of the page', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addInitScript(() => localStorage.setItem('cookieConsent', 'essential'));
+  await page.goto('/he/');
+  await expect(page.locator('[data-builder-signature]')).toBeAttached();
+  // Deferred section geometry can settle during the first jump to the bottom.
+  // Compare real bounding boxes after that settles, rather than relying on a
+  // screenshot's viewport or on the footer's declared padding.
+  await expect
+    .poll(async () => {
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      const floating = await page
+        .getByRole('button', { name: 'פתיחת WhatsApp', exact: true })
+        .boundingBox();
+      const links = await page.locator('[data-builder-signature] nav a').all();
+      const boxes = await Promise.all(links.map((link) => link.boundingBox()));
+      return !!floating && boxes.every((box) => !!box && box.y + box.height < floating.y);
+    })
+    .toBe(true);
+});
+
 for (const language of ['en', 'he', 'ar', 'ru', 'el']) {
   test(`the ${language} homepage fits a 320px screen with accessible signature links`, async ({
     page,
