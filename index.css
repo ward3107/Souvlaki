@@ -153,6 +153,42 @@ body.reading-guide-active #reading-guide {
   backface-visibility: hidden;
 }
 
+/* Static photography, native scroll and simple surfaces on touch/limited
+   devices. Keep controls and their focus/hover feedback fully functional. */
+html[data-effects='lite'] .hero-fog,
+html[data-effects='lite'] .hero-spotlight {
+  display: none;
+}
+html[data-effects='lite'] .marquee-track,
+html[data-effects='lite'] .menu-heartbeat,
+html[data-effects='lite'] .snap-share-pulse,
+html[data-effects='lite'] .camera-wiggle,
+html[data-effects='lite'] .hero-kenburns,
+html[data-effects='lite'] .hero-ember {
+  animation: none !important;
+  will-change: auto;
+}
+html[data-effects='lite'] .glass,
+html[data-effects='lite'] [class*='backdrop-blur'] {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+html[data-effects='lite'] header {
+  background-color: #fff;
+}
+html.dark[data-effects='lite'] header {
+  background-color: #0f172a;
+}
+html[data-effects='lite'] .gpu-stable {
+  transform: none;
+}
+/* Normal-flow sections only: containing a sticky scroll story here would
+   alter its geometry. Intrinsic size is refined after the first render. */
+.defer-paint {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
 /* Snap & Share button — double pulse ring + breathing scale + continuous camera tilt */
 @keyframes snap-share-pulse {
   0% {

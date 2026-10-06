@@ -107,7 +107,7 @@ export default function InstagramGrid({ lang, galleryImages }: Props) {
   }, []);
 
   return (
-    <section className="py-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] transition-colors duration-300">
+    <section className="defer-paint py-16 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] transition-colors duration-300">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-terracotta-400 rounded-2xl mb-4 shadow-soft">

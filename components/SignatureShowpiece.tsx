@@ -1,22 +1,18 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { useRef, type RefObject } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
+import { useLiteEffects } from '../src/renderingPolicy';
 
 // The showpiece background. Swap this path for your best, highest-res plate shot.
 const SHOWPIECE_IMAGE = '/gallery/IMG-20251205-WA0050-400.webp';
 
 export default function SignatureShowpiece({ lang }: { lang: Language }) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-
-  // Slow cinematic push-in + drift as the section passes through.
-  const scale = useTransform(scrollYProgress, [0, 1], reduce ? [1, 1] : [1.25, 1.05]);
-  const y = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['-6%', '6%']);
+  const reduce = useLiteEffects();
 
   const reveal = (delay: number) => ({
-    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 40 },
+    initial: reduce ? (false as const) : { opacity: 0, y: 40 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: '-100px' },
     transition: {
@@ -39,14 +35,19 @@ export default function SignatureShowpiece({ lang }: { lang: Language }) {
       )}
       className="relative h-screen min-h-[560px] overflow-hidden bg-black flex items-center justify-center"
     >
-      {/* Parallax background */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ scale, y, backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
-        aria-hidden="true"
-      >
-        <img src={SHOWPIECE_IMAGE} alt="" className="w-full h-full object-cover" loading="lazy" />
-      </motion.div>
+      {reduce ? (
+        <div className="absolute inset-0" aria-hidden="true">
+          <img
+            src={SHOWPIECE_IMAGE}
+            alt=""
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ) : (
+        <CinematicBackground target={ref} />
+      )}
 
       {/* Cinematic grade: darken, vignette, warm ember glow */}
       <div className="absolute inset-0 bg-black/55" aria-hidden="true" />
@@ -117,5 +118,22 @@ export default function SignatureShowpiece({ lang }: { lang: Language }) {
         />
       </div>
     </section>
+  );
+}
+
+function CinematicBackground({ target }: { target: RefObject<HTMLDivElement | null> }) {
+  const { scrollYProgress } = useScroll({ target, offset: ['start end', 'end start'] });
+  const scale = useTransform(scrollYProgress, [0, 1], [1.25, 1.05]);
+  const y = useTransform(scrollYProgress, [0, 1], ['-6%', '6%']);
+  return (
+    <motion.div className="absolute inset-0" style={{ scale, y }} aria-hidden="true">
+      <img
+        src={SHOWPIECE_IMAGE}
+        alt=""
+        className="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+    </motion.div>
   );
 }

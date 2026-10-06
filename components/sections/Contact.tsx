@@ -20,7 +20,7 @@ export default function Contact({ lang }: Props) {
   return (
     <section
       id="contact"
-      className="py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300"
+      className="defer-paint py-20 bg-gray-50 dark:bg-slate-800/50 transition-colors duration-300"
     >
       <div className="container mx-auto px-4">
         <Reveal>
@@ -153,6 +153,7 @@ export default function Contact({ lang }: Props) {
 
           <div className="h-full min-h-[400px] rounded-2xl overflow-hidden shadow-lift border border-gray-100 dark:border-slate-700 relative group">
             <iframe
+              loading="lazy"
               width="100%"
               height="100%"
               src="https://maps.google.com/maps?q=Greek%20Souvlaki%20Kafr%20Yasif&t=&z=15&ie=UTF8&iwloc=&output=embed"

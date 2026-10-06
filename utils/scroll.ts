@@ -1,4 +1,5 @@
 import { getLenis } from '../src/smoothScroll';
+import { prefersLiteEffects } from '../src/renderingPolicy';
 
 // The header is `sticky top-0` and 80px tall (h-20). Scroll targets must clear
 // it, or the section heading lands hidden underneath the translucent header.
@@ -24,7 +25,7 @@ export function scrollToSection(id: string) {
     lenis.resize();
     lenis.scrollTo(target);
   } else {
-    window.scrollTo({ top: target, behavior: 'smooth' });
+    window.scrollTo({ top: target, behavior: prefersLiteEffects() ? 'auto' : 'smooth' });
   }
 }
 
@@ -75,6 +76,6 @@ export function scrollToTop() {
   if (lenis) {
     lenis.scrollTo(0);
   } else {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: prefersLiteEffects() ? 'auto' : 'smooth' });
   }
 }

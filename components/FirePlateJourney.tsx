@@ -1,7 +1,16 @@
-import { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from 'framer-motion';
+import { useRef, useState } from 'react';
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  useMotionValueEvent,
+  type MotionValue,
+} from 'framer-motion';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
+import AmbientVideo from './AmbientVideo';
+import { useLiteEffects } from '../src/renderingPolicy';
 
 interface Props {
   lang: Language;
@@ -68,14 +77,12 @@ function StageLayer({
   progress,
   reduce,
   allowVideo,
-  videoRef,
 }: {
   stage: Stage;
   i: number;
   progress: MotionValue<number>;
   reduce: boolean;
   allowVideo: boolean;
-  videoRef: React.RefObject<HTMLVideoElement | null>;
 }) {
   const start = i / N;
   // Stage 0 is the always-visible base; each later stage reveals over the previous.
@@ -89,18 +96,9 @@ function StageLayer({
       style={{ opacity: i === 0 ? 1 : opacity, zIndex: i }}
       aria-hidden="true"
     >
-      <motion.div className="absolute inset-0" style={{ scale, willChange: 'transform' }}>
+      <motion.div className="absolute inset-0" style={{ scale }}>
         {stage.kind === 'video' && allowVideo ? (
-          <video
-            ref={videoRef}
-            className="gpu-stable w-full h-full object-cover"
-            src={stage.src}
-            poster={stage.poster}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          />
+          <ActiveStageVideo stage={stage} progress={progress} />
         ) : (
           <img
             className="w-full h-full object-cover"
@@ -114,6 +112,25 @@ function StageLayer({
       {/* Cinematic scrim — richens the image and keeps captions legible. */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/40" />
     </motion.div>
+  );
+}
+
+function ActiveStageVideo({ stage, progress }: { stage: Stage; progress: MotionValue<number> }) {
+  const [active, setActive] = useState(progress.get() < 1 / N + FADE);
+  useMotionValueEvent(progress, 'change', (value) => {
+    const next = value < 1 / N + FADE;
+    if (next !== active) setActive(next);
+  });
+  return active ? (
+    <AmbientVideo className="absolute inset-0" src={stage.src} poster={stage.poster!} />
+  ) : (
+    <img
+      src={stage.poster}
+      alt=""
+      className="h-full w-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
   );
 }
 
@@ -165,35 +182,12 @@ function Dot({ i, progress }: { i: number; progress: MotionValue<number> }) {
   );
 }
 
-export default function FirePlateJourney({ lang }: Props) {
+function CinematicFirePlateJourney({ lang }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const reduce = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
 
-  // Skip the grill video on reduced-motion / data-saver — the poster carries it.
-  // Derived during render (no effect) so it never triggers a cascading re-render.
-  const saveData = !!(navigator as Navigator & { connection?: { saveData?: boolean } }).connection
-    ?.saveData;
-  const allowVideo = !reduce && !saveData;
-
-  // Only decode/play the grill video while the section is on screen — otherwise
-  // it keeps burning GPU behind the rest of the page and causes scroll jank.
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el || !allowVideo) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) el.play().catch(() => {});
-          else el.pause();
-        }
-      },
-      { threshold: 0.05 }
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [allowVideo]);
+  const allowVideo = !reduce;
 
   return (
     <section
@@ -218,7 +212,6 @@ export default function FirePlateJourney({ lang }: Props) {
             progress={scrollYProgress}
             reduce={reduce}
             allowVideo={allowVideo}
-            videoRef={videoRef}
           />
         ))}
 
@@ -237,6 +230,49 @@ export default function FirePlateJourney({ lang }: Props) {
             ))}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+export default function FirePlateJourney({ lang }: Props) {
+  const lite = useLiteEffects();
+  if (!lite) return <CinematicFirePlateJourney lang={lang} />;
+  return (
+    <section
+      aria-label={tx(
+        lang,
+        'מהאש אל הצלחת',
+        'From fire to plate',
+        'من النار إلى الطبق',
+        'От огня до тарелки',
+        'Από τη φωτιά στο πιάτο'
+      )}
+      className="bg-slate-950 px-5 py-16 md:py-24"
+      data-journey="static"
+    >
+      <div className="mx-auto grid max-w-6xl gap-5 sm:grid-cols-2">
+        {STAGES.map((stage) => (
+          <figure
+            key={stage.src}
+            className="relative overflow-hidden rounded-2xl bg-black aspect-[4/3]"
+          >
+            <img
+              src={stage.kind === 'video' ? stage.poster : stage.src}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div
+              className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"
+              aria-hidden="true"
+            />
+            <figcaption className="absolute inset-x-0 bottom-0 p-6 font-display text-2xl font-semibold text-white">
+              {tx(lang, stage.he, stage.en, stage.ar, stage.ru, stage.el)}
+            </figcaption>
+          </figure>
+        ))}
       </div>
     </section>
   );

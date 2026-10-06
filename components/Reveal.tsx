@@ -1,5 +1,6 @@
 import { motion, type Variants } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { useLiteEffects } from '../src/renderingPolicy';
 
 interface RevealProps {
   children: ReactNode;
@@ -32,6 +33,8 @@ export default function Reveal({
   className,
   once = true,
 }: RevealProps) {
+  const lite = useLiteEffects();
+  if (lite) return <div className={className}>{children}</div>;
   return (
     <motion.div
       className={className}

@@ -15,7 +15,7 @@ export default function Reviews({ lang }: Props) {
   return (
     <section
       id="reviews"
-      className="py-20 bg-gray-50/50 dark:bg-slate-800/40 backdrop-blur-[2px] transition-colors duration-300"
+      className="defer-paint py-20 bg-gray-50/50 dark:bg-slate-800/40 backdrop-blur-[2px] transition-colors duration-300"
     >
       <div className="container mx-auto px-4">
         <Reveal>

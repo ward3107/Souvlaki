@@ -1,47 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
+import AmbientVideo from './AmbientVideo';
+import { useLiteEffects } from '../src/renderingPolicy';
 
 export default function FamilyHeritage({ lang }: { lang: Language }) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [allowVideo, setAllowVideo] = useState(false);
-  const reduce = useReducedMotion();
-
-  // Gate the video on reduced-motion / data-saver — the poster carries it.
-  useEffect(() => {
-    const r = window.matchMedia('(prefers-reduced-motion: reduce)');
-    type WithSaveData = Navigator & { connection?: { saveData?: boolean } };
-    const conn = (navigator as WithSaveData).connection;
-    const update = () => setAllowVideo(!r.matches && !conn?.saveData);
-    update();
-    r.addEventListener('change', update);
-    return () => r.removeEventListener('change', update);
-  }, []);
-
-  // Only decode while on screen.
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (!allowVideo) {
-      el.pause();
-      return;
-    }
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) el.play().catch(() => {});
-          else el.pause();
-        }
-      },
-      { threshold: 0.1 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [allowVideo]);
+  const reduce = useLiteEffects();
 
   const reveal = (delay: number) => ({
-    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 24 },
+    initial: reduce ? (false as const) : { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: '-80px' },
     transition: {
@@ -53,25 +20,11 @@ export default function FamilyHeritage({ lang }: { lang: Language }) {
 
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
-      {allowVideo ? (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/video/family-recipes.mp4"
-          poster="/video/family-recipes-poster.jpg"
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-        />
-      ) : (
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(/video/family-recipes-poster.jpg)' }}
-          aria-hidden="true"
-        />
-      )}
+      <AmbientVideo
+        className="absolute inset-0"
+        src="/video/family-recipes.mp4"
+        poster="/video/family-recipes-poster.jpg"
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/45 to-black/75" />
 
       <div className="relative z-10 text-center px-6 max-w-3xl">

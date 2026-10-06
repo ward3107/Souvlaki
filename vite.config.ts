@@ -74,9 +74,32 @@ export default defineConfig(({ mode }) => {
           // here — they're fetched on demand and cached by the runtimeCaching
           // images rule below, so first install doesn't pull ~60 MB of gallery.
           globPatterns: ['**/*.{js,css,html,ico,svg,json,woff2}'],
+          // Owner tools and optional overlays are cached when visited, never
+          // downloaded in the background during a customer's first visit.
+          globIgnores: [
+            '**/assets/Admin-*.js',
+            '**/assets/Kitchen-*.js',
+            '**/assets/Ticket-*.js',
+            '**/assets/QrStickers-*.js',
+            '**/assets/LegalDocument-*.js',
+            '**/assets/Lightbox-*.js',
+            '**/assets/lenis-*.js',
+            '**/assets/supabase-*.js',
+            '**/assets/browser-*.js',
+          ],
           navigateFallback: '/index.html',
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5 MB
           runtimeCaching: [
+            {
+              urlPattern: ({ request, url }) =>
+                request.destination === 'script' && url.origin === self.location.origin,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'optional-scripts-cache',
+                expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 30 },
+                cacheableResponse: { statuses: [200] },
+              },
+            },
             {
               urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
               handler: 'CacheFirst',
@@ -127,11 +150,14 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
+      // Avoid modern syntax becoming a parse-time failure on older phones.
+      // This transforms syntax; it does not promise support for every old API.
+      target: ['es2018', 'chrome80', 'firefox78', 'safari14'],
       // Enable code splitting for better caching
       rollupOptions: {
         output: {
           manualChunks(id: string) {
-            if (id.includes('/node_modules/react') || id.includes('/node_modules/react-dom')) {
+            if (/\/node_modules\/(react|react-dom|scheduler)\//.test(id)) {
               return 'react-vendor';
             }
             if (id.includes('/node_modules/lucide-react')) return 'icons';

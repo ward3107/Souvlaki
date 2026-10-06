@@ -1,5 +1,6 @@
 import { useRef, type ComponentType } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useLiteEffects } from '../src/renderingPolicy';
 import { Citrus, Leaf, Cherry, Grape } from 'lucide-react';
 import { Language } from '../types';
 import { tx } from '../utils/i18n';
@@ -69,7 +70,7 @@ const ITEMS: Item[] = [
 ];
 
 export default function FreshIngredients({ lang }: { lang: Language }) {
-  const reduce = useReducedMotion();
+  const reduce = useLiteEffects();
 
   // Hidden owner shortcut: tapping the four ingredient cards left-to-right
   // (each tap on a card further right than the last, within 5s) opens /admin.
@@ -94,7 +95,7 @@ export default function FreshIngredients({ lang }: { lang: Language }) {
   };
 
   const reveal = (delay: number) => ({
-    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 24 },
+    initial: reduce ? (false as const) : { opacity: 0, y: 24 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: '-80px' },
     transition: {

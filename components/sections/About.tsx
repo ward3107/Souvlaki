@@ -22,7 +22,10 @@ function AboutImage() {
 
 export default function About({ lang }: Props) {
   return (
-    <section id="about" className="bg-white py-20 transition-colors duration-300 dark:bg-slate-900">
+    <section
+      id="about"
+      className="defer-paint bg-white py-20 transition-colors duration-300 dark:bg-slate-900"
+    >
       <div className="container mx-auto px-4">
         <Reveal>
           <div className="flex flex-col md:flex-row items-center gap-12 max-w-6xl mx-auto">
