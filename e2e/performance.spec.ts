@@ -44,7 +44,7 @@ for (const language of ['en', 'he', 'ar', 'ru', 'el']) {
     await signature.scrollIntoViewIfNeeded();
     await expect(signature.getByRole('navigation')).toBeVisible();
     await expect(
-      signature.getByRole('link', { name: 'VASIA Facebook', exact: true })
+      signature.getByRole('link', { name: 'vasia dev. — Facebook', exact: true })
     ).toHaveAttribute('href', 'https://www.facebook.com/profile.php?id=61594997720112');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true
@@ -80,11 +80,10 @@ test('limited devices retain the full story without downloading decorative video
   for (const caption of await story.locator('figcaption').all())
     await expect(caption).toBeVisible();
   await page.locator('[data-builder-signature]').scrollIntoViewIfNeeded();
-  await expect(page.getByRole('link', { name: 'VASIA WhatsApp', exact: true })).toHaveAttribute(
-    'href',
-    'https://wa.me/972534260632'
-  );
-  await expect(page.locator('[data-builder-signature] nav a')).toHaveCount(8);
+  await expect(
+    page.getByRole('link', { name: 'vasia dev. — WhatsApp', exact: true })
+  ).toHaveAttribute('href', 'https://wa.me/972534260632');
+  await expect(page.locator('[data-builder-signature] nav a')).toHaveCount(7);
   expect(videos).toEqual([]);
   expect(errors).toEqual([]);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
