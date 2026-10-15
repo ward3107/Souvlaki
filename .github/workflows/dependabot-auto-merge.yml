@@ -1,48 +1,19 @@
-name: Dependabot auto-merge
+name: Dependabot review
 
-# Automatically merges Dependabot pull requests once all required status checks
-# pass. Requires "Allow auto-merge" to be enabled in the repository settings
-# (Settings → General → Pull Requests) and branch protection on the target
-# branch with the CI checks marked as required — that is what makes the merge
-# wait for green instead of merging immediately.
-
-on: pull_request_target
+# Rollout policy: review updates manually after every required check passes.
+# This replaces the workflow that enabled automatic merging.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  auto-merge:
-    if: github.actor == 'dependabot[bot]'
+  review-policy:
+    name: Dependency review policy
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch Dependabot metadata
-        id: meta
-        uses: dependabot/fetch-metadata@v3
-
-      # Never enable merging on an unprotected branch, or for major upgrades.
-      - name: Check branch protection
-        id: branch
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          BASE: ${{ github.event.pull_request.base.ref }}
-        run: |
-          protected=$(gh api "repos/$REPO/branches/$BASE" --jq '.protected')
-          eligible=false
-          if [ "$protected" = "true" ]; then
-            # Fail closed if required-check settings cannot be read. Protection
-            # alone does not guarantee that CI is required before a merge.
-            if gh api "repos/$REPO/branches/$BASE/protection/required_status_checks" > required-checks.json; then
-              eligible=$(jq '(.contexts + [.checks[]?.context]) as $configured | ["Lint", "Type Check", "Test", "E2E Tests", "Build"] | all(. as $name | $configured | index($name) != null)' required-checks.json)
-            fi
-          fi
-          echo "eligible=$eligible" >> "$GITHUB_OUTPUT"
-
-      - name: Enable auto-merge
-        if: steps.branch.outputs.eligible == 'true' && steps.meta.outputs.update-type != 'version-update:semver-major'
-        run: gh pr merge --auto --squash "$PR_URL"
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Record review policy
+        run: echo 'Review dependency changes and the preview after Lint, Type Check, Test, E2E Tests, and Build pass. This workflow does not enable auto-merge.' >> "$GITHUB_STEP_SUMMARY"
