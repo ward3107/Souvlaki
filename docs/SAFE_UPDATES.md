@@ -1,9 +1,8 @@
-# Safe dependency updates
+# Dependency update policy
 
-## Activation
+Dependabot patch and minor updates are automatically merged only after the required checks and existing branch rules pass. Major and unclassified updates remain for owner review. Grouped updates use the highest semantic version change reported by the verified Dependabot metadata action.
 
-This pull request prepares checks; it does not activate repository settings.
-Protect `main` with a ruleset that requires pull requests, an up-to-date branch, and the following successful checks:
+The default branch is `main`. Required GitHub Actions checks:
 
 - `Lint`
 - `Type Check`
@@ -11,20 +10,8 @@ Protect `main` with a ruleset that requires pull requests, an up-to-date branch,
 - `E2E Tests`
 - `Build`
 
-Apply the rule to administrators and bots; do not give update bots a bypass. Keep automatic merging disabled during rollout. Check names must match GitHub's displayed names after their first run. A skipped, missing, cancelled, or pending check is not evidence of a passing test.
+Repository auto-merge must be enabled and an active ruleset must require these exact checks from GitHub Actions, an up-to-date branch and a pull request. The workflow verifies that configuration and refuses to enable auto-merge when it is missing. Existing checks, security scans and review requirements still apply.
 
-## Update procedure
+The automation never checks out or runs pull-request code with write permissions. It uses the built-in repository token, pins the metadata action and matches the current PR commit when enabling auto-merge. No personal access token or administrator bypass is used.
 
-Dependabot opens bounded weekly update PRs. Review each update separately, keep the lockfile in the same PR as its manifest, and merge only after the checks pass on the latest revision. Major versions and changes to framework, authentication, payment, database, or deployment packages need explicit review of release notes and affected user journeys. Existing security checks must remain enabled; a vulnerable dependency needs a fix, not an ignored failure.
-
-Before merging, open the hosting preview and verify the home page, navigation, and the site's main user action on desktop and mobile. Use test accounts and test data for any submission. Build and unit checks alone do not prove production integrations work.
-
-## Publication and recovery
-
-Configure the hosting provider to publish production only from the protected branch. Check that native Git integrations and other deploy hooks cannot publish unreviewed branches. After release, verify the production URL and primary user journey. Record the previous working deployment before release; if verification fails, restore that deployment using the host's rollback control, then revert the offending update through a reviewed PR. Database migrations and external side effects need their own recovery plan.
-
-Postdeployment monitoring and automatic rollback are not installed by this PR: they require a verified production URL, health contract, and hosting access.
-
-## Repository-specific notes
-
-Classic branch protection already requires the five checks above. A separate ruleset contains a single combined check string rather than five distinct contexts; correct or remove that malformed requirement in repository settings. This PR stops the workflow from enabling new auto-merges. Review already-open PRs and disable any auto-merge that was queued before this change; replacing a workflow does not cancel an existing auto-merge request.
+A failed or missing required check blocks merging. Resolve the failure and rerun the affected check; do not remove the requirement to make an update pass. Build/test results do not certify external integrations or production user journeys.

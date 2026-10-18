@@ -1,19 +1,78 @@
-name: Dependabot review
+name: Dependabot auto-merge
 
-# Rollout policy: review updates manually after every required check passes.
-# This replaces the workflow that enabled automatic merging.
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
   contents: read
 
+concurrency:
+  group: dependabot-auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
-  review-policy:
-    name: Dependency review policy
-    if: github.event.pull_request.user.login == 'dependabot[bot]'
+  auto-merge:
+    if: >-
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.base.ref == github.event.repository.default_branch &&
+      github.event.pull_request.draft == false
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      PR_URL: ${{ github.event.pull_request.html_url }}
+      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+      BASE_BRANCH: ${{ github.event.pull_request.base.ref }}
+      EXPECTED_CHECKS: '["Lint", "Type Check", "Test", "E2E Tests", "Build"]'
     steps:
-      - name: Record review policy
-        run: echo 'Review dependency changes and the preview after Lint, Type Check, Test, E2E Tests, and Build pass. This workflow does not enable auto-merge.' >> "$GITHUB_STEP_SUMMARY"
+      # No checkout, install, PR scripts, or repository secrets are used here.
+      - name: Verify Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3
+        with:
+          github-token: ${{ github.token }}
+
+      - name: Keep major and unclassified updates for owner review
+        if: >-
+          steps.metadata.outputs.update-type != 'version-update:semver-patch' &&
+          steps.metadata.outputs.update-type != 'version-update:semver-minor'
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR_URL" --disable-auto
+          echo 'Major or unclassified dependency update: manual review required.' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Verify required checks and enable patch or minor auto-merge
+        if: >-
+          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
+          steps.metadata.outputs.update-type == 'version-update:semver-minor'
+        run: |
+          set -euo pipefail
+          encoded_base=$(printf '%s' "$BASE_BRANCH" | jq -sRr @uri)
+          gh api --paginate --slurp "repos/$REPO/rules/branches/$encoded_base?per_page=100" > rules.json
+          # Metadata-read endpoint works with GITHUB_TOKEN. The administrative
+          # branch-protection endpoint does not; silently ignoring its 403 would
+          # leave every PR waiting forever or risk merging without CI.
+          jq -e --argjson expected "$EXPECTED_CHECKS" '
+            add as $rules |
+            [$rules[] | select(.type == "required_status_checks") |
+              select(.parameters.strict_required_status_checks_policy == true) |
+              .parameters.required_status_checks[] |
+              select(.integration_id == 15368) | .context] as $required |
+            ($expected | length > 0) and
+            ($expected | all(. as $name | $required | index($name) != null)) and
+            any($rules[]; .type == "pull_request")
+          ' rules.json > /dev/null
+          current_head=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq .head.sha)
+          test "$current_head" = "$EXPECTED_HEAD"
+          :
+          # Native auto-merge continues to enforce all branch rules, checks and
+          # reviews. No administrator bypass is requested.
+          gh pr merge "$PR_URL" --auto --squash --match-head-commit "$EXPECTED_HEAD"
+          echo 'Patch/minor update: auto-merge enabled subject to all required checks and reviews.' >> "$GITHUB_STEP_SUMMARY"
