@@ -27,6 +27,10 @@ updates:
         update-types:
           - minor
           - patch
+      routine-minor-patch:
+        applies-to: version-updates
+        patterns: ['*']
+        update-types: [minor, patch]
   - package-ecosystem: github-actions
     directory: /
     schedule:
