@@ -1,0 +1,559 @@
+# Approved call_d8b3b03cce5c41caa13c900ad76792be; enable only after actual-token proof.
+name: Refresh trusted Dependabot CI
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+  workflow_run:
+    types: [completed]
+    workflows: ['CI']
+  schedule:
+    - cron: '17 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: dependabot-controlled-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+      checks: read
+      statuses: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REFRESH_POLICY_JSON: >-
+        {"repository":"ward3107/Souvlaki","default_branch":"main","reviewed_base_sha":"226011cb9efa7caf7cc00cd9afb0d02bdfecc3fd","required_checks":[{"context":"Lint","integration_id":15368},{"context":"Type Check","integration_id":15368},{"context":"Test","integration_id":15368},{"context":"E2E Tests","integration_id":15368},{"context":"Build","integration_id":15368},{"context":"Vercel","integration_id":8329}],"external_required_contexts_not_dispatched":[{"context":"Vercel","integration_id":8329}],"adapter_installation_required":true,"workflows":[{"id":225369493,"path":".github/workflows/ci.yml","credential_free_reviewed":true,"reviewed_sha256":"20239fd62c0d1933333a8233e6e10e4828097d7a240f85300cc266756c151a54","reviewed_blob_sha":"83e82dd6e256e9d0f728b311ca12086810b5dded","original_source_blob_sha":"7c66f5ebd09fcef1e7f8674deb0986a4c72bf59f","required_contexts":["Build","E2E Tests","Lint","Test","Type Check"],"conditional_exceptions":[{"job":"lighthouse","secret_names_only":["LHCI_GITHUB_APP_TOKEN"],"environment":null,"write_scopes":[],"excluded_on_pr_dispatch":true,"exclusion_reason":"optional Lighthouse guard is false for workflow_dispatch and GitHubActions-authored controlled pull_request runs","existing_codeql_analysis_upload_exception":false}],"adapter_changes":["exclude only optional secret-bearing Lighthouse job on dispatch or controlled GitHubActions PR execution; ordinary human/Dependabot events unchanged"],"reviewed_structure_sha256":"503c0b1debd13bb85cc65864ba752e68a5edb5255d3436ec92fe5ddef1c6b045","name":"CI"}],"enabled":true,"native_run_approval_authorized":true,"human_authorization":"call_d8b3b03cce5c41caa13c900ad76792be","rollout_gate":"actual-token proof before rollout","ci_continuation":"native_run_approval","controller_path":".github/workflows/dependabot-refresh.yml","dependency_path_patterns":["(?:.*/)?package(?:-lock)?\\.json","(?:.*/)?npm-shrinkwrap\\.json","(?:.*/)?pnpm-lock\\.yaml","(?:.*/)?yarn\\.lock","(?:.*/)?bun\\.lockb?","(?:.*/)?requirements(?:[-.][A-Za-z0-9_-]+)?\\.txt","(?:.*/)?pyproject\\.toml","(?:.*/)?(?:Pipfile(?:\\.lock)?|poetry\\.lock|uv\\.lock|setup\\.cfg|setup\\.py)"],"classic_review_required":false,"canonical_workflow_names":["CI"]}
+    steps:
+      - name: Inspect metadata and advance at most one trusted update
+        shell: python
+        run: |
+          """Approved metadata-only refresh/CI continuation; disabled until live pilot proof.
+
+          No checkout, arbitrary workflow ID, credential provisioning, settings mutation,
+          synthetic check/status, or administrator merge is implemented. This file must be
+          embedded from reviewed default-branch source in the proposed workflow.
+          """
+          from __future__ import annotations
+
+          import base64
+          import datetime as dt
+          import hashlib
+          import json
+          import os
+          import re
+          import subprocess
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          BOT = "dependabot[bot]"
+          ACTOR = "github-actions[bot]"
+          ALLOWED_TYPES = {"version-update:semver-patch", "version-update:semver-minor"}
+          MARKER = "<!-- dependabot-controlled-refresh-v1\n"
+          SHA = re.compile(r"^[a-f0-9]{40}$")
+          USES = re.compile(r"^(\s*(?:-\s*)?uses:\s*)([\"']?)([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?)@([A-Za-z0-9_./-]+)([\"']?)(\s*(?:#.*)?)$")
+
+
+          class Hold(RuntimeError):
+              pass
+
+
+          def need(ok, message):
+              if not ok:
+                  raise Hold(message)
+
+
+          def digest(value):
+              if not isinstance(value, str):
+                  value = json.dumps(value, sort_keys=True, separators=(",", ":"))
+              return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+          def timestamp():
+              return dt.datetime.now(dt.timezone.utc).isoformat()
+
+
+          def bot_commit(c):
+              need((c.get("author") or {}).get("login") == BOT, "Human/non-Dependabot original commit")
+              need((c.get("committer") or {}).get("login") in {BOT, "web-flow"}, "Untrusted original committer")
+              need(c.get("commit", {}).get("verification", {}).get("verified") is True, "Unsigned original bot commit")
+              types = re.findall(r"(?m)^\s*update-type:\s*(\S+)\s*$", c["commit"]["message"])
+              need(types and all(t in ALLOWED_TYPES for t in types), "Major or missing/unknown dependency classification")
+
+
+          def controlled_merge(c, old, base):
+              need(c.get("sha") not in {old, base}, "No new controlled merge")
+              need([p["sha"] for p in c.get("parents", [])] == [old, base], "Controlled merge parents changed")
+              need((c.get("author") or {}).get("login") == ACTOR and (c.get("committer") or {}).get("login") == "web-flow", "Human or non-native merge commit")
+              need(c.get("commit", {}).get("verification", {}).get("verified") is True, "Unverified native merge")
+
+
+          def workflow_refs_only(base, head):
+              """Conservative structural guard: only same-origin uses@ref lines may differ.
+
+              Byte-identical other lines are stricter than YAML semantic equivalence. Comment
+              changes are accepted only on those same uses lines; no key/script/env change.
+              """
+              a, b = base.splitlines(keepends=True), head.splitlines(keepends=True)
+              if len(a) != len(b):
+                  return False
+              for old, new in zip(a, b):
+                  if old == new:
+                      continue
+                  x, y = USES.fullmatch(old.rstrip("\r\n")), USES.fullmatch(new.rstrip("\r\n"))
+                  if not x or not y:
+                      return False
+                  if (x[1], x[2], x[3], x[5]) != (y[1], y[2], y[3], y[5]):
+                      return False
+                  if x[2] != x[5] or y[2] != y[5] or x[4] == y[4]:
+                      return False
+              return True
+
+
+          def workflow_structure(text):
+              """Immutable safety structure; action origins remain, only ref/comment vary."""
+              lines = []
+              for line in text.splitlines(keepends=True):
+                  match = USES.fullmatch(line.rstrip("\r\n"))
+                  if match and match[2] == match[5]:
+                      lines.append(match[1] + match[2] + match[3] + "@__REVIEWED_ACTION_REF__" + match[5] + "\n")
+                  else:
+                      lines.append(line)
+              return digest("".join(lines))
+
+
+          def pr_guard(pr, repo, base, allow_disabled=False):
+              need(pr.get("state") == "open" and not pr.get("draft"), "PR is not open/ready")
+              need(pr.get("user", {}).get("login") == BOT, "Non-Dependabot PR")
+              need((pr["head"].get("repo") or {}).get("full_name") == repo == (pr["base"].get("repo") or {}).get("full_name"), "Fork or repository mismatch")
+              need(pr["base"]["ref"] == base and pr["head"]["ref"].startswith("dependabot/"), "Unexpected PR base/branch")
+              actor = ((pr.get("auto_merge") or {}).get("enabled_by") or {}).get("login")
+              need(actor == ACTOR or (allow_disabled and pr.get("auto_merge") is None), "No previously verified bot-enabled auto-merge")
+
+
+          def live_policy(rules, classic, configured):
+              checks, strict = set(), False
+              review = False
+              stale = False
+              for r in rules:
+                  p = r.get("parameters", {})
+                  if r["type"] == "required_status_checks":
+                      strict |= bool(p.get("strict_required_status_checks_policy"))
+                      checks.update((c["context"], c.get("integration_id")) for c in p.get("required_status_checks", []))
+                  if r["type"] == "pull_request":
+                      review |= p.get("required_approving_review_count", 0) >= 1
+                      stale |= bool(p.get("dismiss_stale_reviews_on_push"))
+              if classic:
+                  p = classic.get("required_status_checks") or {}
+                  strict |= bool(p.get("strict"))
+                  checks.update((c["context"], c.get("app_id")) for c in p.get("checks", []))
+                  p = classic.get("required_pull_request_reviews") or {}
+                  review |= p.get("required_approving_review_count", 0) >= 1
+                  stale |= bool(p.get("dismiss_stale_reviews"))
+              expected = {(c["context"], c.get("integration_id")) for c in configured}
+              need(expected and expected.issubset(checks) and strict, "Required app-bound checks or strict freshness changed")
+              return checks, review
+
+
+          def native_green(rollup, head, required):
+              """Use native isRequired, not a forged status or an unrelated latest run.
+
+              CheckRun app identity is enforced explicitly. Vercel legacy StatusContext
+              uses native isRequired plus its recognized creator because REST may omit it.
+              Every native required context, including duplicates, must be successful.
+              """
+              need(rollup.get("headRefOid") == head, "Native rollup head changed")
+              connection = (rollup.get("statusCheckRollup") or {}).get("contexts") or {}
+              need(not (connection.get("pageInfo") or {}).get("hasNextPage"), "Native context pagination bound exceeded")
+              nodes = [n for n in connection.get("nodes", []) if n.get("isRequired") is True]
+              if not nodes:
+                  return False
+              names = {n.get("name", n.get("context")) for n in nodes}
+              if not {name for name, _ in required}.issubset(names):
+                  return False
+              for n in nodes:
+                  name = n.get("name", n.get("context"))
+                  sources = {app for context, app in required if context == name}
+                  if n.get("__typename") == "CheckRun":
+                      app = ((n.get("checkSuite") or {}).get("app") or {}).get("databaseId")
+                      if n.get("status") != "COMPLETED" or n.get("conclusion") != "SUCCESS" or (None not in sources and sources and app not in sources):
+                          return False
+                  elif n.get("__typename") == "StatusContext":
+                      if n.get("state") != "SUCCESS":
+                          return False
+                      if sources == {8329} and (n.get("creator") or {}).get("login") not in {"vercel", "vercel[bot]"}:
+                          return False
+                      if any(app not in {None, 8329} for app in sources):
+                          return False
+                  else:
+                      return False
+              return True
+
+
+          class API:
+              def __init__(self, token):
+                  self.token = token
+
+              def request(self, path, body=None, method="GET", missing=False, forbidden=False):
+                  data = json.dumps(body).encode() if body is not None else None
+                  req = urllib.request.Request("https://api.github.com" + path, data=data, method=method,
+                      headers={"Authorization": "Bearer " + self.token, "Accept": "application/vnd.github+json", "Content-Type": "application/json", "X-GitHub-Api-Version": "2022-11-28"})
+                  try:
+                      with urllib.request.urlopen(req, timeout=30) as r:
+                          raw = r.read()
+                          return json.loads(raw) if raw else None
+                  except urllib.error.HTTPError as exc:
+                      if missing and exc.code == 404:
+                          return None
+                      if forbidden and exc.code == 403:
+                          return None
+                      raise Hold("GitHub request failed: " + method + " " + path + " HTTP " + str(exc.code)) from exc
+
+              def pages(self, path):
+                  out = []
+                  for page in range(1, 11):
+                      chunk = self.request(path + ("&" if "?" in path else "?") + "per_page=100&page=" + str(page))
+                      need(isinstance(chunk, list), "Unexpected list response")
+                      out.extend(chunk)
+                      if len(chunk) < 100:
+                          return out
+                  raise Hold("Pagination bound exceeded")
+
+              def recorded(self, repo, run_id, fingerprint):
+                  p = subprocess.run(["gh", "run", "view", str(int(run_id)), "--repo", repo, "--log"], text=True, capture_output=True, encoding="utf-8")
+                  # Only verified controller workflow logs are queried by the caller.
+                  return p.returncode == 0 and "CONTROLLED_REFRESH_RECORD " + fingerprint in p.stdout
+
+
+          class Refresh:
+              def __init__(self, policy, api, run_id, run_sha):
+                  self.p, self.a, self.run_id, self.run_sha = policy, api, int(run_id), run_sha
+                  self.repo = policy["repository"]
+                  need(re.fullmatch(r"ward3107/[A-Za-z0-9_.-]+", self.repo), "Repository outside owner scope")
+                  need(policy.get("controller_path", ".github/workflows/dependabot-refresh.yml") == ".github/workflows/dependabot-refresh.yml", "Unexpected controller workflow path")
+                  self.root = "/repos/" + self.repo
+                  self.writes = 0
+                  self.local_records = set()
+                  self.approvable_runs = set()
+
+              def get(self, path, **kw):
+                  return self.a.request(self.root + path, **kw)
+
+              def write(self, path, body, method="POST"):
+                  # This explicit capability allowlist excludes settings, statuses/checks,
+                  # branch/ref mutations, deployment APIs and arbitrary workflow IDs.
+                  patterns = {
+                      "POST": [r"/issues/\d+/comments", r"/pulls/\d+/reviews"],
+                      "PATCH": [r"/issues/comments/\d+"],
+                      "PUT": [r"/pulls/\d+/update-branch", r"/pulls/\d+/merge"],
+                  }
+                  is_dispatch = method == "POST" and any(path == "/actions/workflows/" + str(w["id"]) + "/dispatches" for w in self.p["workflows"])
+                  is_approval = method == "POST" and any(path == "/actions/runs/" + str(run) + "/approve" for run in self.approvable_runs)
+                  need(is_dispatch or is_approval or any(re.fullmatch(rx, path) for rx in patterns.get(method, [])), "Write capability outside reviewed allowlist")
+                  self.writes += 1
+                  return self.a.request(self.root + path, body, method)
+
+              def main_head(self):
+                  return self.get("/git/ref/heads/" + urllib.parse.quote(self.p["default_branch"], safe=""))["object"]["sha"]
+
+              def main_ancestor(self, sha):
+                  need(SHA.fullmatch(sha), "Invalid recorded main SHA")
+                  cmp = self.get("/compare/" + sha + "..." + self.main_head())
+                  need(cmp["status"] in {"ahead", "identical"}, "Recorded base is not an ancestor of trusted current main")
+
+              def current(self, number, expected=None):
+                  pr = self.get("/pulls/" + str(number))
+                  pr_guard(pr, self.repo, self.p["default_branch"], allow_disabled=True)
+                  head = pr["head"]["sha"]
+                  ref = self.get("/git/ref/heads/" + urllib.parse.quote(pr["head"]["ref"], safe=""))["object"]["sha"]
+                  need(ref == head and (expected is None or head == expected), "PR/branch head race")
+                  return pr
+
+              def rollup(self, number):
+                  owner, name = self.repo.split("/")
+                  query = """query($owner:String!,$name:String!,$number:Int!){repository(owner:$owner,name:$name){pullRequest(number:$number){headRefOid statusCheckRollup{contexts(first:100){pageInfo{hasNextPage} nodes{__typename ... on CheckRun{name status conclusion isRequired(pullRequestNumber:$number) checkSuite{app{databaseId}}} ... on StatusContext{context state creator{login} isRequired(pullRequestNumber:$number)}}}}}}}"""
+                  result = self.a.request("/graphql", {"query": query, "variables": {"owner": owner, "name": name, "number": number}}, "POST")
+                  need(not result.get("errors"), "Native required-context attribution unavailable")
+                  return result["data"]["repository"]["pullRequest"]
+
+              def policy(self):
+                  branch = urllib.parse.quote(self.p["default_branch"], safe="")
+                  rules = self.a.pages(self.root + "/rules/branches/" + branch)
+                  # Classic policy reads can require administration:read, which this job
+                  # deliberately lacks. Effective rules + all native isRequired contexts
+                  # and normal server-enforced merge remain mandatory. A reviewed inline
+                  # classic-review expectation ensures exact-head approval when unreadable.
+                  classic = self.get("/branches/" + branch + "/protection", missing=True, forbidden=True)
+                  required, review = live_policy(rules, classic, self.p["required_checks"])
+                  return required, review or self.p.get("classic_review_required", False)
+
+              def text(self, path, ref):
+                  file = self.get("/contents/" + path + "?ref=" + ref)
+                  need(file["type"] == "file", "Expected workflow file")
+                  return base64.b64decode(file["content"]).decode("utf-8")
+
+              def definitions(self, pr, base):
+                  for w in self.p["workflows"]:
+                      need(w.get("credential_free_reviewed") is True, "Canonical workflow lacks secret/permission review")
+                      metadata = self.get("/actions/workflows/" + str(w["id"]))
+                      need(metadata["path"] == w["path"] and metadata["state"] == "active", "Canonical workflow identity changed")
+                      baseline = self.text(w["path"], base)
+                      candidate = self.text(w["path"], pr["head"]["sha"])
+                      need(workflow_structure(baseline) == w["reviewed_structure_sha256"], "Canonical main workflow structure changed since safety review")
+                      need(workflow_refs_only(baseline, candidate), "Canonical PR workflow has structural/script/secret/permission changes")
+
+              def files(self, number, base, head):
+                  files = self.a.pages(self.root + "/pulls/" + str(number) + "/files")
+                  need(files, "No dependency diff")
+                  for f in files:
+                      path = f["filename"]
+                      need(f["status"] == "modified" and not f.get("previous_filename"), "Added/removed/renamed dependency file needs review")
+                      if path.startswith(".github/"):
+                          # Existing noncanonical workflows may receive signed Actions
+                          # Patch/Minor ref-only updates too. This never adds their IDs
+                          # to the separate canonical execution-approval allowlist.
+                          need(re.fullmatch(r"\.github/workflows/[A-Za-z0-9_.-]+\.ya?ml", path) and workflow_refs_only(self.text(path, base), self.text(path, head)), "Workflow change exceeds same-origin action ref update")
+                      else:
+                          need(any(re.fullmatch(rx, path) for rx in self.p["dependency_path_patterns"]), "Non-dependency/product diff")
+
+              def journal(self, number):
+                  comments = self.a.pages(self.root + "/issues/" + str(number) + "/comments")
+                  entries = []
+                  for c in comments:
+                      if not c.get("body", "").startswith(MARKER) or (c.get("user") or {}).get("login") != ACTOR:
+                          continue
+                      try:
+                          data = json.loads(c["body"][len(MARKER):-4])
+                      except (ValueError, TypeError):
+                          continue
+                      if data.get("repository") != self.repo or data.get("pr") != number or data.get("policy_sha256") != digest(self.p):
+                          continue
+                      run = self.get("/actions/runs/" + str(int(data["controller_run_id"])))
+                      controller = self.get("/actions/workflows/dependabot-refresh.yml")
+                      need(run["workflow_id"] == controller["id"] and run.get("path", "").split("@")[0] == self.p.get("controller_path", ".github/workflows/dependabot-refresh.yml") and run["head_sha"] == data["controller_sha"] and run["head_branch"] == self.p["default_branch"] and run["event"] in {"push", "schedule", "workflow_dispatch", "workflow_run"}, "Journal controller identity mismatch")
+                      self.main_ancestor(data["controller_sha"])
+                      need(digest(data) in self.local_records or self.a.recorded(self.repo, data["controller_run_id"], digest(data)), "Journal has no matching record in verified controller logs")
+                      entries.append((c["id"], data))
+                  need(len(entries) <= 1, "Ambiguous controlled refresh journals")
+                  return entries[0] if entries else (None, None)
+
+              def save(self, number, comment_id, data):
+                  data.update(controller_run_id=self.run_id, controller_sha=self.run_sha, updated_at=timestamp())
+                  fingerprint = digest(data)
+                  # A bot comment alone is not provenance. A later invocation must find
+                  # this exact digest in the verified controller run's trusted source logs.
+                  print("CONTROLLED_REFRESH_RECORD " + fingerprint, flush=True)
+                  self.local_records.add(fingerprint)
+                  body = {"body": MARKER + json.dumps(data, sort_keys=True) + "\n-->"}
+                  response = self.write("/issues/comments/" + str(comment_id), body, "PATCH") if comment_id else self.write("/issues/" + str(number) + "/comments", body)
+                  return response["id"], data
+
+              def disable_auto(self, pr):
+                  result = self.a.request("/graphql", {"query": "mutation($id:ID!){disablePullRequestAutoMerge(input:{pullRequestId:$id}){pullRequest{id}}}", "variables": {"id": pr["node_id"]}}, "POST")
+                  need(not result.get("errors"), "Existing auto-merge could not be disabled before refresh")
+
+              def verified_merged(self, pr, data):
+                  need(pr.get("merged") is True and pr["head"]["sha"] == data["head"] and (pr.get("merged_by") or {}).get("login") == ACTOR, "Merge outcome/head/actor mismatch")
+                  self.provenance(pr, data)
+                  return {"stage": "merged", "head": data["head"], "merge_sha": pr["merge_commit_sha"]}
+
+              def provenance(self, pr, data):
+                  number, head = pr["number"], pr["head"]["sha"]
+                  if data is None:
+                      commits = self.a.pages(self.root + "/pulls/" + str(number) + "/commits")
+                      need(commits and len(commits) == pr["commits"] and commits[-1]["sha"] == head, "Incomplete original commit evidence")
+                      for c in commits:
+                          bot_commit(self.get("/commits/" + c["sha"]))
+                      need(((pr.get("auto_merge") or {}).get("enabled_by") or {}).get("login") == ACTOR, "Initial PR has no verified bot-enabled auto-merge")
+                      return {"repository": self.repo, "pr": number, "policy_sha256": digest(self.p), "captured_auto_actor": ACTOR, "original_base": pr["base"]["sha"], "root_bot_head": head, "bot_commits": [c["sha"] for c in commits], "merges": [], "head": head, "dispatches": {}}
+                  need(data.get("captured_auto_actor") == ACTOR and data.get("disable_requested") is True, "Journal lacks captured trusted auto-merge/disable provenance")
+                  need(data.get("bot_commits") and data["bot_commits"][-1] == data["root_bot_head"], "Missing original signed bot lineage")
+                  self.main_ancestor(data["original_base"])
+                  original = self.get("/compare/" + data["original_base"] + "..." + data["root_bot_head"] + "?per_page=100")
+                  need(original.get("total_commits") == len(data["bot_commits"]) <= 100 and [c["sha"] for c in original["commits"]] == data["bot_commits"], "Omitted/extra original branch commits")
+                  for sha in data["bot_commits"]:
+                      bot_commit(self.get("/commits/" + sha))
+                  tip = data["root_bot_head"]
+                  for merge in data["merges"]:
+                      need(merge["old"] == tip, "Broken controlled merge chain")
+                      self.main_ancestor(merge["base"])
+                      controlled_merge(self.get("/commits/" + merge["new"]), tip, merge["base"])
+                      tip = merge["new"]
+                  if data.get("pending_update"):
+                      pending = data["pending_update"]
+                      need(pending["old"] == tip, "Pending refresh lineage changed")
+                      self.main_ancestor(pending["base"])
+                      if head == tip:
+                          raise Hold("Expected-head update pending; do not repeat it")
+                      controlled_merge(self.get("/commits/" + head), tip, pending["base"])
+                      data["merges"].append({"old": tip, "base": pending["base"], "new": head})
+                      data.update(head=head, pending_update=None, dispatches={})
+                      tip = head
+                  need(tip == head == data["head"], "Human/unknown head modification; no continuation")
+                  return data
+
+              def dispatch(self, pr, data, number, comment_id, base):
+                  head = pr["head"]["sha"]
+                  self.definitions(pr, base)
+                  for w in self.p["workflows"]:
+                      key = str(w["id"])
+                      runs = self.get("/actions/workflows/" + key + "/runs?head_sha=" + head + "&per_page=100")["workflow_runs"]
+                      exact = [r for r in runs if r["head_sha"] == head and r["workflow_id"] == w["id"] and r["event"] == "workflow_dispatch" and r["head_branch"] == pr["head"]["ref"] and (r.get("actor") or {}).get("login") == ACTOR]
+                      if exact:
+                          latest = max(exact, key=lambda r: r["id"])
+                          data["dispatches"][key] = {"run_id": latest["id"], "head": head, "status": latest["status"], "conclusion": latest.get("conclusion")}
+                          continue
+                      if key in data["dispatches"]:
+                          continue  # Unknown API outcome is held; never blindly duplicate.
+                      self.current(number, head)
+                      need(self.main_head() == base, "Main moved before CI dispatch")
+                      self.definitions(pr, base)
+                      data["dispatches"][key] = {"requested_at": timestamp(), "head": head}
+                      comment_id, data = self.save(number, comment_id, data)
+                      self.write("/actions/workflows/" + key + "/dispatches", {"ref": pr["head"]["ref"]})
+                      self.current(number, head)
+                      need(self.main_head() == base, "Main moved during dispatch; no approval")
+                      return comment_id, data, False  # One mutation then yield to next tick.
+                  complete = all(data["dispatches"].get(str(w["id"]), {}).get("status") == "completed" and data["dispatches"][str(w["id"])].get("conclusion") == "success" for w in self.p["workflows"])
+                  return comment_id, data, complete
+
+              def native_runs(self, pr, data, number, comment_id, base):
+                  """PROPOSED execution approval, not a passing check. Not yet live-proven.
+
+                  This mode must first be explicitly authorized and piloted with the actual
+                  GITHUB_TOKEN. An owner token's success would not prove bot self-approval.
+                  """
+                  need(self.p.get("native_run_approval_authorized") is True, "Workflow-execution approval lacks explicit human authorization")
+                  head = pr["head"]["sha"]
+                  self.definitions(pr, base)
+                  complete = True
+                  for w in self.p["workflows"]:
+                      runs = self.get("/actions/workflows/" + str(w["id"]) + "/runs?head_sha=" + head + "&per_page=100")["workflow_runs"]
+                      matches = [r for r in runs if r["head_sha"] == head and r["workflow_id"] == w["id"] and r["event"] == "pull_request" and r["head_branch"] == pr["head"]["ref"] and (r.get("actor") or {}).get("login") == ACTOR and (r.get("head_repository") or {}).get("full_name") == self.repo and any(p["number"] == number and p.get("head", {}).get("sha") == head for p in r.get("pull_requests", []))]
+                      need(matches, "No canonical PR-associated run exists for this controlled head")
+                      run = max(matches, key=lambda r: r["id"])
+                      detail = self.get("/actions/runs/" + str(run["id"]))
+                      need(detail["head_sha"] == head and detail["workflow_id"] == w["id"] and detail.get("path", "").split("@")[0] == w["path"], "Canonical pending run identity changed")
+                      if detail.get("conclusion") == "action_required":
+                          self.current(number, head)
+                          need(self.main_head() == base, "Main moved before workflow execution approval")
+                          self.definitions(pr, base)
+                          key = "native-" + str(run["id"])
+                          if key not in data["dispatches"]:
+                              data["dispatches"][key] = {"head": head, "approval_requested_at": timestamp()}
+                              comment_id, data = self.save(number, comment_id, data)
+                              self.approvable_runs.add(run["id"])
+                              self.write("/actions/runs/" + str(run["id"]) + "/approve", {})
+                              self.current(number, head)
+                              need(self.main_head() == base, "Main moved during workflow execution approval")
+                          return comment_id, data, False
+                      need(detail.get("conclusion") not in {"failure", "cancelled", "timed_out", "startup_failure"}, "Actual canonical PR workflow failed; no retry or waiver")
+                      complete &= detail["status"] == "completed" and detail.get("conclusion") == "success"
+                  return comment_id, data, complete
+
+              def tick(self, number):
+                  need(self.p.get("enabled") is True, "ROLLOUT DISABLED: permission received; actual-token pilot proof required")
+                  base = self.main_head()
+                  need(base == self.run_sha, "Controller must run exact current default-branch source")
+                  controller = self.get("/actions/workflows/dependabot-refresh.yml")
+                  executing = self.get("/actions/runs/" + str(self.run_id))
+                  need(executing["workflow_id"] == controller["id"] and executing.get("path", "").split("@")[0] == ".github/workflows/dependabot-refresh.yml" and executing["head_sha"] == self.run_sha and executing["head_branch"] == self.p["default_branch"] and executing["event"] in {"push", "schedule", "workflow_dispatch", "workflow_run"} and (executing.get("repository") or {}).get("full_name") == self.repo, "Current controller run identity/source mismatch")
+                  required, needs_review = self.policy()
+                  comment_id, journal = self.journal(number)
+                  raw = self.get("/pulls/" + str(number))
+                  if raw.get("merged") and journal:
+                      return self.verified_merged(raw, journal)
+                  pr = self.current(number)
+                  data = self.provenance(pr, journal)
+                  head = pr["head"]["sha"]
+                  self.files(number, base, head)
+                  self.definitions(pr, base)
+                  if pr.get("mergeable_state") == "behind":
+                      need(pr.get("mergeable") is True, "Old dependency head is conflicted or mergeability is unknown")
+                      if data["merges"]:
+                          # Main may advance while a previously controlled, signed head's
+                          # original PR runs await execution approval. Let those exact
+                          # canonical runs execute before demanding green checks for the
+                          # next refresh; never issue another update on untested code.
+                          need(data.get("auto_disabled") is True, "Controlled head lacks captured queue-disable provenance")
+                          need(self.p.get("ci_continuation") == "native_run_approval", "Stale controlled heads require native CI continuation")
+                          comment_id, data, complete = self.native_runs(pr, data, number, comment_id, base)
+                          comment_id, data = self.save(number, comment_id, data)
+                          if not complete or not native_green(self.rollup(number), head, required):
+                              return {"stage": "waiting_for_real_native_checks", "head": head, "dispatches": data["dispatches"]}
+                      need(native_green(self.rollup(number), head, required), "Old dependency head checks fail or remain pending")
+                      need(len(data["merges"]) < 8, "Controlled refresh chain limit exceeded")
+                      self.current(number, head)
+                      need(self.main_head() == base, "Main moved before refresh")
+                      # Capture the trusted old auto-merge actor before disabling. A journal
+                      # from a verified controller run permits recovery if the runner dies
+                      # after the mutation but before its acknowledgement is persisted.
+                      data["disable_requested"] = True
+                      comment_id, data = self.save(number, comment_id, data)
+                      if pr.get("auto_merge") is not None:
+                          self.disable_auto(pr)
+                      current = self.current(number, head)
+                      need(current.get("auto_merge") is None, "Auto-merge remains queued")
+                      need(self.main_head() == base, "Main moved while disabling auto-merge")
+                      data["auto_disabled"] = True
+                      data["pending_update"] = {"old": head, "base": base, "requested_at": timestamp()}
+                      comment_id, data = self.save(number, comment_id, data)
+                      self.write("/pulls/" + str(number) + "/update-branch", {"expected_head_sha": head}, "PUT")
+                      return {"stage": "update_requested", "head": head, "base": base}
+                  need(pr.get("mergeable") is True and pr.get("mergeable_state") in {"clean", "blocked", "unstable"}, "PR mergeability unknown/conflicted")
+                  need(data["merges"], "Fresh original bot PR remains handled by existing automation")
+                  need(data.get("auto_disabled") is True and pr.get("auto_merge") is None, "Unexpected queued auto-merge on controlled branch")
+                  mode = self.p.get("ci_continuation")
+                  need(mode in {"native_run_approval", "dispatch"}, "No reviewed CI continuation mode")
+                  comment_id, data, complete = self.native_runs(pr, data, number, comment_id, base) if mode == "native_run_approval" else self.dispatch(pr, data, number, comment_id, base)
+                  comment_id, data = self.save(number, comment_id, data)
+                  if not complete or not native_green(self.rollup(number), head, required):
+                      return {"stage": "waiting_for_real_native_checks", "head": head, "dispatches": data["dispatches"]}
+                  need(self.policy()[0] == required and self.main_head() == base, "Policy/base changed before review")
+                  comparison = self.get("/compare/" + base + "..." + head)
+                  need(comparison["behind_by"] == 0, "PR is not fresh")
+                  self.current(number, head)
+                  reviews = self.a.pages(self.root + "/pulls/" + str(number) + "/reviews")
+                  approvals = [r for r in reviews if (r.get("user") or {}).get("login") == ACTOR and r.get("state") == "APPROVED" and r.get("commit_id") == head]
+                  if needs_review and not approvals:
+                      self.write("/pulls/" + str(number) + "/reviews", {"event": "APPROVE", "commit_id": head, "body": "Verified signed Dependabot Patch/Minor lineage, controlled native refresh, exact-head canonical CI and all native required checks."})
+                  self.current(number, head)
+                  need(self.main_head() == base and native_green(self.rollup(number), head, required), "Head/base/check race after review")
+                  # Normal GitHub merge with atomic exact-SHA fencing, after every actual
+                  # native required check. GITHUB_TOKEN has no admin bypass. Review rules,
+                  # strict freshness and any stronger server policy remain enforced.
+                  result = self.write("/pulls/" + str(number) + "/merge", {"sha": head, "merge_method": "squash", "commit_title": pr["title"]}, "PUT")
+                  need(result.get("merged") is True, "Native exact-SHA merge was not accepted")
+                  outcome = self.verified_merged(self.get("/pulls/" + str(number)), data)
+                  comment_id, data = self.save(number, comment_id, data)
+                  return outcome
+
+
+          if __name__ == "__main__":
+              # The reviewed per-repository registry is embedded from trusted source by the
+              # proposal renderer. No PR content, event fields, or remote scripts are executed.
+              policy = json.loads(os.environ.get("REFRESH_POLICY_JSON", '{"repository":"ward3107/disabled","enabled":false}'))
+              try:
+                  need(policy.get("enabled") is True, "LOCAL PROPOSAL DISABLED")
+                  engine = Refresh(policy, API(os.environ["GH_TOKEN"]), os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_SHA"])
+                  need(os.environ["GITHUB_REPOSITORY"] == policy["repository"] and os.environ["GITHUB_REF"] == "refs/heads/" + policy["default_branch"], "Controller repository/default ref mismatch")
+                  pulls = engine.a.pages(engine.root + "/pulls?state=open&sort=created&direction=asc&base=" + urllib.parse.quote(policy["default_branch"], safe=""))
+                  for pr in pulls:
+                      try:
+                          # Summaries can omit auto-merge; tick reads full PR and validates
+                          # either its captured bot auto-merge or a trusted disabled journal.
+                          pr_guard(pr, engine.repo, policy["default_branch"], allow_disabled=True)
+                          print(json.dumps(engine.tick(pr["number"])))
+                          break  # At most one eligible PR per invocation.
+                      except Hold as exc:
+                          print(json.dumps({"pr": pr["number"], "stage": "held", "reason": str(exc)}))
+                          if engine.writes:
+                              break  # An uncertain mutation never advances another PR.
+              except Hold as exc:
+                  print(json.dumps({"stage": "held", "reason": str(exc)}))
