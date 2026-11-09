@@ -26,8 +26,8 @@
     "lenis": "^1.3.26",
     "lucide-react": "^1.57.0",
     "qrcode": "^1.5.4",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-markdown": "^10.1.0"
   },
   "devDependencies": {
